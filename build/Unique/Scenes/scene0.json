@@ -1,0 +1,40 @@
+{
+    "root":[
+        { "name":"obj1", 
+          "components":[
+            { "type":"Transform", "values":[{"position":[150.0, 150.0]}, {"scale":[1.0, 1.0]}, {"rotation": 0}] },
+            { "type":"Sprite", "values":[{"filepath":"EngineAssets/big.png"}, {"zindex":1}] }
+          ],
+          "children":[
+            { "name":"child1", 
+              "components":[
+                { "type":"Transform", "values":[{"position":[200.0, 150.0]}, {"scale":[1.0, 1.0]}, {"rotation": 0}] },
+                { "type":"Sprite", "values":[{"filepath":"EngineAssets/big.png"}, {"zindex":1}] }
+              ],
+              "children":[]
+            },
+            { "name":"child2", 
+              "components":[
+                { "type":"Transform", "values":[{"position":[250.0, 150.0]}, {"scale":[1.0, 1.0]}, {"rotation": 0}] },
+                { "type":"Sprite", "values":[{"filepath":"EngineAssets/big.png"}, {"zindex":1}] }
+              ],
+              "children":[]
+            }
+          ]
+        },
+        { "name":"obj2", 
+          "components":[
+            { "type":"Transform", "values":[{"position":[100.0, 250.0]}, {"scale":[1.0, 1.0]}, {"rotation": 0}] },
+            { "type":"Sprite", "values":[{"filepath":"EngineAssets/RedMagnet.png"}, {"zindex":1}] }
+          ],
+            "children":[]
+        },
+        { "name":"obj3", 
+          "components":[
+            { "type":"Transform", "values":[{"position":[150.0, 350.0]}, {"scale":[1.0, 1.0]}, {"rotation": 45}] },
+            { "type":"Sprite", "values":[{"filepath":"EngineAssets/RedMagnet.png"}, {"zindex":1}] }
+          ],
+            "children":[]
+        }
+    ]
+}
