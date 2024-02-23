@@ -31,7 +31,7 @@ int Engine::Initialize()
     SDL_DisplayMode dm;
     SDL_GetDesktopDisplayMode(0, &dm);
     width = dm.w;
-    height = dm.h - 75; // adjusted for border size
+    height = dm.h - 50; // adjusted for border size, 75
     std::cout << width << ' ' << height << '\n';
 
     window = SDL_CreateWindow(
@@ -147,7 +147,7 @@ void Engine::UpdateGUI()
     Menu();
 
     // Stage
-    ImGui::Begin("Stage");
+    ImGui::Begin("Stage"); // TODO: i want to maintain size of stage when scaling outer window
     
     ImVec2 stagePos = ImGui::GetWindowPos(); // TODO: feel like i'll need this later to keep viewport still, might have to be delta
     ImVec2 stageSize = ImGui::GetWindowSize();

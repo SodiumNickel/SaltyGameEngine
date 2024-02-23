@@ -2,13 +2,14 @@
 #define ENTITYTREE_H
 
 #include <vector>
+#include <memory>
 
 struct EntityNode{
-    int entityId;
-    std::vector<EntityNode*> children; // TODO: should this be a unique ptr???
+    int entityId; // not quite sure it needs it's own Id, but doesn't particularly hurt to have
+    int parentId; // -1 if parent is root/scene
+    std::vector<int> childrenIds;
 };
 
-struct EntityNode* CreateENode(int entityId);
-struct EntityNode* AddENodeChild(EntityNode* node, int entityId);
+struct std::unique_ptr<EntityNode> CreateENode(int entityId, int parentId);
 
 #endif

@@ -5,6 +5,8 @@
 #include "../Game/AssetManager/AssetManager.h"
 #include "../Game/Structures/EntityTree.h"
 
+#include <vector>
+
 #include <SDL.h>
 #include <imgui.h>
 
@@ -20,13 +22,13 @@ class Stage {
 
         std::unique_ptr<Registry> registry;
         std::unique_ptr<AssetManager> assetManager;
-        EntityNode* entityTree;
+        std::vector<std::unique_ptr<EntityNode>> entityTree;
     public:
         Stage();
         ~Stage();
         void Initialize(SDL_Renderer* renderer, SDL_Texture* viewport);
         void LoadScene(int sceneIndex);
-        void CreateEntityTree(EntityNode* node, json entities);
+        void CreateEntityTree(json entities);
         void Run();
         void ProcessInput();
         void Update();
