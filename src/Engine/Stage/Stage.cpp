@@ -53,9 +53,9 @@ void Stage::LoadScene(int sceneIndex)
 
     // TODO: seperate this from engine_assets
     // Add assets to the AssetManager 
-    assetManager->AddTexture(renderer, "EngineAssets/RedMagnet.png");
-    assetManager->AddTexture(renderer, "EngineAssets/big.png");
-    assetManager->AddTexture(renderer, "EngineAssets/small.png");
+    assetManager->AddTexture(renderer, "Unique/Assets/RedMagnet.png");
+    assetManager->AddTexture(renderer, "Unique/Assets/big.png");
+    assetManager->AddTexture(renderer, "Unique/Assets/small.png");
 
     // Get scene name from index
     std::ifstream f("Unique/Scenes/_index.json");
@@ -80,43 +80,40 @@ void Stage::CreateEntityTree(json entities){
     while(!entityStack.empty()){
         auto [parentId, children] = entityStack.top();
         entityStack.pop();
+
         for (auto& e : children.items()){
-            json entity = e.value();
-            std::cout << entity << '\n';
+            json entity = e.value();            
             Entity child = registry->CreateEntity();
-            child.AddComponent<TransformComponent>(glm::vec2(150.0, 50.0), glm::vec2(1.0, 1.0), 45.0);
-            child.AddComponent<SpriteComponent>("EngineAssets/RedMagnet.png", 1);
+            int id = child.GetId();
+
+            if(id >= entityTree.size())
+            { entityTree.resize(id + 1); }
+            // create own node
+            entityTree[id] = CreateENode(parentId, id);
+            // add own id to parent (unless parent is root)
+            if(parentId >= 0) { entityTree[parentId]->childrenIds.push_back(id); } 
+
+            for (auto& component : entity.at("components").items()){
+                json type = component.value().at("type");
+                json values = component.value().at("values").items();
+                
+                if(type == "Transform"){ // TODO: issues stem from getting values from json
+                    //glm::vec2 position = JsonToVec2(values.at("position"));
+                    //glm::vec2 scale = JsonToVec2(values.at("scale"));
+                    //float rotation = values.at("rotation").get<float>();
+                    //std::cout << values.at("rotation") << '\n';
+                    //child.AddComponent<TransformComponent>(position, scale, rotation);
+                }
+                else if(type == "Sprite"){
+                    //std::string filePath = values.at("filepath");
+                    //int zindex = values.at("zindex");
+                    //child.AddComponent<SpriteComponent>(filePath, zindex);
+                }   
+                // else: stage view only needs Transform and Sprite, okay wait i do need to add it to engine view tho
+            }
+            
+            entityStack.push(std::pair(id, entity.at("children"))); // TODO: add check for empty list, and in that case do not push
         }
-
-        // for (auto& e : children.items()){
-        //     json entity = e.value();
-        //     std::cout << entity << '\n';
-        //     Entity child = registry->CreateEntity();
-        //     int id = child.GetId();
-        //     // create own node
-        //     entityTree[id] = CreateENode(parentId, id);
-        //     // add own id to parent
-        //     if(parentId > -1) { entityTree[parentId]->childrenIds.push_back(id); } 
-
-        //     // for (auto& component : entity.at("components").items()){
-        //     //     json type = component.value().at("type");
-        //     //     json values = component.value().at("values").items();
-        //     //     // json cannot be enumerated, so if else is used instead
-        //     //     if(type == "Transform"){
-        //     //         glm::vec2 position = JsonToVec2(values.at("position"));
-        //     //         glm::vec2 scale = JsonToVec2(values.at("scale"));
-        //     //         float rotation = values.at("rotation");
-        //     //         //child.AddComponent<TransformComponent>(position, scale, rotation);
-        //     //     }
-        //     //     else if(type == "Sprite"){
-        //     //         std::string filePath = values.at("filepath");
-        //     //         int zindex = values.at("zindex");
-        //     //         //child.AddComponent<SpriteComponent>(filePath, zindex);
-        //     //     }   
-        //     //     // else: stage view only needs Transform and Sprite, okay wait i do need to add it to engine view tho
-        //     // }
-        //     // entityStack.push(std::pair(id, entity.at("children")));
-        // }
     }
 
 
@@ -124,15 +121,15 @@ void Stage::CreateEntityTree(json entities){
     //Create entity
     // Entity piston = registry->CreateEntity();
     // piston.AddComponent<TransformComponent>(glm::vec2(150.0, 50.0), glm::vec2(1.0, 1.0), 45.0);
-    // piston.AddComponent<SpriteComponent>("EngineAssets/RedMagnet.png", 1);
+    // piston.AddComponent<SpriteComponent>("Unique/Assets/RedMagnet.png", 1);
 
     // Entity big = registry->CreateEntity();
     // big.AddComponent<TransformComponent>(glm::vec2(150.0, 150.0), glm::vec2(5.0, 5.0), 0.0);
-    // big.AddComponent<SpriteComponent>("EngineAssets/big.png", 1);
+    // big.AddComponent<SpriteComponent>("Unique/Assets/big.png", 1);
 
     // Entity small = registry->CreateEntity();
     // small.AddComponent<TransformComponent>(glm::vec2(150.0, 100.0), glm::vec2(5.0, 5.0), 0.0);
-    // small.AddComponent<SpriteComponent>("EngineAssets/small.png", 1);
+    // small.AddComponent<SpriteComponent>("Unique/Assets/small.png", 1);
 }
 
 // Single loop
