@@ -29,9 +29,10 @@ int Engine::Initialize()
     if(SDL_Init(SDL_INIT_VIDEO) < 0) { return -1; }
 
     SDL_DisplayMode dm;
-    SDL_GetCurrentDisplayMode(0, &dm);
-    auto width = dm.w;
-    auto height = dm.h - 75; // adjusted for border size
+    SDL_GetDesktopDisplayMode(0, &dm);
+    width = dm.w;
+    height = dm.h - 75; // adjusted for border size
+    std::cout << width << ' ' << height << '\n';
 
     window = SDL_CreateWindow(
         "Salty Game Engine",
@@ -123,19 +124,23 @@ void Engine::UpdateGUI()
 
     ImGui_ImplSDLRenderer2_NewFrame();
     ImGui_ImplSDL2_NewFrame(window);
+    SDL_GetWindowSize(window, &width, &height);
     ImGui::NewFrame();
 
     // Dockspace
+    // Scale dockspace to full window
+    ImGui::SetNextWindowPos(ImVec2(0,18)); // adjusted for menu bar
+    ImGui::SetNextWindowSize(ImVec2(width,height-18));
     // Remove padding from dockspace
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui::Begin("DockSpace Demo", nullptr, dockspace_flags);
+    ImGui::Begin("DockSpace", nullptr, dockspace_flags);
     
     ImGui::PopStyleVar(3);
 
     // Submit the DockSpace
-    ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+    ImGuiID dockspace_id = ImGui::GetID("FullDockSpace");
     ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
     // Top menu bar
