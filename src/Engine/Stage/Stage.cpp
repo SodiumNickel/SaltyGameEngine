@@ -95,19 +95,18 @@ void Stage::CreateEntityTree(json entities){
 
             for (auto& component : entity.at("components").items()){
                 json type = component.value().at("type");
-                json values = component.value().at("values").items();
+                json values = component.value().at("values");
                 
-                if(type == "Transform"){ // TODO: issues stem from getting values from json
-                    //glm::vec2 position = JsonToVec2(values.at("position"));
-                    //glm::vec2 scale = JsonToVec2(values.at("scale"));
-                    //float rotation = values.at("rotation").get<float>();
-                    //std::cout << values.at("rotation") << '\n';
-                    //child.AddComponent<TransformComponent>(position, scale, rotation);
+                if(type == "Transform"){
+                    glm::vec2 position = JsonToVec2(values.at("position"));
+                    glm::vec2 scale = JsonToVec2(values.at("scale"));
+                    float rotation = values.at("rotation");
+                    child.AddComponent<TransformComponent>(position, scale, rotation);
                 }
                 else if(type == "Sprite"){
-                    //std::string filePath = values.at("filepath");
-                    //int zindex = values.at("zindex");
-                    //child.AddComponent<SpriteComponent>(filePath, zindex);
+                    std::string filePath = values.at("filepath");
+                    int zindex = values.at("zindex");
+                    child.AddComponent<SpriteComponent>(filePath, zindex);
                 }   
                 // else: stage view only needs Transform and Sprite, okay wait i do need to add it to engine view tho
             }
