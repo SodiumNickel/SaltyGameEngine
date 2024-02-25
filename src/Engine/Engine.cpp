@@ -162,7 +162,7 @@ void Engine::UpdateGUI()
 
     // TODO: dont allow hide tab bar
     // TODO: do each of the different tabs here
-    EntityTab();
+    EntityTab(stage);
     ComponentTab();
     ScriptTab();
     AssetTab();

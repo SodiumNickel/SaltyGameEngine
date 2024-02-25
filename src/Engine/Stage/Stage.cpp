@@ -49,9 +49,8 @@ void Stage::Initialize(SDL_Renderer* renderer, SDL_Texture* viewport)
 
 void Stage::LoadScene(int sceneIndex)
 {
-    // TODO: not sure if i should load assets at start of scene, or just keep them the whole time.
+    // TODO: not sure if i should load assets at start of scene, or just keep them the whole time. doesnt matter for stage, but will for game
 
-    // TODO: seperate this from engine_assets
     // Add assets to the AssetManager 
     assetManager->AddTexture(renderer, "Unique/Assets/RedMagnet.png");
     assetManager->AddTexture(renderer, "Unique/Assets/big.png");
@@ -61,7 +60,7 @@ void Stage::LoadScene(int sceneIndex)
     std::ifstream f("Unique/Scenes/_index.json");
     json sceneList = json::parse(f).begin().value();
     f.close();
-    const auto& sceneName = sceneList.at(sceneIndex).value("name", "");
+    sceneName = sceneList.at(sceneIndex).value("name", "");
 
     // TODO: create tree of entities here
     // TODO: deallocate all of entity tree
@@ -74,8 +73,12 @@ void Stage::LoadScene(int sceneIndex)
 }
 
 void Stage::CreateEntityTree(json entities){
+    Entity root = registry->CreateEntity();
+    entityTree.resize(1);
+    entityTree[0] = CreateENode("root", 0, -1);
+
     std::stack<std::pair<int, json>> entityStack;
-    entityStack.push(std::pair(-1, entities));
+    entityStack.push(std::pair(0, entities));
 
     while(!entityStack.empty()){
         auto [parentId, children] = entityStack.top();
@@ -89,9 +92,9 @@ void Stage::CreateEntityTree(json entities){
             if(id >= entityTree.size())
             { entityTree.resize(id + 1); }
             // create own node
-            entityTree[id] = CreateENode(parentId, id);
-            // add own id to parent (unless parent is root)
-            if(parentId >= 0) { entityTree[parentId]->childrenIds.push_back(id); } 
+            entityTree[id] = CreateENode(entity.at("name"), id, parentId);
+            // add own id to parent
+            entityTree[parentId]->childrenIds.push_back(id); 
 
             for (auto& component : entity.at("components").items()){
                 json type = component.value().at("type");
@@ -111,24 +114,12 @@ void Stage::CreateEntityTree(json entities){
                 // else: stage view only needs Transform and Sprite, okay wait i do need to add it to engine view tho
             }
             
-            entityStack.push(std::pair(id, entity.at("children"))); // TODO: add check for empty list, and in that case do not push
+            json jsonChildren = entity.at("children");
+            if(!jsonChildren.empty()){
+                entityStack.push(std::pair(id, jsonChildren));
+            }
         }
     }
-
-
-
-    //Create entity
-    // Entity piston = registry->CreateEntity();
-    // piston.AddComponent<TransformComponent>(glm::vec2(150.0, 50.0), glm::vec2(1.0, 1.0), 45.0);
-    // piston.AddComponent<SpriteComponent>("Unique/Assets/RedMagnet.png", 1);
-
-    // Entity big = registry->CreateEntity();
-    // big.AddComponent<TransformComponent>(glm::vec2(150.0, 150.0), glm::vec2(5.0, 5.0), 0.0);
-    // big.AddComponent<SpriteComponent>("Unique/Assets/big.png", 1);
-
-    // Entity small = registry->CreateEntity();
-    // small.AddComponent<TransformComponent>(glm::vec2(150.0, 100.0), glm::vec2(5.0, 5.0), 0.0);
-    // small.AddComponent<SpriteComponent>("Unique/Assets/small.png", 1);
 }
 
 // Single loop

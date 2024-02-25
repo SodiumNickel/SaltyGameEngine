@@ -6,6 +6,7 @@
 #include "../Game/Structures/EntityTree.h"
 
 #include <vector>
+#include <string>
 
 #include <SDL.h>
 #include <imgui.h>
@@ -33,6 +34,8 @@ class Stage {
         void ProcessInput();
         void Update();
         void Destroy();
+
+        std::string sceneName = ""; // TODO: i want this to display as entity tab title, but that messes up dockspace
 
         ImVec2 stageSize;
         float zoom = 1; // TODO: use this to zoom in on viewport on scroll

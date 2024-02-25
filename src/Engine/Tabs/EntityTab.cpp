@@ -1,7 +1,9 @@
 #include <imgui.h>
 
-void EntityTab(){
-    ImGui::Begin("Entity"); // TODO: maybe change name to scene name
+#include "../Stage/Stage.h"
+
+void EntityTab(Stage& stage){
+    ImGui::Begin((stage.sceneName + "###Entity").c_str());
         
     static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
     static bool test_drag_and_drop = true;
