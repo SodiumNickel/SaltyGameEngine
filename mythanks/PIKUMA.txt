@@ -1,0 +1,4 @@
+Special thanks to Gustavo Pezzi of https://pikuma.com/.
+
+The general ECS architecture of this game engine was mainly taken 
+and modified from his "C++ 2D Game Engine Development" course.

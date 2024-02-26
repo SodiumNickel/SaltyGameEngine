@@ -69,6 +69,8 @@ void EntityTab(Stage& stage){
     }
     if (node_clicked != -1)
     {
+        // TODO: add shift click
+
         // Update selection state
         // (process outside of tree loop to avoid visual inconsistencies during the clicking frame)
         if (ImGui::GetIO().KeyCtrl)
