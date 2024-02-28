@@ -72,14 +72,14 @@ void EntityTab(Stage& stage){
 
                             if (child_open)
                             {
+                                // When popping a -1, we will perform a TreePop
+                                children.push(-1);
                                 // Push all children nodes
                                 std::vector<int> revCCs = stage.entityTree[c]->childrenIds;
                                 std::reverse(revCCs.begin(), revCCs.end());
                                 for (int cc : revCCs) {
                                     children.push(cc);
                                 }
-                                // When popping a -1, we will perform a TreePop
-                                children.push(-1);
                             }
                         }
                         else{ // Leaf node
