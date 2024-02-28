@@ -1,64 +1,110 @@
 #include <imgui.h>
 
 #include "../Stage/Stage.h"
+#include "../Game/Structures/EntityTree.h"
+
+#include <vector>
+#include <stack>
+#include <algorithm>
+
+#include <iostream>
 
 void EntityTab(Stage& stage){
     ImGui::Begin((stage.sceneName + "###Entity").c_str());
-        
+
     static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
     static bool test_drag_and_drop = true;
-
-    // 'selection_mask' is dumb representation of what may be user-side selection state.
-    //  You may retain selection state inside or outside your objects in whatever format you see fit.
-    // 'node_clicked' is temporary storage of what node we have clicked to process selection at the end
-    /// of the loop. May be a pointer to your own node type, etc.
-    static int selection_mask = (1 << 2);
+    // Temporary storage of what node we have clicked
     int node_clicked = -1;
-    for (int i = 0; i < 6; i++)
-    {
-        // Disable the default "open on single-click behavior" + set Selected flag according to our selection.
-        // To alter selection we use IsItemClicked() && !IsItemToggledOpen(), so clicking on an arrow doesn't alter selection.
+
+    // Selection by entity id
+    // BFS through stage.entityTree to create nodes
+    std::vector<int> rootChildren = stage.entityTree[0]->childrenIds;
+    for (int rc : rootChildren){
         ImGuiTreeNodeFlags node_flags = base_flags;
-        const bool is_selected = (selection_mask & (1 << i)) != 0;
-        if (is_selected)
+        if (rc == stage.selectedEntity)
             node_flags |= ImGuiTreeNodeFlags_Selected;
-        if (i < 3)
-        {
-            // Items 0..2 are Tree Node
-            bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, "Selectable Node %d", i);
+        
+        if(stage.entityTree[rc]->childrenIds.size() > 0){ // Has children
+            bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, stage.entityTree[rc]->name.c_str());
             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-                node_clicked = i;
+                node_clicked = rc;
             if (test_drag_and_drop && ImGui::BeginDragDropSource())
             {
                 ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
                 ImGui::Text("This is a drag and drop source");
                 ImGui::EndDragDropSource();
             }
+
             if (node_open)
             {
-                // TEMP SOLUTION FOR CHILD NODES
-                node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-                ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, "Selectable Leaf %d", i);
-                if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-                    node_clicked = i; // TODO: node clicked needs to be better
-                if (test_drag_and_drop && ImGui::BeginDragDropSource())
-                {
-                    ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                    ImGui::Text("This is a drag and drop source");
-                    ImGui::EndDragDropSource();
+                // Create all children nodes
+                std::stack<int> children;
+
+                std::vector<int> revCs = stage.entityTree[rc]->childrenIds;
+                std::reverse(revCs.begin(), revCs.end());
+                for(int c : revCs) {
+                    children.push(c);
                 }
+
+                while(!children.empty()){
+                    int c = children.top();
+                    children.pop();
+
+                    if(c == -1){
+                        ImGui::TreePop(); 
+                    }
+                    else{
+                        ImGuiTreeNodeFlags child_flags = base_flags;
+                        if (c == stage.selectedEntity)
+                            child_flags |= ImGuiTreeNodeFlags_Selected;
+
+                        if(stage.entityTree[c]->childrenIds.size() > 0){ // Has children
+                            bool child_open = ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, stage.entityTree[c]->name.c_str());
+                            if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+                                node_clicked = c;
+                            if (test_drag_and_drop && ImGui::BeginDragDropSource())
+                            {
+                                ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
+                                ImGui::Text("This is a drag and drop source");
+                                ImGui::EndDragDropSource();
+                            }
+
+                            if (child_open)
+                            {
+                                // Push all children nodes
+                                std::vector<int> revCCs = stage.entityTree[c]->childrenIds;
+                                std::reverse(revCCs.begin(), revCCs.end());
+                                for (int cc : revCCs) {
+                                    children.push(cc);
+                                }
+                                // When popping a -1, we will perform a TreePop
+                                children.push(-1);
+                            }
+                        }
+                        else{ // Leaf node
+                            child_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
+                            ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, stage.entityTree[c]->name.c_str());
+                            if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+                                node_clicked = c;
+                            if (test_drag_and_drop && ImGui::BeginDragDropSource())
+                            {
+                                ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
+                                ImGui::Text("This is a drag and drop source");
+                                ImGui::EndDragDropSource();
+                            }
+                        }
+                    }
+                }
+
                 ImGui::TreePop();
             }
         }
-        else
-        {
-            // Items 3..5 are Tree Leaves
-            // The only reason we use TreeNode at all is to allow selection of the leaf. Otherwise we can
-            // use BulletText() or advance the cursor by GetTreeNodeToLabelSpacing() and call Text().
+        else{ // Leaf node
             node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-            ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, "Selectable Leaf %d", i);
+            ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, stage.entityTree[rc]->name.c_str());
             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-                node_clicked = i;
+                node_clicked = rc;
             if (test_drag_and_drop && ImGui::BeginDragDropSource())
             {
                 ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
@@ -67,16 +113,17 @@ void EntityTab(Stage& stage){
             }
         }
     }
+
     if (node_clicked != -1)
     {
         // TODO: add shift click
 
         // Update selection state
         // (process outside of tree loop to avoid visual inconsistencies during the clicking frame)
-        if (ImGui::GetIO().KeyCtrl)
-            selection_mask ^= (1 << node_clicked);          // CTRL+click to toggle
-        else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, may want to preserve selection when clicking on item that is part of the selection
-            selection_mask = (1 << node_clicked);           // Click to single-select
+        // if (ImGui::GetIO().KeyCtrl)
+        //     stage.selectedEntity = (1 << node_clicked);          // CTRL+click to toggle
+        // else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, may want to preserve selection when clicking on item that is part of the selection
+            stage.selectedEntity = node_clicked;           // Click to single-select
     }
 
     ImGui::End();

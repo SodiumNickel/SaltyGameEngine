@@ -11,7 +11,22 @@
                 { "type":"Transform", "values":{"position":[200.0, 150.0], "scale":[1.0, 1.0], "rotation": 0.0} },
                 { "type":"Sprite", "values":{"filepath":"Unique/Assets/big.png", "zindex":1} }
               ],
-              "children":[]
+              "children":[
+                { "name":"cchild1", 
+                  "components":[
+                    { "type":"Transform", "values":{"position":[250.0, 350.0], "scale":[1.0, 1.0], "rotation": 0.0} },
+                    { "type":"Sprite", "values":{"filepath":"Unique/Assets/big.png", "zindex":1} }
+                  ],
+                  "children":[]
+                },
+                { "name":"cchild2", 
+                  "components":[
+                    { "type":"Transform", "values":{"position":[250.0, 250.0], "scale":[1.0, 1.0], "rotation": 0.0} },
+                    { "type":"Sprite", "values":{"filepath":"Unique/Assets/big.png", "zindex":1} }
+                  ],
+                  "children":[]
+                }
+              ]
             },
             { "name":"child2", 
               "components":[

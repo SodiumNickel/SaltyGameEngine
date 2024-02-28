@@ -23,7 +23,6 @@ class Stage {
 
         std::unique_ptr<Registry> registry;
         std::unique_ptr<AssetManager> assetManager;
-        std::vector<std::unique_ptr<EntityNode>> entityTree;
     public:
         Stage();
         ~Stage();
@@ -36,6 +35,8 @@ class Stage {
         void Destroy();
 
         std::string sceneName = ""; // TODO: i want this to display as entity tab title, but that messes up dockspace
+        std::vector<std::unique_ptr<EntityNode>> entityTree;
+        int selectedEntity = 0;
 
         ImVec2 stageSize;
         float zoom = 1; // TODO: use this to zoom in on viewport on scroll
