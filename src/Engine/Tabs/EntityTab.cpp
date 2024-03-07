@@ -1,7 +1,7 @@
 #include <imgui.h>
 
 #include "../Stage/Stage.h"
-#include "../Game/Structures/EntityTree.h"
+#include "../Game/ECS/ECS.h"
 
 #include <vector>
 #include <stack>
@@ -11,6 +11,8 @@
 
 void EntityTab(Stage& stage){
     ImGui::Begin((stage.sceneName + "###Entity").c_str());
+    auto& entityTree = stage.registry->entityTree;
+
 
     static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
     static bool test_drag_and_drop = true;
@@ -19,20 +21,20 @@ void EntityTab(Stage& stage){
 
     // Selection by entity id
     // BFS through stage.entityTree to create nodes
-    std::vector<int> rootChildren = stage.entityTree[0]->childrenIds;
+    std::vector<int> rootChildren = entityTree[0]->childrenIds;
     for (int rc : rootChildren){
         ImGuiTreeNodeFlags node_flags = base_flags;
         if (rc == stage.selectedEntity)
             node_flags |= ImGuiTreeNodeFlags_Selected;
         
-        if(stage.entityTree[rc]->childrenIds.size() > 0){ // Has children
-            bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, stage.entityTree[rc]->name.c_str());
+        if(entityTree[rc]->childrenIds.size() > 0){ // Has children
+            bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, entityTree[rc]->name.c_str());
             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                 node_clicked = rc;
             if (test_drag_and_drop && ImGui::BeginDragDropSource())
             {
                 ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                ImGui::Text("This is a drag and drop source");
+                ImGui::Text(entityTree[rc]->name.c_str());
                 ImGui::EndDragDropSource();
             }
 
@@ -41,7 +43,7 @@ void EntityTab(Stage& stage){
                 // Create all children nodes
                 std::stack<int> children;
 
-                std::vector<int> revCs = stage.entityTree[rc]->childrenIds;
+                std::vector<int> revCs = entityTree[rc]->childrenIds;
                 std::reverse(revCs.begin(), revCs.end());
                 for(int c : revCs) {
                     children.push(c);
@@ -59,14 +61,14 @@ void EntityTab(Stage& stage){
                         if (c == stage.selectedEntity)
                             child_flags |= ImGuiTreeNodeFlags_Selected;
 
-                        if(stage.entityTree[c]->childrenIds.size() > 0){ // Has children
-                            bool child_open = ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, stage.entityTree[c]->name.c_str());
+                        if(entityTree[c]->childrenIds.size() > 0){ // Has children
+                            bool child_open = ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
                             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                                 node_clicked = c;
                             if (test_drag_and_drop && ImGui::BeginDragDropSource())
                             {
                                 ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                                ImGui::Text("This is a drag and drop source");
+                                ImGui::Text(entityTree[c]->name.c_str());
                                 ImGui::EndDragDropSource();
                             }
 
@@ -75,7 +77,7 @@ void EntityTab(Stage& stage){
                                 // When popping a -1, we will perform a TreePop
                                 children.push(-1);
                                 // Push all children nodes
-                                std::vector<int> revCCs = stage.entityTree[c]->childrenIds;
+                                std::vector<int> revCCs = entityTree[c]->childrenIds;
                                 std::reverse(revCCs.begin(), revCCs.end());
                                 for (int cc : revCCs) {
                                     children.push(cc);
@@ -84,13 +86,13 @@ void EntityTab(Stage& stage){
                         }
                         else{ // Leaf node
                             child_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-                            ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, stage.entityTree[c]->name.c_str());
+                            ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
                             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                                 node_clicked = c;
                             if (test_drag_and_drop && ImGui::BeginDragDropSource())
                             {
                                 ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                                ImGui::Text("This is a drag and drop source");
+                                ImGui::Text(entityTree[c]->name.c_str());
                                 ImGui::EndDragDropSource();
                             }
                         }
@@ -102,13 +104,13 @@ void EntityTab(Stage& stage){
         }
         else{ // Leaf node
             node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-            ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, stage.entityTree[rc]->name.c_str());
+            ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, entityTree[rc]->name.c_str());
             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                 node_clicked = rc;
             if (test_drag_and_drop && ImGui::BeginDragDropSource())
             {
                 ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                ImGui::Text("This is a drag and drop source");
+                ImGui::Text(entityTree[rc]->name.c_str());
                 ImGui::EndDragDropSource();
             }
         }

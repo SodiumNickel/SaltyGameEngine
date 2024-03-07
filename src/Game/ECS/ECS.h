@@ -68,6 +68,17 @@ public:
     class Registry* registry;
 };
 
+struct EntityNode{
+    Entity entity;
+    std::string name;
+    int entityId; // not quite sure it needs it's own Id, but doesn't particularly hurt to have
+    int parentId; // -1 if parent is root/scene
+    std::vector<int> childrenIds;
+
+    EntityNode(Entity entity, std::string name, int entityId, int parentId)
+    : entity(entity), name(name), entityId(entityId), parentId(parentId), childrenIds()
+    {}
+};
 
 /* -----SYSTEM-------------------------------------------------- *
  *   Performs behavior on entities with matching signature       *
@@ -174,7 +185,8 @@ public:
     // Entity management
     Entity CreateEntity();
     void DestroyEntity(Entity entity);
-        
+    std::vector<std::unique_ptr<EntityNode>> entityTree;
+
     // Component management
     template <typename TComponent, typename ...TArgs> void AddComponent(Entity entity, TArgs&& ...args);
     template <typename TComponent> void RemoveComponent(Entity entity);

@@ -3,7 +3,6 @@
 
 #include "../Game/ECS/ECS.h"
 #include "../Game/AssetManager/AssetManager.h"
-#include "../Game/Structures/EntityTree.h"
 
 #include <vector>
 #include <string>
@@ -21,7 +20,6 @@ class Stage {
         // SDL_Rect camera; might need this later just for outline
         // also need it for the "stage" camera
 
-        std::unique_ptr<Registry> registry;
         std::unique_ptr<AssetManager> assetManager;
     public:
         Stage();
@@ -35,7 +33,9 @@ class Stage {
         void Destroy();
 
         std::string sceneName = ""; // TODO: i want this to display as entity tab title, but that messes up dockspace
-        std::vector<std::unique_ptr<EntityNode>> entityTree;
+        std::shared_ptr<Registry> registry; // TODO: this will be a PRIVATE unique_ptr in Game, replace comment too
+
+        std::string sceneName = "";
         int selectedEntity = 0;
 
         ImVec2 stageSize;
