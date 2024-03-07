@@ -6,8 +6,8 @@
 void Menu();
 
 void AssetTab();
-void ComponentTab();
 void EntityTab(Stage& stage);
+void ComponentTab(Stage& stage);
 void ScriptTab();
 
 

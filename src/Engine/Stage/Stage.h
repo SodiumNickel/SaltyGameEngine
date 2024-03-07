@@ -3,7 +3,7 @@
 
 #include "../Game/ECS/ECS.h"
 #include "../Game/AssetManager/AssetManager.h"
-#include "../Game/Structures/EntityTree.h"
+#include "../Game/Structures/EntityNode.h"
 
 #include <vector>
 #include <string>
@@ -34,7 +34,7 @@ class Stage {
         void Update();
         void Destroy();
 
-        std::string sceneName = ""; // TODO: i want this to display as entity tab title, but that messes up dockspace
+        std::string sceneName = "";
         std::vector<std::unique_ptr<EntityNode>> entityTree;
         int selectedEntity = 0;
 

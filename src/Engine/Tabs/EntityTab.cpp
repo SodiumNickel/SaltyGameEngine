@@ -9,6 +9,12 @@
 
 #include <iostream>
 
+// TODO
+/* NOTES */
+// To add moving entities in tab, just change their order in childrenIds, lower index above higher index
+// There are definitely a lot of edge cases, such as unparenting children
+// Test deleting and adding nodes eventually
+
 void EntityTab(Stage& stage){
     ImGui::Begin((stage.sceneName + "###Entity").c_str());
 
@@ -32,7 +38,7 @@ void EntityTab(Stage& stage){
             if (test_drag_and_drop && ImGui::BeginDragDropSource())
             {
                 ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                ImGui::Text("This is a drag and drop source");
+                ImGui::Text(stage.entityTree[rc]->name.c_str());
                 ImGui::EndDragDropSource();
             }
 
@@ -66,7 +72,7 @@ void EntityTab(Stage& stage){
                             if (test_drag_and_drop && ImGui::BeginDragDropSource())
                             {
                                 ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                                ImGui::Text("This is a drag and drop source");
+                                ImGui::Text(stage.entityTree[c]->name.c_str());
                                 ImGui::EndDragDropSource();
                             }
 
@@ -90,7 +96,7 @@ void EntityTab(Stage& stage){
                             if (test_drag_and_drop && ImGui::BeginDragDropSource())
                             {
                                 ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                                ImGui::Text("This is a drag and drop source");
+                                ImGui::Text(stage.entityTree[c]->name.c_str());
                                 ImGui::EndDragDropSource();
                             }
                         }
@@ -108,7 +114,7 @@ void EntityTab(Stage& stage){
             if (test_drag_and_drop && ImGui::BeginDragDropSource())
             {
                 ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                ImGui::Text("This is a drag and drop source");
+                ImGui::Text(stage.entityTree[rc]->name.c_str());
                 ImGui::EndDragDropSource();
             }
         }

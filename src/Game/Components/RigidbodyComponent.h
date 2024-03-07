@@ -5,6 +5,7 @@
 
 struct RigidbodyComponent {
     glm::vec2 velocity;
+    // TODO: needs to have transform before adding
 
     RigidbodyComponent(glm::vec2 velocity = glm::vec2(0.0, 0.0))
     {

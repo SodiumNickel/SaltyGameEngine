@@ -2,7 +2,7 @@
 
 //#include "../Logger/Logger.h"
 #include "../Game/ECS/ECS.h"
-#include "../Game/Structures/EntityTree.h"
+#include "../Game/Structures/EntityNode.h"
 #include "../Game/Helpers/JsonHelper.h"
 
 #include "../Game/Components/TransformComponent.h"
@@ -61,10 +61,6 @@ void Stage::LoadScene(int sceneIndex)
     json sceneList = json::parse(f).begin().value();
     f.close();
     sceneName = sceneList.at(sceneIndex).value("name", "");
-
-    // TODO: create tree of entities here
-    // TODO: deallocate all of entity tree
-    entityTree.clear();
     
     std::ifstream g("Unique/Scenes/" + sceneName + ".json");
     json entities = json::parse(g).begin().value();
@@ -73,9 +69,12 @@ void Stage::LoadScene(int sceneIndex)
 }
 
 void Stage::CreateEntityTree(json entities){
-    Entity root = registry->CreateEntity();
+    auto& entityTree = registry->entityTree;
+    entityTree.clear(); // calls destructors/ of unique_ptr to deallocate
+    
     entityTree.resize(1);
-    entityTree[0] = CreateENode("root", 0, -1);
+    Entity root = registry->CreateEntity();
+    entityTree[0] = std::make_unique<EntityNode>(root, "root", 0, -1);
 
     std::stack<std::pair<int, json>> entityStack;
     entityStack.push(std::pair(0, entities));
@@ -85,16 +84,12 @@ void Stage::CreateEntityTree(json entities){
         entityStack.pop();
 
         for (auto& e : children.items()){
-            json entity = e.value();            
-            Entity child = registry->CreateEntity();
-            int id = child.GetId();
-
-            if(id >= entityTree.size())
-            { entityTree.resize(id + 1); }
-            // create own node
-            entityTree[id] = CreateENode(entity.at("name"), id, parentId);
-            // add own id to parent
-            entityTree[parentId]->childrenIds.push_back(id); 
+            json entity = e.value();           
+            std::unique_ptr<EntityNode> child = std::make_unique<EntityNode>();
+            child->entity = registry->CreateEntity();
+            child->name = entity.at("name");
+            child->entityId = child->entity.GetId();
+            child->parentId = parentId;
 
             for (auto& component : entity.at("components").items()){
                 json type = component.value().at("type");
@@ -104,15 +99,25 @@ void Stage::CreateEntityTree(json entities){
                     glm::vec2 position = JsonToVec2(values.at("position"));
                     glm::vec2 scale = JsonToVec2(values.at("scale"));
                     float rotation = values.at("rotation");
-                    child.AddComponent<TransformComponent>(position, scale, rotation);
+                    child->entity.AddComponent<TransformComponent>(position, scale, rotation);
                 }
                 else if(type == "Sprite"){
                     std::string filePath = values.at("filepath");
                     int zindex = values.at("zindex");
-                    child.AddComponent<SpriteComponent>(filePath, zindex);
+                    child->entity.AddComponent<SpriteComponent>(filePath, zindex);
                 }   
                 // else: stage view only needs Transform and Sprite, okay wait i do need to add it to engine view tho
             }
+
+            // Add child to entityTree
+            int id = child->entityId;
+
+            if(id >= entityTree.size())
+            { entityTree.resize(id + 1); }
+            // create own node
+            entityTree[id] = std::move(child);
+            // add own id to parent
+            entityTree[parentId]->childrenIds.push_back(id); 
             
             json jsonChildren = entity.at("children");
             if(!jsonChildren.empty()){
