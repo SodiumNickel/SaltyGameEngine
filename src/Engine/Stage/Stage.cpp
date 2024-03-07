@@ -112,16 +112,6 @@ void Stage::CreateEntityTree(json entities){
                 }   
                 // TODO: more components
             }
-
-            // Add child to entityTree
-            int id = child->entityId;
-
-            if(id >= entityTree.size())
-            { entityTree.resize(id + 1); }
-            // create own node
-            entityTree[id] = std::move(child);
-            // add own id to parent
-            entityTree[parentId]->childrenIds.push_back(id); 
             
             json jsonChildren = eJson.at("children");
             if(!jsonChildren.empty()){
