@@ -9,6 +9,12 @@
 
 #include <iostream>
 
+// TODO
+/* NOTES */
+// To add moving entities in tab, just change their order in childrenIds, lower index above higher index
+// There are definitely a lot of edge cases, such as unparenting children
+// Test deleting and adding nodes eventually
+
 void EntityTab(Stage& stage){
     ImGui::Begin((stage.sceneName + "###Entity").c_str());
     auto& entityTree = stage.registry->entityTree;

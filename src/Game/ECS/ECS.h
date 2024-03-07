@@ -45,6 +45,7 @@ private:
     int id;
 
 public:
+    Entity(): id(-1) {}; // default constructor, never used
     Entity(int id) : id(id) {};
     Entity(const Entity& entity) = default;
     int GetId() const;
@@ -186,7 +187,7 @@ public:
     Entity CreateEntity();
     void DestroyEntity(Entity entity);
     std::vector<std::unique_ptr<EntityNode>> entityTree;
-
+        
     // Component management
     template <typename TComponent, typename ...TArgs> void AddComponent(Entity entity, TArgs&& ...args);
     template <typename TComponent> void RemoveComponent(Entity entity);

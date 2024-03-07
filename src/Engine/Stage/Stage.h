@@ -32,7 +32,6 @@ class Stage {
         void Update();
         void Destroy();
 
-        std::string sceneName = ""; // TODO: i want this to display as entity tab title, but that messes up dockspace
         std::shared_ptr<Registry> registry; // TODO: this will be a PRIVATE unique_ptr in Game, replace comment too
 
         std::string sceneName = "";
