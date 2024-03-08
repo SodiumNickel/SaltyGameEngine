@@ -9,8 +9,8 @@ class MovementSystem : public System {
     public:
         MovementSystem()
         {
-             RequireComponent<TransformComponent>();
-             RequireComponent<RigidbodyComponent>();
+            RequireComponent<TransformComponent>();
+            RequireComponent<RigidbodyComponent>();
         }
 
         void Update(float deltaTime)
