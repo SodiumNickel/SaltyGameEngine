@@ -76,6 +76,7 @@ int Engine::Initialize()
     
     // Set ImGuiIO Flags
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigDragClickToInputText = true;
     (void)io;
 
     // Set ImGui DockSpace (window) Flags
