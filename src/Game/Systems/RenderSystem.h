@@ -40,7 +40,7 @@ public:
             glm::vec2 textureSize = assetManager->GetTextureSize(sprite.filePath);
 
             SDL_Rect dstRect = {
-                static_cast<int>(transform.position.x * cameraZoom.x),
+                static_cast<int>(transform.position.x * cameraZoom.x), // TODO: i dont think this scales properly off of center of object, scales off of corner
                 static_cast<int>(transform.position.y * cameraZoom.y),
                 static_cast<int>(textureSize.x * transform.scale.x * cameraZoom.x),
                 static_cast<int>(textureSize.y * transform.scale.y * cameraZoom.y)

@@ -13,34 +13,23 @@ void Transform(Entity entity){
     if(entity.HasComponent<TransformComponent>()){
         if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            auto transform = entity.GetComponent<TransformComponent>();
+            auto& transform = entity.GetComponent<TransformComponent>();
             ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.45f);
 
-            float vec4f[4] = { 0.10f, 0.20f, 0.30f, 0.44f };
             ImGui::Text("Position");
             ImGui::Text("x"); ImGui::SameLine();
-            vec4f[0] = transform.position.x; 
-            ImGui::DragFloat("##posx", vec4f); ImGui::SameLine();
-            transform.position.x = vec4f[0];
+            ImGui::DragFloat("##posx", &transform.position.x, 1.0f); ImGui::SameLine();
             ImGui::Text("y"); ImGui::SameLine();
-            vec4f[0] = transform.position.y;
-            ImGui::DragFloat("##posy", vec4f);
-            transform.position.y = vec4f[0];
+            ImGui::DragFloat("##posy", &transform.position.y, 1.0f);
 
             ImGui::Text("Scale");
             ImGui::Text("x"); ImGui::SameLine();
-            vec4f[0] = transform.scale.x;
-            ImGui::DragFloat("##scalex", vec4f); ImGui::SameLine();
-            transform.scale.x = vec4f[0];
+            ImGui::DragFloat("##scalex", &transform.scale.x, 0.005f); ImGui::SameLine();
             ImGui::Text("y"); ImGui::SameLine();
-            vec4f[0] = transform.scale.y;
-            ImGui::DragFloat("##scaley", vec4f);
-            transform.scale.y = vec4f[0];
+            ImGui::DragFloat("##scaley", &transform.scale.y, 0.005f);
 
             ImGui::Text("Rotation");
-            vec4f[0] = transform.rotation;
-            ImGui::DragFloat("##rot", vec4f);
-            transform.rotation = vec4f[0];
+            ImGui::DragFloat("##rot", &transform.rotation, 0.25f);
         }
     }
 }
