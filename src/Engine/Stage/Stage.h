@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+#include <filesystem>
 
 #include <SDL.h>
 #include <imgui.h>
@@ -13,6 +14,7 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
+// Stage contains variables relevant to engine, but not game
 class Stage {
     private:
         SDL_Renderer* renderer;
@@ -34,8 +36,11 @@ class Stage {
 
         std::shared_ptr<Registry> registry; // TODO: this will be a PRIVATE unique_ptr in Game, replace comment too
 
+        // TODO: maybe move all of this to engine?? does not particularly matter, but maybe
         std::string sceneName = "";
         int selectedEntity = 0;
+
+        std::filesystem::path currentDir = std::filesystem::path("./Unique/Assets");
 
         ImVec2 stageSize;
         float zoom = 1; // TODO: use this to zoom in on viewport on scroll

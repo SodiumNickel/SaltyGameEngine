@@ -165,8 +165,8 @@ void Engine::UpdateGUI()
     // TODO: do each of the different tabs here
     EntityTab(stage);
     ComponentTab(stage);
-    ScriptTab();
-    AssetTab();
+    ScriptTab(stage);
+    AssetTab(stage);
 
     ImGui::ShowDemoWindow();
 

@@ -1,0 +1,4 @@
+Special thanks to Yan Chernikov of https://www.youtube.com/@TheCherno
+
+For several tutorials on ImGui, especially the ImGui Thumbnail Layout -
+Content Browser Panel video, which this engine's Asset Tab was based on

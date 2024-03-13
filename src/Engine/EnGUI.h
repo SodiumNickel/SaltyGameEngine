@@ -5,10 +5,10 @@
 
 void Menu();
 
-void AssetTab();
+void AssetTab(Stage& stage);
 void EntityTab(Stage& stage);
 void ComponentTab(Stage& stage);
-void ScriptTab();
+void ScriptTab(Stage& stage);
 
 
 #endif

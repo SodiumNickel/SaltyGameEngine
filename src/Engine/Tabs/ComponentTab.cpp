@@ -1,4 +1,5 @@
 #include <imgui.h>
+#include <imgui_stdlib.h>
 
 #include "../Stage/Stage.h"
 #include "../Game/ECS/ECS.h"
@@ -29,6 +30,7 @@ void Transform(Entity entity){
             ImGui::DragFloat("##scaley", &transform.scale.y, 0.005f);
 
             ImGui::Text("Rotation");
+            ImGui::Text("θ"); ImGui::SameLine(); // TODO: theta is not displaying properly in this font
             ImGui::DragFloat("##rot", &transform.rotation, 0.25f);
         }
     }
@@ -38,9 +40,10 @@ void Sprite(Entity entity){
         if (ImGui::CollapsingHeader("Sprite", ImGuiTreeNodeFlags_DefaultOpen))
         {
             auto& sprite = entity.GetComponent<SpriteComponent>();
+            ImGui::PushItemWidth(ImGui::GetWindowWidth());
 
             ImGui::Text("Filepath");
-            //ImGui::InputText("##filepath", );
+            ImGui::InputText("##filepath", &sprite.filePath);
 
             ImGui::Text("Sorting Layer"); // TODO: this should probably be enumerated with a dropdown???
         }
