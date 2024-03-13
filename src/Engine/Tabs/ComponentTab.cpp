@@ -42,10 +42,12 @@ void Sprite(Entity entity){
             auto& sprite = entity.GetComponent<SpriteComponent>();
             ImGui::PushItemWidth(ImGui::GetWindowWidth());
 
+            // TODO: this should be a drag and drop thing, not a text input
             ImGui::Text("Filepath");
             ImGui::InputText("##filepath", &sprite.filePath);
 
-            ImGui::Text("Sorting Layer"); // TODO: this should probably be enumerated with a dropdown???
+            ImGui::Text("zIndex"); // TODO: this should probably be enumerated with a dropdown??? 
+            ImGui::InputInt("input int", &sprite.zIndex); // kinda wanna call sorting layer, and then have z index seperately (as the finer setting)
         }
     }
 }
@@ -53,6 +55,14 @@ void Rigidbody(Entity entity){
     if(entity.HasComponent<RigidbodyComponent>()){
         if (ImGui::CollapsingHeader("Rigidbody", ImGuiTreeNodeFlags_DefaultOpen))
         {
+            auto& rigidbody = entity.GetComponent<RigidbodyComponent>();
+            ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.45f);
+
+            ImGui::Text("Initial Velocity");
+            ImGui::Text("x"); ImGui::SameLine();
+            ImGui::DragFloat("##initx", &rigidbody.initVelocity.x, 0.005f); ImGui::SameLine();
+            ImGui::Text("y"); ImGui::SameLine();
+            ImGui::DragFloat("##inity", &rigidbody.initVelocity.y, 0.005f);
         }
     }
 }

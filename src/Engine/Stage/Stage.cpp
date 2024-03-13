@@ -6,6 +6,7 @@
 
 #include "../Game/Components/TransformComponent.h"
 #include "../Game/Components/SpriteComponent.h"
+#include "../Game/Components/RigidbodyComponent.h"
 // #include "../Components/BoxColliderComponent.h" might need for visual
 
 #include "../Game/Systems/RenderSystem.h"
@@ -109,6 +110,10 @@ void Stage::CreateEntityTree(json entities){
                     std::string filePath = values.at("filepath");
                     int zindex = values.at("zindex");
                     entity.AddComponent<SpriteComponent>(filePath, zindex);
+                }   
+                else if(type == "Rigidbody"){
+                    glm::vec2 initVelocity = JsonToVec2(values.at("initVelocity"));
+                    entity.AddComponent<RigidbodyComponent>(initVelocity);
                 }   
                 // TODO: more components
             }

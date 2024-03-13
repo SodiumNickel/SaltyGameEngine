@@ -4,12 +4,15 @@
 #include <glm.hpp>
 
 struct RigidbodyComponent {
-    glm::vec2 velocity;
+    glm::vec2 initVelocity;
     // TODO: needs to have transform before adding
 
-    RigidbodyComponent(glm::vec2 velocity = glm::vec2(0.0, 0.0))
+    glm::vec2 velocity;
+
+    RigidbodyComponent(glm::vec2 initVelocity = glm::vec2(0.0, 0.0))
     {
-        this->velocity = velocity;
+        this->initVelocity = initVelocity;
+        this->velocity = initVelocity;
     }
 };
 

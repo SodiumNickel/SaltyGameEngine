@@ -47,7 +47,8 @@
         { "name":"obj3", 
           "components":[
             { "type":"Transform", "values":{"position":[150.0, 350.0], "scale":[1.0, 1.0], "rotation": 45.0} },
-            { "type":"Sprite", "values":{"filepath":"Unique/Assets/RedMagnet.png", "zindex":1} }
+            { "type":"Sprite", "values":{"filepath":"Unique/Assets/RedMagnet.png", "zindex":1} },
+            { "type":"Rigidbody", "values":{"initVelocity":[10.0, 50.0]} }
           ],
             "children":[]
         }

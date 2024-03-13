@@ -48,15 +48,25 @@ public:
             SDL_Rect dstRect = {
                 static_cast<int>(transform.position.x * cameraZoom.x), // TODO: i dont think this scales properly off of center of object, scales off of corner
                 static_cast<int>(transform.position.y * cameraZoom.y),
-                static_cast<int>(textureSize.x * transform.scale.x * camScale.x * magnitude),
-                static_cast<int>(textureSize.y * transform.scale.y * camScale.y * magnitude)
+                static_cast<int>(textureSize.x * glm::abs(transform.scale.x) * camScale.x * magnitude),
+                static_cast<int>(textureSize.y * glm::abs(transform.scale.y) * camScale.y * magnitude)
             };
+
+            // Handle negative scales by flipping sprite
+            SDL_RendererFlip flip = SDL_FLIP_NONE;
+            if(transform.scale.x < 0 || transform.scale.y < 0)
+            {
+                if(transform.scale.x >= 0) flip = SDL_FLIP_VERTICAL;
+                else if(transform.scale.y >= 0) flip = SDL_FLIP_HORIZONTAL;
+                else flip = static_cast<SDL_RendererFlip>(SDL_FLIP_VERTICAL | SDL_FLIP_HORIZONTAL); // TODO: make sure the vert flip works, just havent tested it
+            }
+            
 
             SDL_RenderCopyEx(
                 renderer,
                 assetManager->GetTexture(sprite.filePath),
                 NULL, &dstRect, -transform.rotation, // rotations are counterclockwise
-                NULL, SDL_FLIP_NONE
+                NULL, flip
             );
         }
     }
