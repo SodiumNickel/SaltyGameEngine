@@ -37,6 +37,12 @@ void Sprite(Entity entity){
     if(entity.HasComponent<SpriteComponent>()){
         if (ImGui::CollapsingHeader("Sprite", ImGuiTreeNodeFlags_DefaultOpen))
         {
+            auto& sprite = entity.GetComponent<SpriteComponent>();
+
+            ImGui::Text("Filepath");
+            //ImGui::InputText("##filepath", );
+
+            ImGui::Text("Sorting Layer"); // TODO: this should probably be enumerated with a dropdown???
         }
     }
 }
