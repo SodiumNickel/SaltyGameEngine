@@ -57,6 +57,7 @@ void BoxCollider(Entity entity){
 }
 
 // TODO: i want tabs to reopen when switching, or optimally they store who is open
+// TODO: automatically save this to the json file??
 void ComponentTab(Stage& stage){
     ImGui::Begin("Components");
 

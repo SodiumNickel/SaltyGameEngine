@@ -39,17 +39,23 @@ public:
             const auto sprite = entity.GetComponent<SpriteComponent>();
             glm::vec2 textureSize = assetManager->GetTextureSize(sprite.filePath);
 
+            float cos = glm::cos(transform.rotation / 180 * 3.14);
+            float sin = glm::sin(transform.rotation / 180 * 3.14);
+            glm::vec2 camScale = glm::normalize(glm::vec2(glm::abs(cameraZoom.x * cos) + glm::abs(cameraZoom.y * sin),
+                                                          glm::abs(cameraZoom.x * sin) + glm::abs(cameraZoom.y * cos)));
+            float magnitude = glm::length(cameraZoom);
+
             SDL_Rect dstRect = {
                 static_cast<int>(transform.position.x * cameraZoom.x), // TODO: i dont think this scales properly off of center of object, scales off of corner
                 static_cast<int>(transform.position.y * cameraZoom.y),
-                static_cast<int>(textureSize.x * transform.scale.x * cameraZoom.x),
-                static_cast<int>(textureSize.y * transform.scale.y * cameraZoom.y)
+                static_cast<int>(textureSize.x * transform.scale.x * camScale.x * magnitude),
+                static_cast<int>(textureSize.y * transform.scale.y * camScale.y * magnitude)
             };
 
             SDL_RenderCopyEx(
                 renderer,
                 assetManager->GetTexture(sprite.filePath),
-                NULL, &dstRect, transform.rotation,
+                NULL, &dstRect, -transform.rotation, // rotations are counterclockwise
                 NULL, SDL_FLIP_NONE
             );
         }
