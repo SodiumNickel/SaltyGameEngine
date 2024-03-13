@@ -44,7 +44,7 @@ void Sprite(Entity entity){
 
             // TODO: this should be a drag and drop thing, not a text input
             ImGui::Text("Filepath");
-            ImGui::InputText("##filepath", &sprite.filePath);
+            ImGui::InputText("##filepath", &sprite.filepath);
 
             ImGui::Text("zIndex"); // TODO: this should probably be enumerated with a dropdown??? 
             ImGui::InputInt("input int", &sprite.zIndex); // kinda wanna call sorting layer, and then have z index seperately (as the finer setting)

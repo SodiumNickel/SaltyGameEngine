@@ -49,13 +49,6 @@ void Stage::Initialize(SDL_Renderer* renderer, SDL_Texture* viewport)
 
 void Stage::LoadScene(int sceneIndex)
 {
-    // TODO: not sure if i should load assets at start of scene, or just keep them the whole time. doesnt matter for stage, but will for game
-
-    // Add assets to the AssetManager 
-    assetManager->AddTexture(renderer, "Unique/Assets/RedMagnet.png");
-    assetManager->AddTexture(renderer, "Unique/Assets/big.png");
-    assetManager->AddTexture(renderer, "Unique/Assets/small.png");
-
     // Get scene name from index
     std::ifstream f("Unique/Scenes/_index.json");
     json sceneList = json::parse(f).begin().value();
@@ -107,9 +100,11 @@ void Stage::CreateEntityTree(json entities){
                     entity.AddComponent<TransformComponent>(position, scale, rotation);
                 }
                 else if(type == "Sprite"){
-                    std::string filePath = values.at("filepath");
+                    std::string filepath = values.at("filepath");
                     int zindex = values.at("zindex");
-                    entity.AddComponent<SpriteComponent>(filePath, zindex);
+                    // duplicate textures are handled in assetManager TODO: this comment can be better
+                    assetManager->AddTexture(renderer, filepath);
+                    entity.AddComponent<SpriteComponent>(filepath, zindex);
                 }   
                 else if(type == "Rigidbody"){
                     glm::vec2 initVelocity = JsonToVec2(values.at("initVelocity"));

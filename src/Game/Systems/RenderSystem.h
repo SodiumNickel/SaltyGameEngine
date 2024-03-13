@@ -37,7 +37,7 @@ public:
         {
             const auto transform = entity.GetComponent<TransformComponent>();
             const auto sprite = entity.GetComponent<SpriteComponent>();
-            glm::vec2 textureSize = assetManager->GetTextureSize(sprite.filePath);
+            glm::vec2 textureSize = assetManager->GetTextureSize(sprite.filepath);
 
             float cos = glm::cos(transform.rotation / 180 * 3.14);
             float sin = glm::sin(transform.rotation / 180 * 3.14);
@@ -64,7 +64,7 @@ public:
 
             SDL_RenderCopyEx(
                 renderer,
-                assetManager->GetTexture(sprite.filePath),
+                assetManager->GetTexture(sprite.filepath),
                 NULL, &dstRect, -transform.rotation, // rotations are counterclockwise
                 NULL, flip
             );

@@ -19,29 +19,32 @@ void AssetManager::ClearAssets()
     textures.clear();
 }
 
-void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& filePath)
+void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& filepath)
 {
-    // TODO: need to check that filepath is valid, maybe also check for duplicate
-    SDL_Surface* surface = IMG_Load(filePath.c_str());
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
+    if(!textures.count(filepath))
+    {
+        // TODO: need to check that filepath is valid
+        SDL_Surface* surface = IMG_Load(filepath.c_str());
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_FreeSurface(surface);
 
-    SDL_Point sdlSize;
-    SDL_QueryTexture(texture, NULL, NULL, &sdlSize.x, &sdlSize.y);
-    glm::vec2 size = glm::vec2(sdlSize.x, sdlSize.y);
+        SDL_Point sdlSize;
+        SDL_QueryTexture(texture, NULL, NULL, &sdlSize.x, &sdlSize.y);
+        glm::vec2 size = glm::vec2(sdlSize.x, sdlSize.y);
 
-    textures.emplace(filePath, texture);
-    textureSizes.emplace(filePath, size);
+        textures.emplace(filepath, texture);
+        textureSizes.emplace(filepath, size);
+    }
 }
 
-SDL_Texture* AssetManager::GetTexture(const std::string& filePath)
+SDL_Texture* AssetManager::GetTexture(const std::string& filepath)
 {
     // TODO: am assuming it is called on actual id
-    return textures[filePath];
+    return textures[filepath];
 }
 
-glm::vec2 AssetManager::GetTextureSize(const std::string& filePath)
+glm::vec2 AssetManager::GetTextureSize(const std::string& filepath)
 {
     // TODO: am assuming it is called on actual id
-    return textureSizes[filePath];
+    return textureSizes[filepath];
 }

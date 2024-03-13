@@ -4,12 +4,12 @@
 #include <string>
 
 struct SpriteComponent {
-    std::string filePath;
+    std::string filepath;
     int zIndex;
 
-    SpriteComponent(std::string filePath = "", int zIndex = 0)
+    SpriteComponent(std::string filepath = "", int zIndex = 0)
     {
-        this->filePath = filePath;
+        this->filepath = filepath;
         this->zIndex = zIndex;
     }
 };

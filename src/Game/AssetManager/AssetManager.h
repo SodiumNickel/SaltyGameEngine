@@ -18,9 +18,9 @@ public:
     ~AssetManager();
 
     void ClearAssets();
-    void AddTexture(SDL_Renderer* renderer, const std::string& filePath);
-    SDL_Texture* GetTexture(const std::string& filePath);
-    glm::vec2 GetTextureSize(const std::string& filePath);
+    void AddTexture(SDL_Renderer* renderer, const std::string& filepath);
+    SDL_Texture* GetTexture(const std::string& filepath);
+    glm::vec2 GetTextureSize(const std::string& filepath);
 };
 
 #endif
