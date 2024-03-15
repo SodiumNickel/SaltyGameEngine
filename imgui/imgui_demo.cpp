@@ -2466,7 +2466,7 @@ static void ShowDemoWindowWidgets()
                 }
                 if (ImGui::BeginDragDropTarget())
                 {
-                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
                     {
                         IM_ASSERT(payload->DataSize == sizeof(int));
                         int payload_n = *(const int*)payload->Data;

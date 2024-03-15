@@ -11,17 +11,47 @@
 
 // TODO
 /* NOTES */
-// To add moving entities in tab, just change their order in childrenIds, lower index above higher index
-// There are definitely a lot of edge cases, such as unparenting children
-// Test deleting and adding nodes eventually
+// Unparenting entity (drag into tab)
+// Reorder entities in tab
+// Add deleting and adding nodes eventually
 
+
+void DDSource(int id, std::string name){
+    if (ImGui::BeginDragDropSource())
+    {
+        ImGui::SetDragDropPayload("ENTITY", &id, sizeof(int));
+        ImGui::Text(name.c_str());
+        ImGui::EndDragDropSource();
+    }
+}
+void DDTarget(int id, std::vector<std::unique_ptr<EntityNode>>& entityTree){
+    // TODO: this needs to open itself up (in imgui node view)
+    // also needs to be able to drag into component tab, (unparent from all)
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
+        {
+            IM_ASSERT(payload->DataSize == sizeof(int));
+            int payloadId = *(const int*)payload->Data;
+            
+            // Intended: re-parenting to same entity has effect that entity goes to end of childIds
+            // unparent payloadId from its parent
+            std::vector<int>& parent = entityTree[entityTree[payloadId]->parentId]->childrenIds;
+            parent.erase(std::remove(parent.begin(), parent.end(), payloadId), parent.end()); // Erase-remove idiom
+            // reparent payloadId to id
+            entityTree[id]->childrenIds.push_back(payloadId);
+            entityTree[payloadId]->parentId = id;
+        }
+        ImGui::EndDragDropTarget();
+    }
+}
+
+// TODO: maybe this should be a pointer instead, not really sure, i am passing reference a lot of times
 void EntityTab(Stage& stage){
     ImGui::Begin((stage.sceneName + "###Entity").c_str());
     auto& entityTree = stage.registry->entityTree;
 
-
     static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
-    static bool test_drag_and_drop = true;
     // Temporary storage of what node we have clicked
     int node_clicked = -1;
 
@@ -37,12 +67,9 @@ void EntityTab(Stage& stage){
             bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, entityTree[rc]->name.c_str());
             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                 node_clicked = rc;
-            if (test_drag_and_drop && ImGui::BeginDragDropSource())
-            {
-                ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                ImGui::Text(entityTree[rc]->name.c_str());
-                ImGui::EndDragDropSource();
-            }
+
+            DDTarget(rc, entityTree);
+            DDSource(rc, entityTree[rc]->name);
 
             if (node_open)
             {
@@ -71,12 +98,9 @@ void EntityTab(Stage& stage){
                             bool child_open = ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
                             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                                 node_clicked = c;
-                            if (test_drag_and_drop && ImGui::BeginDragDropSource())
-                            {
-                                ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                                ImGui::Text(entityTree[c]->name.c_str());
-                                ImGui::EndDragDropSource();
-                            }
+                            
+                            DDTarget(c, entityTree);
+                            DDSource(c, entityTree[c]->name);
 
                             if (child_open)
                             {
@@ -95,12 +119,9 @@ void EntityTab(Stage& stage){
                             ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
                             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                                 node_clicked = c;
-                            if (test_drag_and_drop && ImGui::BeginDragDropSource())
-                            {
-                                ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                                ImGui::Text(entityTree[c]->name.c_str());
-                                ImGui::EndDragDropSource();
-                            }
+                            
+                            DDTarget(c, entityTree);
+                            DDSource(c, entityTree[c]->name);
                         }
                     }
                 }
@@ -113,12 +134,9 @@ void EntityTab(Stage& stage){
             ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, entityTree[rc]->name.c_str());
             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                 node_clicked = rc;
-            if (test_drag_and_drop && ImGui::BeginDragDropSource())
-            {
-                ImGui::SetDragDropPayload("_TREENODE", NULL, 0);
-                ImGui::Text(entityTree[rc]->name.c_str());
-                ImGui::EndDragDropSource();
-            }
+            
+            DDTarget(rc, entityTree);
+            DDSource(rc, entityTree[rc]->name);
         }
     }
 
