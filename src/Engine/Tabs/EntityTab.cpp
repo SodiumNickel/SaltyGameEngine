@@ -25,7 +25,7 @@ void DDSource(int id, std::string name){
     }
 }
 void DDTarget(int id, std::vector<std::unique_ptr<EntityNode>>& entityTree){
-    // TODO: this needs to open itself up (in imgui node view)
+    // TODO: this needs to open itself up (in imgui node view) -> not actually sure this is necessary
     // also needs to be able to drag into component tab, (unparent from all)
     if (ImGui::BeginDragDropTarget())
     {

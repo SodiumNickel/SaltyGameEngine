@@ -5,7 +5,7 @@
 
 struct RigidbodyComponent {
     glm::vec2 initVelocity;
-    // TODO: needs to have transform before adding
+    // TODO: needs to have transform before adding, if all objects must have transform, then this is not necessary
 
     glm::vec2 velocity;
 

@@ -1,6 +1,8 @@
 #ifndef ECS_H
 #define ECS_H
 
+#include "../Components/TransformComponent.h"
+
 #include <bitset>
 #include <vector>
 #include <unordered_map>
@@ -65,6 +67,7 @@ public:
     template <typename TComponent> void RemoveComponent();
     template <typename TComponent> bool HasComponent() const;
     template <typename TComponent> TComponent& GetComponent() const;
+    TransformComponent transform; // all entities have a transform
 
     class Registry* registry;
 };
@@ -72,8 +75,8 @@ public:
 struct EntityNode{
     Entity entity;
     std::string name;
-    int entityId; // not quite sure it needs it's own Id, but doesn't particularly hurt to have
-    int parentId; // -1 if parent is root/scene
+    int entityId; // not quite sure it needs it's own Id, but doesn't particularly hurt to have.
+    int parentId; // 0 if parent is root/scene
     std::vector<int> childrenIds;
 
     EntityNode(Entity entity, std::string name, int entityId, int parentId)
