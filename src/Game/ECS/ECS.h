@@ -47,7 +47,7 @@ private:
     int id;
 
 public:
-    Entity(): id(-1) {}; // default constructor, never used
+    Entity(): id(-1) {}; // default constructor, never used // TODO: add a debug error for this in logger
     Entity(int id) : id(id) {};
     Entity(const Entity& entity) = default;
     int GetId() const;

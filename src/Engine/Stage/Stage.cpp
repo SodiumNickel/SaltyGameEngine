@@ -67,6 +67,7 @@ void Stage::CreateEntityTree(json entities){
     
     entityTree.resize(1);
     Entity root = registry->CreateEntity();
+    root.transform = TransformComponent(); // all entities need a transform, defaulted for root
     entityTree[0] = std::make_unique<EntityNode>(EntityNode(root, "root", 0, -1));
 
     std::stack<std::pair<int, json>> entityStack;
@@ -79,6 +80,12 @@ void Stage::CreateEntityTree(json entities){
         for (auto& e : children.items()){
             json eJson = e.value();        
             Entity entity = registry->CreateEntity();
+            // Add transform to entity
+            json transform = eJson.at("transform");
+            glm::vec2 position = JsonToVec2(transform.at("position"));
+            glm::vec2 scale = JsonToVec2(transform.at("scale"));
+            float rotation = transform.at("rotation");
+            entity.transform = TransformComponent(position, scale, rotation);
 
             // Add child to entityTree
             int id = entity.GetId();
@@ -92,14 +99,8 @@ void Stage::CreateEntityTree(json entities){
             for (auto& component : eJson.at("components").items()){
                 json type = component.value().at("type");
                 json values = component.value().at("values");
-                
-                if(type == "Transform"){
-                    glm::vec2 position = JsonToVec2(values.at("position"));
-                    glm::vec2 scale = JsonToVec2(values.at("scale"));
-                    float rotation = values.at("rotation");
-                    entity.AddComponent<TransformComponent>(position, scale, rotation);
-                }
-                else if(type == "Sprite"){
+
+                if(type == "Sprite"){
                     std::string filepath = values.at("filepath");
                     int zindex = values.at("zindex");
                     // duplicate textures are handled in assetManager TODO: this comment can be better
