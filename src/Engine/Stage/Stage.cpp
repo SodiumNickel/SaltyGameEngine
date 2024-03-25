@@ -66,9 +66,8 @@ void Stage::CreateEntityTree(json entities){
     entityTree.clear(); // calls destructors of unique_ptr to deallocate
     
     entityTree.resize(1);
-    Entity root = registry->CreateEntity();
-    root.transform = TransformComponent(); // all entities need a transform, defaulted for root
-    entityTree[0] = std::make_unique<EntityNode>(EntityNode(root, "root", 0, -1));
+    // Entity root = registry->CreateEntity();
+    entityTree[0] = std::make_unique<Entity>(registry->CreateEntity()); // TODO: might need to give entity name = "root", parent = -1, etc.
 
     std::stack<std::pair<int, json>> entityStack;
     entityStack.push(std::pair(0, entities));
@@ -80,21 +79,24 @@ void Stage::CreateEntityTree(json entities){
         for (auto& e : children.items()){
             json eJson = e.value();        
             Entity entity = registry->CreateEntity();
-            // Add transform to entity
-            json transform = eJson.at("transform");
-            glm::vec2 position = JsonToVec2(transform.at("position"));
-            glm::vec2 scale = JsonToVec2(transform.at("scale"));
-            float rotation = transform.at("rotation");
-            entity.transform = TransformComponent(position, scale, rotation);
+            // Assign name and parentId
+            entity.name = eJson.at("name");
+            entity.parentId = parentId;
 
-            // Add child to entityTree
+            // Add entity to entityTree
             int id = entity.GetId();
             if(id >= entityTree.size())
             { entityTree.resize(id + 1); }
-            // create own node
-            entityTree[id] = std::make_unique<EntityNode>(EntityNode(entity, eJson.at("name"), entity.GetId(), parentId));
+            entityTree[id] = std::make_unique<Entity>(entity);
             // add own id to parent
             entityTree[parentId]->childrenIds.push_back(id); 
+
+            // Add transform to entity
+            json jTransform = eJson.at("transform");
+            auto& transform = *entity.transform;
+            transform.position = JsonToVec2(jTransform.at("position"));
+            transform.scale = JsonToVec2(jTransform.at("scale"));
+            transform.rotation = jTransform.at("rotation");
 
             for (auto& component : eJson.at("components").items()){
                 json type = component.value().at("type");

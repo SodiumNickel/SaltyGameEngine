@@ -11,29 +11,31 @@
 #include "../Game/Components/BoxColliderComponent.h"
 
 void Transform(Entity entity){
-    // All entities have a transform component
-    if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
-    {
-        // TODO: this is not a reference, does not edit value rn
-        // Also create system that updates global transforms? i would prefer to have it whenever transform is changed but not sure if that would work
-        auto& transform = entity.transform;
-        ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.45f);
+    // Do not display root transform component
+    if(entity.GetId() != 0){
+        if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            // TODO: this is not a reference, does not edit value rn
+            // Also create system that updates global transforms? i would prefer to have it whenever transform is changed but not sure if that would work
+            auto& transform = *entity.transform;
+            ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.45f);
 
-        ImGui::Text("Position");
-        ImGui::Text("x"); ImGui::SameLine();
-        ImGui::DragFloat("##posx", &transform.position.x, 1.0f); ImGui::SameLine();
-        ImGui::Text("y"); ImGui::SameLine();
-        ImGui::DragFloat("##posy", &transform.position.y, 1.0f);
+            ImGui::Text("Position");
+            ImGui::Text("x"); ImGui::SameLine();
+            ImGui::DragFloat("##posx", &transform.position.x, 1.0f); ImGui::SameLine();
+            ImGui::Text("y"); ImGui::SameLine();
+            ImGui::DragFloat("##posy", &transform.position.y, 1.0f);
 
-        ImGui::Text("Scale");
-        ImGui::Text("x"); ImGui::SameLine();
-        ImGui::DragFloat("##scalex", &transform.scale.x, 0.005f); ImGui::SameLine();
-        ImGui::Text("y"); ImGui::SameLine();
-        ImGui::DragFloat("##scaley", &transform.scale.y, 0.005f);
+            ImGui::Text("Scale");
+            ImGui::Text("x"); ImGui::SameLine();
+            ImGui::DragFloat("##scalex", &transform.scale.x, 0.005f); ImGui::SameLine();
+            ImGui::Text("y"); ImGui::SameLine();
+            ImGui::DragFloat("##scaley", &transform.scale.y, 0.005f);
 
-        ImGui::Text("Rotation");
-        ImGui::Text("θ"); ImGui::SameLine(); // TODO: theta is not displaying properly in this font
-        ImGui::DragFloat("##rot", &transform.rotation, 0.25f);
+            ImGui::Text("Rotation");
+            ImGui::Text("θ"); ImGui::SameLine(); // TODO: theta is not displaying properly in this font
+            ImGui::DragFloat("##rot", &transform.rotation, 0.25f);
+        }
     }
 }
 void Sprite(Entity entity){
@@ -81,7 +83,7 @@ void BoxCollider(Entity entity){
 void ComponentTab(Stage& stage){
     ImGui::Begin("Components");
 
-    Entity selected = stage.registry->entityTree[stage.selectedEntity]->entity;
+    Entity selected = *stage.registry->entityTree[stage.selectedEntity].get();
     // iterate through hasComponent? unfortunately means we cant organize stuff
 
     Transform(selected);

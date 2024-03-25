@@ -35,7 +35,7 @@ public:
 
         for(auto entity : entities)
         {
-            const auto transform = entity.transform;
+            auto transform = *entity.transform;
             const auto sprite = entity.GetComponent<SpriteComponent>();
             glm::vec2 textureSize = assetManager->GetTextureSize(sprite.filepath);
 

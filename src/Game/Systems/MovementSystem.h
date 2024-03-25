@@ -9,7 +9,7 @@ class MovementSystem : public System {
     public:
         MovementSystem()
         {
-            RequireComponent<TransformComponent>();
+            // RequireComponent<TransformComponent>();
             RequireComponent<RigidbodyComponent>();
         }
 

@@ -48,7 +48,7 @@ private:
 
 public:
     Entity(): id(-1) {}; // default constructor, never used // TODO: add a debug error for this in logger
-    Entity(int id) : id(id) {};
+    Entity(int id) : id(id) {}; // TODO: might want to initialize with values
     Entity(const Entity& entity) = default;
     int GetId() const;
     void Destroy();
@@ -67,21 +67,17 @@ public:
     template <typename TComponent> void RemoveComponent();
     template <typename TComponent> bool HasComponent() const;
     template <typename TComponent> TComponent& GetComponent() const;
-    TransformComponent transform; // all entities have a transform
+    // TODO: need to deallocate this
+    TransformComponent* transform = new TransformComponent(); // all entities have a transform
+    // TODO: if i store parentId as a public var, and then have a seperate header which only has certain capabilities
+    // I can probably make that header just not have vars like parentId, and instead have parent
 
-    class Registry* registry;
-};
-
-struct EntityNode{
-    Entity entity;
+    // TODO: might want to add this to initialization
     std::string name;
-    int entityId; // not quite sure it needs it's own Id, but doesn't particularly hurt to have.
     int parentId; // 0 if parent is root/scene
     std::vector<int> childrenIds;
 
-    EntityNode(Entity entity, std::string name, int entityId, int parentId)
-    : entity(entity), name(name), entityId(entityId), parentId(parentId), childrenIds()
-    {}
+    class Registry* registry;
 };
 
 /* -----SYSTEM-------------------------------------------------- *
@@ -189,7 +185,7 @@ public:
     // Entity management
     Entity CreateEntity();
     void DestroyEntity(Entity entity);
-    std::vector<std::unique_ptr<EntityNode>> entityTree;
+    std::vector<std::unique_ptr<Entity>> entityTree;
         
     // Component management
     template <typename TComponent, typename ...TArgs> void AddComponent(Entity entity, TArgs&& ...args);
