@@ -38,19 +38,28 @@ void Transform(Entity entity){
         }
     }
 }
-void Sprite(Entity entity){
+void Sprite(Entity entity, std::unique_ptr<AssetManager>& assetManager){
     if(entity.HasComponent<SpriteComponent>()){
         if (ImGui::CollapsingHeader("Sprite", ImGuiTreeNodeFlags_DefaultOpen))
         {
             auto& sprite = entity.GetComponent<SpriteComponent>();
-            ImGui::PushItemWidth(ImGui::GetWindowWidth());
+            ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.75f);
 
             // TODO: this should be a drag and drop thing, not a text input
+            ImGui::BeginGroup();
             ImGui::Text("Filepath");
             ImGui::InputText("##filepath", &sprite.filepath);
+            ImGui::EndGroup();
+
+            // TODO: kind of want to make this image bigger, but this will do for now
+            ImGui::SameLine();
+            ImGui::BeginGroup();
+            ImGui::Dummy(ImVec2(0.0f, 0.25f)); // Alligns image with text on LHS
+            ImGui::Image(assetManager->GetTexture(sprite.filepath), ImVec2(32, 32)); // TODO: this might need to be resized if the images arent squares
+            ImGui::EndGroup();
 
             ImGui::Text("zIndex"); // TODO: this should probably be enumerated with a dropdown??? 
-            ImGui::InputInt("input int", &sprite.zIndex); // kinda wanna call sorting layer, and then have z index seperately (as the finer setting)
+            ImGui::InputInt("##zindex", &sprite.zIndex); // kinda wanna call sorting layer, and then have z index seperately (as the finer setting)
         }
     }
 }
@@ -87,7 +96,7 @@ void ComponentTab(Stage& stage){
     // iterate through hasComponent? unfortunately means we cant organize stuff
 
     Transform(selected);
-    Sprite(selected);
+    Sprite(selected, stage.assetManager);
     Rigidbody(selected);
     BoxCollider(selected);
 

@@ -93,10 +93,10 @@ void Stage::CreateEntityTree(json entities){
 
             // Add transform to entity
             json jTransform = eJson.at("transform");
-            auto& transform = *entity.transform;
-            transform.position = JsonToVec2(jTransform.at("position"));
-            transform.scale = JsonToVec2(jTransform.at("scale"));
-            transform.rotation = jTransform.at("rotation");
+            auto transform = entity.transform;
+            transform->position = JsonToVec2(jTransform.at("position"));
+            transform->scale = JsonToVec2(jTransform.at("scale"));
+            transform->rotation = jTransform.at("rotation");
 
             for (auto& component : eJson.at("components").items()){
                 json type = component.value().at("type");

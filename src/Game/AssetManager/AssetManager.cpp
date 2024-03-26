@@ -39,7 +39,7 @@ void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& filepat
 
 SDL_Texture* AssetManager::GetTexture(const std::string& filepath)
 {
-    // TODO: am assuming it is called on actual id
+    // TODO: am assuming it is called on actual id, actually should be, because it is only called internally??
     return textures[filepath];
 }
 

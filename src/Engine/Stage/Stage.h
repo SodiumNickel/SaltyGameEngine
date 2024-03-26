@@ -21,8 +21,6 @@ class Stage {
         SDL_Texture* viewport;
         // SDL_Rect camera; might need this later just for outline
         // also need it for the "stage" camera
-
-        std::unique_ptr<AssetManager> assetManager;
     public:
         Stage();
         ~Stage();
@@ -34,7 +32,9 @@ class Stage {
         void Update();
         void Destroy();
 
-        std::shared_ptr<Registry> registry; // TODO: this will be a PRIVATE unique_ptr in Game, replace comment too
+        // TODO: both of these will be a PRIVATE unique_ptr in Game, replace comment too
+        std::shared_ptr<Registry> registry; 
+        std::unique_ptr<AssetManager> assetManager;
 
         // TODO: maybe move all of this to engine?? does not particularly matter, but maybe
         std::string sceneName = "";
