@@ -73,6 +73,7 @@ public:
     // I can probably make that header just not have vars like parentId, and instead have parent
 
     // TODO: might want to add this to initialization
+    // TODO: might move parentId and childrenIds to private
     std::string name;
     int parentId; // 0 if parent is root/scene
     std::vector<int> childrenIds;
