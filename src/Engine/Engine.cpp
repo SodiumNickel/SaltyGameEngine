@@ -161,8 +161,7 @@ void Engine::UpdateGUI()
     ImGui::Image((ImTextureID)viewport, stageSize);
     ImGui::End();
 
-    // TODO: dont allow hide tab bar
-    // TODO: do each of the different tabs here
+    // TODO: dont allow hide tab bar, also stop highlighting it when it is clicked on
     EntityTab(stage);
     ComponentTab(stage);
     ScriptTab(stage);

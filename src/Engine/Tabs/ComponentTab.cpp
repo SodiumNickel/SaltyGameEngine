@@ -10,6 +10,9 @@
 #include "../Game/Components/RigidbodyComponent.h"
 #include "../Game/Components/BoxColliderComponent.h"
 
+// IsItemDeactivatedAfterEdit
+// TODO: save into undo only once finished editing
+
 void Transform(Entity entity){
     // Do not display root transform component
     if(entity.GetId() != 0){

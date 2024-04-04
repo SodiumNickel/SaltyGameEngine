@@ -11,6 +11,7 @@ void AssetTab(Stage& stage){
         if (ImGui::Button("<-")) stage.currentDir = stage.currentDir.parent_path();
     }
 
+    // All directories should be listed before other assets
     for (auto& item : std::filesystem::directory_iterator(stage.currentDir))
     {
         const auto& path = item.path();
@@ -23,7 +24,14 @@ void AssetTab(Stage& stage){
                 stage.currentDir /= path.filename();
             }
         }
-        else
+    }
+    // List other assets
+    for (auto& item : std::filesystem::directory_iterator(stage.currentDir))
+    {
+        const auto& path = item.path();
+        std::string filename = path.filename().string();
+
+        if(!item.is_directory())
         {
             ImGui::Text(filename.c_str());
         }

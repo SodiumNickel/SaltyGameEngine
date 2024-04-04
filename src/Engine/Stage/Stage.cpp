@@ -56,7 +56,10 @@ void Stage::LoadScene(int sceneIndex)
     sceneName = sceneList.at(sceneIndex).value("name", "");
     
     std::ifstream g("Unique/Scenes/" + sceneName + ".json");
-    json entities = json::parse(g).begin().value();
+    json scene = json::parse(g);
+    std::ofstream("History/current-scene.json") << std::setw(2) << scene;
+
+    json entities = scene.begin().value();
     g.close();
     CreateEntityTree(entities);
 }
