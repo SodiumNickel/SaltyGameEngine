@@ -3,26 +3,26 @@
         { "name":"obj1", 
           "transform":{"position":[150.0, 150.0], "scale":[5.0, 5.0], "rotation": 0.0},
           "components":[
-            { "type":"Sprite", "values":{"filepath":"Unique/Assets/big.png", "zindex":1} }
+            { "type":"Sprite", "values":{"filepath":"big.png", "zindex":1} }
           ],
           "children":[
             { "name":"child1", 
               "transform":{"position":[200.0, 150.0], "scale":[1.0, 1.0], "rotation": 0.0}, 
               "components":[
-                { "type":"Sprite", "values":{"filepath":"Unique/Assets/big.png", "zindex":1} }
+                { "type":"Sprite", "values":{"filepath":"big.png", "zindex":1} }
               ],
               "children":[
                 { "name":"cchild1", 
                   "transform":{"position":[250.0, 350.0], "scale":[1.0, 1.0], "rotation": 0.0},
                   "components":[
-                    { "type":"Sprite", "values":{"filepath":"Unique/Assets/big.png", "zindex":1} }
+                    { "type":"Sprite", "values":{"filepath":"big.png", "zindex":1} }
                   ],
                   "children":[]
                 },
                 { "name":"cchild2", 
                   "transform":{"position":[250.0, 250.0], "scale":[1.0, 1.0], "rotation": 0.0},
                   "components":[
-                    { "type":"Sprite", "values":{"filepath":"Unique/Assets/big.png", "zindex":1} }
+                    { "type":"Sprite", "values":{"filepath":"big.png", "zindex":1} }
                   ],
                   "children":[]
                 }
@@ -31,7 +31,7 @@
             { "name":"child2", 
               "transform":{"position":[250.0, 150.0], "scale":[1.0, 1.0], "rotation": 0.0},
               "components":[
-                { "type":"Sprite", "values":{"filepath":"Unique/Assets/big.png", "zindex":1} }
+                { "type":"Sprite", "values":{"filepath":"big.png", "zindex":1} }
               ],
               "children":[]
             }
@@ -40,14 +40,14 @@
         { "name":"obj2", 
           "transform":{"position":[100.0, 250.0], "scale":[1.0, 1.0], "rotation": 0.0},
           "components":[
-            { "type":"Sprite", "values":{"filepath":"Unique/Assets/RedMagnet.png", "zindex":1} }
+            { "type":"Sprite", "values":{"filepath":"RedMagnet.png", "zindex":1} }
           ],
             "children":[]
         },
         { "name":"obj3", 
           "transform":{"position":[150.0, 350.0], "scale":[1.0, 1.0], "rotation": 45.0} ,
           "components":[
-            { "type":"Sprite", "values":{"filepath":"Unique/Assets/RedMagnet.png", "zindex":1} },
+            { "type":"Sprite", "values":{"filepath":"RedMagnet.png", "zindex":1} },
             { "type":"Rigidbody", "values":{"initVelocity":[10.0, 50.0]} }
           ],
             "children":[]

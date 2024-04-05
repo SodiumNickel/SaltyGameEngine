@@ -24,7 +24,7 @@ void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& filepat
     if(!textures.count(filepath))
     {
         // TODO: need to check that filepath is valid
-        SDL_Surface* surface = IMG_Load(filepath.c_str());
+        SDL_Surface* surface = IMG_Load(("Unique/Assets/" + filepath).c_str());
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
         SDL_FreeSurface(surface);
 
