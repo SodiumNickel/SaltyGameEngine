@@ -1,3 +1,1 @@
-Lightweight 2D ECS game engine, developed for use in game jams. 
-
-Currently in the process of refactoring to allow for Dear ImGui interface.
+![SaltyDemo](https://github.com/SodiumNickel/SaltyGameEngine/assets/139382010/3209aeac-3f3e-4603-8f8a-0cd7acf54516)
