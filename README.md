@@ -1,3 +1,2 @@
-Lightweight 2D ECS game engine, developed for use in game jams. 
-
-Currently in the process of refactoring to allow for Dear ImGui interface.
+Build from before transform was moved into entity.
+TransformComponent has to be manually added in this build.
