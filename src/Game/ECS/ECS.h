@@ -187,7 +187,7 @@ public:
     Entity CreateEntity();
     void DestroyEntity(Entity entity);
     std::vector<std::unique_ptr<Entity>> entityTree;
-    std::vector<int> parentIds; // TODO: this needs a better name, i really dont like it
+    std::vector<int> rootIds; // All entities without parents (at the root of their respective tree)
 
     // Component management
     template <typename TComponent, typename ...TArgs> void AddComponent(Entity entity, TArgs&& ...args);

@@ -69,8 +69,8 @@ void Stage::CreateEntityTree(json entities, int size){
     auto& entityTree = registry->entityTree;
     entityTree.clear(); // calls destructors of unique_ptr to deallocate
     entityTree.resize(size);
-    auto& parentIds = registry->parentIds;
-    parentIds.clear();
+    auto& rootIds = registry->rootIds;
+    rootIds.clear();
 
     for(int id = 0; id < size; id++){
         json eJson = entities.at(id);
