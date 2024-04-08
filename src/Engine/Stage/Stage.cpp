@@ -42,7 +42,7 @@ void Stage::Initialize(SDL_Renderer* renderer, SDL_Texture* viewport)
     this->renderer = renderer;
     this->viewport = viewport;
     // TODO: check for saved scene number here, currently just loading demo
-    LoadScene(1);
+    LoadScene(2);
 
     registry->AddSystem<RenderSystem>();
 }
@@ -58,74 +58,55 @@ void Stage::LoadScene(int sceneIndex)
     std::ifstream g("Unique/Scenes/" + sceneName + ".json");
     json scene = json::parse(g);
     std::ofstream("History/current-scene.json") << std::setw(2) << scene;
-
-    // int size = scene.begin().value().at("size");
-    // json entities = scene.begin().value().at("entities");
-    // std::cout << size << " " << entities << '\n';
-    json entities = scene.begin().value();
+        
+    json entities = scene.at("entities");
+    int size = scene.at("size");
     g.close();
-    CreateEntityTree(entities);
+    CreateEntityTree(entities, size);
 }
 
-void Stage::CreateEntityTree(json entities){
+void Stage::CreateEntityTree(json entities, int size){
     auto& entityTree = registry->entityTree;
     entityTree.clear(); // calls destructors of unique_ptr to deallocate
-    
-    entityTree.resize(1);
-    // Entity root = registry->CreateEntity();
-    entityTree[0] = std::make_unique<Entity>(registry->CreateEntity()); // TODO: might need to give entity name = "root", parent = -1, etc.
+    entityTree.resize(size);
+    auto& parentIds = registry->parentIds;
+    parentIds.clear();
 
-    std::stack<std::pair<int, json>> entityStack;
-    entityStack.push(std::pair(0, entities));
+    for(int id = 0; id < size; id++){
+        json eJson = entities.at(id);
+        Entity entity = registry->CreateEntity();
+        assert(entity.GetId() == id); // TODO: this should be commented out eventually, pretty sure it is always true
 
-    while(!entityStack.empty()){
-        auto [parentId, children] = entityStack.top();
-        entityStack.pop();
+        // Assign name and parentId
+        entity.name = eJson.at("name");
+        entity.parentId = eJson.at("parent-id");
+        //entity.childrenIds = eJson.at("children-ids");
+        // Add entity to registry tree 
+        entityTree[id] = std::make_unique<Entity>(entity);
 
-        for (auto& e : children.items()){
-            json eJson = e.value();        
-            Entity entity = registry->CreateEntity();
-            // Assign name and parentId
-            entity.name = eJson.at("name");
-            entity.parentId = parentId;
+        // Add transform to entity
+        json jTransform = eJson.at("transform");
+        auto transform = entity.transform;
+        transform->position = JsonToVec2(jTransform.at("position"));
+        transform->scale = JsonToVec2(jTransform.at("scale"));
+        transform->rotation = jTransform.at("rotation");
 
-            // Add entity to entityTree
-            int id = entity.GetId();
-            if(id >= entityTree.size())
-            { entityTree.resize(id + 1); }
-            entityTree[id] = std::make_unique<Entity>(entity);
-            // add own id to parent
-            entityTree[parentId]->childrenIds.push_back(id); 
+        for (auto& component : eJson.at("components").items()){
+            json type = component.value().at("type");
+            json values = component.value().at("values");
 
-            // Add transform to entity
-            json jTransform = eJson.at("transform");
-            auto transform = entity.transform;
-            transform->position = JsonToVec2(jTransform.at("position"));
-            transform->scale = JsonToVec2(jTransform.at("scale"));
-            transform->rotation = jTransform.at("rotation");
-
-            for (auto& component : eJson.at("components").items()){
-                json type = component.value().at("type");
-                json values = component.value().at("values");
-
-                if(type == "Sprite"){
-                    std::string filepath = values.at("filepath");
-                    int zindex = values.at("zindex");
-                    // duplicate textures are handled in assetManager TODO: this comment can be better
-                    assetManager->AddTexture(renderer, filepath);
-                    entity.AddComponent<SpriteComponent>(filepath, zindex);
-                }   
-                else if(type == "Rigidbody"){
-                    glm::vec2 initVelocity = JsonToVec2(values.at("initVelocity"));
-                    entity.AddComponent<RigidbodyComponent>(initVelocity);
-                }   
-                // TODO: more components
-            }
-            
-            json jsonChildren = eJson.at("children");
-            if(!jsonChildren.empty()){
-                entityStack.push(std::pair(id, jsonChildren));
-            }
+            if(type == "Sprite"){
+                std::string filepath = values.at("filepath");
+                int zindex = values.at("zindex");
+                // duplicate textures are handled in assetManager TODO: this comment can be better
+                assetManager->AddTexture(renderer, filepath);
+                entity.AddComponent<SpriteComponent>(filepath, zindex);
+            }   
+            else if(type == "Rigidbody"){
+                glm::vec2 initVelocity = JsonToVec2(values.at("initVelocity"));
+                entity.AddComponent<RigidbodyComponent>(initVelocity);
+            }   
+            // TODO: more components
         }
     }
 }
