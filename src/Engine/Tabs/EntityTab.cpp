@@ -57,8 +57,8 @@ void EntityTab(Stage& stage){
 
     // Selection by entity id
     // BFS through stage.entityTree to create nodes
-    std::vector<int> rootChildren = entityTree[0]->childrenIds;
-    for (int rc : rootChildren){
+    std::vector<int> rootIds = stage.registry->rootIds;
+    for (int rc : rootIds){
         ImGuiTreeNodeFlags node_flags = base_flags;
         if (rc == stage.selectedEntity)
             node_flags |= ImGuiTreeNodeFlags_Selected;

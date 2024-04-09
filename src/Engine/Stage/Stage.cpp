@@ -80,7 +80,10 @@ void Stage::CreateEntityTree(json entities, int size){
         // Assign name and parentId
         entity.name = eJson.at("name");
         entity.parentId = eJson.at("parent-id");
-        //entity.childrenIds = eJson.at("children-ids");
+        if(entity.parentId == -1) rootIds.push_back(id);
+        // Fill childrenIds
+        json jChildren = eJson.at("children-ids");
+        if(!jChildren.empty()) entity.childrenIds = jChildren.get<std::vector<int>>();
         // Add entity to registry tree 
         entityTree[id] = std::make_unique<Entity>(entity);
 
