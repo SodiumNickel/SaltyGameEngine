@@ -102,7 +102,128 @@
           5.0
         ]
       }
+    },
+    {
+      "children-ids": [
+        5,
+        6,
+        7
+      ],
+      "components": [],
+      "name": "Rocks",
+      "parent-id": -1,
+      "transform": {
+        "position": [
+          0.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": [
+        {
+          "type": "Sprite",
+          "values": {
+            "filepath": "StageDemo/Rocks/rock1.png",
+            "zindex": 2
+          }
+        }
+      ],
+      "name": "Rock 1",
+      "parent-id": 4,
+      "transform": {
+        "position": [
+          1175.0,
+          586.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          5.0,
+          5.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": [
+        {
+          "type": "Sprite",
+          "values": {
+            "filepath": "StageDemo/Rocks/rock2.png",
+            "zindex": 2
+          }
+        }
+      ],
+      "name": "Rock 2",
+      "parent-id": 4,
+      "transform": {
+        "position": [
+          298.0,
+          581.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          5.0,
+          5.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": [
+        {
+          "type": "Sprite",
+          "values": {
+            "filepath": "StageDemo/Rocks/rock3.png",
+            "zindex": 2
+          }
+        }
+      ],
+      "name": "Rock 3",
+      "parent-id": 4,
+      "transform": {
+        "position": [
+          715.0,
+          550.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          -5.0,
+          5.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": [
+        {
+          "type": "Sprite",
+          "values": {
+            "filepath": "StageDemo/background.png",
+            "zindex": 0
+          }
+        }
+      ],
+      "name": "Background",
+      "parent-id": -1,
+      "transform": {
+        "position": [
+          -15.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          4.15,
+          4.4
+        ]
+      }
     }
   ],
-  "size": 4
+  "size": 9
 }
