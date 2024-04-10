@@ -1,8 +1,10 @@
+#include "EnGUI.h"
+
 #include <imgui.h>
 
 #include "../Stage/Stage.h"
 
-void ScriptTab(Stage& stage){
+void ScriptTab::Begin(){
     ImGui::Begin("Scripts");
     ImGui::End();
 }

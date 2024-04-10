@@ -1,3 +1,5 @@
+#include "EnGUI.h"
+
 #include <imgui.h>
 
 #include "../Stage/Stage.h"
@@ -46,8 +48,7 @@ void DDTarget(int id, std::vector<std::unique_ptr<Entity>>& entityTree){
     }
 }
 
-// TODO: maybe this should be a pointer instead, not really sure, i am passing reference a lot of times
-void EntityTab(Stage& stage){
+void EntityTab::Begin(){
     ImGui::Begin((stage.sceneName + "###Entity").c_str());
     auto& entityTree = stage.registry->entityTree;
 
@@ -57,8 +58,8 @@ void EntityTab(Stage& stage){
 
     // Selection by entity id
     // BFS through stage.entityTree to create nodes
-    std::vector<int> rootChildren = entityTree[0]->childrenIds;
-    for (int rc : rootChildren){
+    std::vector<int> rootIds = stage.registry->rootIds;
+    for (int rc : rootIds){
         ImGuiTreeNodeFlags node_flags = base_flags;
         if (rc == stage.selectedEntity)
             node_flags |= ImGuiTreeNodeFlags_Selected;

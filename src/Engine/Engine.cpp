@@ -51,6 +51,7 @@ int Engine::Initialize()
     if(!icon_surf){std::cout << "failed icon_surf imgload";}
     SDL_SetWindowIcon(window, icon_surf);
 
+    // Create renderer for Stage
     renderer = SDL_CreateRenderer(window, -1, 0);
     if(!renderer){
         SDL_DestroyWindow(window);
@@ -90,6 +91,12 @@ int Engine::Initialize()
         renderer
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
+
+    // Open initial tabs
+    openTabs.push_back(new EntityTab(stage));
+    openTabs.push_back(new ComponentTab(stage));
+    openTabs.push_back(new ScriptTab(stage));
+    openTabs.push_back(new AssetTab(stage));
 
     isRunning = true;
     return 0;
@@ -148,9 +155,8 @@ void Engine::UpdateGUI()
     Menu();
 
     // Stage
-    ImGui::Begin("Stage"); // TODO: i want to maintain size of stage when scaling outer window
+    ImGui::Begin("Stage");
     
-    ImVec2 stagePos = ImGui::GetWindowPos(); // TODO: feel like i'll need this later to keep viewport still, might have to be delta
     ImVec2 stageSize = ImGui::GetWindowSize();
     stageSize.x -= 16; // makes all borders equal size
     stageSize.y -= 35; // adjusted for tab bar, hides scroll
@@ -162,10 +168,10 @@ void Engine::UpdateGUI()
     ImGui::End();
 
     // TODO: dont allow hide tab bar, also stop highlighting it when it is clicked on
-    EntityTab(stage);
-    ComponentTab(stage);
-    ScriptTab(stage);
-    AssetTab(stage);
+    // Draw all tabs that are open
+    for (Tab* tab : openTabs){
+        tab->Begin();
+    }
 
     ImGui::ShowDemoWindow();
 
@@ -175,9 +181,6 @@ void Engine::UpdateGUI()
 
 void Engine::UpdateViewport()
 {
-    // TODO: the images get stretched by this amount soooo, they need to be scaled back based on ratio
-    // just divide by w, h in each direction
-
     // TODO: should either call stage or game render system
     // create stage earlier, pass renderer, viewport, then they can do whatever
 
