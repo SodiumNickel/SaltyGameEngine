@@ -17,7 +17,7 @@ class Engine {
         SDL_Texture* viewport;
         ImGuiWindowFlags dockspace_flags;
 
-        // EditHistory editHistory;
+        EditHistory editHistory;
         Stage stage;
         std::vector<Tab*> openTabs;
     public:
