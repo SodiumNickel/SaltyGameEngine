@@ -4,6 +4,9 @@
 #include <SDL.h>
 #include <imgui.h>
 #include "Stage/Stage.h"
+#include "History/EditHistory.h"
+#include "EnGUI.h"
+#include <vector>
 
 class Engine {
     private:
@@ -14,8 +17,9 @@ class Engine {
         SDL_Texture* viewport;
         ImGuiWindowFlags dockspace_flags;
 
+        // EditHistory editHistory;
         Stage stage;
-
+        std::vector<Tab*> openTabs; // TODO: can be unique ptr
     public:
         Engine();
         ~Engine();

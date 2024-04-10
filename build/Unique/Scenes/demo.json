@@ -1,68 +1,76 @@
 {
-    "root":[
+    "size":9,
+    "entities":[
         { "name":"Player", 
           "transform":{"position":[1000.0, 512.0], "scale":[-4.0, 4.0], "rotation": 0.0},
           "components":[
             { "type":"Sprite", "values":{"filepath":"StageDemo/player.png", "zindex":1} },
             { "type":"Rigidbody", "values":{"initVelocity":[0.0, 0.0]} }
           ],
-            "children":[]
+          "children-ids":[],
+          "parent-id":-1
         },
         { "name":"Shop", 
-        "transform":{"position":[17.0, 198.0], "scale":[3.0, 3.5], "rotation": 0.0} ,
-        "components":[
-          { "type":"Sprite", "values":{"filepath":"StageDemo/shop.png", "zindex":2} }
-        ],
-          "children":[]
+          "transform":{"position":[17.0, 198.0], "scale":[3.0, 3.5], "rotation": 0.0} ,
+          "components":[
+            { "type":"Sprite", "values":{"filepath":"StageDemo/shop.png", "zindex":2} }
+          ],
+          "children-ids":[],
+          "parent-id":-1
         },
         { "name":"GroundTiles", 
           "transform":{"position":[0.0, 0.0], "scale":[1.0, 1.0], "rotation": 0.0},
           "components":[
           ],
-          "children":[
-            { "name":"Ground", 
-              "transform":{"position":[-80.0, -140.0], "scale":[5.0, 5.0], "rotation": 0.0}, 
-              "components":[
-                { "type":"Sprite", "values":{"filepath":"StageDemo/ground.png", "zindex":1} }
-              ],
-              "children":[]
-            }
-          ]
+          "children-ids":[3],
+          "parent-id":-1
+        },
+        { "name":"Ground", 
+          "transform":{"position":[-80.0, -140.0], "scale":[5.0, 5.0], "rotation": 0.0}, 
+          "components":[
+            { "type":"Sprite", "values":{"filepath":"StageDemo/ground.png", "zindex":1} }
+          ],
+          "children-ids":[],
+          "parent-id":2
         },
         { "name":"Rocks", 
           "transform":{"position":[0.0, 0.0], "scale":[1.0, 1.0], "rotation": 0.0},
           "components":[
           ],
-          "children":[
-            { "name":"Rock 1", 
-              "transform":{"position":[1175.0, 586.0], "scale":[5.0, 5.0], "rotation": 0.0}, 
-              "components":[
-                { "type":"Sprite", "values":{"filepath":"StageDemo/Rocks/rock1.png", "zindex":2} }
-              ],
-              "children":[]
-            },
-            { "name":"Rock 2", 
-              "transform":{"position":[298.0, 581.0], "scale":[5.0, 5.0], "rotation": 0.0}, 
-              "components":[
-                { "type":"Sprite", "values":{"filepath":"StageDemo/Rocks/rock2.png", "zindex":2} }
-              ],
-              "children":[]
-            },
-            { "name":"Rock 3", 
-              "transform":{"position":[715.0, 550.0], "scale":[-5.0, 5.0], "rotation": 0.0}, 
-              "components":[
-                { "type":"Sprite", "values":{"filepath":"StageDemo/Rocks/rock3.png", "zindex":2} }
-              ],
-              "children":[]
-            }
-          ]
+          "children-ids":[5,6,7],
+          "parent-id":-1
+        },
+        { "name":"Rock 1", 
+          "transform":{"position":[1175.0, 586.0], "scale":[5.0, 5.0], "rotation": 0.0}, 
+          "components":[
+            { "type":"Sprite", "values":{"filepath":"StageDemo/Rocks/rock1.png", "zindex":2} }
+          ],
+          "children-ids":[],
+          "parent-id":4
+        },
+        { "name":"Rock 2", 
+          "transform":{"position":[298.0, 581.0], "scale":[5.0, 5.0], "rotation": 0.0}, 
+          "components":[
+            { "type":"Sprite", "values":{"filepath":"StageDemo/Rocks/rock2.png", "zindex":2} }
+          ],
+          "children-ids":[],
+          "parent-id":4
+        },
+        { "name":"Rock 3", 
+          "transform":{"position":[715.0, 550.0], "scale":[-5.0, 5.0], "rotation": 0.0}, 
+          "components":[
+            { "type":"Sprite", "values":{"filepath":"StageDemo/Rocks/rock3.png", "zindex":2} }
+          ],
+          "children-ids":[],
+          "parent-id":4
         },
         { "name":"Background", 
           "transform":{"position":[-15.0, 0.0], "scale":[4.15, 4.4], "rotation": 0.0} ,
           "components":[
             { "type":"Sprite", "values":{"filepath":"StageDemo/background.png", "zindex":0} }
           ],
-            "children":[]
+          "children-ids":[],
+          "parent-id":-1
         }
     ]
 }

@@ -26,7 +26,7 @@ class Stage {
         ~Stage();
         void Initialize(SDL_Renderer* renderer, SDL_Texture* viewport);
         void LoadScene(int sceneIndex);
-        void CreateEntityTree(json entities);
+        void CreateEntityTree(json entities, int size);
         void Run();
         void ProcessInput();
         void Update();

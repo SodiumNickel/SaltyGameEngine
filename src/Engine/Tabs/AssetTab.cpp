@@ -1,9 +1,11 @@
+#include "EnGUI.h"
+
 #include <imgui.h>
 #include <filesystem>
 
 #include "../Stage/Stage.h"
 
-void AssetTab(Stage& stage){
+void AssetTab::Begin() {
     ImGui::Begin("Assets");
 
     if (stage.currentDir != std::filesystem::path("./Unique/Assets"))

@@ -5,10 +5,45 @@
 
 void Menu();
 
-void AssetTab(Stage& stage);
-void EntityTab(Stage& stage);
-void ComponentTab(Stage& stage);
-void ScriptTab(Stage& stage);
+class Tab {
+public:
+    virtual void Begin() = 0;    
+};
 
+class EntityTab : public Tab {
+private:
+    int index;
+    Stage& stage;
+public:
+    EntityTab(Stage& stage) : stage(stage) {};
+    void Begin() override;
+};
+
+class ComponentTab : public Tab {
+private:
+    int index;
+    Stage& stage;
+public:
+    ComponentTab(Stage& stage) : stage(stage) {};
+    void Begin() override;
+};
+
+class ScriptTab : public Tab {
+private:
+    int index;
+    Stage& stage;
+public:
+    ScriptTab(Stage& stage) : stage(stage) {};
+    void Begin() override;
+};
+
+class AssetTab : public Tab {
+private:
+    int index;
+    Stage& stage;
+public:
+    AssetTab(Stage& stage) : stage(stage) {};
+    void Begin() override;
+};
 
 #endif
