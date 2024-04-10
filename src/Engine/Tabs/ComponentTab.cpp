@@ -18,8 +18,7 @@
 void Transform(Entity entity){
     if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        // TODO: this is not a reference, does not edit value rn
-        // Also create system that updates global transforms? i would prefer to have it whenever transform is changed but not sure if that would work
+        // TODO: Also create system that updates global transforms? i would prefer to have it whenever transform is changed but not sure if that would work
         auto transform = entity.transform;
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.45f);
 
@@ -89,8 +88,7 @@ void BoxCollider(Entity entity){
     }
 }
 
-// TODO: i want tabs to reopen when switching, or optimally they store who is open
-// TODO: automatically save this to the json file??
+// TODO: i want component boxes in tab to reopen when switching, or optimally they store who is open
 void ComponentTab::Begin(){
     ImGui::Begin("Components");
 

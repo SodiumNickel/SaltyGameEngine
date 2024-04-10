@@ -3,9 +3,6 @@
 
 #include <glm.hpp>
 
-// TODO: can only add transform component if parent also has one
-// Thinking about removing Transform as a component, and just forcing all objects to have it
-
 struct TransformComponent {
     glm::vec2 position;
     glm::vec2 scale;

@@ -19,7 +19,7 @@ class Engine {
 
         // EditHistory editHistory;
         Stage stage;
-        std::vector<Tab*> openTabs; // TODO: can be unique ptr
+        std::vector<Tab*> openTabs;
     public:
         Engine();
         ~Engine();
