@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-void Edit::Apply(){
-    // TODO: log some error here, should always be overriden
-}
+// void Edit::Apply(){
+//     // TODO: log some error here, should always be overriden
+// }
 
-void ComponentValueEdit::Apply(){
-    std::cout << "ComponentValueEdit" << '\n';
-}
+// void ComponentValueEdit::Apply(){
+//     std::cout << "ComponentValueEdit" << '\n';
+// }

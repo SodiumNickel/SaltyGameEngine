@@ -1,3 +1,5 @@
+#include "EnGUI.h"
+
 #include <imgui.h>
 #include <imgui_stdlib.h>
 
@@ -89,7 +91,7 @@ void BoxCollider(Entity entity){
 
 // TODO: i want tabs to reopen when switching, or optimally they store who is open
 // TODO: automatically save this to the json file??
-void ComponentTab(Stage& stage){
+void ComponentTab::Begin(){
     ImGui::Begin("Components");
 
     Entity selected = *stage.registry->entityTree[stage.selectedEntity].get();

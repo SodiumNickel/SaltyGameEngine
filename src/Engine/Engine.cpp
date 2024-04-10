@@ -51,6 +51,7 @@ int Engine::Initialize()
     if(!icon_surf){std::cout << "failed icon_surf imgload";}
     SDL_SetWindowIcon(window, icon_surf);
 
+    // Create renderer for Stage
     renderer = SDL_CreateRenderer(window, -1, 0);
     if(!renderer){
         SDL_DestroyWindow(window);
@@ -90,6 +91,12 @@ int Engine::Initialize()
         renderer
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
+
+    // Open initial tabs
+    openTabs.push_back(new EntityTab(stage));
+    openTabs.push_back(new ComponentTab(stage));
+    openTabs.push_back(new ScriptTab(stage));
+    openTabs.push_back(new AssetTab(stage));
 
     isRunning = true;
     return 0;
@@ -162,10 +169,10 @@ void Engine::UpdateGUI()
     ImGui::End();
 
     // TODO: dont allow hide tab bar, also stop highlighting it when it is clicked on
-    EntityTab(stage);
-    ComponentTab(stage);
-    ScriptTab(stage);
-    AssetTab(stage);
+    // Draw all tabs that are open
+    for (Tab* tab : openTabs){
+        tab->Begin();
+    }
 
     ImGui::ShowDemoWindow();
 
