@@ -6,16 +6,19 @@
 #include "../Stage/Stage.h"
 #include "../Game/ECS/ECS.h"
 
-// could have a grouped header, which contains all of these includes
+// TODO: could have a grouped header, which contains all of these includes
 #include "../Game/Components/TransformComponent.h"
 #include "../Game/Components/SpriteComponent.h"
 #include "../Game/Components/RigidbodyComponent.h"
 #include "../Game/Components/BoxColliderComponent.h"
 
-// IsItemDeactivatedAfterEdit
-// TODO: save into undo only once finished editing
+#include "./History/Edit.h"
 
-void Transform(Entity entity){
+#include "../Game/InEngine.h"
+#include <iostream>
+
+void ComponentTab::Transform(){
+    // All entities have a transform component
     if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
     {
         // TODO: Also create system that updates global transforms? i would prefer to have it whenever transform is changed but not sure if that would work
@@ -24,7 +27,11 @@ void Transform(Entity entity){
 
         ImGui::Text("Position");
         ImGui::Text("x"); ImGui::SameLine();
-        ImGui::DragFloat("##posx", &transform->position.x, 1.0f); ImGui::SameLine();
+        ImGui::DragFloat("##posx", &transform->position.x, 1.0f); 
+        if(ImGui::IsItemDeactivatedAfterEdit()) 
+        { editHistory.Do(new ComponentValueEdit<TransformComponent>(entityId, POSITION_X), 
+                         new ComponentValueEdit<TransformComponent>(entityId, POSITION_Y)); }
+        ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         ImGui::DragFloat("##posy", &transform->position.y, 1.0f);
 
@@ -95,7 +102,7 @@ void ComponentTab::Begin(){
     Entity selected = *stage.registry->entityTree[stage.selectedEntity].get();
     // iterate through hasComponent? unfortunately means we cant organize stuff
 
-    Transform(selected);
+    Transform();
     Sprite(selected, stage.assetManager);
     Rigidbody(selected);
     BoxCollider(selected);

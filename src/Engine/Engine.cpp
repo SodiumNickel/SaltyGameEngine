@@ -94,7 +94,7 @@ int Engine::Initialize()
 
     // Open initial tabs
     openTabs.push_back(new EntityTab(stage));
-    openTabs.push_back(new ComponentTab(stage));
+    openTabs.push_back(new ComponentTab(editHistory, stage));
     openTabs.push_back(new ScriptTab(stage));
     openTabs.push_back(new AssetTab(stage));
 

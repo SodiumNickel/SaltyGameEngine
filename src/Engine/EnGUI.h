@@ -1,6 +1,7 @@
 #ifndef ENGUI_H
 #define ENGUI_H
 
+#include "./History/EditHistory.h"
 #include "./Stage/Stage.h"
 
 void Menu();
@@ -22,9 +23,14 @@ public:
 class ComponentTab : public Tab {
 private:
     int index;
+    EditHistory& editHistory;
     Stage& stage;
+    int entityId;
+    Entity entity;
+
+    void Transform();
 public:
-    ComponentTab(Stage& stage) : stage(stage) {};
+    ComponentTab(EditHistory& editHistory, Stage& stage) : editHistory(editHistory), stage(stage) {};
     void Begin() override;
 };
 
