@@ -5,22 +5,23 @@
 
 class Edit {
 public:
-    virtual void Apply() = 0;
-    virtual void ApplyJson() = 0;
+    virtual void Apply(bool undo) = 0;
+    virtual void ApplyJson(bool undo) = 0;
 };
 
 // still needs some initializer
 // template <typename TComponent, typename ...TArgs> void AddComponent(TArgs&& ...args);
-template <typename TComponent>
+template <typename TComponent, typename TValue>
 class ComponentValueEdit : public Edit {
     int entityId;
     ComponentVars compVar;
-    // maybe a reference to the actual value? e.g. &transform.position.x
-    // would prefer it to be the component itself and i could change it from the entity
+    TValue prev; // Used to undo action
+    TValue cur; // Used to (re)do action
 public:
-    ComponentValueEdit(int entityId, ComponentVars compVar): entityId(entityId), compVar(compVar) {};
-    void Apply() override;
-    void ApplyJson() override;
+    ComponentValueEdit(int entityId, ComponentVars compVar, TValue prev, TValue cur): 
+        entityId(entityId), compVar(compVar), prev(prev), cur(cur) {};
+    void Apply(bool undo) override;
+    void ApplyJson(bool undo) override;
 };
 
 // NOTE: DELETING AN ENTITY HAS TO PUT IT IN SAME PLACE AFTER UNDO, OTHERWISE THIS WHOLE SYSTEM BREAKS

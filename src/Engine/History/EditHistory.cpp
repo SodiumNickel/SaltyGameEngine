@@ -3,23 +3,22 @@
 #include "Edit.h"
 #include <stack>
 
-void EditHistory::Do(Edit* action, Edit* reverse){
-    action->ApplyJson();
-    undoStack.push(reverse);
-    actionStack.push(action);
-
-    // redoStack.clear(); TODO: REMEMBER TO DEALLOCATE POINTERS, or just use unique_ptrs
+void EditHistory::Do(Edit* action){
+    action->ApplyJson(false);
+    undoStack.push(action);
+    // redoStack.clear(); TODO: REMEMBER TO DEALLOCATE POINTERS, or just use unique_ptrs (shared?)
 }
 
 // Pre: !undoStack.empty
 void EditHistory::Undo(){ 
-    undoStack.top()->Apply();
-    undoStack.pop();
-    redoStack.push(actionStack.top());
-    actionStack.pop();
+    undoStack.top()->Apply(true);
+    redoStack.push(undoStack.top());
+    undoStack.pop(); // TODO: might need to deallocate this
 }
 
 // Pre: !redoStack.empty
 void EditHistory::Redo(){
-
+    redoStack.top()->Apply(false);
+    undoStack.push(redoStack.top());
+    redoStack.pop();
 }

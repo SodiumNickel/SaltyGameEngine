@@ -27,10 +27,10 @@ void ComponentTab::Transform(){
 
         ImGui::Text("Position");
         ImGui::Text("x"); ImGui::SameLine();
+        float prevf = transform->position.x;
         ImGui::DragFloat("##posx", &transform->position.x, 1.0f); 
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit<TransformComponent>(entityId, POSITION_X), 
-                         new ComponentValueEdit<TransformComponent>(entityId, POSITION_Y)); }
+        { editHistory.Do(new ComponentValueEdit<TransformComponent, float>(entityId, POSITION_X, prevf, transform->position.x)); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         ImGui::DragFloat("##posy", &transform->position.y, 1.0f);
