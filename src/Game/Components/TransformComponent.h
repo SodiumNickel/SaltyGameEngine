@@ -3,8 +3,6 @@
 
 #include <glm.hpp>
 
-#include "./InEngine.h"
-
 struct TransformComponent {
     glm::vec2 position;
     glm::vec2 scale;
@@ -16,20 +14,6 @@ struct TransformComponent {
         this->scale = scale;
         this->rotation = rotation;
     }
-
-    #ifdef INENGINE
-    template <typename T>
-    void SetValue(ComponentVars compVar, T value){
-        switch(compVar){
-            case POSITION_X: position.x = value; break;
-            case POSITION_Y: position.y = value; break;
-            case SCALE_X: scale.x = value; break;
-            case SCALE_Y: scale.y = value; break;
-            case ROTATION: rotation = value; break;
-            default: break; // TODO: some log
-        }
-    }
-    #endif
 };
 
 #endif

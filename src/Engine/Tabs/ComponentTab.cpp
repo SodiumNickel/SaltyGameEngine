@@ -14,7 +14,6 @@
 
 #include "./History/Edit.h"
 
-#include "../Game/InEngine.h"
 #include <iostream>
 
 void ComponentTab::Transform(){
@@ -30,7 +29,7 @@ void ComponentTab::Transform(){
         float prevf = transform->position.x;
         ImGui::DragFloat("##posx", &transform->position.x, 1.0f); 
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit<TransformComponent, float>(entityId, POSITION_X, prevf, transform->position.x)); }
+        { editHistory.Do(new ComponentValueEdit<float>(TRANSFORM, entityId, POSITION_X, prevf, transform->position.x)); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         ImGui::DragFloat("##posy", &transform->position.y, 1.0f);
