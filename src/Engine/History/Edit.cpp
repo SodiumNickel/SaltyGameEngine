@@ -3,6 +3,8 @@
 #include "../Game/Components/TransformComponent.h"
 #include "../Game/ECS/ECS.h"
 
+#include <iostream>
+
 void ComponentValueEdit::Apply(bool undo){
     ComponentValue* val = undo ? prev.get() : cur.get(); 
     Entity e;
@@ -37,6 +39,7 @@ void ComponentValueEdit::Apply(bool undo){
     ApplyJson(undo); // TODO: do i need a this.ApplyJson()
 }
 void ComponentValueEdit::ApplyJson(bool undo){
+    std::cout << "ApplyJson" << '\n';
     // TValue val = undo ? prev : cur;
     // Entity e;
     // e.GetComponent<TComponent>().SetValue<TValue>(POSITION_X, 1);
