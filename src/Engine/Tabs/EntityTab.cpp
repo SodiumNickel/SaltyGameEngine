@@ -49,7 +49,7 @@ void DDTarget(int id, std::vector<std::unique_ptr<Entity>>& entityTree){
 }
 
 void EntityTab::Begin(){
-    ImGui::Begin((stage.sceneName + "###Entity").c_str());
+    ImGui::Begin((stage.sceneName + "###Entity").c_str(), NULL, editHistory.unsaved ? ImGuiWindowFlags_UnsavedDocument : 0);
     auto& entityTree = stage.registry->entityTree;
 
     static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;

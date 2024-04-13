@@ -14,9 +14,10 @@ public:
 class EntityTab : public Tab {
 private:
     int index;
+    EditHistory& editHistory;
     Stage& stage;
 public:
-    EntityTab(Stage& stage) : stage(stage) {};
+    EntityTab(EditHistory& editHistory, Stage& stage) : editHistory(editHistory), stage(stage) {};
     void Begin() override;
 };
 

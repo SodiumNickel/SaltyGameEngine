@@ -9,6 +9,7 @@ class EditHistory {
         std::stack<Edit*> undoStack;
         std::stack<Edit*> redoStack;
     public:
+        bool unsaved = false;
         // Writes to current-scene.json and pushes to undoStack. Clears redoStack.
         void Do(Edit* action);
         // Modifies entityTree + current-scene.json and pushes to redoStack 

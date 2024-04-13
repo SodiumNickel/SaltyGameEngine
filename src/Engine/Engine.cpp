@@ -93,7 +93,7 @@ int Engine::Initialize()
     ImGui_ImplSDLRenderer2_Init(renderer);
 
     // Open initial tabs
-    openTabs.push_back(new EntityTab(stage));
+    openTabs.push_back(new EntityTab(editHistory, stage));
     openTabs.push_back(new ComponentTab(editHistory, stage));
     openTabs.push_back(new ScriptTab(stage));
     openTabs.push_back(new AssetTab(stage));

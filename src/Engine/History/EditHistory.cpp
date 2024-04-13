@@ -5,6 +5,8 @@
 
 void EditHistory::Do(Edit* action){
     action->ApplyJson(false);
+    unsaved = true;
+
     undoStack.push(action);
     // redoStack.clear(); TODO: REMEMBER TO DEALLOCATE POINTERS, or just use unique_ptrs (shared?)
 }
