@@ -26,9 +26,9 @@ private:
     EditHistory& editHistory;
     Stage& stage;
     int entityId;
-    Entity entity;
 
-    void Transform();
+    // TODO: this should just access entity by id from above
+    void Transform(Entity entity);
 public:
     ComponentTab(EditHistory& editHistory, Stage& stage) : editHistory(editHistory), stage(stage) {};
     void Begin() override;

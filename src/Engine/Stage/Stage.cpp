@@ -57,8 +57,8 @@ void Stage::LoadScene(int sceneIndex)
     
     std::ifstream g("Unique/Scenes/" + sceneName + ".json");
     json scene = json::parse(g);
-    std::ofstream("History/current-scene.json") << std::setw(2) << scene;
-        
+    std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
+
     json entities = scene.at("entities");
     int size = scene.at("size");
     g.close();

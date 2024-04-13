@@ -4,6 +4,9 @@
 #include "../Game/ECS/ECS.h"
 
 #include <iostream>
+#include <fstream>
+#include <json.hpp>
+using json = nlohmann::json;
 
 void ComponentValueEdit::Apply(bool undo){
     ComponentValue* val = undo ? prev.get() : cur.get(); 
@@ -36,14 +39,42 @@ void ComponentValueEdit::Apply(bool undo){
             // TODO: log unidentified component type
             break;
     }
-    ApplyJson(undo); // TODO: do i need a this.ApplyJson()
+    ApplyJson(undo);
 }
 void ComponentValueEdit::ApplyJson(bool undo){
-    std::cout << "ApplyJson" << '\n';
-    // TValue val = undo ? prev : cur;
-    // Entity e;
-    // e.GetComponent<TComponent>().SetValue<TValue>(POSITION_X, 1);
+    ComponentValue* val = undo ? prev.get() : cur.get(); 
+    std::ifstream g("EngineData/current-scene.json");
+    json scene = json::parse(g);
+    json entity = scene.at("entities").at(entityId);
+
+    switch(compType) {
+        case TRANSFORM: {
+            switch(compVar){ // TODO: this can be ["transform"]["position"] i think, should check
+                case POSITION_X: entity.at("transform").at("position")[0] = val->f; break;
+                case POSITION_Y: entity.at("transform").at("position")[1] = val->f; break;
+                case SCALE_X: entity.at("transform").at("scale")[0] = val->f; break;
+                case SCALE_Y: entity.at("transform").at("scale")[1] = val->f; break;
+                case ROTATION: entity.at("transform").at("rotation") = val->f; break;
+                default:
+                    // TODO: log error - transform does not have ...
+                    break;
+            }
+            break;
+        }
+        // case SPRITE:
+        //     // TODO:
+        //     break;
+        // case RIGIDBODY:
+        //     // TODO:
+        //     break;
+        // case BOXCOL:
+        //     // TODO:
+        //     break;
+        default:
+            // TODO: log unidentified component type
+            break;
+    }
+    scene.at("entities").at(entityId) = entity;
+    std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
+    g.close();
 }
-
-#include <iostream>
-

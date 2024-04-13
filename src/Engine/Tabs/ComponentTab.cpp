@@ -16,7 +16,7 @@
 
 #include <iostream>
 
-void ComponentTab::Transform(){
+void ComponentTab::Transform(Entity entity){
     // All entities have a transform component
     if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
     {
@@ -101,7 +101,7 @@ void ComponentTab::Begin(){
     Entity selected = *stage.registry->entityTree[stage.selectedEntity].get();
     // iterate through hasComponent? unfortunately means we cant organize stuff
 
-    Transform();
+    Transform(selected);
     Sprite(selected, stage.assetManager);
     Rigidbody(selected);
     BoxCollider(selected);
