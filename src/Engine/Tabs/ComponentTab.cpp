@@ -22,6 +22,7 @@ void ComponentTab::Transform(Entity entity){
     {
         // TODO: Also create system that updates global transforms? i would prefer to have it whenever transform is changed but not sure if that would work
         auto transform = entity.transform;
+        int entityId = entity.GetId();
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.45f);
 
         ImGui::Text("Position");
@@ -32,17 +33,30 @@ void ComponentTab::Transform(Entity entity){
         { editHistory.Do(new ComponentValueEdit(TRANSFORM, POSITION_X, entityId, prevf, transform->position.x)); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
+        prevf = transform->position.y;
         ImGui::DragFloat("##posy", &transform->position.y, 1.0f);
+        if(ImGui::IsItemDeactivatedAfterEdit()) 
+        { editHistory.Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, entityId, prevf, transform->position.y)); }
 
         ImGui::Text("Scale");
         ImGui::Text("x"); ImGui::SameLine();
-        ImGui::DragFloat("##scalex", &transform->scale.x, 0.005f); ImGui::SameLine();
+        prevf = transform->scale.x;
+        ImGui::DragFloat("##scalex", &transform->scale.x, 0.005f); 
+        if(ImGui::IsItemDeactivatedAfterEdit()) 
+        { editHistory.Do(new ComponentValueEdit(TRANSFORM, SCALE_X, entityId, prevf, transform->scale.x)); }
+        ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
+        prevf = transform->scale.y;
         ImGui::DragFloat("##scaley", &transform->scale.y, 0.005f);
+        if(ImGui::IsItemDeactivatedAfterEdit()) 
+        { editHistory.Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, entityId, prevf, transform->scale.y)); }
 
         ImGui::Text("Rotation");
         ImGui::Text("θ"); ImGui::SameLine(); // TODO: theta is not displaying properly in this font
+        prevf = transform->rotation;
         ImGui::DragFloat("##rot", &transform->rotation, 0.25f);
+        if(ImGui::IsItemDeactivatedAfterEdit()) 
+        { editHistory.Do(new ComponentValueEdit(TRANSFORM, ROTATION, entityId, prevf, transform->rotation)); }
     }
 }
 void Sprite(Entity entity, std::unique_ptr<AssetManager>& assetManager){

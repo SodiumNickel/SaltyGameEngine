@@ -25,7 +25,7 @@ private:
     int index;
     EditHistory& editHistory;
     Stage& stage;
-    int entityId;
+    //int entityId;
 
     // TODO: this should just access entity by id from above
     void Transform(Entity entity);

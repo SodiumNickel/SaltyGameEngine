@@ -24,7 +24,7 @@
       "parent-id": -1,
       "transform": {
         "position": [
-          1042.0,
+          1000.0,
           512.0
         ],
         "rotation": 0.0,
@@ -214,13 +214,13 @@
       "parent-id": -1,
       "transform": {
         "position": [
-          -15.0,
-          0.0
+          -220.0,
+          -166.0
         ],
-        "rotation": 0.0,
+        "rotation": 63.75,
         "scale": [
-          4.15,
-          4.4
+          5.764999866485596,
+          3.625
         ]
       }
     }
