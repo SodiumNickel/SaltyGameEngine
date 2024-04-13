@@ -11,14 +11,14 @@ void EditHistory::Do(Edit* action){
 
 // Pre: !undoStack.empty
 void EditHistory::Undo(){ 
-    undoStack.top()->Apply(true);
-    redoStack.push(undoStack.top());
-    undoStack.pop(); // TODO: might need to deallocate this
+    //undoStack.top()->Apply(true);
+    //redoStack.push(undoStack.top());
+    //undoStack.pop(); // TODO: might need to deallocate this
 }
 
 // Pre: !redoStack.empty
 void EditHistory::Redo(){
-    redoStack.top()->Apply(false);
-    undoStack.push(redoStack.top());
-    redoStack.pop();
+    //redoStack.top()->Apply(false);
+    //undoStack.push(redoStack.top());
+    //redoStack.pop();
 }

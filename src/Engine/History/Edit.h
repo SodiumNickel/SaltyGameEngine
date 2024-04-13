@@ -1,6 +1,9 @@
 #ifndef EDIT_H
 #define EDIT_H
 
+#include "../Game/Components/TransformComponent.h"
+#include "../Game/ECS/ECS.h"
+
 class Edit {
 public:
     virtual void Apply(bool undo) = 0;
@@ -20,22 +23,32 @@ enum ComponentVars {
     SCALE_Y,
     ROTATION
 };
+struct ComponentValue {
+    float f;
+    int i;
+    ComponentValue(float f): f(f) {};
+    ComponentValue(int i): i(i) {};
+};
 
 // still needs some initializer
 // template <typename TComponent, typename ...TArgs> void AddComponent(TArgs&& ...args);
-template <typename TValue>
 class ComponentValueEdit : public Edit {
     ComponentTypes compType;
-    int entityId;
     ComponentVars compVar;
-    TValue prev; // Used to undo action
-    TValue cur; // Used to (re)do action
+    int entityId;
+    std::unique_ptr<ComponentValue> prev; // Used to undo action
+    std::unique_ptr<ComponentValue> cur; // Used to (re)do action
 public:
-    ComponentValueEdit<TValue>(ComponentTypes compType, int entityId, ComponentVars compVar, TValue prev, TValue cur): 
-        compType(compType), entityId(entityId), compVar(compVar), prev(prev), cur(cur) {};
+    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, int entityId,float prevf, float curf): 
+        compType(compType), compVar(compVar), entityId(entityId), 
+        prev(std::make_unique<ComponentValue>(prevf)), cur(std::make_unique<ComponentValue>(curf)) {};
+    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, int entityId, int previ, int curi): 
+        compType(compType), compVar(compVar), entityId(entityId), 
+        prev(std::make_unique<ComponentValue>(previ)), cur(std::make_unique<ComponentValue>(curi)) {};
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
 };
+
 
 // NOTE: DELETING AN ENTITY HAS TO PUT IT IN SAME PLACE AFTER UNDO, OTHERWISE THIS WHOLE SYSTEM BREAKS
 
