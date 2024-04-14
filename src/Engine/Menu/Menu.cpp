@@ -1,8 +1,13 @@
+#include "./EnGUI.h"
+
 #include <imgui.h>
 
-void Menu(){
+#include <iostream>
+
+void Menu::Begin(){
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Save", "CTRL+S", false, editHistory.unsaved )) { editHistory.Save(); }
             //ShowExampleMenuFile();
             ImGui::EndMenu();
         }

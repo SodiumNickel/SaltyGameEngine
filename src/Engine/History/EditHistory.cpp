@@ -24,3 +24,9 @@ void EditHistory::Redo(){
     undoStack.push(redoStack.top());
     redoStack.pop();  // TODO: might need to deallocate this
 }
+
+// Pre: unsaved = true;
+void EditHistory::Save(){
+    // copy current-scene into actual scene
+    unsaved = false;
+}

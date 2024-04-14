@@ -15,6 +15,7 @@ class EditHistory {
         // Modifies entityTree + current-scene.json and pushes to redoStack 
         void Undo();
         void Redo();
+        void Save();
 };
 
 #endif

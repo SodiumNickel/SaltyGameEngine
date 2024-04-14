@@ -19,6 +19,7 @@ class Engine {
 
         EditHistory editHistory;
         Stage stage;
+        std::unique_ptr<Menu> menu;
         std::vector<Tab*> openTabs;
     public:
         Engine();

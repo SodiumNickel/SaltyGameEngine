@@ -92,6 +92,8 @@ int Engine::Initialize()
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
 
+    menu = std::make_unique<Menu>(editHistory);
+
     // Open initial tabs
     openTabs.push_back(new EntityTab(editHistory, stage));
     openTabs.push_back(new ComponentTab(editHistory, stage));
@@ -152,7 +154,7 @@ void Engine::UpdateGUI()
     ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
     // Top menu bar
-    Menu();
+    menu->Begin();
 
     // Stage
     ImGui::Begin("Stage");

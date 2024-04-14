@@ -4,7 +4,13 @@
 #include "./History/EditHistory.h"
 #include "./Stage/Stage.h"
 
-void Menu();
+class Menu {
+private:
+    EditHistory& editHistory; // TODO: all of these can probably be pointers, dont need to be a reference
+public:
+    Menu(EditHistory& editHistory) : editHistory(editHistory) {};
+    void Begin();
+};
 
 class Tab {
 public:
