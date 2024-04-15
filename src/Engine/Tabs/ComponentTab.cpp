@@ -30,33 +30,33 @@ void ComponentTab::Transform(Entity entity){
         float prevf = transform->position.x;
         ImGui::DragFloat("##posx", &transform->position.x, 1.0f); 
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit(TRANSFORM, POSITION_X, entityId, prevf, transform->position.x)); }
+        { editHistory.Do(new ComponentValueEdit(TRANSFORM, POSITION_X, stage, entityId, prevf, transform->position.x)); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         prevf = transform->position.y;
         ImGui::DragFloat("##posy", &transform->position.y, 1.0f);
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, entityId, prevf, transform->position.y)); }
+        { editHistory.Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, stage, entityId, prevf, transform->position.y)); }
 
         ImGui::Text("Scale");
         ImGui::Text("x"); ImGui::SameLine();
         prevf = transform->scale.x;
         ImGui::DragFloat("##scalex", &transform->scale.x, 0.005f); 
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit(TRANSFORM, SCALE_X, entityId, prevf, transform->scale.x)); }
+        { editHistory.Do(new ComponentValueEdit(TRANSFORM, SCALE_X, stage, entityId, prevf, transform->scale.x)); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         prevf = transform->scale.y;
         ImGui::DragFloat("##scaley", &transform->scale.y, 0.005f);
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, entityId, prevf, transform->scale.y)); }
+        { editHistory.Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, stage, entityId, prevf, transform->scale.y)); }
 
         ImGui::Text("Rotation");
         ImGui::Text("θ"); ImGui::SameLine(); // TODO: theta is not displaying properly in this font
         prevf = transform->rotation;
         ImGui::DragFloat("##rot", &transform->rotation, 0.25f);
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit(TRANSFORM, ROTATION, entityId, prevf, transform->rotation)); }
+        { editHistory.Do(new ComponentValueEdit(TRANSFORM, ROTATION, stage, entityId, prevf, transform->rotation)); }
     }
 }
 void Sprite(Entity entity, std::unique_ptr<AssetManager>& assetManager){

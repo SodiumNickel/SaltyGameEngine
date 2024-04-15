@@ -12,8 +12,8 @@ void Menu::Begin(){
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit")) {
-            if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-            if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+            if (ImGui::MenuItem("Undo", "CTRL+Z", false, editHistory.canUndo)) { editHistory.Undo(); }
+            if (ImGui::MenuItem("Redo", "CTRL+Y", false, editHistory.canRedo)) { editHistory.Redo(); }
             ImGui::Separator();
             if (ImGui::MenuItem("Cut", "CTRL+X")) {}
             if (ImGui::MenuItem("Copy", "CTRL+C")) {}

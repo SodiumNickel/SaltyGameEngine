@@ -1,6 +1,8 @@
 #ifndef EDIT_H
 #define EDIT_H
 
+#include "../Stage/Stage.h"
+
 #include "../Game/Components/TransformComponent.h"
 #include "../Game/ECS/ECS.h"
 
@@ -35,15 +37,16 @@ struct ComponentValue {
 class ComponentValueEdit : public Edit {
     ComponentTypes compType;
     ComponentVars compVar;
+    Stage& stage; // TODO: still would really prefer this to be a pointer not reference
     int entityId;
     std::unique_ptr<ComponentValue> prev; // Used to undo action
     std::unique_ptr<ComponentValue> cur; // Used to (re)do action
 public:
-    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, int entityId,float prevf, float curf): 
-        compType(compType), compVar(compVar), entityId(entityId), 
+    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, Stage& stage, int entityId,float prevf, float curf): 
+        compType(compType), compVar(compVar), stage(stage), entityId(entityId), 
         prev(std::make_unique<ComponentValue>(prevf)), cur(std::make_unique<ComponentValue>(curf)) {};
-    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, int entityId, int previ, int curi): 
-        compType(compType), compVar(compVar), entityId(entityId), 
+    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, Stage& stage, int entityId, int previ, int curi): 
+        compType(compType), compVar(compVar), stage(stage), entityId(entityId), 
         prev(std::make_unique<ComponentValue>(previ)), cur(std::make_unique<ComponentValue>(curi)) {};
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;

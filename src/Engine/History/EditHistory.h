@@ -16,6 +16,8 @@ class EditHistory {
         EditHistory(std::shared_ptr<EngineData> engineData) : engineData(engineData) {};
 
         bool unsaved = false;
+        bool canUndo = false;
+        bool canRedo = false;
         // Writes to current-scene.json and pushes to undoStack. Clears redoStack.
         void Do(Edit* action);
         // Modifies entityTree + current-scene.json and pushes to redoStack 
