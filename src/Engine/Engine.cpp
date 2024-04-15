@@ -12,6 +12,8 @@
 // Constructor
 Engine::Engine()
 {
+    engineData = std::make_shared<EngineData>(0);
+    editHistory = new EditHistory(engineData); // TODO: could move this into initialize, especially if it needs scene
     // Set to true on success of Initialize()
     isRunning = false;
 }
@@ -92,11 +94,11 @@ int Engine::Initialize()
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
 
-    menu = std::make_unique<Menu>(editHistory);
+    menu = std::make_unique<Menu>(*editHistory);
 
     // Open initial tabs
-    openTabs.push_back(new EntityTab(editHistory, stage));
-    openTabs.push_back(new ComponentTab(editHistory, stage));
+    openTabs.push_back(new EntityTab(*editHistory, stage)); // TODO: this should be better pointers
+    openTabs.push_back(new ComponentTab(*editHistory, stage));
     openTabs.push_back(new ScriptTab(stage));
     openTabs.push_back(new AssetTab(stage));
 
@@ -203,6 +205,8 @@ void Engine::Render()
 // Clean up
 void Engine::Destroy()
 {
+    // TODO: might have some pointers to clear if i dont make them all shared or unique
+
     ImGui_ImplSDLRenderer2_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();

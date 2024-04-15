@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <imgui.h>
+#include "EngineData.h"
 #include "Stage/Stage.h"
 #include "History/EditHistory.h"
 #include "EnGUI.h"
@@ -17,7 +18,10 @@ class Engine {
         SDL_Texture* viewport;
         ImGuiWindowFlags dockspace_flags;
 
-        EditHistory editHistory;
+        // Shared pointer used to pass engine data to tabs, stage, edit history
+        std::shared_ptr<EngineData> engineData;
+        
+        EditHistory* editHistory; // TODO: make unique ptr
         Stage stage;
         std::unique_ptr<Menu> menu;
         std::vector<Tab*> openTabs;

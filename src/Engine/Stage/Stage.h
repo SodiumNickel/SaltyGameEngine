@@ -34,9 +34,10 @@ class Stage {
 
         // TODO: both of these will be a PRIVATE unique_ptr in Game, replace comment too
         std::shared_ptr<Registry> registry; 
-        std::unique_ptr<AssetManager> assetManager;
+        std::unique_ptr<AssetManager> assetManager; // TODO: i might move assetMangaer to engineData, so game loads faster
 
-        // TODO: maybe move all of this to engine?? does not particularly matter, but maybe
+        // TODO: maybe move all of this to engine?? does not particularly matter, but maybe. 
+        // okay actually i think it has to stay here, unless i want a seperate "engineData" class, i think i should probably have it
         std::string sceneName = "";
         int selectedEntity = 0;
 
