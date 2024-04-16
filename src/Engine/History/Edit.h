@@ -28,6 +28,7 @@ enum ComponentVars {
 struct ComponentValue {
     float f;
     int i;
+    ComponentValue() = default; // Used for ComponentTab to store values for undo
     ComponentValue(float f): f(f) {};
     ComponentValue(int i): i(i) {};
 };

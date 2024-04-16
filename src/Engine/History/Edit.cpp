@@ -9,18 +9,17 @@
 using json = nlohmann::json;
 
 void ComponentValueEdit::Apply(bool undo){
-    std::cout << "Apply\n";
     ComponentValue* val = undo ? prev.get() : cur.get(); 
     Entity entity = *stage.registry->entityTree[entityId].get();
     switch(compType) {
         case TRANSFORM: {
-            auto transform = entity.transform;
+            auto& transform = *entity.transform;
             switch(compVar){
-                case POSITION_X: transform->position.x = val->f; break;
-                case POSITION_Y: transform->position.y = val->f; break;
-                case SCALE_X: transform->scale.x = val->f; break;
-                case SCALE_Y: transform->scale.y = val->f; break;
-                case ROTATION: transform->rotation = val->f; break;
+                case POSITION_X: transform.position.x = val->f; break;
+                case POSITION_Y: transform.position.y = val->f; break;
+                case SCALE_X: transform.scale.x = val->f; break;
+                case SCALE_Y: transform.scale.y = val->f; break;
+                case ROTATION: transform.rotation = val->f; break;
                 default:
                     // TODO: log error - transform does not have ...
                     break;
@@ -43,7 +42,6 @@ void ComponentValueEdit::Apply(bool undo){
     ApplyJson(undo);
 }
 void ComponentValueEdit::ApplyJson(bool undo){
-    std::cout << "ApplyJson\n";
     ComponentValue* val = undo ? prev.get() : cur.get(); 
     std::ifstream g("EngineData/current-scene.json");
     json scene = json::parse(g);

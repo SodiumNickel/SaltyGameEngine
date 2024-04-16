@@ -17,8 +17,9 @@ class MovementSystem : public System {
         {
             for(auto entity : GetSystemEntities())
             {
+                // TODO: make sure this works with new transform implementation
                 // TODO: can also do TransformComponent& ..., whatever looks better
-                auto& transform = entity.GetComponent<TransformComponent>();
+                auto& transform = *entity.transform;
                 const auto rigidbody = entity.GetComponent<RigidbodyComponent>();
 
                 transform.position.x += rigidbody.velocity.x * deltaTime;

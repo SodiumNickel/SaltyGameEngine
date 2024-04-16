@@ -1,6 +1,7 @@
 #ifndef ENGUI_H
 #define ENGUI_H
 
+#include "./History/Edit.h"
 #include "./History/EditHistory.h"
 #include "./Stage/Stage.h"
 
@@ -30,6 +31,7 @@ public:
 class ComponentTab : public Tab {
 private:
     int index;
+    ComponentValue prev;
     EditHistory& editHistory;
     Stage& stage;
     //int entityId;
@@ -37,7 +39,7 @@ private:
     // TODO: this should just access entity by id from above
     void Transform(Entity entity);
 public:
-    ComponentTab(EditHistory& editHistory, Stage& stage) : editHistory(editHistory), stage(stage) {};
+    ComponentTab(EditHistory& editHistory, Stage& stage) : editHistory(editHistory), stage(stage), prev() {};
     void Begin() override;
 };
 

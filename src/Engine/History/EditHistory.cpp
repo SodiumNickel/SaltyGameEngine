@@ -16,12 +16,15 @@ void EditHistory::Do(Edit* action){
     canUndo = true;
     // redoStack.clear(); TODO: REMEMBER TO DEALLOCATE POINTERS, or just use unique_ptrs (shared?)
     // if i make them unique ptrs i can probably clear it in O(1)
+    canRedo = false;
     while(!redoStack.empty()) redoStack.pop();
 }
 
 // Pre: !undoStack.empty
 void EditHistory::Undo(){ 
     undoStack.top()->Apply(true);
+    unsaved = true; // TODO: if you make an edit from a saved file then undo that edit, should it go back to saved? i dont think so...
+
     redoStack.push(undoStack.top());
     canRedo = true;
 
@@ -33,6 +36,8 @@ void EditHistory::Undo(){
 // Pre: !redoStack.empty
 void EditHistory::Redo(){
     redoStack.top()->Apply(false);
+    unsaved = true;
+
     undoStack.push(redoStack.top());
     canUndo = true;
 
