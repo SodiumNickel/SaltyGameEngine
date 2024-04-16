@@ -121,8 +121,15 @@ void Engine::ProcessInput()
 {
     SDL_Event e;
     while(SDL_PollEvent(&e)){
-        if (e.type == SDL_QUIT){
-            isRunning = false;
+        switch(e.type){
+            case SDL_QUIT:
+                isRunning = false;
+                break;
+            case SDL_KEYDOWN: // TODO: implement proper key detection, and use it here instead
+                if(editHistory->canUndo && e.key.keysym.sym == SDLK_z) editHistory->Undo();
+                else if(editHistory->canRedo && e.key.keysym.sym == SDLK_y) editHistory->Redo();
+                else if(editHistory->unsaved && e.key.keysym.sym == SDLK_s) editHistory->Save();
+                break;
         }
         ImGui_ImplSDL2_ProcessEvent(&e);
     }
