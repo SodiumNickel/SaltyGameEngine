@@ -34,10 +34,15 @@ private:
     ComponentValue prev;
     std::shared_ptr<EditHistory> editHistory;
     std::shared_ptr<Stage> stage;
-    //int entityId;
+    
+    Entity entity;
+    int entityId;
 
     // TODO: this should just access entity by id from above
-    void Transform(Entity entity);
+    void Transform();
+    void Sprite();
+    void Rigidbody();
+    void BoxCollider();
 public:
     ComponentTab(std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Stage> stage) : editHistory(editHistory), stage(stage), prev() {};
     void Begin() override;
