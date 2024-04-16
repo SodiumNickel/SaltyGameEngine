@@ -49,19 +49,19 @@ void DDTarget(int id, std::vector<std::unique_ptr<Entity>>& entityTree){
 }
 
 void EntityTab::Begin(){
-    ImGui::Begin((stage.sceneName + "###Entity").c_str(), NULL, editHistory.unsaved ? ImGuiWindowFlags_UnsavedDocument : 0);
-    auto& entityTree = stage.registry->entityTree;
+    ImGui::Begin((stage->sceneName + "###Entity").c_str(), NULL, editHistory->unsaved ? ImGuiWindowFlags_UnsavedDocument : 0);
+    auto& entityTree = stage->registry->entityTree;
 
     static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
     // Temporary storage of what node we have clicked
     int node_clicked = -1;
 
     // Selection by entity id
-    // BFS through stage.entityTree to create nodes
-    std::vector<int> rootIds = stage.registry->rootIds;
+    // BFS through stage->entityTree to create nodes
+    std::vector<int> rootIds = stage->registry->rootIds;
     for (int rc : rootIds){
         ImGuiTreeNodeFlags node_flags = base_flags;
-        if (rc == stage.selectedEntity)
+        if (rc == stage->selectedEntity)
             node_flags |= ImGuiTreeNodeFlags_Selected;
         
         if(entityTree[rc]->childrenIds.size() > 0){ // Has children
@@ -92,7 +92,7 @@ void EntityTab::Begin(){
                     }
                     else{
                         ImGuiTreeNodeFlags child_flags = base_flags;
-                        if (c == stage.selectedEntity)
+                        if (c == stage->selectedEntity)
                             child_flags |= ImGuiTreeNodeFlags_Selected;
 
                         if(entityTree[c]->childrenIds.size() > 0){ // Has children
@@ -148,9 +148,9 @@ void EntityTab::Begin(){
         // Update selection state
         // (process outside of tree loop to avoid visual inconsistencies during the clicking frame)
         // if (ImGui::GetIO().KeyCtrl)
-        //     stage.selectedEntity = (1 << node_clicked);          // CTRL+click to toggle
+        //     stage->selectedEntity = (1 << node_clicked);          // CTRL+click to toggle
         // else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, may want to preserve selection when clicking on item that is part of the selection
-            stage.selectedEntity = node_clicked;           // Click to single-select
+            stage->selectedEntity = node_clicked;           // Click to single-select
     }
 
     ImGui::End();

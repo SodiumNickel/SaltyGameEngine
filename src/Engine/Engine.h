@@ -21,8 +21,8 @@ class Engine {
         // Shared pointer used to pass engine data to tabs, stage, edit history
         std::shared_ptr<EngineData> engineData;
         
-        EditHistory* editHistory; // TODO: make unique ptr
-        Stage stage;
+        std::shared_ptr<EditHistory> editHistory;
+        std::shared_ptr<Stage> stage;
         std::unique_ptr<Menu> menu;
         std::vector<Tab*> openTabs;
     public:

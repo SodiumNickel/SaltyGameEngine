@@ -8,13 +8,13 @@
 void AssetTab::Begin() {
     ImGui::Begin("Assets");
 
-    if (stage.currentDir != std::filesystem::path("./Unique/Assets"))
+    if (stage->currentDir != std::filesystem::path("./Unique/Assets"))
     {
-        if (ImGui::Button("<-")) stage.currentDir = stage.currentDir.parent_path();
+        if (ImGui::Button("<-")) stage->currentDir = stage->currentDir.parent_path();
     }
 
     // All directories should be listed before other assets
-    for (auto& item : std::filesystem::directory_iterator(stage.currentDir))
+    for (auto& item : std::filesystem::directory_iterator(stage->currentDir))
     {
         const auto& path = item.path();
         std::string filename = path.filename().string();
@@ -23,12 +23,12 @@ void AssetTab::Begin() {
         {
             if(ImGui::Button(filename.c_str()))
             {
-                stage.currentDir /= path.filename();
+                stage->currentDir /= path.filename();
             }
         }
     }
     // List other assets
-    for (auto& item : std::filesystem::directory_iterator(stage.currentDir))
+    for (auto& item : std::filesystem::directory_iterator(stage->currentDir))
     {
         const auto& path = item.path();
         std::string filename = path.filename().string();

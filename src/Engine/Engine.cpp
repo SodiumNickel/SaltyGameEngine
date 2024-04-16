@@ -13,7 +13,7 @@
 Engine::Engine()
 {
     engineData = std::make_shared<EngineData>(0);
-    editHistory = new EditHistory(engineData); // TODO: could move this into initialize, especially if it needs scene
+    editHistory = std::make_shared<EditHistory>(engineData); // TODO: could move this into initialize, especially if it needs scene
     // Set to true on success of Initialize()
     isRunning = false;
 }
@@ -70,7 +70,8 @@ int Engine::Initialize()
     );
 
     // Send renderer and viewport to stage
-    stage.Initialize(renderer, viewport);
+    stage = std::make_shared<Stage>();
+    stage->Initialize(renderer, viewport);
 
     // Init imgui
     IMGUI_CHECKVERSION();
@@ -94,11 +95,11 @@ int Engine::Initialize()
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
 
-    menu = std::make_unique<Menu>(*editHistory);
+    menu = std::make_unique<Menu>(editHistory);
 
     // Open initial tabs
-    openTabs.push_back(new EntityTab(*editHistory, stage)); // TODO: this should be better pointers
-    openTabs.push_back(new ComponentTab(*editHistory, stage));
+    openTabs.push_back(new EntityTab(editHistory, stage)); // TODO: this should be better pointers
+    openTabs.push_back(new ComponentTab(editHistory, stage));
     openTabs.push_back(new ScriptTab(stage));
     openTabs.push_back(new AssetTab(stage));
 
@@ -172,7 +173,7 @@ void Engine::UpdateGUI()
     stageSize.x -= 16; // makes all borders equal size
     stageSize.y -= 35; // adjusted for tab bar, hides scroll
 
-    stage.stageSize = stageSize;
+    stage->stageSize = stageSize;
     UpdateViewport();
 
     ImGui::Image((ImTextureID)viewport, stageSize);
@@ -197,7 +198,7 @@ void Engine::UpdateViewport()
 
     // if in stage
     if(true){
-        stage.Run();
+        stage->Run();
     }
 }
 
@@ -213,6 +214,7 @@ void Engine::Render()
 void Engine::Destroy()
 {
     // TODO: might have some pointers to clear if i dont make them all shared or unique
+    // specifically, unsure what to do with Tab
 
     ImGui_ImplSDLRenderer2_Shutdown();
     ImGui_ImplSDL2_Shutdown();

@@ -31,14 +31,14 @@ void ComponentTab::Transform(Entity entity){
         ImGui::DragFloat("##posx", &transform->position.x, 1.0f);
         if(ImGui::IsItemActivated()) prev.f = prevf;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit(TRANSFORM, POSITION_X, stage, entityId, prev.f, transform->position.x)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_X, stage, entityId, prev.f, transform->position.x)); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         prevf = transform->position.y;
         ImGui::DragFloat("##posy", &transform->position.y, 1.0f);
         if(ImGui::IsItemActivated()) prev.f = prevf;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, stage, entityId, prev.f, transform->position.y)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, stage, entityId, prev.f, transform->position.y)); }
 
         ImGui::Text("Scale");
         ImGui::Text("x"); ImGui::SameLine();
@@ -46,14 +46,14 @@ void ComponentTab::Transform(Entity entity){
         ImGui::DragFloat("##scalex", &transform->scale.x, 0.005f); 
         if(ImGui::IsItemActivated()) prev.f = prevf;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit(TRANSFORM, SCALE_X, stage, entityId, prev.f, transform->scale.x)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_X, stage, entityId, prev.f, transform->scale.x)); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         prevf = transform->scale.y;
         ImGui::DragFloat("##scaley", &transform->scale.y, 0.005f);
         if(ImGui::IsItemActivated()) prev.f = prevf;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, stage, entityId, prev.f, transform->scale.y)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, stage, entityId, prev.f, transform->scale.y)); }
 
         ImGui::Text("Rotation");
         ImGui::Text("θ"); ImGui::SameLine(); // TODO: theta is not displaying properly in this font
@@ -61,7 +61,7 @@ void ComponentTab::Transform(Entity entity){
         ImGui::DragFloat("##rot", &transform->rotation, 0.25f);
         if(ImGui::IsItemActivated()) prev.f = prevf;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory.Do(new ComponentValueEdit(TRANSFORM, ROTATION, stage, entityId, prev.f, transform->rotation)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, ROTATION, stage, entityId, prev.f, transform->rotation)); }
     }
 }
 void Sprite(Entity entity, std::unique_ptr<AssetManager>& assetManager){
@@ -117,11 +117,11 @@ void BoxCollider(Entity entity){
 void ComponentTab::Begin(){
     ImGui::Begin("Components");
 
-    Entity selected = *stage.registry->entityTree[stage.selectedEntity].get();
+    Entity selected = *stage->registry->entityTree[stage->selectedEntity].get();
     // iterate through hasComponent? unfortunately means we cant organize stuff
 
     Transform(selected);
-    Sprite(selected, stage.assetManager);
+    Sprite(selected, stage->assetManager);
     Rigidbody(selected);
     BoxCollider(selected);
 
