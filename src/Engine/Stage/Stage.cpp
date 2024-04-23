@@ -123,7 +123,19 @@ void Stage::Run()
 
 void Stage::ProcessInput()
 {
-    // maybe the click and drag
+    // Allows for dragging of view with middle mouse button
+    if (dragging){
+        ImVec2 mousePos = ImGui::GetMousePos();
+        glm::vec2 delta = glm::vec2(mousePos.x - startMousePos.x, -(mousePos.y - startMousePos.y));
+        stageCenter = startStageCenter - delta;
+        if(ImGui::IsMouseReleased(ImGuiMouseButton_Middle)) dragging = false;
+    }
+    if(!dragging && ImGui::IsItemHovered() && ImGui::IsMouseDown(ImGuiMouseButton_Middle)) {
+        startStageCenter = stageCenter;
+        startMousePos = ImGui::GetMousePos();
+        dragging = true;
+    }
+    // Allows for zoom in/out with scroll wheel
 }
 
 void Stage::Update()
@@ -141,7 +153,7 @@ void Stage::Update()
 
     // Allows resizing of viewport, both by boundaries and zoom
     glm::vec2 cameraZoom = glm::vec2(500.0f * zoom / stageSize.x, 500.0f * zoom / stageSize.y);
-    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, cameraZoom);
+    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, stageCenter, cameraZoom);
 
     SDL_SetRenderTarget(renderer, NULL);
 }

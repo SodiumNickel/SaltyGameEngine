@@ -21,7 +21,7 @@ public:
         RequireComponent<SpriteComponent>();
     }
 
-    void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, glm::vec2 cameraZoom)
+    void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, glm::vec2 cameraCenter, glm::vec2 cameraZoom)
     {
         // TODO: optimize by sorting sprite objects whenever they are added
         // Can do this with a simple insertion on frames with low entity additions
@@ -46,8 +46,8 @@ public:
             float magnitude = glm::length(cameraZoom);
 
             SDL_Rect dstRect = {
-                static_cast<int>(transform->position.x * cameraZoom.x), // TODO: i dont think this scales properly off of center of object, scales off of corner
-                static_cast<int>(transform->position.y * cameraZoom.y),
+                static_cast<int>((transform->position.x  - cameraCenter.x) * cameraZoom.x), // TODO: i dont think this scales properly off of center of object, scales off of corner
+                static_cast<int>(-(transform->position.y - cameraCenter.y) * cameraZoom.y), // Negative so position y-axis points "up"
                 static_cast<int>(textureSize.x * glm::abs(transform->scale.x) * camScale.x * magnitude),
                 static_cast<int>(textureSize.y * glm::abs(transform->scale.y) * camScale.y * magnitude)
             };
@@ -58,7 +58,7 @@ public:
             {
                 if(transform->scale.x >= 0) flip = SDL_FLIP_VERTICAL;
                 else if(transform->scale.y >= 0) flip = SDL_FLIP_HORIZONTAL;
-                else flip = static_cast<SDL_RendererFlip>(SDL_FLIP_VERTICAL | SDL_FLIP_HORIZONTAL); // TODO: make sure the vert flip works, just havent tested it
+                else flip = static_cast<SDL_RendererFlip>(SDL_FLIP_VERTICAL | SDL_FLIP_HORIZONTAL); 
             }
             
 

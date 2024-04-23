@@ -125,7 +125,7 @@ void Engine::ProcessInput()
         switch(e.type){
             case SDL_QUIT:
                 isRunning = false;
-                break;
+                break; // TODO: all of these do them every frame, should only do it on first frame down, wait until up
             case SDL_KEYDOWN: // TODO: implement proper key detection, and use it here instead
                 if(editHistory->canUndo && e.key.keysym.sym == SDLK_z) editHistory->Undo();
                 else if(editHistory->canRedo && e.key.keysym.sym == SDLK_y) editHistory->Redo();
@@ -174,9 +174,9 @@ void Engine::UpdateGUI()
     stageSize.y -= 35; // adjusted for tab bar, hides scroll
 
     stage->stageSize = stageSize;
+    ImGui::Image((ImTextureID)viewport, stageSize);
     UpdateViewport();
 
-    ImGui::Image((ImTextureID)viewport, stageSize);
     ImGui::End();
 
     // TODO: dont allow hide tab bar, also stop highlighting it when it is clicked on

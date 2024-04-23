@@ -21,6 +21,10 @@ class Stage {
         SDL_Texture* viewport;
         // SDL_Rect camera; might need this later just for outline
         // also need it for the "stage" camera
+
+        bool dragging = false;
+        ImVec2 startMousePos;
+        glm::vec2 startStageCenter; 
     public:
         Stage();
         ~Stage();
@@ -43,6 +47,7 @@ class Stage {
 
         std::filesystem::path currentDir = std::filesystem::path("./Unique/Assets");
 
+        glm::vec2 stageCenter = glm::vec2(100.0f, 100.0f);
         ImVec2 stageSize;
         float zoom = 1; // TODO: use this to zoom in on viewport on scroll
 };

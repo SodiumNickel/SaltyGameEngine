@@ -25,7 +25,7 @@
       "transform": {
         "position": [
           947.0,
-          520.0
+          -520.0
         ],
         "rotation": 0.0,
         "scale": [
@@ -50,7 +50,7 @@
       "transform": {
         "position": [
           6.0,
-          199.0
+          -199.0
         ],
         "rotation": 0.0,
         "scale": [
@@ -94,7 +94,7 @@
       "transform": {
         "position": [
           -80.0,
-          -140.0
+          140.0
         ],
         "rotation": 0.0,
         "scale": [
@@ -139,8 +139,8 @@
       "parent-id": 4,
       "transform": {
         "position": [
-          1175.0,
-          586.0
+          1168.0,
+          -586.0
         ],
         "rotation": 0.0,
         "scale": [
@@ -165,7 +165,7 @@
       "transform": {
         "position": [
           298.0,
-          581.0
+          -581.0
         ],
         "rotation": 0.0,
         "scale": [
@@ -190,7 +190,7 @@
       "transform": {
         "position": [
           715.0,
-          550.0
+          -550.0
         ],
         "rotation": 0.0,
         "scale": [
