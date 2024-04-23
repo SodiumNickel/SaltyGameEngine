@@ -18,6 +18,7 @@
 #include <SDL_image.h>
 
 #include <glm.hpp>
+#include <algorithm>
 
 #include <stack>
 
@@ -126,6 +127,7 @@ void Stage::ProcessInput()
     // Allows for dragging of view with middle mouse button
     if (dragging){
         ImVec2 mousePos = ImGui::GetMousePos();
+        // TODO: scale delta by zoom amount and also update every frame instead saving center
         glm::vec2 delta = glm::vec2(mousePos.x - startMousePos.x, -(mousePos.y - startMousePos.y));
         stageCenter = startStageCenter - delta;
         if(ImGui::IsMouseReleased(ImGuiMouseButton_Middle)) dragging = false;
@@ -136,6 +138,11 @@ void Stage::ProcessInput()
         dragging = true;
     }
     // Allows for zoom in/out with scroll wheel
+    if(ImGui::IsItemHovered()){
+        auto& io = ImGui::GetIO();
+        zoom = std::max(0.01f, 10.0f * io.MouseWheel * io.DeltaTime + zoom); // TODO: might want to scale this off of how zoomed we already are? e.g. slow down when really zoomed out
+    }
+    std::cout << zoom << '\n';
 }
 
 void Stage::Update()
@@ -152,8 +159,8 @@ void Stage::Update()
     SDL_RenderClear(renderer);
 
     // Allows resizing of viewport, both by boundaries and zoom
-    glm::vec2 cameraZoom = glm::vec2(500.0f * zoom / stageSize.x, 500.0f * zoom / stageSize.y);
-    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, stageCenter, cameraZoom);
+    glm::vec2 stageZoom = glm::vec2(500.0f * zoom / stageSize.x, 500.0f * zoom / stageSize.y); // zoom scaled by scene aspect ratio
+    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, stageCenter, stageZoom);
 
     SDL_SetRenderTarget(renderer, NULL);
 }

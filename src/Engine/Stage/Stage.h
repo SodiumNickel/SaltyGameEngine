@@ -47,6 +47,7 @@ class Stage {
 
         std::filesystem::path currentDir = std::filesystem::path("./Unique/Assets");
 
+        // TODO: do any of these have to be public??
         glm::vec2 stageCenter = glm::vec2(100.0f, 100.0f);
         ImVec2 stageSize;
         float zoom = 1; // TODO: use this to zoom in on viewport on scroll
