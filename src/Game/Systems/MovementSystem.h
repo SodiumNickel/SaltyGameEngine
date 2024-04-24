@@ -5,6 +5,7 @@
 #include "../Components/TransformComponent.h"
 #include "../Components/RigidbodyComponent.h"
 
+// TODO: wanted to change the name of this, maybe just rigidbodysystem
 class MovementSystem : public System {
     public:
         MovementSystem()

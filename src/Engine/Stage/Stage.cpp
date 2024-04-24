@@ -143,8 +143,8 @@ void Stage::ProcessInput()
         auto& io = ImGui::GetIO();
         zoom = std::max(0.01f, 10.0f * io.MouseWheel * io.DeltaTime + zoom); // TODO: might want to scale this off of how zoomed we already are? e.g. slow down when really zoomed out
     }
-    std::cout << zoom << '\n';
-    // 1.375, actually i think it has something to do with the top left scaling
+    // std::cout << zoom << '\n';
+    // TODO: 1.375, actually i think it has something to do with the top left scaling
 }
 
 void Stage::Update()
