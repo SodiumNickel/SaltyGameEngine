@@ -128,7 +128,8 @@ void Stage::ProcessInput()
     if (dragging){
         ImVec2 mousePos = ImGui::GetMousePos();
         // TODO: scale delta by zoom amount and also update every frame instead saving center
-        glm::vec2 delta = glm::vec2(mousePos.x - startMousePos.x, -(mousePos.y - startMousePos.y));
+        // Pre: zoom > 0 
+        glm::vec2 delta = (1 / zoom) * glm::vec2(mousePos.x - startMousePos.x, -(mousePos.y - startMousePos.y));
         stageCenter = startStageCenter - delta;
         if(ImGui::IsMouseReleased(ImGuiMouseButton_Middle)) dragging = false;
     }
@@ -143,6 +144,7 @@ void Stage::ProcessInput()
         zoom = std::max(0.01f, 10.0f * io.MouseWheel * io.DeltaTime + zoom); // TODO: might want to scale this off of how zoomed we already are? e.g. slow down when really zoomed out
     }
     std::cout << zoom << '\n';
+    // 1.375, actually i think it has something to do with the top left scaling
 }
 
 void Stage::Update()
