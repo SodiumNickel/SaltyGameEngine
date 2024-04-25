@@ -12,7 +12,8 @@
 // Constructor
 Engine::Engine()
 {
-    engineData = std::make_shared<EngineData>(0);
+    // TODO: should initialize to scene that was last open, stored fps, etc.
+    engineData = std::make_shared<EngineData>(0, 8);
     editHistory = std::make_shared<EditHistory>(engineData); // TODO: could move this into initialize, especially if it needs scene
     // Set to true on success of Initialize()
     isRunning = false;
@@ -115,7 +116,15 @@ void Engine::Run()
         ProcessInput();
         UpdateGUI();
         Render();
-        std::cout << 1 / ImGui::GetIO().DeltaTime << '\n';
+
+        // NOTE: was having issues with high gpu usage before, will still allow for a (pseudo) uncapped frame rate in settings
+        // Limits frame rate to 1/targetFrameTime 
+        Uint64 curFrameTime = SDL_GetTicks64();
+        Uint64 deltaTime = curFrameTime - engineData->prevFrameTime;
+        if(deltaTime < engineData->targetFrameTime) SDL_Delay(engineData->targetFrameTime - deltaTime);
+        engineData->prevFrameTime = SDL_GetTicks64();
+
+        std::cout << deltaTime << ", " << engineData->targetFrameTime << ", " << 1 / ImGui::GetIO().DeltaTime << '\n';
     }
 }
 
