@@ -115,6 +115,7 @@ void Engine::Run()
         ProcessInput();
         UpdateGUI();
         Render();
+        std::cout << 1 / ImGui::GetIO().DeltaTime << '\n';
     }
 }
 
