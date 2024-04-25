@@ -43,6 +43,8 @@ private:
     void Sprite();
     void Rigidbody();
     void BoxCollider();
+
+    bool addComponentOpen = false;
 public:
     ComponentTab(std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Stage> stage) : editHistory(editHistory), stage(stage), prev() {};
     void Begin() override;

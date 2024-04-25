@@ -130,11 +130,39 @@ void ComponentTab::Begin(){
     entity = *stage->registry->entityTree[stage->selectedEntity].get();
     entityId = entity.GetId();
 
-    // iterate through hasComponent? unfortunately means we cant organize stuff
-    Transform();
+    // Iterate through all possible components, displaying if HasComponent()
+    Transform(); // TODO: i might move the hasComponent check out here
     Sprite();
     Rigidbody();
     BoxCollider();
+
+    // Button and Dropdown list to allow adding components
+    if (ImGui::Button("Add Component")) {
+        // Only needs logic to open list, close is handled by list
+        if(!addComponentOpen) addComponentOpen = true;
+    }
+
+    // Show options if the flag is set
+    if (addComponentOpen) {
+        ImGui::BeginChild("Component List", ImVec2(0, 20), true); // TODO: should probably adjust this height a bit
+
+        if (ImGui::Selectable("enabled", false, 0)) {
+            // Handle option selection here
+            addComponentOpen = false;
+        }
+        if(ImGui::Selectable("disabled", false, ImGuiSelectableFlags_Disabled)){
+            std::cout << "clicked disabled" << '\n';
+        }
+        if (ImGui::Selectable("enabled")) {
+            // Handle option selection here
+        }
+
+        ImGui::EndChild();
+
+        
+        // If user clicks anywhere outside of box, close it
+        // if(!ImGui::IsItemHovered() && ImGui::IsAnyMouseDown()) addComponentOpen = false;
+    }
 
     ImGui::End();
 }
