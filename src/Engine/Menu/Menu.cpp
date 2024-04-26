@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 
+#include <algorithm>
 #include <iostream>
 
 void Menu::Begin(){
@@ -21,9 +22,16 @@ void Menu::Begin(){
             ImGui::EndMenu();
         }
 
+        // TODO: this is still flickering a bit, but will do for now
         // Frame rate display (TODO: should there be a toggle? also doesnt stand out too much rn, might be a good thing, but def too close to dropdowns)
-        // TODO: this should be like average of last n frames instead, so its less flickery
-        std::string fps = "FPS: " + std::to_string((int)(1 / ImGui::GetIO().DeltaTime));
+        // I: totalNFrames = sum(lastNFrames)
+        totalNFrames -= lastNFrames[lastFrameIndex];
+        lastNFrames[lastFrameIndex] = ImGui::GetIO().DeltaTime;
+        totalNFrames += lastNFrames[lastFrameIndex];
+        lastFrameIndex = (lastFrameIndex + 1) % n;
+
+        // Caps display at 10000 fps, TODO: is this a proper maximum, cant imagine anyone could get more
+        std::string fps = "FPS: " + std::to_string((int)(n / std::max(0.0001f, totalNFrames)));
         ImGui::Text(fps.c_str());
         ImGui::EndMainMenuBar();
     }
