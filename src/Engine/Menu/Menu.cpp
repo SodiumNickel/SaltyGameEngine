@@ -21,18 +21,33 @@ void Menu::Begin(){
             if (ImGui::MenuItem("Paste", "CTRL+V")) {}
             ImGui::EndMenu();
         }
+        if(ImGui::BeginMenu("Metrics")){
+            std::string sh = showFps ? "Hide FPS" : "Show FPS"; // TODO: this is inefficient to do every loop, place it inside menu instead
+            if (ImGui::MenuItem(sh.c_str(), "CTRL+F")) { showFps = !showFps; }
+            ImGui::EndMenu();
+        }
 
-        // TODO: this is still flickering a bit, but will do for now
-        // Frame rate display (TODO: should there be a toggle? also doesnt stand out too much rn, might be a good thing, but def too close to dropdowns)
+        /* Calculation for the displayed frame rate - done regardless of if fps is actually displayed */
         // I: totalNFrames = sum(lastNFrames)
         totalNFrames -= lastNFrames[lastFrameIndex];
         lastNFrames[lastFrameIndex] = ImGui::GetIO().DeltaTime;
         totalNFrames += lastNFrames[lastFrameIndex];
         lastFrameIndex = (lastFrameIndex + 1) % n;
 
-        // Caps display at 10000 fps, TODO: is this a proper maximum, cant imagine anyone could get more
-        std::string fps = "FPS: " + std::to_string((int)(n / std::max(0.0001f, totalNFrames)));
-        ImGui::Text(fps.c_str());
+        // Caps display at 1000 fps, TODO: is this a proper maximum, cant imagine anyone would need more
+        int avgFps = n / std::max(0.001f, totalNFrames);
+        if(avgFps == prevFps) sameFpsInRow += 1; 
+        else sameFpsInRow = 0;
+        prevFps = avgFps;
+
+        // Extra smoothing by ensuring the change is at least 3 or it has been the same for n/4 frames (1/4 second)
+        if(avgFps <= displayedFps - 3 || avgFps >= displayedFps + 3 || sameFpsInRow >= n/4) displayedFps = avgFps;
+
+        if(showFps){
+            std::string fps = "FPS: " + std::to_string(displayedFps);
+            ImGui::Text(fps.c_str());
+        }
+
         ImGui::EndMainMenuBar();
     }
 }
