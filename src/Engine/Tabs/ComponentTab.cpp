@@ -102,9 +102,18 @@ void ComponentTab::Rigidbody(){
 
             ImGui::Text("Initial Velocity");
             ImGui::Text("x"); ImGui::SameLine();
-            ImGui::DragFloat("##initx", &rigidbody.initVelocity.x, 0.005f); ImGui::SameLine();
+            float prevf = rigidbody.initVelocity.x;
+            ImGui::DragFloat("##initx", &rigidbody.initVelocity.x, 0.005f); 
+            if(ImGui::IsItemActivated()) prev.f = prevf;
+            if(ImGui::IsItemDeactivatedAfterEdit()) 
+            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_X, stage, entityId, prev.f, rigidbody.initVelocity.x)); }
+            ImGui::SameLine();
             ImGui::Text("y"); ImGui::SameLine();
+            prevf = rigidbody.initVelocity.y;
             ImGui::DragFloat("##inity", &rigidbody.initVelocity.y, 0.005f);
+            if(ImGui::IsItemActivated()) prev.f = prevf;
+            if(ImGui::IsItemDeactivatedAfterEdit()) 
+            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_Y, stage, entityId, prev.f, rigidbody.initVelocity.y)); }
 
             ImGui::SeparatorText("");
         }
@@ -140,21 +149,24 @@ void ComponentTab::Begin(){
     if (ImGui::Button("Add Component")) {
         // Only needs logic to open list, close is handled by list
         if(!addComponentOpen) addComponentOpen = true;
+        // TEMP, TODO: get rid of this when proper detection below
+        else addComponentOpen = false;
     }
 
     // Show options if the flag is set
     if (addComponentOpen) {
-        ImGui::BeginChild("Component List", ImVec2(0, 50), true); // TODO: should probably adjust this height a bit
+        ImGui::BeginChild("Component List", ImVec2(0, 100), true); // TODO: should probably adjust this height a bit
 
-        if (ImGui::Selectable("enabled", false, 0)) {
-            // Handle option selection here
+        if (ImGui::Selectable("Sprite", false, entity.HasComponent<SpriteComponent>() ? ImGuiSelectableFlags_Disabled : 0)) {
+            entity.AddComponent<SpriteComponent>();
             addComponentOpen = false;
         }
-        if(ImGui::Selectable("disabled", false, ImGuiSelectableFlags_Disabled)){
-            std::cout << "clicked disabled" << '\n';
+        if(ImGui::Selectable("Rigidbody", false, entity.HasComponent<RigidbodyComponent>() ? ImGuiSelectableFlags_Disabled : 0)){
+            entity.AddComponent<RigidbodyComponent>();
+            addComponentOpen = false;
         }
-        if (ImGui::Selectable("enabled")) {
-            // Handle option selection here
+        if (ImGui::Selectable("BoxCollider", false, ImGuiSelectableFlags_Disabled)) {
+            // BoxCollider Disabled for now, would like option to add multiple box components so needs more thought
         }
 
         ImGui::EndChild();

@@ -23,7 +23,10 @@ enum ComponentVars {
     POSITION_Y,
     SCALE_X,
     SCALE_Y,
-    ROTATION
+    ROTATION,
+    // SPRITE STUFF HERE
+    INITVEL_X,
+    INITVEL_Y
 };
 struct ComponentValue {
     float f;
@@ -33,8 +36,7 @@ struct ComponentValue {
     ComponentValue(int i): i(i) {};
 };
 
-// still needs some initializer
-// template <typename TComponent, typename ...TArgs> void AddComponent(TArgs&& ...args);
+// When the user edits a value in the component, i.e. transform.position.x from 0.0f to 1.0f
 class ComponentValueEdit : public Edit {
     ComponentTypes compType;
     ComponentVars compVar;
@@ -53,6 +55,10 @@ public:
     void ApplyJson(bool undo) override;
 };
 
+// When the user adds or removes a component
+class ComponentEdit : public Edit {
+
+};
 
 // NOTE: DELETING AN ENTITY HAS TO PUT IT IN SAME PLACE AFTER UNDO, OTHERWISE THIS WHOLE SYSTEM BREAKS
 

@@ -1,6 +1,7 @@
 #include "Edit.h"
 
 #include "../Game/Components/TransformComponent.h"
+#include "../Game/Components/RigidbodyComponent.h"
 #include "../Game/ECS/ECS.h"
 
 #include <iostream>
@@ -29,9 +30,17 @@ void ComponentValueEdit::Apply(bool undo){
         // case SPRITE:
         //     // TODO:
         //     break;
-        // case RIGIDBODY:
-        //     // TODO:
-        //     break;
+        case RIGIDBODY: {
+            auto& rigidbody = entity.GetComponent<RigidbodyComponent>();
+            switch(compVar){
+                case INITVEL_X: rigidbody.initVelocity.x = val->f; break;
+                case INITVEL_Y: rigidbody.initVelocity.y = val->f; break;
+                default:
+                    // TODO: log error - transform does not have ...
+                    break;
+            }
+            break;
+        }
         // case BOXCOL:
         //     // TODO:
         //     break;
