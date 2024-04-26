@@ -144,7 +144,7 @@ void ComponentTab::Begin(){
 
     // Show options if the flag is set
     if (addComponentOpen) {
-        ImGui::BeginChild("Component List", ImVec2(0, 20), true); // TODO: should probably adjust this height a bit
+        ImGui::BeginChild("Component List", ImVec2(0, 50), true); // TODO: should probably adjust this height a bit
 
         if (ImGui::Selectable("enabled", false, 0)) {
             // Handle option selection here
