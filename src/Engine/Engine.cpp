@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include <cstdint>
 #include <iostream>
 
 // Constructor
@@ -96,7 +97,7 @@ int Engine::Initialize()
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
 
-    menu = std::make_unique<Menu>(editHistory);
+    menu = std::make_unique<Menu>(engineData, editHistory);
 
     // Open initial tabs
     openTabs.push_back(new EntityTab(editHistory, stage)); // TODO: this should be better pointers
@@ -119,12 +120,10 @@ void Engine::Run()
 
         // NOTE: was having issues with high gpu usage before, will still allow for a (pseudo) uncapped frame rate in settings
         // Limits frame rate to 1/targetFrameTime 
-        Uint64 curFrameTime = SDL_GetTicks64();
-        Uint64 deltaTime = curFrameTime - engineData->prevFrameTime;
+        uint64_t curFrameTime = SDL_GetTicks64();
+        uint64_t deltaTime = curFrameTime - engineData->prevFrameTime;
         if(deltaTime < engineData->targetFrameTime) SDL_Delay(engineData->targetFrameTime - deltaTime);
         engineData->prevFrameTime = SDL_GetTicks64();
-
-        std::cout << deltaTime << ", " << engineData->targetFrameTime << ", " << 1 / ImGui::GetIO().DeltaTime << '\n';
     }
 }
 

@@ -1,15 +1,17 @@
 #ifndef ENGUI_H
 #define ENGUI_H
 
+#include "./EngineData.h"
 #include "./History/Edit.h"
 #include "./History/EditHistory.h"
 #include "./Stage/Stage.h"
 
 class Menu {
 private:
+    std::shared_ptr<EngineData> engineData; // TODO: engine data is unused rn, not sure if itll be useful later
     std::shared_ptr<EditHistory> editHistory;
 public:
-    Menu(std::shared_ptr<EditHistory> editHistory) : editHistory(editHistory) {};
+    Menu(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory) : engineData(engineData), editHistory(editHistory) {};
     void Begin();
 };
 

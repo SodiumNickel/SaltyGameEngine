@@ -20,6 +20,11 @@ void Menu::Begin(){
             if (ImGui::MenuItem("Paste", "CTRL+V")) {}
             ImGui::EndMenu();
         }
+
+        // Frame rate display (TODO: should there be a toggle? also doesnt stand out too much rn, might be a good thing, but def too close to dropdowns)
+        // TODO: this should be like average of last n frames instead, so its less flickery
+        std::string fps = "FPS: " + std::to_string((int)(1 / ImGui::GetIO().DeltaTime));
+        ImGui::Text(fps.c_str());
         ImGui::EndMainMenuBar();
     }
 }
