@@ -56,7 +56,7 @@ void ComponentValueEdit::ApplyJson(bool undo){
     ComponentValue* val = undo ? prev.get() : cur.get(); 
     std::ifstream g("EngineData/current-scene.json");
     json scene = json::parse(g);
-    json entity = scene.at("entities").at(entityId);
+    json entity = scene["entities"][entityId];
 
     switch(compType) {
         case TRANSFORM: {
@@ -92,7 +92,7 @@ void ComponentValueEdit::ApplyJson(bool undo){
             // TODO: log unidentified component type
             break;
     }
-    scene.at("entities").at(entityId) = entity;
+    scene["entities"][entityId] = entity;
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
     g.close();
 }
