@@ -52,7 +52,7 @@ void EditHistory::Save(){
     std::ifstream f("Unique/Scenes/_index.json");
     json sceneList = json::parse(f).begin().value();
     f.close();
-    std::string sceneName = sceneList.at(engineData->sceneIndex).value("name", "");
+    std::string sceneName = sceneList[engineData->sceneIndex].value("name", "");
     
     // Copy current-scene.json into saved scene
     std::ifstream g("EngineData/current-scene.json");

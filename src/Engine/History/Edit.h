@@ -40,7 +40,7 @@ struct ComponentValue {
 class ComponentValueEdit : public Edit {
     ComponentTypes compType;
     ComponentVars compVar;
-    std::shared_ptr<Stage> stage;
+    std::shared_ptr<Stage> stage; // TODO: hopefully will not need to pass stage here? i think its for registry
     int entityId;
     std::unique_ptr<ComponentValue> prev; // Used to undo action
     std::unique_ptr<ComponentValue> cur; // Used to (re)do action
@@ -56,8 +56,12 @@ public:
 };
 
 // When the user adds or removes a component
-class ComponentEdit : public Edit {
-
+class HasComponentEdit : public Edit {
+    ComponentTypes compType;
+    std::shared_ptr<Stage> stage;
+    int entityId;
+    std::vector<std::unique_ptr<ComponentValue>> prev; // Used to undo action
+    std::vector<std::unique_ptr<ComponentValue>> cur; // Used to (re)do action
 };
 
 // NOTE: DELETING AN ENTITY HAS TO PUT IT IN SAME PLACE AFTER UNDO, OTHERWISE THIS WHOLE SYSTEM BREAKS

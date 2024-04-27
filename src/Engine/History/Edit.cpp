@@ -9,6 +9,7 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
+// Pre: entity.HasComponent<compType>()
 void ComponentValueEdit::Apply(bool undo){
     ComponentValue* val = undo ? prev.get() : cur.get(); 
     Entity entity = *stage->registry->entityTree[entityId].get();
@@ -50,6 +51,7 @@ void ComponentValueEdit::Apply(bool undo){
     }
     ApplyJson(undo);
 }
+// Pre: entity.HasComponent<compType>()
 void ComponentValueEdit::ApplyJson(bool undo){
     ComponentValue* val = undo ? prev.get() : cur.get(); 
     std::ifstream g("EngineData/current-scene.json");
@@ -59,11 +61,11 @@ void ComponentValueEdit::ApplyJson(bool undo){
     switch(compType) {
         case TRANSFORM: {
             switch(compVar){ // TODO: this can be ["transform"]["position"] i think, should check
-                case POSITION_X: entity.at("transform").at("position")[0] = val->f; break;
-                case POSITION_Y: entity.at("transform").at("position")[1] = val->f; break;
-                case SCALE_X: entity.at("transform").at("scale")[0] = val->f; break;
-                case SCALE_Y: entity.at("transform").at("scale")[1] = val->f; break;
-                case ROTATION: entity.at("transform").at("rotation") = val->f; break;
+                case POSITION_X: entity["transform"]["position"][0] = val->f; break;
+                case POSITION_Y: entity["transform"]["position"][1] = val->f; break;
+                case SCALE_X: entity["transform"]["scale"][0] = val->f; break;
+                case SCALE_Y: entity["transform"]["scale"][1] = val->f; break;
+                case ROTATION: entity["transform"]["rotation"] = val->f; break;
                 default:
                     // TODO: log error - transform does not have ...
                     break;
@@ -73,9 +75,16 @@ void ComponentValueEdit::ApplyJson(bool undo){
         // case SPRITE:
         //     // TODO:
         //     break;
-        // case RIGIDBODY:
-        //     // TODO:
-        //     break;
+        case RIGIDBODY: {
+            switch(compVar){
+                //case INITVEL_X: entity["components"] = val->f; break;
+                //case INITVEL_Y: rigidbody.initVelocity.y = val->f; break;
+                default:
+                    // TODO: log error - rb does not have ...
+                    break;
+            }
+            break;
+        }
         // case BOXCOL:
         //     // TODO:
         //     break;

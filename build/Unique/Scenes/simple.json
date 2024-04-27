@@ -1,0 +1,39 @@
+{
+    "entities": [
+      {
+        "children-ids": [],
+        "components": [
+          {
+            "type": "Sprite",
+            "values": {
+              "filepath": "StageDemo/player.png",
+              "zindex": 1
+            }
+          },
+          {
+            "type": "Rigidbody",
+            "values": {
+              "initVelocity": [
+                0.0,
+                0.0
+              ]
+            }
+          }
+        ],
+        "name": "Player",
+        "parent-id": -1,
+        "transform": {
+          "position": [
+            956.0,
+            -515.0
+          ],
+          "rotation": 0.0,
+          "scale": [
+            -4.0,
+            4.0
+          ]
+        }
+      }
+    ],
+    "size": 1
+  }
