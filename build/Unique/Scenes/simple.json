@@ -2,24 +2,18 @@
     "entities": [
       {
         "children-ids": [],
-        "components": [
-          {
-            "type": "Sprite",
-            "values": {
-              "filepath": "StageDemo/player.png",
-              "zindex": 1
+        "components": {
+            "sprite":{
+                "filepath": "StageDemo/player.png",
+                "zindex": 1
+            },
+            "rigidbody":{
+                "initVelocity": [
+                  0.0,
+                  0.0
+                ]
             }
           },
-          {
-            "type": "Rigidbody",
-            "values": {
-              "initVelocity": [
-                0.0,
-                0.0
-              ]
-            }
-          }
-        ],
         "name": "Player",
         "parent-id": -1,
         "transform": {

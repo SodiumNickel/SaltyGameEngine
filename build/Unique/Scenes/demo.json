@@ -2,24 +2,18 @@
   "entities": [
     {
       "children-ids": [],
-      "components": [
-        {
-          "type": "Sprite",
-          "values": {
-            "filepath": "StageDemo/player.png",
-            "zindex": 1
-          }
+      "components": {
+        "rigidbody": {
+          "initVelocity": [
+            0.0,
+            0.0
+          ]
         },
-        {
-          "type": "Rigidbody",
-          "values": {
-            "initVelocity": [
-              0.0,
-              0.0
-            ]
-          }
+        "sprite": {
+          "filepath": "StageDemo/player.png",
+          "zindex": 1
         }
-      ],
+      },
       "name": "Player",
       "parent-id": -1,
       "transform": {
@@ -36,15 +30,12 @@
     },
     {
       "children-ids": [],
-      "components": [
-        {
-          "type": "Sprite",
-          "values": {
-            "filepath": "StageDemo/shop.png",
-            "zindex": 2
-          }
+      "components": {
+        "sprite": {
+          "filepath": "StageDemo/shop.png",
+          "zindex": 2
         }
-      ],
+      },
       "name": "Shop",
       "parent-id": -1,
       "transform": {
@@ -63,7 +54,7 @@
       "children-ids": [
         3
       ],
-      "components": [],
+      "components": {},
       "name": "GroundTiles",
       "parent-id": -1,
       "transform": {
@@ -80,15 +71,12 @@
     },
     {
       "children-ids": [],
-      "components": [
-        {
-          "type": "Sprite",
-          "values": {
-            "filepath": "StageDemo/ground.png",
-            "zindex": 1
-          }
+      "components": {
+        "sprite": {
+          "filepath": "StageDemo/ground.png",
+          "zindex": 1
         }
-      ],
+      },
       "name": "Ground",
       "parent-id": 2,
       "transform": {
@@ -109,7 +97,7 @@
         6,
         7
       ],
-      "components": [],
+      "components": {},
       "name": "Rocks",
       "parent-id": -1,
       "transform": {
@@ -126,15 +114,12 @@
     },
     {
       "children-ids": [],
-      "components": [
-        {
-          "type": "Sprite",
-          "values": {
-            "filepath": "StageDemo/Rocks/rock1.png",
-            "zindex": 2
-          }
+      "components": {
+        "sprite": {
+          "filepath": "StageDemo/Rocks/rock1.png",
+          "zindex": 2
         }
-      ],
+      },
       "name": "Rock 1",
       "parent-id": 4,
       "transform": {
@@ -151,15 +136,12 @@
     },
     {
       "children-ids": [],
-      "components": [
-        {
-          "type": "Sprite",
-          "values": {
-            "filepath": "StageDemo/Rocks/rock2.png",
-            "zindex": 2
-          }
+      "components": {
+        "sprite": {
+          "filepath": "StageDemo/Rocks/rock2.png",
+          "zindex": 2
         }
-      ],
+      },
       "name": "Rock 2",
       "parent-id": 4,
       "transform": {
@@ -176,15 +158,12 @@
     },
     {
       "children-ids": [],
-      "components": [
-        {
-          "type": "Sprite",
-          "values": {
-            "filepath": "StageDemo/Rocks/rock3.png",
-            "zindex": 2
-          }
+      "components": {
+        "sprite": {
+          "filepath": "StageDemo/Rocks/rock3.png",
+          "zindex": 2
         }
-      ],
+      },
       "name": "Rock 3",
       "parent-id": 4,
       "transform": {
@@ -201,15 +180,12 @@
     },
     {
       "children-ids": [],
-      "components": [
-        {
-          "type": "Sprite",
-          "values": {
-            "filepath": "StageDemo/background.png",
-            "zindex": 0
-          }
+      "components": {
+        "sprite": {
+          "filepath": "StageDemo/background.png",
+          "zindex": 0
         }
-      ],
+      },
       "name": "Background",
       "parent-id": -1,
       "transform": {

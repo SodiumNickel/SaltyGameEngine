@@ -51,12 +51,13 @@ void ComponentValueEdit::Apply(bool undo){
     }
     ApplyJson(undo);
 }
-// Pre: entity.HasComponent<compType>()
+// Pre: entity["components"][compType] exists || compType = TRANSFORM
 void ComponentValueEdit::ApplyJson(bool undo){
     ComponentValue* val = undo ? prev.get() : cur.get(); 
     std::ifstream g("EngineData/current-scene.json");
     json scene = json::parse(g);
-    json entity = scene["entities"][entityId];
+    json entity = scene["entities"][entityId]; // TODO: maybe this should be jEntity
+    json components = entity["components"];
 
     switch(compType) {
         case TRANSFORM: {
@@ -77,8 +78,8 @@ void ComponentValueEdit::ApplyJson(bool undo){
         //     break;
         case RIGIDBODY: {
             switch(compVar){
-                //case INITVEL_X: entity["components"] = val->f; break;
-                //case INITVEL_Y: rigidbody.initVelocity.y = val->f; break;
+                case INITVEL_X: components["rigidbody"]["initVelocity"][0] = val->f; break;
+                case INITVEL_Y: components["rigidbody"]["initVelocity"][0] = val->f; break;
                 default:
                     // TODO: log error - rb does not have ...
                     break;
@@ -92,6 +93,7 @@ void ComponentValueEdit::ApplyJson(bool undo){
             // TODO: log unidentified component type
             break;
     }
+    entity["components"] = components;
     scene["entities"][entityId] = entity;
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
     g.close();
