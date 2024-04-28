@@ -20,11 +20,10 @@ void EditHistory::Do(Edit* action){
     while(!redoStack.empty()) redoStack.pop();
 }
 
-// Pre: !undoStack.empty
+// Pre: canUndo = true (!undoStack.empty)
 void EditHistory::Undo(){ 
     undoStack.top()->Apply(true);
-    unsaved = true; // TODO: if you make an edit from a saved file then undo that edit, should it go back to saved? i dont think so...
-
+    unsaved = true; // NOTE: edit a saved file then undo it, the file displays as unsaved. This seems reasonable (and was easier to implement...) 
     redoStack.push(undoStack.top());
     canRedo = true;
 
@@ -33,7 +32,7 @@ void EditHistory::Undo(){
     if(undoStack.empty()) canUndo = false;
 }
 
-// Pre: !redoStack.empty
+// Pre: canRedo = true (!redoStack.empty) 
 void EditHistory::Redo(){
     redoStack.top()->Apply(false);
     unsaved = true;

@@ -9,7 +9,10 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
-// Pre: entity.HasComponent<compType>()
+/* -----COMPONENT VALUE EDIT----------------------------------- *
+ *   When the user changes an individual value in a component   *
+ * ------------------------------------------------------------ */
+// Pre: entity.HasComponent<compType>() || compType = TRANSFORM
 void ComponentValueEdit::Apply(bool undo){
     ComponentValue* val = undo ? prev.get() : cur.get(); 
     Entity entity = *stage->registry->entityTree[entityId].get();
@@ -51,7 +54,7 @@ void ComponentValueEdit::Apply(bool undo){
     }
     ApplyJson(undo);
 }
-// Pre: entity["components"][compType] exists || compType = TRANSFORM
+// Pre: entity["components"].contains(compType) || compType = TRANSFORM
 void ComponentValueEdit::ApplyJson(bool undo){
     ComponentValue* val = undo ? prev.get() : cur.get(); 
     std::ifstream g("EngineData/current-scene.json");
@@ -95,6 +98,58 @@ void ComponentValueEdit::ApplyJson(bool undo){
     }
     entity["components"] = components;
     scene["entities"][entityId] = entity;
+    std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
+    g.close();
+}
+
+/* -----HAS COMPONENT EDIT--------------------- *
+ *   When the user adds or removes a component  *
+ * -------------------------------------------- */
+// Pre: !addComp <-> entity.HasComponent<compType> && compType != TransformComponent
+void HasComponentEdit::Apply(bool undo){
+    Entity entity = *stage->registry->entityTree[entityId].get();
+    // add = true -> undo() does RemoveComponent, so addComp = undo xor add (see truth table below)
+    /* add      : 0 0 1 1 *
+     * undo     : 0 1 0 1 
+     * intended : 0 1 1 0 */
+    bool addComp = undo != add;
+
+    switch(compType) {
+        // case SPRITE:
+        //     // TODO:
+        //     break;
+        case RIGIDBODY:
+            if(addComp) entity.AddComponent<RigidbodyComponent>(); // TODO: add args here
+            else entity.RemoveComponent<RigidbodyComponent>();
+            break;
+        // case BOXCOL:
+        //     // TODO:
+        //     break;
+        default:
+            // TODO: log unidentified component type
+            break;
+    }
+}
+// Pre: !addComp <-> entity["components"].contains(compType) && compType != TransformComponent
+void HasComponentEdit::ApplyJson(bool undo){
+    std::ifstream g("EngineData/current-scene.json");
+    json scene = json::parse(g);
+    json components = scene["entities"][entityId]["components"];
+
+    switch(compType) {
+        // case SPRITE:
+        //     // TODO:
+        //     break;
+        case RIGIDBODY: 
+            break;
+        // case BOXCOL:
+        //     // TODO:
+        //     break;
+        default:
+            // TODO: log unidentified component type
+            break;
+    }
+    scene["entities"][entityId]["components"] = components;
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
     g.close();
 }

@@ -38,6 +38,7 @@ struct ComponentValue {
 
 // When the user edits a value in the component, i.e. transform.position.x from 0.0f to 1.0f
 class ComponentValueEdit : public Edit {
+private:    
     ComponentTypes compType;
     ComponentVars compVar;
     std::shared_ptr<Stage> stage; // TODO: hopefully will not need to pass stage here? i think its for registry
@@ -57,11 +58,19 @@ public:
 
 // When the user adds or removes a component
 class HasComponentEdit : public Edit {
+private:
     ComponentTypes compType;
     std::shared_ptr<Stage> stage;
     int entityId;
-    std::vector<std::unique_ptr<ComponentValue>> prev; // Used to undo action
-    std::vector<std::unique_ptr<ComponentValue>> cur; // Used to (re)do action
+    // Contains all values in deleted/added component (or is empty if they are all default)
+    std::vector<std::unique_ptr<ComponentValue>>& values;
+    // If the initial action was AddComponent (e.g. add = true -> undo() = RemoveComponent)
+    bool add;
+public:
+    HasComponentEdit(ComponentTypes compType, std::shared_ptr<Stage> stage, int entityId, bool add, std::vector<std::unique_ptr<ComponentValue>>& values): 
+        compType(compType), stage(stage), entityId(entityId), add(add), values(values) {};
+    void Apply(bool undo) override;
+    void ApplyJson(bool undo) override;
 };
 
 // NOTE: DELETING AN ENTITY HAS TO PUT IT IN SAME PLACE AFTER UNDO, OTHERWISE THIS WHOLE SYSTEM BREAKS
