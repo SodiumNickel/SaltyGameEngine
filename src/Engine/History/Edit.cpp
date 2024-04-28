@@ -105,7 +105,7 @@ void ComponentValueEdit::ApplyJson(bool undo){
 /* -----HAS COMPONENT EDIT--------------------- *
  *   When the user adds or removes a component  *
  * -------------------------------------------- */
-// Pre: !addComp <-> entity.HasComponent<compType> && compType != TransformComponent
+// Pre: !addComp <-> entity.HasComponent<compType> && |values| = 0 or |compType.args| && compType != TransformComponent
 void HasComponentEdit::Apply(bool undo){
     Entity entity = *stage->registry->entityTree[entityId].get();
     // add = true -> undo() does RemoveComponent, so addComp = undo xor add (see truth table below)
