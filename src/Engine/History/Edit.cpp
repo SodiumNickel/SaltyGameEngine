@@ -141,11 +141,19 @@ void HasComponentEdit::ApplyJson(bool undo){
     json scene = json::parse(g);
     json components = scene["entities"][entityId]["components"];
 
+    // add = true -> undo() does RemoveComponent, so addComp = undo xor add (see truth table in Apply())
+    bool addComp = undo != add;
+
     switch(compType) {
         // case SPRITE:
         //     // TODO:
         //     break;
         case RIGIDBODY: 
+            if(addComp) {
+                // if(values->empty()) entity.AddComponent<RigidbodyComponent>(); 
+                // else entity.AddComponent<RigidbodyComponent>(glm::vec2((*values)[0]->f, (*values)[1]->f));
+            }
+            else components.erase("rigidbody");
             break;
         // case BOXCOL:
         //     // TODO:
