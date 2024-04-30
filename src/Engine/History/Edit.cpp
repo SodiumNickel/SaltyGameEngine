@@ -54,6 +54,7 @@ void ComponentValueEdit::Apply(bool undo){
             // TODO: log unidentified component type
             break;
     }
+
     ApplyJson(undo);
 }
 // Pre: entity["components"].contains(compType) || compType = TRANSFORM
@@ -84,7 +85,7 @@ void ComponentValueEdit::ApplyJson(bool undo){
         case RIGIDBODY: {
             switch(compVar){
                 case INITVEL_X: components["rigidbody"]["initVelocity"][0] = val->f; break;
-                case INITVEL_Y: components["rigidbody"]["initVelocity"][0] = val->f; break;
+                case INITVEL_Y: components["rigidbody"]["initVelocity"][1] = val->f; break;
                 default:
                     // TODO: log error - rb does not have ...
                     break;
@@ -134,6 +135,8 @@ void HasComponentEdit::Apply(bool undo){
             // TODO: log unidentified component type
             break;
     }
+
+    ApplyJson(undo);
 }
 // Pre: !addComp <-> entity["components"].contains(compType) && compType != TransformComponent
 void HasComponentEdit::ApplyJson(bool undo){
@@ -150,8 +153,18 @@ void HasComponentEdit::ApplyJson(bool undo){
         //     break;
         case RIGIDBODY: 
             if(addComp) {
-                // if(values->empty()) entity.AddComponent<RigidbodyComponent>(); 
-                // else entity.AddComponent<RigidbodyComponent>(glm::vec2((*values)[0]->f, (*values)[1]->f));
+                if(values->empty()) {
+                    json rigidbody = {
+                        {"initVelocity", {0.0, 0.0}}
+                    };
+                    components["rigidbody"] = rigidbody;
+                }
+                else {
+                    json rigidbody = {
+                        {"initVelocity", {(*values)[0]->f, (*values)[1]->f}}
+                    };
+                    components["rigidbody"] = rigidbody;
+                }
             }
             else components.erase("rigidbody");
             break;
