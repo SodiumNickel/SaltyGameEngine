@@ -63,12 +63,12 @@ private:
     std::shared_ptr<Stage> stage;
     int entityId;
     // Contains all values in deleted/added component (or is empty if they are all default)
-    std::vector<std::unique_ptr<ComponentValue>>& values;
+    std::vector<std::unique_ptr<ComponentValue>>* values;
     // If the initial action was AddComponent (e.g. add = true -> undo() = RemoveComponent)
     bool add;
 public:
-    HasComponentEdit(ComponentTypes compType, std::shared_ptr<Stage> stage, int entityId, bool add, std::vector<std::unique_ptr<ComponentValue>>& values): 
-        compType(compType), stage(stage), entityId(entityId), add(add), values(values) {};
+    HasComponentEdit(ComponentTypes compType, std::shared_ptr<Stage> stage, int entityId, bool add, std::vector<std::unique_ptr<ComponentValue>>* values): 
+        compType(compType), stage(stage), entityId(entityId), add(add), values(values) {}; // TODO: pointer needs to be deallocated
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
 };

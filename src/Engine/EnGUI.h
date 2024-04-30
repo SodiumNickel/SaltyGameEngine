@@ -62,6 +62,8 @@ private:
     void Sprite();
     void Rigidbody();
     void BoxCollider();
+    // Used to show close button on CollapsingHeader
+    bool notRemoved = true; 
 
     bool addComponentOpen = false;
 public:

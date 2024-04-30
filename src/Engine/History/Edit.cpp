@@ -4,6 +4,8 @@
 #include "../Game/Components/RigidbodyComponent.h"
 #include "../Game/ECS/ECS.h"
 
+#include <glm.hpp>
+
 #include <iostream>
 #include <fstream>
 #include <json.hpp>
@@ -119,7 +121,10 @@ void HasComponentEdit::Apply(bool undo){
         //     // TODO:
         //     break;
         case RIGIDBODY:
-            if(addComp) entity.AddComponent<RigidbodyComponent>(); // TODO: add args here
+            if(addComp) {
+                if(values->empty()) entity.AddComponent<RigidbodyComponent>(); 
+                else entity.AddComponent<RigidbodyComponent>(glm::vec2((*values)[0]->f, (*values)[1]->f));
+            }
             else entity.RemoveComponent<RigidbodyComponent>();
             break;
         // case BOXCOL:

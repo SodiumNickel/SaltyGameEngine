@@ -14,6 +14,7 @@
 
 #include "./History/Edit.h"
 
+#include <memory>
 #include <iostream>
 
 void ComponentTab::Transform(){
@@ -68,7 +69,7 @@ void ComponentTab::Transform(){
 }
 void ComponentTab::Sprite(){
     if(entity.HasComponent<SpriteComponent>()){
-        if (ImGui::CollapsingHeader("Sprite", ImGuiTreeNodeFlags_DefaultOpen))
+        if (ImGui::CollapsingHeader("Sprite", &notRemoved, ImGuiTreeNodeFlags_DefaultOpen))
         {
             auto& sprite = entity.GetComponent<SpriteComponent>();
             ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.75f);
@@ -91,13 +92,25 @@ void ComponentTab::Sprite(){
         
             ImGui::SeparatorText("");
         }
+
+        // User pressed close button on header, remove component
+        if(!notRemoved){
+            notRemoved = true;
+
+            // Create vector of values and add it to editHistory
+            std::vector<std::unique_ptr<ComponentValue>>* values;
+            values->push_back(std::make_unique<ComponentValue>(1));
+            editHistory->Do(new HasComponentEdit(SPRITE, stage, entityId, false, values));
+
+            entity.RemoveComponent<SpriteComponent>();
+        }
     }
 }
 void ComponentTab::Rigidbody(){
     if(entity.HasComponent<RigidbodyComponent>()){
-        if (ImGui::CollapsingHeader("Rigidbody", ImGuiTreeNodeFlags_DefaultOpen))
+        auto& rigidbody = entity.GetComponent<RigidbodyComponent>();
+        if (ImGui::CollapsingHeader("Rigidbody", &notRemoved, ImGuiTreeNodeFlags_DefaultOpen))
         {
-            auto& rigidbody = entity.GetComponent<RigidbodyComponent>();
             ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.45f);
 
             ImGui::Text("Initial Velocity");
@@ -116,6 +129,19 @@ void ComponentTab::Rigidbody(){
             { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_Y, stage, entityId, prev.f, rigidbody.initVelocity.y)); }
 
             ImGui::SeparatorText("");
+        }
+
+        // User pressed close button on header, remove component
+        if(!notRemoved){
+            notRemoved = true;
+
+            // Create vector of values and add it to editHistory
+            std::vector<std::unique_ptr<ComponentValue>>* values = new std::vector<std::unique_ptr<ComponentValue>>();;
+            values->push_back(std::make_unique<ComponentValue>(rigidbody.initVelocity.x));
+            values->push_back(std::make_unique<ComponentValue>(rigidbody.initVelocity.y));
+            editHistory->Do(new HasComponentEdit(RIGIDBODY, stage, entityId, false, values));
+
+            entity.RemoveComponent<RigidbodyComponent>();
         }
     }
 }
@@ -164,9 +190,9 @@ void ComponentTab::Begin(){
         if(ImGui::Selectable("Rigidbody", false, entity.HasComponent<RigidbodyComponent>() ? ImGuiSelectableFlags_Disabled : 0)){
             entity.AddComponent<RigidbodyComponent>();
 
-            std::vector<std::unique_ptr<ComponentValue>> values; // Empty vector, will redo with default values
+            std::vector<std::unique_ptr<ComponentValue>>* values; // Empty vector, will redo with default values
             editHistory->Do(new HasComponentEdit(RIGIDBODY, stage, entityId, true, values));
-            
+
             addComponentOpen = false;
         }
         if (ImGui::Selectable("BoxCollider", false, ImGuiSelectableFlags_Disabled)) {
