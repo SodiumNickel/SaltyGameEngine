@@ -5,8 +5,8 @@
       "components": {
         "rigidbody": {
           "initVelocity": [
-            0.0,
-            0.0
+            0.574999988079071,
+            1.401298464324817e-45
           ]
         },
         "sprite": {

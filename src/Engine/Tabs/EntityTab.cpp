@@ -38,8 +38,8 @@ void DDTarget(int id, std::vector<std::unique_ptr<Entity>>& entityTree){
             
             // Intended: re-parenting to same entity has effect that entity goes to end of childIds
             // unparent payloadId from its parent
-            std::vector<int>& parent = entityTree[entityTree[payloadId]->parentId]->childrenIds;
-            parent.erase(std::remove(parent.begin(), parent.end(), payloadId), parent.end()); // Erase-remove idiom
+            std::vector<int>& pChildren = entityTree[entityTree[payloadId]->parentId]->childrenIds;
+            pChildren.erase(std::remove(pChildren.begin(), pChildren.end(), payloadId), pChildren.end()); // Erase-remove idiom
             // reparent payloadId to id
             entityTree[id]->childrenIds.push_back(payloadId);
             entityTree[payloadId]->parentId = id;
