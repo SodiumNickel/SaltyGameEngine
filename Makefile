@@ -1,4 +1,4 @@
-PROJECTNAME = project
+PROJECTNAME = saltyengine
 BUILD_DIR = build
 
 # -I"include/glm"

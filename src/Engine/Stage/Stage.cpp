@@ -30,7 +30,7 @@ using json = nlohmann::json;
 // Constructor
 Stage::Stage()
 {
-    registry = std::make_unique<Registry>();
+    registry = std::make_shared<Registry>();
     assetManager = std::make_unique<AssetManager>();
 }
 

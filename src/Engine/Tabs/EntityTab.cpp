@@ -38,11 +38,18 @@ void DDTarget(int id, std::vector<std::unique_ptr<Entity>>& entityTree){
             
             // Intended: re-parenting to same entity has effect that entity goes to end of childIds
             // unparent payloadId from its parent
-            std::vector<int>& pChildren = entityTree[entityTree[payloadId]->parentId]->childrenIds;
-            pChildren.erase(std::remove(pChildren.begin(), pChildren.end(), payloadId), pChildren.end()); // Erase-remove idiom
-            // reparent payloadId to id
-            entityTree[id]->childrenIds.push_back(payloadId);
-            entityTree[payloadId]->parentId = id;
+            int parentId = entityTree[payloadId]->parentId;
+            // parentId = -1 -> parent is scene/root
+            if(parentId != -1){
+                std::vector<int>& pChildren = entityTree[parentId]->childrenIds;
+                pChildren.erase(std::remove(pChildren.begin(), pChildren.end(), payloadId), pChildren.end()); // Erase-remove idiom
+                // reparent payloadId to id
+                entityTree[id]->childrenIds.push_back(payloadId);
+                entityTree[payloadId]->parentId = id;   
+            }
+            else{
+                // TODO: just have to remove from registry rootIds
+            }
         }
         ImGui::EndDragDropTarget();
     }
