@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <imgui.h>
 #include "EngineData.h"
+#include "../Game/ECS/ECS.h"
+#include "../Game/AssetManager/AssetManager.h"
 #include "Stage/Stage.h"
 #include "History/EditHistory.h"
 #include "EnGUI.h"
@@ -20,7 +22,10 @@ class Engine {
 
         // Shared pointer used to pass engine data to tabs, stage, edit history
         std::shared_ptr<EngineData> engineData;
-        
+
+        std::shared_ptr<Registry> registry; 
+        std::shared_ptr<AssetManager> assetManager;
+
         std::shared_ptr<EditHistory> editHistory;
         std::shared_ptr<Stage> stage;
         std::unique_ptr<Menu> menu;

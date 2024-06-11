@@ -16,7 +16,7 @@ using json = nlohmann::json;
  * -------------------------------------------- */
 // Pre: !addComp <-> entity.HasComponent<compType> && |values| = 0 or |compType.args| && compType != TransformComponent
 void HasComponentEdit::Apply(bool undo){
-    Entity entity = *stage->registry->entityTree[entityId].get();
+    Entity entity = *registry->entityTree[entityId].get();
     // add = true -> undo() does RemoveComponent, so addComp = undo xor add (see truth table below)
     /* add      : 0 0 1 1 *
      * undo     : 0 1 0 1 

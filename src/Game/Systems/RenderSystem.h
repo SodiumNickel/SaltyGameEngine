@@ -21,7 +21,8 @@ public:
         RequireComponent<SpriteComponent>();
     }
 
-    void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, glm::vec2 cameraCenter, glm::vec2 cameraZoom)
+    // TODO: should this be a unique_ptr for assetmanager in game?
+    void Update(SDL_Renderer* renderer, std::shared_ptr<AssetManager> assetManager, glm::vec2 cameraCenter, glm::vec2 cameraZoom)
     {
         // TODO: optimize by sorting sprite objects whenever they are added
         // Can do this with a simple insertion on frames with low entity additions

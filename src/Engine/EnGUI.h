@@ -40,10 +40,16 @@ public:
 class EntityTab : public Tab {
 private:
     int index;
+
+    void DDSource(int id);
+    void DDTarget(int id);
+
     std::shared_ptr<EditHistory> editHistory;
-    std::shared_ptr<Stage> stage;
+    std::shared_ptr<EngineData> engineData;
+    std::shared_ptr<Registry> registry;
 public:
-    EntityTab(std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Stage> stage) : editHistory(editHistory), stage(stage) {};
+    EntityTab(std::shared_ptr<EditHistory> editHistory, std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry) 
+    : editHistory(editHistory), engineData(engineData), registry(registry) {};
     void Begin() override;
 };
 
@@ -52,10 +58,14 @@ private:
     int index;
     ComponentValue prev;
     std::shared_ptr<EditHistory> editHistory;
-    std::shared_ptr<Stage> stage;
-    
+    std::shared_ptr<EngineData> engineData; // TODO: not sure i will keep this in the end, currently just for selectedEntity
+    std::shared_ptr<Registry> registry;
+    std::shared_ptr<AssetManager> assetManager;
+
     Entity entity;
     int entityId;
+
+    int selectedEntity;
 
     // TODO: this should just access entity by id from above
     void Transform();
@@ -67,25 +77,28 @@ private:
 
     bool addComponentOpen = false;
 public:
-    ComponentTab(std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Stage> stage) : editHistory(editHistory), stage(stage), prev() {};
+    ComponentTab(std::shared_ptr<EditHistory> editHistory, std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager) 
+    : editHistory(editHistory), engineData(engineData), registry(registry), assetManager(assetManager), prev() {};
     void Begin() override;
 };
 
 class ScriptTab : public Tab {
 private:
     int index;
-    std::shared_ptr<Stage> stage;
+    std::shared_ptr<Registry> registry;
 public:
-    ScriptTab(std::shared_ptr<Stage> stage) : stage(stage) {};
+    ScriptTab(std::shared_ptr<Registry> registry) : registry(registry) {};
     void Begin() override;
 };
 
 class AssetTab : public Tab {
 private:
     int index;
-    std::shared_ptr<Stage> stage;
+    std::shared_ptr<Registry> registry;
+
+    std::filesystem::path currentDir = std::filesystem::path("./Unique/Assets");
 public:
-    AssetTab(std::shared_ptr<Stage> stage) : stage(stage) {};
+    AssetTab(std::shared_ptr<Registry> registry) : registry(registry) {};
     void Begin() override;
 };
 

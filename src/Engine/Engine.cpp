@@ -71,8 +71,12 @@ int Engine::Initialize()
         800, 800
     );
 
-    // Send renderer and viewport to stage
-    stage = std::make_shared<Stage>();
+    // Create registry
+    registry = std::make_shared<Registry>();
+    assetManager = std::make_shared<AssetManager>();
+
+    // Create stage with access to renderer/viewport
+    stage = std::make_shared<Stage>(engineData, registry, assetManager);
     stage->Initialize(renderer, viewport);
 
     // Init imgui
@@ -100,10 +104,10 @@ int Engine::Initialize()
     menu = std::make_unique<Menu>(engineData, editHistory);
 
     // Open initial tabs
-    openTabs.push_back(new EntityTab(editHistory, stage)); // TODO: this should be better pointers
-    openTabs.push_back(new ComponentTab(editHistory, stage));
-    openTabs.push_back(new ScriptTab(stage));
-    openTabs.push_back(new AssetTab(stage));
+    openTabs.push_back(new EntityTab(editHistory, engineData, registry)); // TODO: this should be better pointers(?)
+    openTabs.push_back(new ComponentTab(editHistory, engineData, registry, assetManager));
+    openTabs.push_back(new ScriptTab(registry));
+    openTabs.push_back(new AssetTab(registry));
 
     isRunning = true;
     return 0;

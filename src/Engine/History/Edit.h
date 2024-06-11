@@ -41,16 +41,16 @@ class ComponentValueEdit : public Edit {
 private:    
     ComponentTypes compType;
     ComponentVars compVar;
-    std::shared_ptr<Stage> stage; // TODO: hopefully will not need to pass stage here? i think its for registry
+    std::shared_ptr<Registry> registry;
     int entityId;
     std::unique_ptr<ComponentValue> prev; // Used to undo action
     std::unique_ptr<ComponentValue> cur; // Used to (re)do action
 public:
-    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, std::shared_ptr<Stage> stage, int entityId, float prevf, float curf): 
-        compType(compType), compVar(compVar), stage(stage), entityId(entityId), 
+    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, std::shared_ptr<Registry> registry, int entityId, float prevf, float curf): 
+        compType(compType), compVar(compVar), registry(registry), entityId(entityId), 
         prev(std::make_unique<ComponentValue>(prevf)), cur(std::make_unique<ComponentValue>(curf)) {};
-    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, std::shared_ptr<Stage> stage, int entityId, int previ, int curi): 
-        compType(compType), compVar(compVar), stage(stage), entityId(entityId), 
+    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, std::shared_ptr<Registry> registry, int entityId, int previ, int curi): 
+        compType(compType), compVar(compVar), registry(registry), entityId(entityId), 
         prev(std::make_unique<ComponentValue>(previ)), cur(std::make_unique<ComponentValue>(curi)) {};
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
@@ -60,15 +60,15 @@ public:
 class HasComponentEdit : public Edit {
 private:
     ComponentTypes compType;
-    std::shared_ptr<Stage> stage;
+    std::shared_ptr<Registry> registry;
     int entityId;
     // Contains all values in deleted/added component (or is empty if they are all default)
     std::vector<std::unique_ptr<ComponentValue>>* values;
     // If the initial action was AddComponent (e.g. add = true -> undo() = RemoveComponent)
     bool add;
 public:
-    HasComponentEdit(ComponentTypes compType, std::shared_ptr<Stage> stage, int entityId, bool add, std::vector<std::unique_ptr<ComponentValue>>* values): 
-        compType(compType), stage(stage), entityId(entityId), add(add), values(values) {}; // TODO: pointer needs to be deallocated
+    HasComponentEdit(ComponentTypes compType, std::shared_ptr<Registry> registry, int entityId, bool add, std::vector<std::unique_ptr<ComponentValue>>* values): 
+        compType(compType), registry(registry), entityId(entityId), add(add), values(values) {}; // TODO: pointer needs to be deallocated
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
 };

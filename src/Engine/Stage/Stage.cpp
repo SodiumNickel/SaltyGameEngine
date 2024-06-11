@@ -28,10 +28,11 @@
 using json = nlohmann::json;
 
 // Constructor
-Stage::Stage()
+Stage::Stage(std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager)
 {
-    registry = std::make_shared<Registry>();
-    assetManager = std::make_unique<AssetManager>();
+    this->registry = registry;
+    this->engineData = engineData;
+    this->assetManager = assetManager;
 }
 
 // Destructor
@@ -54,9 +55,9 @@ void Stage::LoadScene(int sceneIndex)
     std::ifstream f("Unique/Scenes/_index.json");
     json sceneList = json::parse(f).begin().value();
     f.close();
-    sceneName = sceneList[sceneIndex].value("name", "");
+    engineData->sceneName = sceneList[sceneIndex].value("name", "");
     
-    std::ifstream g("Unique/Scenes/" + sceneName + ".json");
+    std::ifstream g("Unique/Scenes/" + engineData->sceneName + ".json");
     json scene = json::parse(g);
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
 

@@ -23,7 +23,6 @@ void ComponentTab::Transform(){
     {
         // TODO: Also create system that updates global transforms? i would prefer to have it whenever transform is changed but not sure if that would work
         auto transform = entity.transform;
-        int entityId = entity.GetId();
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.45f);
 
         ImGui::Text("Position");
@@ -32,14 +31,14 @@ void ComponentTab::Transform(){
         ImGui::DragFloat("##posx", &transform->position.x, 1.0f);
         if(ImGui::IsItemActivated()) prev.f = prevf;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_X, stage, entityId, prev.f, transform->position.x)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_X, registry, selectedEntity, prev.f, transform->position.x)); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         prevf = transform->position.y;
         ImGui::DragFloat("##posy", &transform->position.y, 1.0f);
         if(ImGui::IsItemActivated()) prev.f = prevf;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, stage, entityId, prev.f, transform->position.y)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, registry, selectedEntity, prev.f, transform->position.y)); }
 
         ImGui::Text("Scale");
         ImGui::Text("x"); ImGui::SameLine();
@@ -47,14 +46,14 @@ void ComponentTab::Transform(){
         ImGui::DragFloat("##scalex", &transform->scale.x, 0.005f); 
         if(ImGui::IsItemActivated()) prev.f = prevf;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_X, stage, entityId, prev.f, transform->scale.x)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_X, registry, selectedEntity, prev.f, transform->scale.x)); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         prevf = transform->scale.y;
         ImGui::DragFloat("##scaley", &transform->scale.y, 0.005f);
         if(ImGui::IsItemActivated()) prev.f = prevf;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, stage, entityId, prev.f, transform->scale.y)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, registry, selectedEntity, prev.f, transform->scale.y)); }
 
         ImGui::Text("Rotation");
         ImGui::Text("θ"); ImGui::SameLine(); // TODO: theta is not displaying properly in this font
@@ -62,7 +61,7 @@ void ComponentTab::Transform(){
         ImGui::DragFloat("##rot", &transform->rotation, 0.25f);
         if(ImGui::IsItemActivated()) prev.f = prevf;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, ROTATION, stage, entityId, prev.f, transform->rotation)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, ROTATION, registry, selectedEntity, prev.f, transform->rotation)); }
 
         ImGui::SeparatorText("");
     }
@@ -84,7 +83,7 @@ void ComponentTab::Sprite(){
             ImGui::SameLine();
             ImGui::BeginGroup();
             ImGui::Dummy(ImVec2(0.0f, 0.25f)); // Alligns image with text on LHS
-            ImGui::Image(stage->assetManager->GetTexture(sprite.filepath), ImVec2(32, 32)); // TODO: this might need to be resized if the images arent squares
+            ImGui::Image(assetManager->GetTexture(sprite.filepath), ImVec2(32, 32)); // TODO: this might need to be resized if the images arent squares
             ImGui::EndGroup();
 
             ImGui::Text("zIndex"); // TODO: this should probably be enumerated with a dropdown??? 
@@ -100,7 +99,7 @@ void ComponentTab::Sprite(){
             // Create vector of values and add it to editHistory
             std::vector<std::unique_ptr<ComponentValue>>* values;
             values->push_back(std::make_unique<ComponentValue>(1));
-            editHistory->Do(new HasComponentEdit(SPRITE, stage, entityId, false, values));
+            editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, false, values));
 
             entity.RemoveComponent<SpriteComponent>();
         }
@@ -119,14 +118,14 @@ void ComponentTab::Rigidbody(){
             ImGui::DragFloat("##initx", &rigidbody.initVelocity.x, 0.005f); 
             if(ImGui::IsItemActivated()) prev.f = prevf;
             if(ImGui::IsItemDeactivatedAfterEdit()) 
-            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_X, stage, entityId, prev.f, rigidbody.initVelocity.x)); }
+            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_X, registry, selectedEntity, prev.f, rigidbody.initVelocity.x)); }
             ImGui::SameLine();
             ImGui::Text("y"); ImGui::SameLine();
             prevf = rigidbody.initVelocity.y;
             ImGui::DragFloat("##inity", &rigidbody.initVelocity.y, 0.005f);
             if(ImGui::IsItemActivated()) prev.f = prevf;
             if(ImGui::IsItemDeactivatedAfterEdit()) 
-            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_Y, stage, entityId, prev.f, rigidbody.initVelocity.y)); }
+            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_Y, registry, selectedEntity, prev.f, rigidbody.initVelocity.y)); }
 
             ImGui::SeparatorText("");
         }
@@ -139,7 +138,7 @@ void ComponentTab::Rigidbody(){
             std::vector<std::unique_ptr<ComponentValue>>* values = new std::vector<std::unique_ptr<ComponentValue>>();;
             values->push_back(std::make_unique<ComponentValue>(rigidbody.initVelocity.x));
             values->push_back(std::make_unique<ComponentValue>(rigidbody.initVelocity.y));
-            editHistory->Do(new HasComponentEdit(RIGIDBODY, stage, entityId, false, values));
+            editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, false, values));
 
             entity.RemoveComponent<RigidbodyComponent>();
         }
@@ -162,8 +161,8 @@ void ComponentTab::Begin(){
     ImGui::Begin("Components");
 
     // TODO: this is not great, should be able to lock tabs, and then only need to update this when it changes
-    entity = *stage->registry->entityTree[stage->selectedEntity].get();
-    entityId = entity.GetId();
+    selectedEntity = engineData->selectedEntity;
+    entity = *registry->entityTree[selectedEntity].get();
 
     // Iterate through all possible components, displaying if HasComponent()
     Transform(); // TODO: i might move the hasComponent check out here
@@ -191,7 +190,7 @@ void ComponentTab::Begin(){
             entity.AddComponent<RigidbodyComponent>();
 
             std::vector<std::unique_ptr<ComponentValue>>* values; // Empty vector, will redo with default values
-            editHistory->Do(new HasComponentEdit(RIGIDBODY, stage, entityId, true, values));
+            editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, true, values));
 
             addComponentOpen = false;
         }

@@ -3,6 +3,7 @@
 
 #include "../Game/ECS/ECS.h"
 #include "../Game/AssetManager/AssetManager.h"
+#include "../EngineData.h"
 
 #include <vector>
 #include <string>
@@ -22,11 +23,15 @@ class Stage {
         // SDL_Rect camera; might need this later just for outline
         // also need it for the "stage" camera
 
+        std::shared_ptr<EngineData> engineData;
+        std::shared_ptr<Registry> registry;
+        std::shared_ptr<AssetManager> assetManager;
+
         bool dragging = false;
         ImVec2 startMousePos;
         glm::vec2 startStageCenter; 
     public:
-        Stage();
+        Stage(std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager);
         ~Stage();
         void Initialize(SDL_Renderer* renderer, SDL_Texture* viewport);
         void LoadScene(int sceneIndex);
@@ -35,17 +40,6 @@ class Stage {
         void ProcessInput();
         void Update();
         void Destroy();
-
-        // TODO: both of these will be a PRIVATE unique_ptr in Game, replace comment too
-        std::shared_ptr<Registry> registry; 
-        std::unique_ptr<AssetManager> assetManager; // TODO: i might move assetMangaer to engineData, so game loads faster
-
-        // TODO: maybe move all of this to engine?? does not particularly matter, but maybe. 
-        // okay actually i think it has to stay here, unless i want a seperate "engineData" class, i think i should probably have it
-        std::string sceneName = "";
-        int selectedEntity = 0;
-
-        std::filesystem::path currentDir = std::filesystem::path("./Unique/Assets");
 
         // TODO: do any of these have to be public??
         glm::vec2 stageCenter = glm::vec2(100.0f, 100.0f);

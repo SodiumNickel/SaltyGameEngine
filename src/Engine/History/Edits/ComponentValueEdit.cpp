@@ -17,7 +17,7 @@ using json = nlohmann::json;
 // Pre: entity.HasComponent<compType>() || compType = TRANSFORM
 void ComponentValueEdit::Apply(bool undo){
     ComponentValue* val = undo ? prev.get() : cur.get(); 
-    Entity entity = *stage->registry->entityTree[entityId].get();
+    Entity entity = *registry->entityTree[entityId].get();
     switch(compType) {
         case TRANSFORM: {
             auto& transform = *entity.transform;
