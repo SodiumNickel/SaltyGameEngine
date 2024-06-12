@@ -155,7 +155,11 @@ void EntityTab::DDTarget(int id){
                 registry->entityTree[payloadId]->parentId = id;   
             }
             else{
-                // TODO: just have to remove from registry rootIds
+                std::vector<int>& rChildren = registry->rootIds;
+                rChildren.erase(std::remove(rChildren.begin(), rChildren.end(), payloadId), rChildren.end()); // Erase-remove idiom
+                // reparent payloadId to id
+                registry->entityTree[id]->childrenIds.push_back(payloadId);
+                registry->entityTree[payloadId]->parentId = id;   
             }
         }
         ImGui::EndDragDropTarget();
