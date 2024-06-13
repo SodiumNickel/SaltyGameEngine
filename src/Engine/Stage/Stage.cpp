@@ -155,7 +155,7 @@ void Stage::Update()
 
     // Background color
     SDL_SetRenderTarget(renderer, viewport);
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 40, 40, 100, 255);
     SDL_RenderClear(renderer);
 
     // Allows resizing of viewport, both by boundaries and zoom

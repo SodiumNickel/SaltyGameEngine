@@ -19,6 +19,7 @@
 
 void EntityTab::Begin(){
     ImGui::Begin((engineData->sceneName + "###Entity").c_str(), NULL, editHistory->unsaved ? ImGuiWindowFlags_UnsavedDocument : 0);
+    
     auto& entityTree = registry->entityTree;
 
     static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -26,7 +27,7 @@ void EntityTab::Begin(){
     int node_clicked = -1;
 
     // Selection by entity id
-    // BFS through stage->entityTree to create nodes
+    // BFS through registry->entityTree to create nodes (order determined by order in registry->rootIds)
     std::vector<int> rootIds = registry->rootIds;
     for (int rc : rootIds){
         ImGuiTreeNodeFlags node_flags = base_flags;
@@ -117,10 +118,42 @@ void EntityTab::Begin(){
         // Update selection state
         // (process outside of tree loop to avoid visual inconsistencies during the clicking frame)
         // if (ImGui::GetIO().KeyCtrl)
-        //     stage->selectedEntity = (1 << node_clicked);          // CTRL+click to toggle
+        //     stage->selectedEntity = (1 << node_clicked);       // CTRL+click to toggle
         // else //if (!(selection_mask & (1 << node_clicked))) // Depending on selection behavior you want, may want to preserve selection when clicking on item that is part of the selection
-            engineData->selectedEntity = node_clicked;           // Click to single-select
+        engineData->selectedEntity = node_clicked;          // Click to single-select
     }
+
+    // DD Target for unparenting entities, moving them to root
+    ImGui::InvisibleButton("entitytree_root", ImVec2(100, 100)); // TODO: just chose arbitrary button size, should scale to fill tab
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
+        {
+            IM_ASSERT(payload->DataSize == sizeof(int));
+            int payloadId = *(const int*)payload->Data;
+            
+            // Intended: re-parenting to same entity has effect that entity goes to end of childIds
+            // unparent payloadId from its parent
+            int parentId = registry->entityTree[payloadId]->parentId;
+            // parentId = -1 -> parent is scene/root
+            if(parentId != -1){
+                std::vector<int>& pChildren = registry->entityTree[parentId]->childrenIds;
+                pChildren.erase(std::remove(pChildren.begin(), pChildren.end(), payloadId), pChildren.end()); // Erase-remove idiom
+                // reparent payloadId to root (-1)
+                registry->rootIds.push_back(payloadId);
+                registry->entityTree[payloadId]->parentId = -1;   
+            }
+            else{
+                std::vector<int>& rChildren = registry->rootIds;
+                rChildren.erase(std::remove(rChildren.begin(), rChildren.end(), payloadId), rChildren.end()); // Erase-remove idiom
+                // reparent payloadId to root (-1)
+                registry->rootIds.push_back(payloadId);
+                registry->entityTree[payloadId]->parentId = -1;    
+            }
+        }
+        ImGui::EndDragDropTarget();
+    }
+
 
     ImGui::End();
 }
@@ -134,8 +167,6 @@ void EntityTab::DDSource(int id){
     }
 }
 void EntityTab::DDTarget(int id){
-    // TODO: this needs to open itself up (in imgui node view) -> not actually sure this is necessary
-    // also needs to be able to drag into component tab, (unparent from all)
     if (ImGui::BeginDragDropTarget())
     {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
