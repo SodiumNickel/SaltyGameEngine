@@ -12,6 +12,10 @@ public:
     virtual void ApplyJson(bool undo) = 0;
 };
 
+/* -----COMPONENT EDITS---------------------------------- *
+ *   Editing values, adding/removing                  *
+ * ------------------------------------------------------ */
+
 enum ComponentTypes {
     TRANSFORM,
     SPRITE,
@@ -74,5 +78,26 @@ public:
 };
 
 // NOTE: DELETING AN ENTITY HAS TO PUT IT IN SAME PLACE AFTER UNDO, OTHERWISE THIS WHOLE SYSTEM BREAKS
+
+/* -----ENTITY MANAGEMENT-------------------------------- *
+ *   Reparenting/moving, adding/removing                  *
+ * ------------------------------------------------------ */
+
+// When the user adds or removes a component
+class ReparentEdit : public Edit {
+private:
+    std::shared_ptr<Registry> registry;
+
+    int entityId;
+    int prevParentId;
+    int prevPos;
+    int curParentId;
+    int curPos;
+public:
+    ReparentEdit(std::shared_ptr<Registry> registry, int entityId, int prevParentId, int prevPos, int curParentId, int curPos)
+    : registry(registry), entityId(entityId), prevParentId(prevParentId), prevPos(prevPos), curParentId(curParentId), curPos(curPos) {};
+    void Apply(bool undo) override;
+    void ApplyJson(bool undo) override;
+};
 
 #endif

@@ -48,8 +48,8 @@ private:
     std::shared_ptr<EngineData> engineData;
     std::shared_ptr<Registry> registry;
 public:
-    EntityTab(std::shared_ptr<EditHistory> editHistory, std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry) 
-    : editHistory(editHistory), engineData(engineData), registry(registry) {};
+    EntityTab(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Registry> registry) 
+    : engineData(engineData), editHistory(editHistory), registry(registry) {};
     void Begin() override;
 };
 
@@ -77,8 +77,8 @@ private:
 
     bool addComponentOpen = false;
 public:
-    ComponentTab(std::shared_ptr<EditHistory> editHistory, std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager) 
-    : editHistory(editHistory), engineData(engineData), registry(registry), assetManager(assetManager), prev() {};
+    ComponentTab(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager) 
+    : engineData(engineData), editHistory(editHistory), registry(registry), assetManager(assetManager), prev() {};
     void Begin() override;
 };
 

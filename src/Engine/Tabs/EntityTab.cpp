@@ -4,6 +4,7 @@
 
 #include "../Stage/Stage.h"
 #include "../Game/ECS/ECS.h"
+#include "../History/Edit.h"
 
 #include <vector>
 #include <stack>
@@ -136,20 +137,20 @@ void EntityTab::Begin(){
             // unparent payloadId from its parent
             int parentId = registry->entityTree[payloadId]->parentId;
             // parentId = -1 -> parent is scene/root
-            if(parentId != -1){
-                std::vector<int>& pChildren = registry->entityTree[parentId]->childrenIds;
-                pChildren.erase(std::remove(pChildren.begin(), pChildren.end(), payloadId), pChildren.end()); // Erase-remove idiom
-                // reparent payloadId to root (-1)
-                registry->rootIds.push_back(payloadId);
-                registry->entityTree[payloadId]->parentId = -1;   
-            }
-            else{
+            if(parentId == -1){
                 std::vector<int>& rChildren = registry->rootIds;
                 rChildren.erase(std::remove(rChildren.begin(), rChildren.end(), payloadId), rChildren.end()); // Erase-remove idiom
-                // reparent payloadId to root (-1)
-                registry->rootIds.push_back(payloadId);
-                registry->entityTree[payloadId]->parentId = -1;    
             }
+            else{
+                std::vector<int>& pChildren = registry->entityTree[parentId]->childrenIds;
+                pChildren.erase(std::remove(pChildren.begin(), pChildren.end(), payloadId), pChildren.end()); // Erase-remove idiom
+            }
+            // reparent payloadId to root (-1)
+            registry->rootIds.push_back(payloadId);
+            registry->entityTree[payloadId]->parentId = -1;   
+
+            // Add to undo stack
+            editHistory->Do(new ReparentEdit(registry, payloadId, parentId, 0, -1, 0));
         }
         ImGui::EndDragDropTarget();
     }
@@ -178,20 +179,20 @@ void EntityTab::DDTarget(int id){
             // unparent payloadId from its parent
             int parentId = registry->entityTree[payloadId]->parentId;
             // parentId = -1 -> parent is scene/root
-            if(parentId != -1){
-                std::vector<int>& pChildren = registry->entityTree[parentId]->childrenIds;
-                pChildren.erase(std::remove(pChildren.begin(), pChildren.end(), payloadId), pChildren.end()); // Erase-remove idiom
-                // reparent payloadId to id
-                registry->entityTree[id]->childrenIds.push_back(payloadId);
-                registry->entityTree[payloadId]->parentId = id;   
+            if(parentId == -1){
+                std::vector<int>& rChildren = registry->rootIds;
+                rChildren.erase(std::remove(rChildren.begin(), rChildren.end(), payloadId), rChildren.end()); // Erase-remove idiom 
             }
             else{
-                std::vector<int>& rChildren = registry->rootIds;
-                rChildren.erase(std::remove(rChildren.begin(), rChildren.end(), payloadId), rChildren.end()); // Erase-remove idiom
-                // reparent payloadId to id
-                registry->entityTree[id]->childrenIds.push_back(payloadId);
-                registry->entityTree[payloadId]->parentId = id;   
+                std::vector<int>& pChildren = registry->entityTree[parentId]->childrenIds;
+                pChildren.erase(std::remove(pChildren.begin(), pChildren.end(), payloadId), pChildren.end()); // Erase-remove idiom
             }
+            // reparent payloadId to id
+            registry->entityTree[id]->childrenIds.push_back(payloadId);
+            registry->entityTree[payloadId]->parentId = id;  
+
+            // Add to undo stack
+            editHistory->Do(new ReparentEdit(registry, payloadId, parentId, 0, id, 0));
         }
         ImGui::EndDragDropTarget();
     }
