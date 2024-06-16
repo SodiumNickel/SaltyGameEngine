@@ -46,11 +46,22 @@ void ReparentEdit::Apply(bool undo){
 void ReparentEdit::ApplyJson(bool undo){
     std::ifstream g("EngineData/current-scene.json");
     json scene = json::parse(g);
-    json components = scene["entities"][entityId]["components"];
+    json entity = scene["entities"][entityId];
 
+    // ParentId from which to remove entity from
+    int removeId = undo ? curParentId : prevParentId;
+    // ParentId to add entity to
+    int addId = undo ? prevParentId : curParentId;
+    // Position in vector to target
+    int targetPos = undo ? prevPos : curPos;
+
+    entity["parent-id"] = addId;
     // TODO
+    // Update old and new parent (updating child ids, and possibly rootids)
+    // If at root, only need to change parent-id
+    // Otherwise also need to remove from children-ids
 
-    scene["entities"][entityId]["components"] = components;
+    scene["entities"][entityId] = entity;
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
     g.close();
 }

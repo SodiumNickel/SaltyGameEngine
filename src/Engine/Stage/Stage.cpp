@@ -82,6 +82,7 @@ void Stage::CreateEntityTree(json jEntities, int size){
         // Assign name and parentId
         entity.name = jEntity["name"];
         entity.parentId = jEntity["parent-id"];
+        // parent = -1 -> entity at root
         if(entity.parentId == -1) rootIds.push_back(id);
         // Fill childrenIds
         json jChildren = jEntity["children-ids"];
