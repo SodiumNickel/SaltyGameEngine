@@ -62,17 +62,20 @@ void Stage::LoadScene(int sceneIndex)
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
 
     json jEntities = scene["entities"];
+    json jRootIds = scene["root-ids"];
     int size = scene["size"];
     g.close();
-    CreateEntityTree(jEntities, size);
+    CreateEntityTree(jEntities, jRootIds, size);
 }
 
-void Stage::CreateEntityTree(json jEntities, int size){
+void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
     auto& entityTree = registry->entityTree;
     entityTree.clear(); // calls destructors of unique_ptr to deallocate
     entityTree.resize(size);
     auto& rootIds = registry->rootIds;
     rootIds.clear();
+    // We store rootIds in json file now (also represented by parent: -1 in entities)
+    for (int id : jRootIds) rootIds.push_back(id);
 
     for(int id = 0; id < size; id++){
         json jEntity = jEntities[id];
@@ -82,8 +85,6 @@ void Stage::CreateEntityTree(json jEntities, int size){
         // Assign name and parentId
         entity.name = jEntity["name"];
         entity.parentId = jEntity["parent-id"];
-        // parent = -1 -> entity at root
-        if(entity.parentId == -1) rootIds.push_back(id);
         // Fill childrenIds
         json jChildren = jEntity["children-ids"];
         if(!jChildren.empty()) entity.childrenIds = jChildren.get<std::vector<int>>();
