@@ -46,7 +46,6 @@ void ReparentEdit::Apply(bool undo){
 void ReparentEdit::ApplyJson(bool undo){
     std::ifstream g("EngineData/current-scene.json");
     json scene = json::parse(g);
-    json entity = scene["entities"][entityId];
 
     // ParentId from which to remove entity from
     int removeId = undo ? curParentId : prevParentId;
@@ -55,13 +54,23 @@ void ReparentEdit::ApplyJson(bool undo){
     // Position in vector to target
     int targetPos = undo ? prevPos : curPos;
 
-    entity["parent-id"] = addId;
-    // TODO
-    // Update old and new parent (updating child ids, and possibly rootids)
-    // If at root, only need to change parent-id
-    // Otherwise also need to remove from children-ids
+    scene["entities"][entityId]["parent-id"] = addId;
+    // Remove entity from either root-ids or old parent's children-ids
+    // Pre: __-ids containts entityId
+    if(removeId == -1) {
+        json jRootIds = scene["root-ids"];
+        jRootIds.erase(std::remove(jRootIds.begin(), jRootIds.end(), entityId), jRootIds.end()); // Erase-remove idiom
+        scene["root-ids"] = jRootIds;
+    }
+    else {
+        json jParentCs = scene["entities"][removeId]["children-ids"];
+        jParentCs.erase(std::remove(jParentCs.begin(), jParentCs.end(), entityId), jParentCs.end()); // Erase-remove idiom
+        scene["entities"][removeId]["children-ids"] = jParentCs;
+    }
+    // Add entity to either root-ids or new parents children-ids
+    if(addId == -1) scene["root-ids"].push_back(entityId);
+    else scene["entities"][addId]["children-ids"].push_back(entityId); // TODO: neither of these account for position 
 
-    scene["entities"][entityId] = entity;
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
     g.close();
 }
