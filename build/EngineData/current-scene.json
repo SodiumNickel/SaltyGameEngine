@@ -93,9 +93,9 @@
     },
     {
       "children-ids": [
-        7,
+        5,
         6,
-        5
+        7
       ],
       "components": {},
       "name": "Rocks",
@@ -204,9 +204,9 @@
   "root-ids": [
     0,
     1,
+    2,
     4,
-    8,
-    2
+    8
   ],
   "size": 9
 }

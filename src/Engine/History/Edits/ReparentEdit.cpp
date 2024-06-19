@@ -35,7 +35,6 @@ void ReparentEdit::Apply(bool undo){
         auto& parentCs = registry->rootIds;
         if(targetPos >= parentCs.size()) parentCs.push_back(entityId);
         else parentCs.insert(parentCs.begin() + targetPos, entityId); 
-        
     }
     else{
         auto& parentCs = registry->entityTree[addId]->childrenIds;
@@ -73,8 +72,18 @@ void ReparentEdit::ApplyJson(bool undo){
         scene["entities"][removeId]["children-ids"] = jParentCs;
     }
     // Add entity to either root-ids or new parents children-ids
-    if(addId == -1) scene["root-ids"].push_back(entityId);
-    else scene["entities"][addId]["children-ids"].push_back(entityId); // TODO: neither of these account for position 
+    if(addId == -1) {
+        json parentCs = scene["root-ids"];
+        if(targetPos >= parentCs.size()) parentCs.push_back(entityId);
+        else parentCs.insert(parentCs.begin() + targetPos, entityId); 
+        scene["root-ids"] = parentCs;
+    }
+    else {
+        json parentCs = scene["entities"][addId]["children-ids"];
+        if(targetPos >= parentCs.size()) parentCs.push_back(entityId);
+        else parentCs.insert(parentCs.begin() + targetPos, entityId); 
+        scene["entities"][addId]["children-ids"] = parentCs;
+    }
 
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
     g.close();
