@@ -124,8 +124,9 @@ void EntityTab::Begin(){
         engineData->selectedEntity = node_clicked;          // Click to single-select
     }
 
+
     // DD Target for unparenting entities, moving them to root
-    ImGui::InvisibleButton("entitytree_root", ImVec2(100, 100)); // TODO: just chose arbitrary button size, should scale to fill tab
+    ImGui::InvisibleButton("entitytree_root", ImGui::GetContentRegionAvail()); // TODO: just chose arbitrary button size, should scale to fill tab
     if (ImGui::BeginDragDropTarget())
     {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
