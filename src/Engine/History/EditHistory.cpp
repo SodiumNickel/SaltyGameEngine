@@ -12,7 +12,7 @@ void EditHistory::Do(Edit* action){
     action->ApplyJson(false);
     unsaved = true;
 
-    undoStack.push(action);
+    undoStack.push(action); // TODO: check for null changes here
     canUndo = true;
     // redoStack.clear(); TODO: REMEMBER TO DEALLOCATE POINTERS, or just use unique_ptrs (shared?)
     // if i make them unique ptrs i can probably clear it in O(1)

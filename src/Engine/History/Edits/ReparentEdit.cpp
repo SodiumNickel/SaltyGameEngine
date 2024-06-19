@@ -32,10 +32,15 @@ void ReparentEdit::Apply(bool undo){
 
     // Reparent child to addId at targetPos
     if(addId == -1){
-        registry->rootIds.push_back(entityId);
+        auto& parentCs = registry->rootIds;
+        if(targetPos >= parentCs.size()) parentCs.push_back(entityId);
+        else parentCs.insert(parentCs.begin() + targetPos, entityId); 
+        
     }
     else{
-        registry->entityTree[addId]->childrenIds.push_back(entityId); // TODO: this does not place at target pos currently
+        auto& parentCs = registry->entityTree[addId]->childrenIds;
+        if(targetPos >= parentCs.size()) parentCs.push_back(entityId);
+        else parentCs.insert(parentCs.begin() + targetPos, entityId); 
     }
     registry->entityTree[entityId]->parentId = addId;  
 
