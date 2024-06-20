@@ -41,8 +41,12 @@ class EntityTab : public Tab {
 private:
     int index;
 
+    // Can be picked up by DD
     void DDSource(int id);
+    // Can have DDSource placed into it
     void DDTarget(int id);
+    // Right click to add child, remove, copy/paste, duplicate entity
+    void RClickMenu(int id);
 
     std::shared_ptr<EditHistory> editHistory;
     std::shared_ptr<EngineData> engineData;

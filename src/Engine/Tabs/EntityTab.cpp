@@ -40,6 +40,7 @@ void EntityTab::Begin(){
             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                 node_clicked = rc;
 
+            RClickMenu(rc);
             DDTarget(rc);
             DDSource(rc);
 
@@ -70,7 +71,8 @@ void EntityTab::Begin(){
                             bool child_open = ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
                             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                                 node_clicked = c;
-                            
+
+                            RClickMenu(c);
                             DDTarget(c);
                             DDSource(c);
 
@@ -92,6 +94,7 @@ void EntityTab::Begin(){
                             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                                 node_clicked = c;
                             
+                            RClickMenu(c);
                             DDTarget(c);
                             DDSource(c);
                         }
@@ -107,6 +110,7 @@ void EntityTab::Begin(){
             if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                 node_clicked = rc;
             
+            RClickMenu(rc);
             DDTarget(rc);
             DDSource(rc);
         }
@@ -127,6 +131,7 @@ void EntityTab::Begin(){
 
     // DD Target for unparenting entities, moving them to root
     ImGui::InvisibleButton("entitytree_root", ImGui::GetContentRegionAvail()); // TODO: just chose arbitrary button size, should scale to fill tab
+    RClickMenu(-1);
     if (ImGui::BeginDragDropTarget())
     {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
@@ -213,5 +218,43 @@ void EntityTab::DDTarget(int id){
             editHistory->Do(new ReparentEdit(registry, payloadId, parentId, prevPos, id, curPos));
         }
         ImGui::EndDragDropTarget();
+    }
+}
+
+void EntityTab::RClickMenu(int id){
+    if(ImGui::IsMouseDown(ImGuiMouseButton_Right) && ImGui::IsItemHovered()) ImGui::OpenPopup("Entity" + id);
+    if (ImGui::BeginPopup("Entity" + id))
+    {
+        if (ImGui::Selectable("a"))
+            std::cout << "clicked";
+        if (ImGui::BeginMenu("Sub-menu"))
+        {
+            ImGui::MenuItem("Click me");
+            ImGui::EndMenu();
+        }
+
+        ImGui::Separator();
+        ImGui::Text("Tooltip here");
+        ImGui::SetItemTooltip("I am a tooltip over a popup");
+
+        if (ImGui::Button("Stacked Popup"))
+            ImGui::OpenPopup("another popup");
+        if (ImGui::BeginPopup("another popup"))
+        {
+            if (ImGui::BeginMenu("Sub-menu"))
+            {
+                ImGui::MenuItem("Click me");
+                if (ImGui::Button("Stacked Popup"))
+                    ImGui::OpenPopup("another popup");
+                if (ImGui::BeginPopup("another popup"))
+                {
+                    ImGui::Text("I am the last one here.");
+                    ImGui::EndPopup();
+                }
+                ImGui::EndMenu();
+            }
+            ImGui::EndPopup();
+        }
+        ImGui::EndPopup();
     }
 }
