@@ -88,3 +88,8 @@ void ReparentEdit::ApplyJson(bool undo){
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
     g.close();
 }
+
+// Entity gets "reparented" to same parent and same pos -> not a valid edit
+bool ReparentEdit::ValidEdit(){
+    return !(prevParentId == curParentId && prevPos == curPos);
+}

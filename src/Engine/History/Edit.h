@@ -10,6 +10,7 @@ class Edit {
 public:
     virtual void Apply(bool undo) = 0;
     virtual void ApplyJson(bool undo) = 0;
+    virtual bool ValidEdit() = 0;
 };
 
 /* -----COMPONENT EDITS---------------------------------- *
@@ -58,6 +59,7 @@ public:
         prev(std::make_unique<ComponentValue>(previ)), cur(std::make_unique<ComponentValue>(curi)) {};
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
+    bool ValidEdit() override;
 };
 
 // When the user adds or removes a component
@@ -75,6 +77,7 @@ public:
         compType(compType), registry(registry), entityId(entityId), add(add), values(values) {}; // TODO: pointer needs to be deallocated
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
+    bool ValidEdit() override;
 };
 
 // NOTE: DELETING AN ENTITY HAS TO PUT IT IN SAME PLACE AFTER UNDO, OTHERWISE THIS WHOLE SYSTEM BREAKS
@@ -98,6 +101,7 @@ public:
     : registry(registry), entityId(entityId), prevParentId(prevParentId), prevPos(prevPos), curParentId(curParentId), curPos(curPos) {};
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
+    bool ValidEdit() override;
 };
 
 #endif

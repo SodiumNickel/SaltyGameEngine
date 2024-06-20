@@ -104,3 +104,8 @@ void ComponentValueEdit::ApplyJson(bool undo){
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
     g.close();
 }
+
+// TODO: dont think this should ever be false? not sure though
+bool ComponentValueEdit::ValidEdit(){
+    return true;
+}
