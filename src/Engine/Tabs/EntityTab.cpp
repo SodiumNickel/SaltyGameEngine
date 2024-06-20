@@ -224,9 +224,27 @@ void EntityTab::DDTarget(int id){
 void EntityTab::RClickMenu(int id){
     if(ImGui::IsMouseDown(ImGuiMouseButton_Right) && ImGui::IsItemHovered()) ImGui::OpenPopup("Entity" + id);
     if (ImGui::BeginPopup("Entity" + id))
-    {
-        if (ImGui::Selectable("a"))
-            std::cout << "clicked";
+    {  
+        if (ImGui::Selectable(id == -1 ? "Add empty" : "Add empty (child)")){
+            Entity entity = registry->CreateEntity();
+            int childId = entity.GetId();
+
+            // Assign name and parentId
+            entity.name = "Empty";
+            entity.parentId = id;
+            // Add as child to id (right clicked entity)
+            if(id == -1) registry->rootIds.push_back(childId);
+            else registry->entityTree[id]->childrenIds.push_back(childId);
+            // Add entity to registry tree 
+            if(registry->entityTree.size() <= childId) registry->entityTree.resize(childId + 1);
+            registry->entityTree[childId] = std::make_unique<Entity>(entity);
+            
+            // TODO: need to make sure this is parented correctly, and will have to push an undo change eventually
+        }
+        // TODO: keep this at the bottom
+        if (ImGui::Selectable("Remove entity")) std::cout << "clicked";
+
+        /*
         if (ImGui::BeginMenu("Sub-menu"))
         {
             ImGui::MenuItem("Click me");
@@ -254,7 +272,7 @@ void EntityTab::RClickMenu(int id){
                 ImGui::EndMenu();
             }
             ImGui::EndPopup();
-        }
+        }*/
         ImGui::EndPopup();
     }
 }
