@@ -31,88 +31,90 @@ void EntityTab::Begin(){
     // BFS through registry->entityTree to create nodes (order determined by order in registry->rootIds)
     std::vector<int> rootIds = registry->rootIds;
     for (int rc : rootIds){
-        ImGuiTreeNodeFlags node_flags = base_flags;
-        if (rc == engineData->selectedEntity)
+        if(entityTree[rc] != nullptr){
+            ImGuiTreeNodeFlags node_flags = base_flags;
+            if (rc == engineData->selectedEntity)
             node_flags |= ImGuiTreeNodeFlags_Selected;
-        
-        if(entityTree[rc]->childrenIds.size() > 0){ // Has children
-            bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, entityTree[rc]->name.c_str());
-            if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-                node_clicked = rc;
 
-            RClickMenu(rc);
-            DDTarget(rc);
-            DDSource(rc);
+            if(entityTree[rc]->childrenIds.size() > 0){ // Has children
+                bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, entityTree[rc]->name.c_str());
+                if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+                    node_clicked = rc;
 
-            if (node_open)
-            {
-                // Create all children nodes
-                std::stack<int> children;
+                RClickMenu(rc);
+                DDTarget(rc);
+                DDSource(rc);
 
-                std::vector<int> revCs = entityTree[rc]->childrenIds;
-                std::reverse(revCs.begin(), revCs.end());
-                for(int c : revCs) {
-                    children.push(c);
-                }
+                if (node_open)
+                {
+                    // Create all children nodes
+                    std::stack<int> children;
 
-                while(!children.empty()){
-                    int c = children.top();
-                    children.pop();
-
-                    if(c == -1){
-                        ImGui::TreePop(); 
+                    std::vector<int> revCs = entityTree[rc]->childrenIds;
+                    std::reverse(revCs.begin(), revCs.end());
+                    for(int c : revCs) {
+                        children.push(c);
                     }
-                    else{
-                        ImGuiTreeNodeFlags child_flags = base_flags;
-                        if (c == engineData->selectedEntity)
-                            child_flags |= ImGuiTreeNodeFlags_Selected;
 
-                        if(entityTree[c]->childrenIds.size() > 0){ // Has children
-                            bool child_open = ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
-                            if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-                                node_clicked = c;
+                    while(!children.empty()){
+                        int c = children.top();
+                        children.pop();
 
-                            RClickMenu(c);
-                            DDTarget(c);
-                            DDSource(c);
+                        if(c == -1){
+                            ImGui::TreePop(); 
+                        }
+                        else if(entityTree[c] != nullptr) {
+                            ImGuiTreeNodeFlags child_flags = base_flags;
+                            if (c == engineData->selectedEntity)
+                                child_flags |= ImGuiTreeNodeFlags_Selected;
 
-                            if (child_open)
-                            {
-                                // When popping a -1, we will perform a TreePop
-                                children.push(-1);
-                                // Push all children nodes
-                                std::vector<int> revCCs = entityTree[c]->childrenIds;
-                                std::reverse(revCCs.begin(), revCCs.end());
-                                for (int cc : revCCs) {
-                                    children.push(cc);
+                            if(entityTree[c]->childrenIds.size() > 0){ // Has children
+                                bool child_open = ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
+                                if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+                                    node_clicked = c;
+
+                                RClickMenu(c);
+                                DDTarget(c);
+                                DDSource(c);
+
+                                if (child_open)
+                                {
+                                    // When popping a -1, we will perform a TreePop
+                                    children.push(-1);
+                                    // Push all children nodes
+                                    std::vector<int> revCCs = entityTree[c]->childrenIds;
+                                    std::reverse(revCCs.begin(), revCCs.end());
+                                    for (int cc : revCCs) {
+                                        children.push(cc);
+                                    }
                                 }
                             }
-                        }
-                        else{ // Leaf node
-                            child_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-                            ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
-                            if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-                                node_clicked = c;
-                            
-                            RClickMenu(c);
-                            DDTarget(c);
-                            DDSource(c);
+                            else{ // Leaf node
+                                child_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
+                                ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
+                                if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+                                    node_clicked = c;
+                                
+                                RClickMenu(c);
+                                DDTarget(c);
+                                DDSource(c);
+                            }
                         }
                     }
-                }
 
-                ImGui::TreePop();
+                    ImGui::TreePop();
+                }
             }
-        }
-        else{ // Leaf node
-            node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-            ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, entityTree[rc]->name.c_str());
-            if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-                node_clicked = rc;
-            
-            RClickMenu(rc);
-            DDTarget(rc);
-            DDSource(rc);
+            else { // Leaf node
+                node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
+                ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, entityTree[rc]->name.c_str());
+                if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+                    node_clicked = rc;
+                
+                RClickMenu(rc);
+                DDTarget(rc);
+                DDSource(rc);
+            }
         }
     }
 
@@ -242,7 +244,12 @@ void EntityTab::RClickMenu(int id){
             // TODO: need to make sure this is parented correctly, and will have to push an undo change eventually
         }
         // TODO: keep this at the bottom
-        if (ImGui::Selectable("Remove entity")) std::cout << "clicked";
+        if(id != -1){
+            // Remove entity and all of it's children
+            if (ImGui::Selectable("Remove entity")){
+                registry->DestroyEntity(*registry->entityTree[id].get()); // TODO: also need to remove children
+            }
+        }
 
         /*
         if (ImGui::BeginMenu("Sub-menu"))

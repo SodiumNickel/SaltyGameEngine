@@ -45,7 +45,7 @@ public:
 class Entity {
 private:
     int id;
-
+    // TODO: note: if this has access to registry, it can have some helper functions
 public:
     Entity(): id(-1) {}; // default constructor, never used // TODO: add a debug error for this in logger
     Entity(int id) : id(id) {}; // TODO: might want to initialize with values

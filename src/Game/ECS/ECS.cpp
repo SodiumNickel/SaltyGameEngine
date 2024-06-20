@@ -109,7 +109,10 @@ void Registry::Update()
 {
     // Add entites from entitiesToBeAdded to registry
     for(auto entity : entitiesToBeAdded)
-    { AddEntityToSystems(entity); }
+    { 
+        AddEntityToSystems(entity); 
+        // TODO: want to add to entity tree here
+    }
     entitiesToBeAdded.clear();
     
     // Remove entities from entitiesToBeRemoved to registry
@@ -122,6 +125,10 @@ void Registry::Update()
         // TODO: could have check to make sure id isnt already in list
         // should never happen but best to be sure
         freeIds.push_back(entity.GetId());
+
+        // Remove from entityTree
+        // NOTE: this has to preserve the empty space
+        entityTree[entity.GetId()] = nullptr; 
     }
     entitiesToBeRemoved.clear();
 }
