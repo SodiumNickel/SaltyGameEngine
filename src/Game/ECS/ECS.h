@@ -16,6 +16,7 @@
  *   Each component has unique Id, just data (no behavior)       *
  * ------------------------------------------------------------- */
 
+// TODO: this will only be decided at end
 // Number of types of components
 const unsigned int MAX_COMPONENTS = 32;
 // Tracks which components each entity has

@@ -86,7 +86,7 @@ public:
  *   Reparenting/moving, adding/removing                  *
  * ------------------------------------------------------ */
 
-// When the user adds or removes a component
+// When the user reparents or moves an entity
 class ReparentEdit : public Edit {
 private:
     std::shared_ptr<Registry> registry;
@@ -98,6 +98,24 @@ private:
     int curPos;
 public:
     ReparentEdit(std::shared_ptr<Registry> registry, int entityId, int prevParentId, int prevPos, int curParentId, int curPos)
+    : registry(registry), entityId(entityId), prevParentId(prevParentId), prevPos(prevPos), curParentId(curParentId), curPos(curPos) {};
+    void Apply(bool undo) override;
+    void ApplyJson(bool undo) override;
+    bool ValidEdit() override;
+};
+
+// When the user adds or removes an entity NEXTTODO
+class EntityExistsEdit : public Edit {
+private:
+    std::shared_ptr<Registry> registry;
+
+    int entityId;
+    int prevParentId;
+    int prevPos;
+    int curParentId;
+    int curPos;
+public:
+    EntityExistsEdit(std::shared_ptr<Registry> registry, int entityId, int prevParentId, int prevPos, int curParentId, int curPos)
     : registry(registry), entityId(entityId), prevParentId(prevParentId), prevPos(prevPos), curParentId(curParentId), curPos(curPos) {};
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
