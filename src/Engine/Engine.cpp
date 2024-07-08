@@ -1,6 +1,8 @@
 #include "Engine.h"
 #include "EnGUI.h"
 
+#include "./Debug/SaltyDebug.h"
+
 #include <imgui.h>
 #include <imgui_impl_sdl2.h>
 #include <imgui_impl_sdlrenderer2.h>
@@ -37,6 +39,7 @@ int Engine::Initialize()
     width = dm.w;
     height = dm.h - 50; // adjusted for border size, 75
     std::cout << width << ' ' << height << '\n';
+    Debug::Log("set width and height");
 
     window = SDL_CreateWindow(
         "Salty Game Engine",
