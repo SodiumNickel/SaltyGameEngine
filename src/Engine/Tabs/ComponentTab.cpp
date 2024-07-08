@@ -189,8 +189,8 @@ void ComponentTab::Begin(){
         if(ImGui::Selectable("Rigidbody", false, entity.HasComponent<RigidbodyComponent>() ? ImGuiSelectableFlags_Disabled : 0)){
             entity.AddComponent<RigidbodyComponent>();
 
-            std::vector<std::unique_ptr<ComponentValue>>* values; // Empty vector, will redo with default values
-            editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, true, values));
+            // nullptr -> Redo with default values
+            editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, true, nullptr));
 
             addComponentOpen = false;
         }

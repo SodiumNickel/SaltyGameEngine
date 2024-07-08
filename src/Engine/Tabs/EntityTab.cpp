@@ -246,8 +246,14 @@ void EntityTab::RClickMenu(int id){
         // TODO: keep this at the bottom
         if(id != -1){
             // Remove entity and all of it's children
-            if (ImGui::Selectable("Remove entity")){
-                registry->DestroyEntity(*registry->entityTree[id].get()); // TODO: also need to remove children
+            std::string removeName = "Remove " + registry->entityTree[id]->name;
+            if (ImGui::Selectable(removeName.c_str())){
+                Entity entity = *registry->entityTree[id].get();
+                int parentId = entity.parentId;
+
+                // editHistory->Do(new EntityExistsEdit(registry, id, parentId, 0, false)); // TODO: pos
+                // TODO: this needs to happen linearly (i.e. editHistory fully finishes before registry destroys entity)
+                registry->DestroyEntity(entity); // TODO: also need to remove children, actually might do this in registry instead
             }
         }
 

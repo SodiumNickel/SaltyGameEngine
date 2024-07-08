@@ -1,6 +1,7 @@
 #include "ECS.h"
 
 #include <algorithm>
+#include <stack>
 
 // Static variable for component Ids
 int IComponent::nextId = 0;
@@ -35,7 +36,7 @@ void System::RemoveEntityFromSystem(Entity entity)
     */
     entities.erase(std::remove_if(entities.begin(), entities.end(), [&entity](Entity other) {
         return entity == other;
-        }), entities.end());
+        }), entities.end()); // Erase-remove idiom
 }
 
 std::vector<Entity> System::GetSystemEntities() const
@@ -68,7 +69,7 @@ Entity Registry::CreateEntity()
         freeIds.pop_front();
     }
 
-    Entity entity(entityId);
+    Entity entity(entityId); // TODO: this is an ugly initialization, lets reformat
     entity.registry = this;
     entitiesToBeAdded.insert(entity);
 
@@ -77,7 +78,35 @@ Entity Registry::CreateEntity()
 
 void Registry::DestroyEntity(Entity entity)
 {
-    entitiesToBeRemoved.insert(entity);
+    std::stack<int> removeStack;
+    removeStack.push(entity.GetId());
+
+    // Destroy entity and all of it's children
+    while(!removeStack.empty()){
+        int id = removeStack.top();
+        removeStack.pop();
+
+        for(int childId : entityTree[id]->childrenIds)
+        {  removeStack.push(childId); }
+
+        entitiesToBeRemoved.insert(*entityTree[id].get());
+    }
+}
+void Registry::DestroyEntity(int entityId)
+{
+    std::stack<int> removeStack;
+    removeStack.push(entityId);
+
+    // Destroy entity and all of it's children
+    while(!removeStack.empty()){
+        int id = removeStack.top();
+        removeStack.pop();
+
+        for(int childId : entityTree[id]->childrenIds)
+        {  removeStack.push(childId); }
+
+        entitiesToBeRemoved.insert(*entityTree[id].get());
+    }
 }
 
 void Registry::AddEntityToSystems(Entity entity)

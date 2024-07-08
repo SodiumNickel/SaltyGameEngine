@@ -29,7 +29,7 @@ void HasComponentEdit::Apply(bool undo){
         //     break;
         case RIGIDBODY:
             if(addComp) {
-                if(values->empty()) entity.AddComponent<RigidbodyComponent>(); 
+                if(!values) entity.AddComponent<RigidbodyComponent>(); // default values
                 else entity.AddComponent<RigidbodyComponent>(glm::vec2((*values)[0]->f, (*values)[1]->f));
             }
             else entity.RemoveComponent<RigidbodyComponent>();
@@ -59,7 +59,7 @@ void HasComponentEdit::ApplyJson(bool undo){
         //     break;
         case RIGIDBODY: 
             if(addComp) {
-                if(values->empty()) {
+                if(!values) { // default values
                     json rigidbody = {
                         {"initVelocity", {0.0, 0.0}}
                     };

@@ -187,6 +187,7 @@ public:
     // Entity management
     Entity CreateEntity();
     void DestroyEntity(Entity entity);
+    void DestroyEntity(int entityId);
     std::vector<std::unique_ptr<Entity>> entityTree;
     std::vector<int> rootIds; // All entities without parents (at the root of their respective tree)
 

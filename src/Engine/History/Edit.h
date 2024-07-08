@@ -110,13 +110,19 @@ private:
     std::shared_ptr<Registry> registry;
 
     int entityId;
-    int prevParentId;
-    int prevPos;
-    int curParentId;
-    int curPos;
+    int parentId;
+    int pos;
+
+    bool add;
+    // Needs to store vector of components, to potentially restore them after
+    std::vector<std::unique_ptr<ComponentValueEdit>> transformValues;
+    std::vector<std::unique_ptr<HasComponentEdit>> components;
+
+    // Needs to store edits to re-add children
+    std::vector<std::unique_ptr<EntityExistsEdit>> childrenEdits;
 public:
-    EntityExistsEdit(std::shared_ptr<Registry> registry, int entityId, int prevParentId, int prevPos, int curParentId, int curPos)
-    : registry(registry), entityId(entityId), prevParentId(prevParentId), prevPos(prevPos), curParentId(curParentId), curPos(curPos) {};
+    // Defined in EntityExistsEdit.cpp
+    EntityExistsEdit(std::shared_ptr<Registry> registry, int entityId, int parentId, int pos, bool add);
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;
