@@ -4,7 +4,9 @@
 #include <iostream>
 #include <ctime>
 #include <chrono>
+#include <algorithm>
 
+// TODO: could make this part of debug as well... 
 std::string SystemTime()
 {
     std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -15,11 +17,21 @@ std::string SystemTime()
     return output;
 }
 
+// Initializes empty vector of log entries
+std::vector<LogEntry> Debug::logEntries;
+
 void Debug::Log(const std::string& message){
-    std::cout << "DEBUG [" << SystemTime() << "] " << message << '\n';
+    LogEntry entry;
+    entry.level = 0;
+    entry.message = "[" + SystemTime() + "] " + message; // TODO: could seperate these into diff sections for filtering
+    // Make sure there are no \0 in the string, will cause early termination of c_str()
+    entry.message.erase(std::remove(entry.message.begin(), entry.message.end(), '\0'), entry.message.end()); // Erase-Remove Idiom
+
+    std::cout << entry.message << '\n';
+    Debug::logEntries.push_back(entry);
 }
 
 // TODO: i dont do anything with the level yet, will have -1 be internal, 0 be standard, and other stuff later
 void Debug::Log(const std::string& message, int level){
-    std::cout << "DEBUG [" << SystemTime() << "] " << message << '\n';
+    
 }
