@@ -106,4 +106,13 @@ public:
     void Begin() override;
 };
 
+class LogTab : public Tab {
+private:
+    int index;
+    std::shared_ptr<Registry> registry; // TODO: doesnt need registry, but might need other inits so just gonna leave the formatting here for now lol
+public:
+    LogTab(std::shared_ptr<Registry> registry) : registry(registry) {};
+    void Begin() override;
+};
+
 #endif

@@ -111,6 +111,7 @@ int Engine::Initialize()
     openTabs.push_back(new ComponentTab(engineData, editHistory, registry, assetManager));
     openTabs.push_back(new ScriptTab(registry));
     openTabs.push_back(new AssetTab(registry));
+    openTabs.push_back(new LogTab(registry));
 
     isRunning = true;
     return 0;
