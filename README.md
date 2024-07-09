@@ -4,3 +4,6 @@
 Scene Demo above uses assets from:
 - [Oak Woods Environment — brullov](https://brullov.itch.io/oak-woods)
 - [Generic Character Asset — brullov](https://brullov.itch.io/generic-char-asset)
+
+## Style Guide
+[style guide](STYLE.md)
