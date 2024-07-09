@@ -109,3 +109,7 @@ void ComponentValueEdit::ApplyJson(bool undo){
 bool ComponentValueEdit::ValidEdit(){
     return true;
 }
+
+std::string ComponentValueEdit::ToString(bool undo){
+    return "component value edit";
+}

@@ -6,11 +6,14 @@
 #include "../Game/Components/TransformComponent.h"
 #include "../Game/ECS/ECS.h"
 
+#include <string>
+
 class Edit {
 public:
     virtual void Apply(bool undo) = 0;
     virtual void ApplyJson(bool undo) = 0;
     virtual bool ValidEdit() = 0;
+    virtual std::string ToString(bool undo) = 0;
 };
 
 /* -----COMPONENT EDITS---------------------------------- *
@@ -60,6 +63,7 @@ public:
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;
+    std::string ToString(bool undo) override;
 };
 
 // When the user adds or removes a component
@@ -78,6 +82,7 @@ public:
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;
+    std::string ToString(bool undo) override;
 };
 
 // NOTE: DELETING AN ENTITY HAS TO PUT IT IN SAME PLACE AFTER UNDO, OTHERWISE THIS WHOLE SYSTEM BREAKS
@@ -102,6 +107,7 @@ public:
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;
+    std::string ToString(bool undo) override;
 };
 
 // When the user adds or removes an entity NEXTTODO
@@ -126,6 +132,7 @@ public:
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;
+    std::string ToString(bool undo) override;
 };
 
 #endif

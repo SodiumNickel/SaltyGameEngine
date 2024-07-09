@@ -121,3 +121,7 @@ void EntityExistsEdit::ApplyJson(bool undo){
 bool EntityExistsEdit::ValidEdit(){
     return true;
 }
+
+std::string EntityExistsEdit::ToString(bool undo){
+    return "entity exists edit";
+}

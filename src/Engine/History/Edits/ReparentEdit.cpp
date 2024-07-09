@@ -93,3 +93,7 @@ void ReparentEdit::ApplyJson(bool undo){
 bool ReparentEdit::ValidEdit(){
     return !(prevParentId == curParentId && prevPos == curPos);
 }
+
+std::string ReparentEdit::ToString(bool undo){
+    return "reparent edit";
+}

@@ -90,3 +90,25 @@ void HasComponentEdit::ApplyJson(bool undo){
 bool HasComponentEdit::ValidEdit(){
     return true;
 }
+
+std::string HasComponentEdit::ToString(bool undo){    
+    std::string componentName = "UNDEFINED COMPONENT";
+    switch(compType) {
+        case SPRITE:
+            componentName = "Sprite";
+            break;
+        case RIGIDBODY:
+            componentName = "Rigidbody";
+            break;
+        // case BOXCOL:
+        //     // TODO:
+        //     break;
+    }
+
+    // addComp <-> undo != add (see truth table in Apply())
+    std::string action = undo != add ? "Added " + componentName + " to " : "Removed " + componentName + " from ";
+
+    std::string entityName = registry->entityTree[entityId]->name;
+
+    return action + entityName; // TODO: could include entity id here too
+}

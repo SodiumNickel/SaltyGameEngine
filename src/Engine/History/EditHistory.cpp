@@ -1,6 +1,8 @@
 #include "EditHistory.h"
 
 #include "Edit.h"
+
+#include "../Debug/SaltyDebug.h"
 #include <stack>
 
 #include <iostream>
@@ -13,6 +15,7 @@ void EditHistory::Do(Edit* action){
     if(action->ValidEdit()){
         action->ApplyJson(false);
         unsaved = true;
+        Debug::Log("DO " + action->ToString(false));
 
         undoStack.push(action); // TODO: check for null changes here
         canUndo = true;
@@ -27,6 +30,8 @@ void EditHistory::Do(Edit* action){
 void EditHistory::Undo(){ 
     undoStack.top()->Apply(true);
     unsaved = true; // NOTE: edit a saved file then undo it, the file displays as unsaved. This seems reasonable (and was easier to implement...) 
+    Debug::Log("UNDO " + undoStack.top()->ToString(true));
+
     redoStack.push(undoStack.top());
     canRedo = true;
 
@@ -39,6 +44,7 @@ void EditHistory::Undo(){
 void EditHistory::Redo(){
     redoStack.top()->Apply(false);
     unsaved = true;
+    Debug::Log("REDO " + redoStack.top()->ToString(false));
 
     undoStack.push(redoStack.top());
     canUndo = true;
