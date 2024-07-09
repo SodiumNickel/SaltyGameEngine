@@ -1,1 +1,1 @@
-# Salty Game Engine
+# Salty Style Guide (C++)
