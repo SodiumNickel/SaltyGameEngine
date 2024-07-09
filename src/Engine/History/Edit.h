@@ -26,6 +26,7 @@ enum ComponentTypes {
     RIGIDBODY,
     BOXCOL
 };
+// TODO: check out inline constexpr with std::array<std::string_view>
 enum ComponentVars {
     POSITION_X,
     POSITION_Y,

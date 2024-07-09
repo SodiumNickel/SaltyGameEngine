@@ -15,7 +15,7 @@ void EditHistory::Do(Edit* action){
     if(action->ValidEdit()){
         action->ApplyJson(false);
         unsaved = true;
-        Debug::Log("DO " + action->ToString(false));
+        Debug::Log("DO " + action->ToString(false), -1);
 
         undoStack.push(action); // TODO: check for null changes here
         canUndo = true;
@@ -30,7 +30,7 @@ void EditHistory::Do(Edit* action){
 void EditHistory::Undo(){ 
     undoStack.top()->Apply(true);
     unsaved = true; // NOTE: edit a saved file then undo it, the file displays as unsaved. This seems reasonable (and was easier to implement...) 
-    Debug::Log("UNDO " + undoStack.top()->ToString(true));
+    Debug::Log("UNDO " + undoStack.top()->ToString(true), -1);
 
     redoStack.push(undoStack.top());
     canRedo = true;
@@ -44,7 +44,7 @@ void EditHistory::Undo(){
 void EditHistory::Redo(){
     redoStack.top()->Apply(false);
     unsaved = true;
-    Debug::Log("REDO " + redoStack.top()->ToString(false));
+    Debug::Log("REDO " + redoStack.top()->ToString(false), -1);
 
     undoStack.push(redoStack.top());
     canUndo = true;

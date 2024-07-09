@@ -111,5 +111,40 @@ bool ComponentValueEdit::ValidEdit(){
 }
 
 std::string ComponentValueEdit::ToString(bool undo){
-    return "component value edit";
+    std::string entityName = registry->entityTree[entityId]->name;
+    
+    std::string componentName = "UNDEFINED COMPONENT";
+    switch(compType) {
+        case TRANSFORM:
+            componentName = "Transform";
+            break;
+        case SPRITE:
+            componentName = "Sprite";
+            break;
+        case RIGIDBODY:
+            componentName = "Rigidbody";
+            break;
+        // case BOXCOL:
+        //     // TODO:
+        //     break;
+    }
+
+    std::string valueName = "UNDEFINED VALUE";
+    /*
+    POSITION_X,
+    POSITION_Y,
+    SCALE_X,
+    SCALE_Y,
+    ROTATION,
+    // SPRITE STUFF HERE
+    INITVEL_X,
+    INITVEL_Y
+    */
+    switch(compVar) {
+        case POSITION_X:
+            valueName = "Position_x";
+            break;
+    }
+    
+    return entityName + ' ' + componentName;
 }
