@@ -35,3 +35,25 @@ enum EColor {
     ALPHA
 };
 ```
+
+## Header Files
+
+#### Order of Includes
+dir/foo.cpp
+```C++
+#include "foo.h"
+
+#include <iostream>
+#include <vector>
+
+#include <SDL.h>
+#include <imgui.h>
+
+
+#include "dir2/bar.h"
+
+#include "dir3/
+```
+
+## Namespaces
+Avoid using namespaces. They are only used for nlohmann::json in this project.
