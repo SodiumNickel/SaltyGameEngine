@@ -34,9 +34,20 @@ enum EColor {
     BLUE, 
     ALPHA
 };
+
+// nlohmann::json-typed variables are prefixed by 'J' 
+json JVariableName;
 ```
 
 ## Header Files
+dir/foo.h
+```C++
+#ifndef FOO_H
+#define FOO_H
+...
+#endif // FOO_H
+```
+The #define guard is in CAPS and of the form FILENAME_H. A comment of the guard should also be left at the endif for clarity.
 
 #### Order of Includes
 dir/foo.cpp
@@ -54,6 +65,9 @@ dir/foo.cpp
 
 #include "dir3/
 ```
+[list order of include stuff here]
+
+Include what you use, do not rely on transitive inclusions.
 
 ## Namespaces
-Avoid using namespaces. They are only used for nlohmann::json in this project.
+ONLY used for nlohmann::json in this project.
