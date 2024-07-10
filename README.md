@@ -6,5 +6,5 @@ Scene Demo above uses assets from:
 - [Generic Character Asset — brullov](https://brullov.itch.io/generic-char-asset)
 
 ## Style Guide
-The style of Salty Game Engine mostly follows the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) with a few small additions (e.g. enums should be prefixed by E). \
+The style of Salty Game Engine mostly follows the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) with a few small additions (e.g. enums being prefixed by E). \
 You may find the full Salty Style Guide [here](STYLE.md).
