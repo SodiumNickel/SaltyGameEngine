@@ -49,7 +49,7 @@ dir/foo.h
 ```
 The #define guard is in CAPS and of the form FILENAME_H. A comment containing the guard should also be left after the endif for clarity.
 
-#### Order of Includes
+### Order of Includes
 dir/foo.cpp
 ```C++
 #include "foo.h"
