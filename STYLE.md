@@ -47,7 +47,7 @@ dir/foo.h
 ...
 #endif // FOO_H
 ```
-The #define guard is in CAPS and of the form FILENAME_H. A comment of the guard should also be left at the endif for clarity.
+The #define guard is in CAPS and of the form FILENAME_H. A comment containing the guard should also be left after the endif for clarity.
 
 #### Order of Includes
 dir/foo.cpp
