@@ -13,6 +13,7 @@ class ClassName {
         // Functions use PascalCase
         void FunctionName();
 };
+
 // Structs use Pascal Case
 struct StructName {};
 
@@ -21,11 +22,16 @@ class IInterface {
 public:
     virtual void Begin() = 0;    
 };
+
 // Templates are prefixed by 'T'
 template <typename TTypeName> ...
+
 // Enumerators are prefixed by 'E'
 enum EColor {
     // Enum internals are in CAPS
-    RED, GREEN, BLUE, ALPHA
+    RED, 
+    GREEN, 
+    BLUE, 
+    ALPHA
 };
 ```

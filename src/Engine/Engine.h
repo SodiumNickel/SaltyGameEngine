@@ -19,7 +19,7 @@ class Engine {
         SDL_Renderer* renderer;
         SDL_Texture* viewport;
         ImGuiWindowFlags dockspace_flags;
-        
+
         // Shared pointer used to pass engine data to tabs, stage, edit history
         std::shared_ptr<EngineData> engineData;
 
