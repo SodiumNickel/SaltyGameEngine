@@ -71,3 +71,9 @@ Include what you use, do not rely on transitive inclusions.
 
 ## Namespaces
 ONLY used for nlohmann::json in this project.
+
+## Comments
+TODO
+
+## Formatting
+TODO -> maybe should do class format now, and spaces + tabs later
