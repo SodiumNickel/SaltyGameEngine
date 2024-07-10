@@ -32,6 +32,7 @@ public:
     void Begin();
 };
 
+// TODO: should be ITab
 class Tab {
 public:
     virtual void Begin() = 0;    
