@@ -68,4 +68,4 @@ private:// TODO: dont like how many variables are here
     }
 };
 
-#endif
+#endif // COLLISIONSYSTEM_H

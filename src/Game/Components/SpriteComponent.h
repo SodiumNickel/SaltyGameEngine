@@ -15,4 +15,4 @@ struct SpriteComponent {
     }
 };
 
-#endif
+#endif // SPRITECOMPONENT_H

@@ -28,4 +28,4 @@ class EditHistory {
         void Save();
 };
 
-#endif
+#endif // EDITHISTORY_H

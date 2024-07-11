@@ -15,4 +15,4 @@ struct RigidbodyComponent {
     }
 };
 
-#endif
+#endif // RIGIDBODYCOMPONENT_H

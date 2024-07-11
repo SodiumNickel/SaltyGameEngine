@@ -17,4 +17,4 @@ struct TransformComponent {
     }
 };
 
-#endif
+#endif // TRANSFORMCOMPONENT_H

@@ -24,4 +24,4 @@ public:
     glm::vec2 GetTextureSize(const std::string& filepath);
 };
 
-#endif
+#endif // ASSETMANAGER_H

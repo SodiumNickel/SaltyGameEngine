@@ -7,4 +7,4 @@ public:
     Event() = default;
 };
 
-#endif
+#endif // EVENT_H

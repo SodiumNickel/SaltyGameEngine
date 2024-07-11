@@ -22,4 +22,4 @@ struct EngineData {
     int logLevel;
 };
 
-#endif
+#endif // ENGINEDATA_H

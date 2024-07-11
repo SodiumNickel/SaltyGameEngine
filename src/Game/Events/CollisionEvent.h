@@ -12,4 +12,4 @@ public:
     CollisionEvent(Entity a, Entity b) : a(a), b(b) {};
 };
 
-#endif
+#endif // COLLISIONEVENT_H

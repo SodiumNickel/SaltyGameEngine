@@ -48,4 +48,4 @@ class Stage {
         float zoom = 1; // TODO: use this to zoom in on viewport on scroll
 };
 
-#endif
+#endif // STAGE_H

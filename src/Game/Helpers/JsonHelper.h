@@ -9,4 +9,4 @@ using json = nlohmann::json;
 // returns glm::vec2 of floats
 glm::vec2 JsonToVec2(json jArray);
 
-#endif
+#endif // JSONHELPER_H

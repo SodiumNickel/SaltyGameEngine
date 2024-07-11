@@ -24,4 +24,4 @@ struct BoxColliderComponent {
     }
 };
 
-#endif
+#endif // BOXCOLLIDERCOMPONENT_H

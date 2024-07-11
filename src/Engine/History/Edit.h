@@ -134,4 +134,4 @@ public:
     std::string ToString(bool undo) override;
 };
 
-#endif
+#endif // EDIT_H

@@ -32,4 +32,4 @@ class MovementSystem : public System {
         }
 };
 
-#endif
+#endif // MOVEMENTSYSTEM_H
