@@ -7,9 +7,12 @@
 #include "Engine/History/Edit.h"
 #include "Engine/History/EditHistory.h"
 
+#include "Game/ECS/ECS.h"
+
 
 class Menu {
 private:
+    std::shared_ptr<Registry> registry;
     std::shared_ptr<EngineData> engineData; // TODO: engine data is unused rn, not sure if itll be useful later
     std::shared_ptr<EditHistory> editHistory;
 
@@ -26,7 +29,8 @@ private:
     // Stores the currently displayed fps
     int displayedFps = 0;
 public:
-    Menu(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory) : engineData(engineData), editHistory(editHistory) 
+    Menu(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory) 
+    : registry(registry), engineData(engineData), editHistory(editHistory) 
     { n = 2000 / engineData->targetFrameTime; lastNFrames = std::vector<float>(n, 0.0f); }; // Will display average fps over last 2 seconds
     // TODO: make sure this indentation is same as rest of code ^^ (above)
     void Begin();

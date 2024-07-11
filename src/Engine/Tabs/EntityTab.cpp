@@ -37,7 +37,9 @@ void EntityTab::Begin(){
             node_flags |= ImGuiTreeNodeFlags_Selected;
 
             if(entityTree[rc]->childrenIds.size() > 0){ // Has children
-                bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, entityTree[rc]->name.c_str());
+                bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, 
+                                                   (entityTree[rc]->name
+                                                    + (engineData->showEntityIds ? " (id=" + std::to_string(rc) + ")" : "")).c_str());
                 if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                     node_clicked = rc;
 
@@ -69,7 +71,9 @@ void EntityTab::Begin(){
                                 child_flags |= ImGuiTreeNodeFlags_Selected;
 
                             if(entityTree[c]->childrenIds.size() > 0){ // Has children
-                                bool child_open = ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
+                                bool child_open = ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, 
+                                                                    (entityTree[c]->name
+                                                                     + (engineData->showEntityIds ? " (id=" + std::to_string(c) + ")" : "")).c_str());
                                 if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                                     node_clicked = c;
 
@@ -91,7 +95,9 @@ void EntityTab::Begin(){
                             }
                             else{ // Leaf node
                                 child_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-                                ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, entityTree[c]->name.c_str());
+                                ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, 
+                                                  (entityTree[c]->name
+                                                   + (engineData->showEntityIds ? " (id=" + std::to_string(c) + ")" : "")).c_str());
                                 if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                                     node_clicked = c;
                                 
@@ -107,7 +113,9 @@ void EntityTab::Begin(){
             }
             else { // Leaf node
                 node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-                ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, entityTree[rc]->name.c_str());
+                ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, 
+                                  (entityTree[rc]->name
+                                   + (engineData->showEntityIds ? " (id=" + std::to_string(rc) + ")" : "")).c_str());
                 if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                     node_clicked = rc;
                 

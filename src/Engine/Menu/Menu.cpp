@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <string>
 
 #include <imgui.h>
 
@@ -31,7 +32,18 @@ void Menu::Begin(){
         }
         // Only for use when developing engine
         if (ImGui::BeginMenu("Engine Debug")) {
-            if (ImGui::MenuItem("Log Selected Entity")) { Debug::Log("entity", -1); }
+            if (ImGui::MenuItem("Log Selected Entity")) { 
+                int selectedEntity = engineData->selectedEntity;
+                Entity entity = *registry->entityTree[selectedEntity].get();
+
+                std::string entityMessage = entity.name + " (id = " + std::to_string(entity.GetId()) + "): parentId = "
+                                            + std::to_string(entity.parentId) + ", childrenIds = [";
+
+                Debug::Log(entityMessage, -1);
+            }
+
+            if (ImGui::MenuItem(engineData->showEntityIds ? "Hide EntityIds" : "Show EntityIds")) 
+            { engineData->showEntityIds = !engineData->showEntityIds; }
             //ShowExampleMenuFile();
             ImGui::EndMenu();
         }

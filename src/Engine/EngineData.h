@@ -20,6 +20,9 @@ struct EngineData {
 
     // Only logs of at least logLevel will be considered
     int logLevel;
+
+    // Engine Debug Data (only used in engine development)
+    bool showEntityIds = false;
 };
 
 #endif // ENGINEDATA_H

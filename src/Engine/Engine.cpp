@@ -108,11 +108,11 @@ int Engine::Initialize()
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
 
-    menu = std::make_unique<Menu>(engineData, editHistory);
+    menu = std::make_unique<Menu>(registry, engineData, editHistory);
 
     // Open initial tabs
     openTabs.push_back(new EntityTab(engineData, editHistory, registry)); // TODO: this should be better pointers(?) tabs i mean
-    openTabs.push_back(new ComponentTab(engineData, editHistory, registry, assetManager));
+    openTabs.push_back(new ComponentTab(engineData, editHistory, registry, assetManager)); // TODO: unify order of this
     openTabs.push_back(new ScriptTab(registry));
     openTabs.push_back(new AssetTab(registry));
     openTabs.push_back(new LogTab(registry));

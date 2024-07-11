@@ -14,7 +14,7 @@ using json = nlohmann::json;
 void EditHistory::Do(IEdit* action){
     // Check that edit actually changed something
     if(action->ValidEdit()){
-        // Debug::Log("DO " + action->ToString(false), -1);
+        Debug::Log("DO " + action->ToString(false), -1);
         action->ApplyJson(false);
         unsaved = true;
 
