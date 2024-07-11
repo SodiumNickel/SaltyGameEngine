@@ -92,7 +92,10 @@ Order for 9:
 5. Events (TODO)
 
 ### Some Notes
-All src header includes should contain full path from src (i.e. Engine/History/Edit.h).
+All src header includes should contain full path from src.
+```C++
+#include "Engine/History/EditHistory.h"
+```
 
 Include what you use, do not rely on transitive inclusions.
 
