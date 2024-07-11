@@ -1,13 +1,14 @@
 #include "../Edit.h"
 
-#include "../Game/ECS/ECS.h"
+#include <fstream>
+#include <iostream>
 
 #include <glm.hpp>
-
-#include <iostream>
-#include <fstream>
 #include <json.hpp>
 using json = nlohmann::json;
+
+#include "../Game/ECS/ECS.h"
+
 
 /* -----REPARENT EDIT--------------------------------------------------- *
  *   When the user reparents an entity (or moves location in heirarchy)  *

@@ -1,17 +1,16 @@
 #ifndef RENDERSYSTEM_H
 #define RENDERSYSTEM_H
 
+#include <algorithm>
+#include <iostream>
+
 #include <SDL.h>
 
 #include "../ECS/ECS.h"
-#include "../AssetManager/AssetManager.h"
-
 #include "../Components/TransformComponent.h"
 #include "../Components/SpriteComponent.h"
+#include "../AssetManager/AssetManager.h"
 
-#include <algorithm>
-
-#include <iostream>
 
 class RenderSystem : public System {
 public:

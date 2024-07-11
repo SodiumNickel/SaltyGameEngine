@@ -1,12 +1,10 @@
 #ifndef EDIT_H
 #define EDIT_H
 
-#include "../Stage/Stage.h"
+#include <string>
 
-#include "../Game/Components/TransformComponent.h"
 #include "../Game/ECS/ECS.h"
 
-#include <string>
 
 class Edit {
 public:

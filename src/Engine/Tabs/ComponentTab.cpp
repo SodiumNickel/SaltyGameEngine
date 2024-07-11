@@ -1,21 +1,20 @@
 #include "EnGUI.h"
 
+#include <iostream>
+#include <memory>
+
 #include <imgui.h>
 #include <imgui_stdlib.h>
 
-#include "../Stage/Stage.h"
-#include "../Game/ECS/ECS.h"
+#include "./History/Edit.h"
 
+#include "../Game/ECS/ECS.h"
 // TODO: could have a grouped header, which contains all of these includes
 #include "../Game/Components/TransformComponent.h"
 #include "../Game/Components/SpriteComponent.h"
 #include "../Game/Components/RigidbodyComponent.h"
 #include "../Game/Components/BoxColliderComponent.h"
 
-#include "./History/Edit.h"
-
-#include <memory>
-#include <iostream>
 
 void ComponentTab::Transform(){
     // All entities have a transform component

@@ -1,10 +1,12 @@
 #ifndef EDITHISTORY_H
 #define EDITHISTORY_H
 
+#include <memory>
+#include <stack>
+
 #include "Edit.h"
 #include "../EngineData.h"
-#include <stack>
-#include <memory>
+
 
 class EditHistory {
     private:

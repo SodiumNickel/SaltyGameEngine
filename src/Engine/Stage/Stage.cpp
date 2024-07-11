@@ -1,31 +1,27 @@
 #include "Stage.h"
 
-//#include "../Logger/Logger.h"
-#include "../Game/ECS/ECS.h"
-#include "../Game/Helpers/JsonHelper.h"
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <stack>
 
+#include <SDL.h>
+#include <SDL_image.h>
+#include <imgui.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_sdlrenderer2.h>
+#include <glm.hpp>
+#include <json.hpp>
+using json = nlohmann::json;
+
+#include "../Game/ECS/ECS.h"
+#include "../Game/Helpers/JsonHelper.h" // TODO: might remove this
 #include "../Game/Components/TransformComponent.h"
 #include "../Game/Components/SpriteComponent.h"
 #include "../Game/Components/RigidbodyComponent.h"
 // #include "../Components/BoxColliderComponent.h" might need for visual
-
 #include "../Game/Systems/RenderSystem.h"
 
-#include <imgui.h>
-#include <imgui_impl_sdl2.h>
-#include <imgui_impl_sdlrenderer2.h>
-#include <SDL.h>
-#include <SDL_image.h>
-
-#include <glm.hpp>
-#include <algorithm>
-
-#include <stack>
-
-#include <iostream>
-#include <fstream>
-#include <json.hpp>
-using json = nlohmann::json;
 
 // Constructor
 Stage::Stage(std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager)

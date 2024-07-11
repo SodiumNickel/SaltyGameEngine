@@ -1,10 +1,11 @@
 #include "SaltyDebug.h"
 
-#include <string>
-#include <iostream>
-#include <ctime>
-#include <chrono>
 #include <algorithm>
+#include <chrono>
+#include <ctime>
+#include <iostream>
+#include <string>
+
 
 // TODO: could make this part of debug as well... 
 std::string SystemTime()

@@ -1,15 +1,16 @@
 #include "../Edit.h"
 
-#include "../Game/Components/TransformComponent.h"
-#include "../Game/Components/RigidbodyComponent.h"
-#include "../Game/ECS/ECS.h"
+#include <fstream>
+#include <iostream>
 
 #include <glm.hpp>
-
-#include <iostream>
-#include <fstream>
 #include <json.hpp>
 using json = nlohmann::json;
+
+#include "../Game/ECS/ECS.h"
+#include "../Game/Components/TransformComponent.h"
+#include "../Game/Components/RigidbodyComponent.h"
+
 
 /* -----COMPONENT VALUE EDIT----------------------------------- *
  *   When the user changes an individual value in a component   *

@@ -1,17 +1,17 @@
 #include "../Edit.h"
 
-#include "../Game/ECS/ECS.h"
+#include <fstream>
+#include <iostream>
 
+#include <glm.hpp>
+#include <json.hpp>
+using json = nlohmann::json;
+
+#include "../Game/ECS/ECS.h"
 #include "../Game/Components/SpriteComponent.h"
 #include "../Game/Components/RigidbodyComponent.h"
 #include "../Game/Components/BoxColliderComponent.h"
 
-#include <glm.hpp>
-
-#include <iostream>
-#include <fstream>
-#include <json.hpp>
-using json = nlohmann::json;
 
 /* -----ENTITY EXISTS EDIT------------------------------- *
  *   When the user adds or removes an entity              *

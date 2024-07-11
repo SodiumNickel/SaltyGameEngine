@@ -1,19 +1,21 @@
 #ifndef STAGE_H
 #define STAGE_H
 
-#include "../Game/ECS/ECS.h"
-#include "../Game/AssetManager/AssetManager.h"
-#include "../EngineData.h"
-
-#include <vector>
-#include <string>
 #include <filesystem>
+#include <string>
+#include <vector>
 
 #include <SDL.h>
 #include <imgui.h>
-
 #include <json.hpp>
 using json = nlohmann::json;
+
+#include "../EngineData.h"
+
+#include "../Game/ECS/ECS.h"
+
+#include "../Game/AssetManager/AssetManager.h"
+
 
 // Stage contains variables relevant to engine, but not game
 class Stage {

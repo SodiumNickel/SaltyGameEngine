@@ -1,15 +1,19 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
+#include <vector>
+
 #include <SDL.h>
 #include <imgui.h>
-#include "EngineData.h"
-#include "../Game/ECS/ECS.h"
-#include "../Game/AssetManager/AssetManager.h"
-#include "Stage/Stage.h"
+
 #include "History/EditHistory.h"
 #include "EnGUI.h"
-#include <vector>
+#include "EngineData.h"
+#include "Stage/Stage.h"
+
+#include "../Game/ECS/ECS.h"
+#include "../Game/AssetManager/AssetManager.h"
+
 
 class Engine {
     private:

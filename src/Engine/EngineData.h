@@ -1,8 +1,9 @@
 #ifndef ENGINEDATA_H
 #define ENGINEDATA_H
 
-#include <string>
 #include <cstdint>
+#include <string>
+
 
 struct EngineData {
     EngineData(int sceneIndex, uint64_t targetFrameTime) : sceneIndex(sceneIndex), targetFrameTime(targetFrameTime) {};

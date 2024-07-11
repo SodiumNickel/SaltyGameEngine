@@ -1,9 +1,10 @@
 #include "./EnGUI.h"
 
-#include <imgui.h>
-
 #include <algorithm>
 #include <iostream>
+
+#include <imgui.h>
+
 
 void Menu::Begin(){
     if (ImGui::BeginMainMenuBar()) {

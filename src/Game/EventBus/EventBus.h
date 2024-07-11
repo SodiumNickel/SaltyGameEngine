@@ -1,14 +1,14 @@
 #ifndef EVENTBUS_H
 #define EVENTBUS_H
 
-#include <memory>
+#include <functional> // TODO: make sure this is needed
 #include <list>
 #include <map>
+#include <memory>
 #include <typeindex>
-#include <functional> // TODO: make sure this is needed
 
 #include "Event.h"
-//#include "../Logger/Logger.h"
+
 
 // Base class
 class IEventCallback {

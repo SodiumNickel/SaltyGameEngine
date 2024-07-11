@@ -1,9 +1,10 @@
 #include "AssetManager.h"
 
+#include <iostream>
+
 #include <SDL_image.h>
 #include <glm.hpp>
 
-#include <iostream>
 
 AssetManager::AssetManager() {}
 

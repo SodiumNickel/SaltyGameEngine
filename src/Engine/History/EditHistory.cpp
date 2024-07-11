@@ -1,14 +1,15 @@
 #include "EditHistory.h"
 
-#include "Edit.h"
-
-#include "../Debug/SaltyDebug.h"
+#include <fstream>
+#include <iostream>
 #include <stack>
 
-#include <iostream>
-#include <fstream>
 #include <json.hpp>
 using json = nlohmann::json;
+
+#include "../Debug/SaltyDebug.h"
+#include "Edit.h"
+
 
 void EditHistory::Do(Edit* action){
     // Check that edit actually changed something

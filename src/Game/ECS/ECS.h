@@ -1,15 +1,15 @@
 #ifndef ECS_H
 #define ECS_H
 
-#include "../Components/TransformComponent.h"
-
 #include <bitset>
-#include <vector>
-#include <unordered_map>
-#include <typeindex>
-#include <set>
 #include <deque>
 #include <memory>
+#include <set>
+#include <typeindex>
+#include <unordered_map>
+#include <vector>
+
+#include "../Components/TransformComponent.h"
 
 
 /* -----COMPONENT----------------------------------------------- *

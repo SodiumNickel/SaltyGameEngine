@@ -4,11 +4,12 @@
 #include <glm.hpp>
 
 #include "../ECS/ECS.h"
-#include "../Components/BoxColliderComponent.h"
 #include "../Components/TransformComponent.h"
+#include "../Components/BoxColliderComponent.h"
 
 #include "../EventBus/EventBus.h"
 #include "../Events/CollisionEvent.h"
+
 
 class CollisionSystem : public System {
 public:

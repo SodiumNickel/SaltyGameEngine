@@ -69,12 +69,33 @@ dir/foo.cpp
 4. *blank line*
 5. Other libraries (in the order SDL, DearImGUI, glm, nlohmann)
 6. *blank line*
-7. src header files (in alphabetical order: TODO not sure I like this, would like to group them vaguely by relevance) 
+7. src header files (in alphabetical order: TODO not sure I like this, would like to group them vaguely by relevance. i.e. transform should be 
+imported before rigidbody for sure, ECS should be before components) 
+Add *2 blank lines* after the list of includes (even when there are 0 includes).
+
+Order for rule 7*
+1. SaltyDebug
+2. Edit
+3. Edit History
+4. EnGUI
+5. Engine Data
+6. Stage (TODO: dk if i like stage being here)
+
+1. ECS (TODO: currently paired with json helper bc only used in stage, may remove jsonhelper)
+2. Components (Transform, Sprite, Rigidbody, BoxCollider)
+3. Systems
+4. Asset Manager (TODO: dk if i like asset manager here)
+5. Events (TODO)
+
 
 Include what you use, do not rely on transitive inclusions.
 
 ## Namespaces
-ONLY used for nlohmann::json in this project.
+ONLY used for nlohmann::json in this project, insert the *using* right below the include.
+```C++
+#include <json.hpp>
+using json = nlohmann::json;
+```
 
 ## Comments
 TODO

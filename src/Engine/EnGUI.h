@@ -1,12 +1,13 @@
 #ifndef ENGUI_H
 #define ENGUI_H
 
-#include "./EngineData.h"
+#include <vector>
+
 #include "./History/Edit.h"
 #include "./History/EditHistory.h"
+#include "./EngineData.h"
 #include "./Stage/Stage.h"
 
-#include <vector>
 
 class Menu {
 private:

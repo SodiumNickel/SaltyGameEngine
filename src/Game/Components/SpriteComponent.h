@@ -3,6 +3,7 @@
 
 #include <string>
 
+
 struct SpriteComponent {
     std::string filepath;
     int zIndex;

@@ -1,17 +1,20 @@
 #include "Engine.h"
-#include "EnGUI.h"
-
-// TODO: this isnt used rn
-#include "./Debug/SaltyDebug.h"
-
-#include <imgui.h>
-#include <imgui_impl_sdl2.h>
-#include <imgui_impl_sdlrenderer2.h>
-#include <SDL.h>
-#include <SDL_image.h>
 
 #include <cstdint>
 #include <iostream>
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <imgui.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_sdlrenderer2.h>
+
+// TODO: this isnt used rn
+#include "./Debug/SaltyDebug.h"
+#include "History/EditHistory.h"
+#include "EnGUI.h"
+#include "EngineData.h"
+
 
 // Constructor
 Engine::Engine()

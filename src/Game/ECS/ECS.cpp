@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <stack>
 
+
 // Static variable for component Ids
 int IComponent::nextId = 0;
 

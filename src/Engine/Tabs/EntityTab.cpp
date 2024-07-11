@@ -1,16 +1,16 @@
 #include "EnGUI.h"
 
+#include <algorithm>
+#include <iostream>
+#include <stack>
+#include <vector>
+
 #include <imgui.h>
 
-#include "../Stage/Stage.h"
-#include "../Game/ECS/ECS.h"
 #include "../History/Edit.h"
 
-#include <vector>
-#include <stack>
-#include <algorithm>
+#include "../Game/ECS/ECS.h"
 
-#include <iostream>
 
 // TODO
 /* NOTES */

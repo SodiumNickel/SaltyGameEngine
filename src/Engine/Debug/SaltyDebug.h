@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+
 struct LogEntry {
     int level;
     std::string message;
@@ -19,4 +20,4 @@ class Debug {
         // can combine into one if i default the int to what i want it as above
 };
 
-#endif
+#endif // SALTYDEBUG_H

@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include <glm.hpp>
 
+
 class AssetManager {
 private:
     std::map<std::string, SDL_Texture*> textures;

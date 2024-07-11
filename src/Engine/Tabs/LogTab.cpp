@@ -1,9 +1,11 @@
 #include "EnGUI.h"
-#include "../Debug/SaltyDebug.h"
+
+#include <iostream>
 
 #include <imgui.h>
 
-#include <iostream>
+#include "../Debug/SaltyDebug.h"
+
 
 void LogTab::Begin(){
     ImGui::Begin("Debug Log");
