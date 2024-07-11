@@ -11,9 +11,9 @@
 
 // TODO: this isnt used rn
 #include "Engine/Debug/SaltyDebug.h"
-#include "Engine/History/EditHistory.h"
-#include "Engine/EnGUI.h"
 #include "Engine/EngineData.h"
+#include "Engine/EnGUI.h"
+#include "Engine/History/EditHistory.h"
 
 
 // Constructor

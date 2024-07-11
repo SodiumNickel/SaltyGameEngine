@@ -70,19 +70,11 @@ dir/foo.cpp
 4. *blank line*
 5. Other libraries (in the order SDL, DearImGUI, glm, nlohmann)
 6. *blank line*
-7. Engine/.. header files (order defined below)
+7. Engine/.. header files (in alphabetical order)
 8. *blank line*
 9. Game/.. header files (order defined below)
 
 Add *2 blank lines* after the list of includes (even when there are 0 includes).
-
-Order for 7:
-1. SaltyDebug
-2. Edit
-3. Edit History
-4. EnGUI
-5. Engine Data
-6. Stage (TODO: dk if i like stage being here)
 
 Order for 9:
 1. ECS (TODO: currently paired with json helper bc only used in stage, may remove jsonhelper)

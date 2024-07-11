@@ -6,9 +6,9 @@
 #include <SDL.h>
 #include <imgui.h>
 
-#include "Engine/History/EditHistory.h"
-#include "Engine/EnGUI.h"
 #include "Engine/EngineData.h"
+#include "Engine/EnGUI.h"
+#include "Engine/History/EditHistory.h"
 #include "Engine/Stage/Stage.h"
 
 #include "Game/ECS/ECS.h"
