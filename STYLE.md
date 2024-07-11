@@ -60,8 +60,9 @@ dir/foo.cpp
 #include <SDL.h>
 #include <imgui.h>
 
-#include "dir2/bar.h"
-#include "dir3/baz.h"
+#include "Engine/Engine.h"
+
+#include "Game/Game.h"
 ```
 1. dir/foo.h
 2. *blank line*
@@ -69,11 +70,13 @@ dir/foo.cpp
 4. *blank line*
 5. Other libraries (in the order SDL, DearImGUI, glm, nlohmann)
 6. *blank line*
-7. src header files (in alphabetical order: TODO not sure I like this, would like to group them vaguely by relevance. i.e. transform should be 
-imported before rigidbody for sure, ECS should be before components) 
+7. Engine/.. header files (order defined below)
+8. *blank line*
+9. Game/.. header files (order defined below)
+
 Add *2 blank lines* after the list of includes (even when there are 0 includes).
 
-Order for rule 7*
+Order for 7:
 1. SaltyDebug
 2. Edit
 3. Edit History
@@ -81,15 +84,15 @@ Order for rule 7*
 5. Engine Data
 6. Stage (TODO: dk if i like stage being here)
 
+Order for 9:
 1. ECS (TODO: currently paired with json helper bc only used in stage, may remove jsonhelper)
 2. Components (Transform, Sprite, Rigidbody, BoxCollider)
 3. Systems
 4. Asset Manager (TODO: dk if i like asset manager here)
 5. Events (TODO)
 
-TODO: wait would just seperate Game/.. and Engine/..
-note that all files in Game/.. should ONLY have imports from Game/.. and not Engine/..
-should also note that all src header libs should contain full path from src. i.e. Game/..
+### Some Notes
+All src header includes should contain full path from src (i.e. Engine/History/Edit.h).
 
 Include what you use, do not rely on transitive inclusions.
 
