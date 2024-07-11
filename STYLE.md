@@ -60,12 +60,16 @@ dir/foo.cpp
 #include <SDL.h>
 #include <imgui.h>
 
-
 #include "dir2/bar.h"
-
-#include "dir3/
+#include "dir3/baz.h"
 ```
-[list order of include stuff here]
+1. dir/foo.h
+2. *blank line*
+3. C++ standard library headers (in alphabetical order)
+4. *blank line*
+5. Other libraries (in the order SDL, DearImGUI, glm, nlohmann)
+6. *blank line*
+7. src header files (in alphabetical order: TODO not sure I like this, would like to group them vaguely by relevance) 
 
 Include what you use, do not rely on transitive inclusions.
 
@@ -76,4 +80,4 @@ ONLY used for nlohmann::json in this project.
 TODO
 
 ## Formatting
-TODO -> maybe should do class format now, and spaces + tabs later
+TODO
