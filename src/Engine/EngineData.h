@@ -17,6 +17,9 @@ struct EngineData {
     std::string sceneName = "";
 
     int selectedEntity = 0;
+
+    // Only logs of at least logLevel will be considered
+    int logLevel;
 };
 
 #endif

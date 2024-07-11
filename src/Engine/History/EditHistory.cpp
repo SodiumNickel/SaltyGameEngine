@@ -11,12 +11,12 @@ using json = nlohmann::json;
 #include "Engine/History/Edit.h"
 
 
-void EditHistory::Do(Edit* action){
+void EditHistory::Do(IEdit* action){
     // Check that edit actually changed something
     if(action->ValidEdit()){
+        // Debug::Log("DO " + action->ToString(false), -1);
         action->ApplyJson(false);
         unsaved = true;
-        Debug::Log("DO " + action->ToString(false), -1);
 
         undoStack.push(action); // TODO: check for null changes here
         canUndo = true;
@@ -29,9 +29,9 @@ void EditHistory::Do(Edit* action){
 
 // Pre: canUndo = true (!undoStack.empty)
 void EditHistory::Undo(){ 
+    Debug::Log("UNDO " + undoStack.top()->ToString(true), -1);
     undoStack.top()->Apply(true);
     unsaved = true; // NOTE: edit a saved file then undo it, the file displays as unsaved. This seems reasonable (and was easier to implement...) 
-    Debug::Log("UNDO " + undoStack.top()->ToString(true), -1);
 
     redoStack.push(undoStack.top());
     canRedo = true;
@@ -43,9 +43,9 @@ void EditHistory::Undo(){
 
 // Pre: canRedo = true (!redoStack.empty) 
 void EditHistory::Redo(){
+    Debug::Log("REDO " + redoStack.top()->ToString(false), -1);
     redoStack.top()->Apply(false);
     unsaved = true;
-    Debug::Log("REDO " + redoStack.top()->ToString(false), -1);
 
     undoStack.push(redoStack.top());
     canUndo = true;

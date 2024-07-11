@@ -6,7 +6,7 @@
 #include "Game/ECS/ECS.h"
 
 
-class Edit {
+class IEdit {
 public:
     virtual void Apply(bool undo) = 0;
     virtual void ApplyJson(bool undo) = 0;
@@ -44,7 +44,7 @@ struct ComponentValue {
 };
 
 // When the user edits a value in the component, i.e. transform.position.x from 0.0f to 1.0f
-class ComponentValueEdit : public Edit {
+class ComponentValueEdit : public IEdit {
 private:    
     EComponentTypes compType;
     EComponentVars compVar;
@@ -66,7 +66,7 @@ public:
 };
 
 // When the user adds or removes a component
-class HasComponentEdit : public Edit {
+class HasComponentEdit : public IEdit {
 private:
     EComponentTypes compType;
     std::shared_ptr<Registry> registry;
@@ -91,7 +91,7 @@ public:
  * ------------------------------------------------------ */
 
 // When the user reparents or moves an entity
-class ReparentEdit : public Edit {
+class ReparentEdit : public IEdit {
 private:
     std::shared_ptr<Registry> registry;
 
@@ -110,7 +110,7 @@ public:
 };
 
 // When the user adds or removes an entity NEXTTODO
-class EntityExistsEdit : public Edit {
+class EntityExistsEdit : public IEdit {
 private:
     std::shared_ptr<Registry> registry;
 

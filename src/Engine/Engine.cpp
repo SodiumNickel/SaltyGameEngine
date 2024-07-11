@@ -12,8 +12,9 @@
 // TODO: this isnt used rn
 #include "Engine/Debug/SaltyDebug.h"
 #include "Engine/EngineData.h"
-#include "Engine/EnGUI.h"
 #include "Engine/History/EditHistory.h"
+#include "Engine/Menu/Menu.h"
+#include "Engine/Tabs/Tabs.h"
 
 
 // Constructor
@@ -201,7 +202,7 @@ void Engine::UpdateGUI()
 
     // TODO: dont allow hide tab bar, also stop highlighting it when it is clicked on
     // Draw all tabs that are open
-    for (Tab* tab : openTabs){
+    for (ITab* tab : openTabs){
         tab->Begin();
     }
 

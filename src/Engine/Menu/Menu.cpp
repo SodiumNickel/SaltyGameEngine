@@ -1,10 +1,12 @@
-#include "Engine/EnGUI.h"
+#include "Engine/Menu/Menu.h"
 
 #include <algorithm>
 #include <iostream>
 
 #include <imgui.h>
 
+#include "Engine/Debug/SaltyDebug.h"
+#include "Engine/History/EditHistory.h"
 
 void Menu::Begin(){
     if (ImGui::BeginMainMenuBar()) {
@@ -25,6 +27,12 @@ void Menu::Begin(){
         if(ImGui::BeginMenu("Metrics")){
             std::string sh = showFps ? "Hide FPS" : "Show FPS"; // TODO: this is inefficient to do every loop, place it inside menu instead
             if (ImGui::MenuItem(sh.c_str(), "CTRL+F")) { showFps = !showFps; }
+            ImGui::EndMenu();
+        }
+        // Only for use when developing engine
+        if (ImGui::BeginMenu("Engine Debug")) {
+            if (ImGui::MenuItem("Log Selected Entity")) { Debug::Log("entity", -1); }
+            //ShowExampleMenuFile();
             ImGui::EndMenu();
         }
 

@@ -7,9 +7,10 @@
 #include <imgui.h>
 
 #include "Engine/EngineData.h"
-#include "Engine/EnGUI.h"
 #include "Engine/History/EditHistory.h"
+#include "Engine/Menu/Menu.h"
 #include "Engine/Stage/Stage.h"
+#include "Engine/Tabs/Tabs.h"
 
 #include "Game/ECS/ECS.h"
 #include "Game/AssetManager/AssetManager.h"
@@ -33,7 +34,7 @@ class Engine {
         std::shared_ptr<EditHistory> editHistory;
         std::shared_ptr<Stage> stage;
         std::unique_ptr<Menu> menu;
-        std::vector<Tab*> openTabs;
+        std::vector<ITab*> openTabs;
     public:
         Engine();
         ~Engine();

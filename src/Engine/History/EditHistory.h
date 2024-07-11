@@ -12,8 +12,8 @@ class EditHistory {
     private:
         std::shared_ptr<EngineData> engineData;
 
-        std::stack<Edit*> undoStack;
-        std::stack<Edit*> redoStack;
+        std::stack<IEdit*> undoStack;
+        std::stack<IEdit*> redoStack;
     public:
         EditHistory(std::shared_ptr<EngineData> engineData) : engineData(engineData) {};
 
@@ -21,7 +21,7 @@ class EditHistory {
         bool canUndo = false;
         bool canRedo = false;
         // Writes to current-scene.json and pushes to undoStack. Clears redoStack.
-        void Do(Edit* action);
+        void Do(IEdit* action);
         // Modifies entityTree + current-scene.json and pushes to redoStack 
         void Undo();
         void Redo();
