@@ -48,8 +48,8 @@ void HasComponentEdit::Apply(bool undo){
 // Pre: !addComp <-> entity["components"].contains(compType) && compType != TransformComponent
 void HasComponentEdit::ApplyJson(bool undo){
     std::ifstream g("EngineData/current-scene.json");
-    json scene = json::parse(g);
-    json components = scene["entities"][entityId]["components"];
+    json jScene = json::parse(g);
+    json jComponents = jScene["entities"][entityId]["components"];
 
     // add = true -> undo() does RemoveComponent, so addComp = undo xor add (see truth table in Apply())
     bool addComp = undo != add;
@@ -61,19 +61,19 @@ void HasComponentEdit::ApplyJson(bool undo){
         case RIGIDBODY: 
             if(addComp) {
                 if(!values) { // default values
-                    json rigidbody = {
+                    json jRigidbody = {
                         {"initVelocity", {0.0, 0.0}}
                     };
-                    components["rigidbody"] = rigidbody;
+                    jComponents["rigidbody"] = jRigidbody;
                 }
                 else {
-                    json rigidbody = {
+                    json jRigidbody = {
                         {"initVelocity", {(*values)[0]->f, (*values)[1]->f}}
                     };
-                    components["rigidbody"] = rigidbody;
+                    jComponents["rigidbody"] = jRigidbody;
                 }
             }
-            else components.erase("rigidbody");
+            else jComponents.erase("rigidbody");
             break;
         // case BOXCOL:
         //     // TODO:
@@ -82,8 +82,8 @@ void HasComponentEdit::ApplyJson(bool undo){
             // TODO: log unidentified component type
             break;
     }
-    scene["entities"][entityId]["components"] = components;
-    std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
+    jScene["entities"][entityId]["components"] = jComponents;
+    std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
     g.close();
 }
 

@@ -49,17 +49,17 @@ void Stage::LoadScene(int sceneIndex)
 {
     // Get scene name from index
     std::ifstream f("Unique/Scenes/_index.json");
-    json sceneList = json::parse(f).begin().value();
+    json jSceneList = json::parse(f).begin().value();
     f.close();
-    engineData->sceneName = sceneList[sceneIndex].value("name", "");
+    engineData->sceneName = jSceneList[sceneIndex].value("name", "");
     
     std::ifstream g("Unique/Scenes/" + engineData->sceneName + ".json");
-    json scene = json::parse(g);
-    std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
+    json jScene = json::parse(g);
+    std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
 
-    json jEntities = scene["entities"];
-    json jRootIds = scene["root-ids"];
-    int size = scene["size"];
+    json jEntities = jScene["entities"];
+    json jRootIds = jScene["root-ids"];
+    int size = jScene["size"];
     g.close();
     CreateEntityTree(jEntities, jRootIds, size);
 }
@@ -97,15 +97,15 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
         // Add all components to entity
         json jComponents = jEntity["components"];
         if(jComponents.contains("sprite")){
-            json values = jComponents["sprite"];
-            std::string filepath = values["filepath"];
-            int zindex = values["zindex"];
+            json jValues = jComponents["sprite"];
+            std::string filepath = jValues["filepath"];
+            int zindex = jValues["zindex"];
             assetManager->AddTexture(renderer, filepath); // Duplicate textures are handled in assetManager
             entity.AddComponent<SpriteComponent>(filepath, zindex);
         }
         if(jComponents.contains("rigidbody")){
-            json values = jComponents["rigidbody"];
-            glm::vec2 initVelocity = JsonToVec2(values["initVelocity"]);
+            json jValues = jComponents["rigidbody"];
+            glm::vec2 initVelocity = JsonToVec2(jValues["initVelocity"]);
             entity.AddComponent<RigidbodyComponent>(initVelocity);
         }
     }

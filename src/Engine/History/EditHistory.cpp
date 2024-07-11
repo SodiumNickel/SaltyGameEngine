@@ -59,14 +59,14 @@ void EditHistory::Redo(){
 void EditHistory::Save(){
     // Get scene name from index
     std::ifstream f("Unique/Scenes/_index.json");
-    json sceneList = json::parse(f).begin().value();
+    json jSceneList = json::parse(f).begin().value();
     f.close();
-    std::string sceneName = sceneList[engineData->sceneIndex].value("name", "");
+    std::string sceneName = jSceneList[engineData->sceneIndex].value("name", "");
     
     // Copy current-scene.json into saved scene
     std::ifstream g("EngineData/current-scene.json");
-    json scene = json::parse(g);
-    std::ofstream("Unique/Scenes/" + sceneName + ".json") << std::setw(2) << scene;
+    json jScene = json::parse(g);
+    std::ofstream("Unique/Scenes/" + sceneName + ".json") << std::setw(2) << jScene;
     g.close();
     
     unsaved = false;

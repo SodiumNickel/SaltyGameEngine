@@ -62,18 +62,18 @@ void ComponentValueEdit::Apply(bool undo){
 void ComponentValueEdit::ApplyJson(bool undo){
     ComponentValue* val = undo ? prev.get() : cur.get(); 
     std::ifstream g("EngineData/current-scene.json");
-    json scene = json::parse(g);
-    json entity = scene["entities"][entityId]; // TODO: maybe this should be jEntity
-    json components = entity["components"];
+    json jScene = json::parse(g);
+    json jEntity = jScene["entities"][entityId]; // TODO: maybe this should be jEntity
+    json jComponents = jEntity["components"];
 
     switch(compType) {
         case TRANSFORM: {
             switch(compVar){ // TODO: this can be ["transform"]["position"] i think, should check
-                case POSITION_X: entity["transform"]["position"][0] = val->f; break;
-                case POSITION_Y: entity["transform"]["position"][1] = val->f; break;
-                case SCALE_X: entity["transform"]["scale"][0] = val->f; break;
-                case SCALE_Y: entity["transform"]["scale"][1] = val->f; break;
-                case ROTATION: entity["transform"]["rotation"] = val->f; break;
+                case POSITION_X: jEntity["transform"]["position"][0] = val->f; break;
+                case POSITION_Y: jEntity["transform"]["position"][1] = val->f; break;
+                case SCALE_X: jEntity["transform"]["scale"][0] = val->f; break;
+                case SCALE_Y: jEntity["transform"]["scale"][1] = val->f; break;
+                case ROTATION: jEntity["transform"]["rotation"] = val->f; break;
                 default:
                     // TODO: log error - transform does not have ...
                     break;
@@ -85,8 +85,8 @@ void ComponentValueEdit::ApplyJson(bool undo){
         //     break;
         case RIGIDBODY: {
             switch(compVar){
-                case INITVEL_X: components["rigidbody"]["initVelocity"][0] = val->f; break;
-                case INITVEL_Y: components["rigidbody"]["initVelocity"][1] = val->f; break;
+                case INITVEL_X: jComponents["rigidbody"]["initVelocity"][0] = val->f; break;
+                case INITVEL_Y: jComponents["rigidbody"]["initVelocity"][1] = val->f; break;
                 default:
                     // TODO: log error - rb does not have ...
                     break;
@@ -100,9 +100,9 @@ void ComponentValueEdit::ApplyJson(bool undo){
             // TODO: log unidentified component type
             break;
     }
-    entity["components"] = components;
-    scene["entities"][entityId] = entity;
-    std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
+    jEntity["components"] = jComponents;
+    jScene["entities"][entityId] = jEntity;
+    std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
     g.close();
 }
 

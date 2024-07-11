@@ -1,8 +1,8 @@
 #include "JsonHelper.h"
 
 
-glm::vec2 JsonToVec2(json array){
-    float x = array[0];
-    float y = array[1];
+glm::vec2 JsonToVec2(json jArray){
+    float x = jArray[0];
+    float y = jArray[1];
     return glm::vec2(x, y);
 }

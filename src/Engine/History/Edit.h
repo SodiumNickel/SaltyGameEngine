@@ -18,14 +18,14 @@ public:
  *   Editing values, adding/removing                  *
  * ------------------------------------------------------ */
 
-enum ComponentTypes {
+enum EComponentTypes {
     TRANSFORM,
     SPRITE,
     RIGIDBODY,
     BOXCOL
 };
 // TODO: check out inline constexpr with std::array<std::string_view>
-enum ComponentVars {
+enum EComponentVars {
     POSITION_X,
     POSITION_Y,
     SCALE_X,
@@ -46,17 +46,17 @@ struct ComponentValue {
 // When the user edits a value in the component, i.e. transform.position.x from 0.0f to 1.0f
 class ComponentValueEdit : public Edit {
 private:    
-    ComponentTypes compType;
-    ComponentVars compVar;
+    EComponentTypes compType;
+    EComponentVars compVar;
     std::shared_ptr<Registry> registry;
     int entityId;
     std::unique_ptr<ComponentValue> prev; // Used to undo action
     std::unique_ptr<ComponentValue> cur; // Used to (re)do action
 public:
-    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, std::shared_ptr<Registry> registry, int entityId, float prevf, float curf): 
+    ComponentValueEdit(EComponentTypes compType, EComponentVars compVar, std::shared_ptr<Registry> registry, int entityId, float prevf, float curf): 
         compType(compType), compVar(compVar), registry(registry), entityId(entityId), 
         prev(std::make_unique<ComponentValue>(prevf)), cur(std::make_unique<ComponentValue>(curf)) {};
-    ComponentValueEdit(ComponentTypes compType, ComponentVars compVar, std::shared_ptr<Registry> registry, int entityId, int previ, int curi): 
+    ComponentValueEdit(EComponentTypes compType, EComponentVars compVar, std::shared_ptr<Registry> registry, int entityId, int previ, int curi): 
         compType(compType), compVar(compVar), registry(registry), entityId(entityId), 
         prev(std::make_unique<ComponentValue>(previ)), cur(std::make_unique<ComponentValue>(curi)) {};
     void Apply(bool undo) override;
@@ -68,7 +68,7 @@ public:
 // When the user adds or removes a component
 class HasComponentEdit : public Edit {
 private:
-    ComponentTypes compType;
+    EComponentTypes compType;
     std::shared_ptr<Registry> registry;
     int entityId;
     // Contains all values in deleted/added component (or is empty if they are all default)
@@ -76,7 +76,7 @@ private:
     // If the initial action was AddComponent (e.g. add = true -> undo() = RemoveComponent)
     bool add;
 public:
-    HasComponentEdit(ComponentTypes compType, std::shared_ptr<Registry> registry, int entityId, bool add, std::vector<std::unique_ptr<ComponentValue>>* values): 
+    HasComponentEdit(EComponentTypes compType, std::shared_ptr<Registry> registry, int entityId, bool add, std::vector<std::unique_ptr<ComponentValue>>* values): 
         compType(compType), registry(registry), entityId(entityId), add(add), values(values) {}; // TODO: pointer needs to be deallocated
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
