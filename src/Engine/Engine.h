@@ -6,13 +6,13 @@
 #include <SDL.h>
 #include <imgui.h>
 
-#include "History/EditHistory.h"
-#include "EnGUI.h"
-#include "EngineData.h"
-#include "Stage/Stage.h"
+#include "Engine/History/EditHistory.h"
+#include "Engine/EnGUI.h"
+#include "Engine/EngineData.h"
+#include "Engine/Stage/Stage.h"
 
-#include "../Game/ECS/ECS.h"
-#include "../Game/AssetManager/AssetManager.h"
+#include "Game/ECS/ECS.h"
+#include "Game/AssetManager/AssetManager.h"
 
 
 class Engine {

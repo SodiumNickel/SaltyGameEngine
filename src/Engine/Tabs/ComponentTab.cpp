@@ -1,4 +1,4 @@
-#include "EnGUI.h"
+#include "Engine/EnGUI.h"
 
 #include <iostream>
 #include <memory>
@@ -6,14 +6,14 @@
 #include <imgui.h>
 #include <imgui_stdlib.h>
 
-#include "./History/Edit.h"
+#include "Engine/History/Edit.h"
 
-#include "../Game/ECS/ECS.h"
+#include "Game/ECS/ECS.h"
 // TODO: could have a grouped header, which contains all of these includes
-#include "../Game/Components/TransformComponent.h"
-#include "../Game/Components/SpriteComponent.h"
-#include "../Game/Components/RigidbodyComponent.h"
-#include "../Game/Components/BoxColliderComponent.h"
+#include "Game/Components/TransformComponent.h"
+#include "Game/Components/SpriteComponent.h"
+#include "Game/Components/RigidbodyComponent.h"
+#include "Game/Components/BoxColliderComponent.h"
 
 
 void ComponentTab::Transform(){

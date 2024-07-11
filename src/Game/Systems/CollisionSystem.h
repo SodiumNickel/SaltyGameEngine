@@ -3,12 +3,11 @@
 
 #include <glm.hpp>
 
-#include "../ECS/ECS.h"
-#include "../Components/TransformComponent.h"
-#include "../Components/BoxColliderComponent.h"
-
-#include "../EventBus/EventBus.h"
-#include "../Events/CollisionEvent.h"
+#include "Game/ECS/ECS.h"
+#include "Game/Components/TransformComponent.h"
+#include "Game/Components/BoxColliderComponent.h"
+#include "Game/EventBus/EventBus.h"
+#include "Game/Events/CollisionEvent.h"
 
 
 class CollisionSystem : public System {

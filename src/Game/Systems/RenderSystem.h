@@ -6,10 +6,10 @@
 
 #include <SDL.h>
 
-#include "../ECS/ECS.h"
-#include "../Components/TransformComponent.h"
-#include "../Components/SpriteComponent.h"
-#include "../AssetManager/AssetManager.h"
+#include "Game/ECS/ECS.h"
+#include "Game/Components/TransformComponent.h"
+#include "Game/Components/SpriteComponent.h"
+#include "Game/AssetManager/AssetManager.h"
 
 
 class RenderSystem : public System {

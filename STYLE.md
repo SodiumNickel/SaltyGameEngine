@@ -87,6 +87,9 @@ Order for rule 7*
 4. Asset Manager (TODO: dk if i like asset manager here)
 5. Events (TODO)
 
+TODO: wait would just seperate Game/.. and Engine/..
+note that all files in Game/.. should ONLY have imports from Game/.. and not Engine/..
+should also note that all src header libs should contain full path from src. i.e. Game/..
 
 Include what you use, do not rely on transitive inclusions.
 

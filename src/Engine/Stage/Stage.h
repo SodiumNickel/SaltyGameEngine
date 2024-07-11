@@ -10,11 +10,10 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
-#include "../EngineData.h"
+#include "Engine/EngineData.h"
 
-#include "../Game/ECS/ECS.h"
-
-#include "../Game/AssetManager/AssetManager.h"
+#include "Game/ECS/ECS.h"
+#include "Game/AssetManager/AssetManager.h"
 
 
 // Stage contains variables relevant to engine, but not game

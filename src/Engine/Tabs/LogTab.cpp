@@ -1,10 +1,10 @@
-#include "EnGUI.h"
+#include "Engine/EnGUI.h"
 
 #include <iostream>
 
 #include <imgui.h>
 
-#include "../Debug/SaltyDebug.h"
+#include "Engine/Debug/SaltyDebug.h"
 
 
 void LogTab::Begin(){

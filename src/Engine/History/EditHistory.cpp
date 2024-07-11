@@ -1,4 +1,4 @@
-#include "EditHistory.h"
+#include "Engine/History/EditHistory.h"
 
 #include <fstream>
 #include <iostream>
@@ -7,8 +7,8 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
-#include "../Debug/SaltyDebug.h"
-#include "Edit.h"
+#include "Engine/Debug/SaltyDebug.h"
+#include "Engine/History/Edit.h"
 
 
 void EditHistory::Do(Edit* action){

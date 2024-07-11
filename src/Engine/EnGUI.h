@@ -3,10 +3,10 @@
 
 #include <vector>
 
-#include "./History/Edit.h"
-#include "./History/EditHistory.h"
-#include "./EngineData.h"
-#include "./Stage/Stage.h"
+#include "Engine/History/Edit.h"
+#include "Engine/History/EditHistory.h"
+#include "Engine/EngineData.h"
+#include "Engine/Stage/Stage.h"
 
 
 class Menu {

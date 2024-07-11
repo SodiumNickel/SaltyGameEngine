@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../Game/ECS/ECS.h"
+#include "Game/ECS/ECS.h"
 
 
 class Edit {

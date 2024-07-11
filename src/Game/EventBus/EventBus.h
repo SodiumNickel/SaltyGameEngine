@@ -7,7 +7,7 @@
 #include <memory>
 #include <typeindex>
 
-#include "Event.h"
+#include "Game/EventBus/Event.h"
 
 
 // Base class

@@ -4,8 +4,8 @@
 #include <memory>
 #include <stack>
 
-#include "Edit.h"
-#include "../EngineData.h"
+#include "Engine/History/Edit.h"
+#include "Engine/EngineData.h"
 
 
 class EditHistory {

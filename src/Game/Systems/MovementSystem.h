@@ -1,9 +1,9 @@
 #ifndef MOVEMENTSYSTEM_H
 #define MOVEMENTSYSTEM_H
 
-#include "../ECS/ECS.h"
-#include "../Components/TransformComponent.h"
-#include "../Components/RigidbodyComponent.h"
+#include "Game/ECS/ECS.h"
+#include "Game/Components/TransformComponent.h"
+#include "Game/Components/RigidbodyComponent.h"
 
 
 // TODO: wanted to change the name of this, maybe just rigidbodysystem

@@ -1,4 +1,4 @@
-#include "Engine.h"
+#include "Engine/Engine.h"
 
 #include <cstdint>
 #include <iostream>
@@ -10,10 +10,10 @@
 #include <imgui_impl_sdlrenderer2.h>
 
 // TODO: this isnt used rn
-#include "./Debug/SaltyDebug.h"
-#include "History/EditHistory.h"
-#include "EnGUI.h"
-#include "EngineData.h"
+#include "Engine/Debug/SaltyDebug.h"
+#include "Engine/History/EditHistory.h"
+#include "Engine/EnGUI.h"
+#include "Engine/EngineData.h"
 
 
 // Constructor

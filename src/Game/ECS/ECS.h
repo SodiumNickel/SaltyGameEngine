@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../Components/TransformComponent.h"
+#include "Game/Components/TransformComponent.h"
 
 
 /* -----COMPONENT----------------------------------------------- *

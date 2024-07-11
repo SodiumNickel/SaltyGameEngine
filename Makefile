@@ -2,8 +2,7 @@ PROJECTNAME = saltyengine
 BUILD_DIR = build
 
 # -I"include/glm"
-INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/imgui -Iinclude/glm -Iinclude/nlohmann \
-			   -Isrc/Engine -Isrc/Game \
+INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/imgui -Iinclude/glm -Iinclude/nlohmann -Isrc \
 
 LIB_DIRS = -Llib
 

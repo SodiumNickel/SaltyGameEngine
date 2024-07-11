@@ -1,4 +1,4 @@
-#include "../Edit.h"
+#include "Engine/History/Edit.h"
 
 #include <fstream>
 #include <iostream>
@@ -7,7 +7,7 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
-#include "../Game/ECS/ECS.h"
+#include "Game/ECS/ECS.h"
 
 
 /* -----REPARENT EDIT--------------------------------------------------- *

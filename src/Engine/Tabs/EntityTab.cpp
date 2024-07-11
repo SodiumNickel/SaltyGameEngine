@@ -1,4 +1,4 @@
-#include "EnGUI.h"
+#include "Engine/EnGUI.h"
 
 #include <algorithm>
 #include <iostream>
@@ -7,9 +7,9 @@
 
 #include <imgui.h>
 
-#include "../History/Edit.h"
+#include "Engine/History/Edit.h"
 
-#include "../Game/ECS/ECS.h"
+#include "Game/ECS/ECS.h"
 
 
 // TODO

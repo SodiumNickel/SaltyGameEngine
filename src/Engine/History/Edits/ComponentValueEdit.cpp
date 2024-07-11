@@ -1,4 +1,4 @@
-#include "../Edit.h"
+#include "Engine/History/Edit.h"
 
 #include <fstream>
 #include <iostream>
@@ -7,9 +7,9 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
-#include "../Game/ECS/ECS.h"
-#include "../Game/Components/TransformComponent.h"
-#include "../Game/Components/RigidbodyComponent.h"
+#include "Game/ECS/ECS.h"
+#include "Game/Components/TransformComponent.h"
+#include "Game/Components/RigidbodyComponent.h"
 
 
 /* -----COMPONENT VALUE EDIT----------------------------------- *
