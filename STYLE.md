@@ -35,7 +35,7 @@ enum EColor {
     ALPHA
 };
 
-// nlohmann::json-typed variables are prefixed by 'J' 
+// nlohmann::json objects are prefixed by 'J' 
 json JVariableName;
 ```
 
