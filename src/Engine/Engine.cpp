@@ -234,8 +234,12 @@ void Engine::Render()
 // Clean up
 void Engine::Destroy()
 {
-    // TODO: might have some pointers to clear if i dont make them all shared or unique
-    // specifically, unsure what to do with Tab
+    auto it = openTabs.begin();
+    while(it != openTabs.end()){
+        delete *it;
+        // no need to avoid dangling ptr, as we are erasing from vector 
+        it = openTabs.erase(it);
+    }
 
     ImGui_ImplSDLRenderer2_Shutdown();
     ImGui_ImplSDL2_Shutdown();

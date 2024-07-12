@@ -1,9 +1,7 @@
 {
   "entities": [
     {
-      "children-ids": [
-        1
-      ],
+      "children-ids": [],
       "components": {
         "rigidbody": {
           "initVelocity": [
@@ -39,7 +37,7 @@
         }
       },
       "name": "Shop",
-      "parent-id": 0,
+      "parent-id": -1,
       "transform": {
         "position": [
           6.0,
@@ -205,6 +203,7 @@
   ],
   "root-ids": [
     0,
+    1,
     2,
     4,
     8
