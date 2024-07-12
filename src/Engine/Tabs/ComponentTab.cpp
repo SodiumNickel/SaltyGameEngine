@@ -67,9 +67,9 @@ void ComponentTab::Transform(){
 }
 void ComponentTab::Sprite(){
     if(entity.HasComponent<SpriteComponent>()){
+        auto& sprite = entity.GetComponent<SpriteComponent>();
         if (ImGui::CollapsingHeader("Sprite", &notRemoved, ImGuiTreeNodeFlags_DefaultOpen))
         {
-            auto& sprite = entity.GetComponent<SpriteComponent>();
             ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.75f);
 
             // TODO: this should be a drag and drop thing, not a text input
@@ -97,7 +97,8 @@ void ComponentTab::Sprite(){
 
             // Create vector of values and add it to editHistory
             std::vector<std::unique_ptr<ComponentValue>>* values;
-            values->push_back(std::make_unique<ComponentValue>(1));
+            values->push_back(std::make_unique<ComponentValue>(sprite.filepath));
+            values->push_back(std::make_unique<ComponentValue>(sprite.zIndex));
             editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, false, values));
 
             entity.RemoveComponent<SpriteComponent>();

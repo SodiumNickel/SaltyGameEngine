@@ -38,9 +38,11 @@ enum EComponentVars {
 struct ComponentValue {
     float f;
     int i;
+    std::string s; // TODO: should this be a pointer??
     ComponentValue() = default; // Used for ComponentTab to store values for undo
     ComponentValue(float f): f(f) {};
     ComponentValue(int i): i(i) {};
+    ComponentValue(std::string s): s(s) {};
 };
 
 // When the user edits a value in the component, i.e. transform.position.x from 0.0f to 1.0f
@@ -72,7 +74,7 @@ private:
     std::shared_ptr<Registry> registry;
     int entityId;
     // Contains all values in deleted/added component (or is empty if they are all default)
-    std::vector<std::unique_ptr<ComponentValue>>* values;
+    std::vector<std::unique_ptr<ComponentValue>>* values; // TODO: pointer here to deallocate
     // If the initial action was AddComponent (e.g. add = true -> undo() = RemoveComponent)
     bool add;
 public:

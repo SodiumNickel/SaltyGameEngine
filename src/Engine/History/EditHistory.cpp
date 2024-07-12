@@ -18,12 +18,15 @@ void EditHistory::Do(IEdit* action){
         action->ApplyJson(false);
         unsaved = true;
 
-        undoStack.push(action); // TODO: check for null changes here
+        undoStack.push(action);
         canUndo = true;
-        // redoStack.clear(); TODO: REMEMBER TO DEALLOCATE POINTERS, or just use unique_ptrs (shared?)
-        // if i make them unique ptrs i can probably clear it in O(1)
+
         canRedo = false;
-        while(!redoStack.empty()) redoStack.pop();
+        while(!redoStack.empty()) {
+            delete redoStack.top();
+            // No need to avoid dangling ptr, as we are popping from stack 
+            redoStack.pop();
+        }
     }
 }
 
@@ -36,7 +39,7 @@ void EditHistory::Undo(){
     redoStack.push(undoStack.top());
     canRedo = true;
 
-    undoStack.pop(); // TODO: might need to deallocate this
+    undoStack.pop(); // TODO: might need to deallocate this, idts we are pushing into redo stack anyways...
 
     if(undoStack.empty()) canUndo = false;
 }
@@ -50,7 +53,7 @@ void EditHistory::Redo(){
     undoStack.push(redoStack.top());
     canUndo = true;
 
-    redoStack.pop();  // TODO: might need to deallocate this
+    redoStack.pop();  // TODO: might need to deallocate this, idts we are pushing into redo stack anyways...
 
     if(redoStack.empty()) canRedo = false;
 }

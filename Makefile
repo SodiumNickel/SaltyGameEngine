@@ -19,10 +19,13 @@ SRC = $(wildcard src/*.cpp) \
 
 # -fsanitize=address 
 default: # engine build
-	g++ $(SRC) -std=c++17 $(INCLUDE_DIRS) $(LIB_DIRS) $(LIBS) -o $(BUILD_DIR)/$(PROJECTNAME)
+	g++ -g $(SRC) -std=c++17 $(INCLUDE_DIRS) $(LIB_DIRS) $(LIBS) -o $(BUILD_DIR)/$(PROJECTNAME)
 
 run:
 	cd $(BUILD_DIR) && $(PROJECTNAME)
+
+debug:
+	cd $(BUILD_DIR) && gdb ./$(PROJECTNAME)
 
 clean:
 	cd $(BUILD_DIR) && del $(PROJECTNAME).exe && del imgui.ini;

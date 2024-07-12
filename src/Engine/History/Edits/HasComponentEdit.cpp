@@ -9,6 +9,7 @@ using json = nlohmann::json;
 
 #include "Game/ECS/ECS.h"
 #include "Game/Components/TransformComponent.h"
+#include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
 
 
@@ -25,9 +26,13 @@ void HasComponentEdit::Apply(bool undo){
     bool addComp = undo != add;
 
     switch(compType) {
-        // case SPRITE:
-        //     // TODO:
-        //     break;
+        case SPRITE:
+            if(addComp) {
+                if(!values) entity.AddComponent<SpriteComponent>(); // default values
+                else entity.AddComponent<SpriteComponent>((*values)[0]->s, (*values)[1]->i);
+            }
+            else entity.RemoveComponent<SpriteComponent>();
+            break;
         case RIGIDBODY:
             if(addComp) {
                 if(!values) entity.AddComponent<RigidbodyComponent>(); // default values
@@ -55,9 +60,29 @@ void HasComponentEdit::ApplyJson(bool undo){
     bool addComp = undo != add;
 
     switch(compType) {
-        // case SPRITE:
-        //     // TODO:
-        //     break;
+        case SPRITE:
+        // "sprite": {
+        //   "filepath": "StageDemo/shop.png",
+        //   "zindex": 2
+        // }
+            if (addComp) {
+                if(!values) { // default values
+                    json jSprite = {
+                        {"filepath", ""},
+                        {"zindex", 0}
+                    };
+                    jComponents["sprite"] = jSprite;
+                }
+                else {
+                    json jSprite = {
+                        {"filepath", (*values)[0]->s},
+                        {"zindex", (*values)[1]->f}
+                    };
+                    jComponents["sprite"] = jSprite;
+                }
+            }
+            else jComponents.erase("sprite");
+            break;
         case RIGIDBODY: 
             if(addComp) {
                 if(!values) { // default values
