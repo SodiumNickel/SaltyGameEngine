@@ -26,7 +26,7 @@ void Debug::Log(const std::string& message){
     entry.level = 0;
     entry.message = "[" + SystemTime() + "] " + message; // TODO: could seperate these into diff sections for filtering
     // Make sure there are no \0 in the string, will cause early termination of c_str()
-    entry.message.erase(std::remove(entry.message.begin(), entry.message.end(), '\0'), entry.message.end()); // Erase-Remove Idiom
+    entry.message.erase(std::remove(entry.message.begin(), entry.message.end(), '\0'), entry.message.end()); // Erase-remove Idiom
 
     std::cout << entry.message << '\n';
     Debug::logEntries.push_back(entry);
@@ -38,7 +38,7 @@ void Debug::Log(const std::string& message, int level){
     entry.level = level;
     entry.message = "[" + SystemTime() + "] " + message; // TODO: could seperate these into diff sections for filtering
     // Make sure there are no \0 in the string, will cause early termination of c_str()
-    entry.message.erase(std::remove(entry.message.begin(), entry.message.end(), '\0'), entry.message.end()); // Erase-Remove Idiom
+    entry.message.erase(std::remove(entry.message.begin(), entry.message.end(), '\0'), entry.message.end()); // Erase-remove Idiom
 
     std::cout << entry.message << '\n';
     Debug::logEntries.push_back(entry);

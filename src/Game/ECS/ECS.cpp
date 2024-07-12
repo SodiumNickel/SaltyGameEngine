@@ -3,6 +3,10 @@
 #include <algorithm>
 #include <stack>
 
+#include "Engine/Debug/SaltyDebug.h" // TODO: this needs to be removed in actual game build, could be done with def
+// needs to be availible in scripting anyways so need a way to remove it 
+// maybe can #define something in Engine/.. and do #ifndef something
+
 
 // Static variable for component Ids
 int IComponent::nextId = 0;
@@ -90,7 +94,7 @@ void Registry::DestroyEntity(Entity entity)
         for(int childId : entityTree[id]->childrenIds)
         {  removeStack.push(childId); }
 
-        entitiesToBeRemoved.insert(*entityTree[id].get());
+        entitiesToBeRemoved.insert(id);
     }
 }
 void Registry::DestroyEntity(int entityId)
@@ -106,7 +110,7 @@ void Registry::DestroyEntity(int entityId)
         for(int childId : entityTree[id]->childrenIds)
         {  removeStack.push(childId); }
 
-        entitiesToBeRemoved.insert(*entityTree[id].get());
+        entitiesToBeRemoved.insert(id);
     }
 }
 
@@ -146,19 +150,32 @@ void Registry::Update()
     entitiesToBeAdded.clear();
     
     // Remove entities from entitiesToBeRemoved to registry
-    for(auto entity : entitiesToBeRemoved)
+    for(int entityId : entitiesToBeRemoved)
     {
-        RemoveEntityFromSystems(entity);
+        // Remove from parent's children
+        if(entityTree[entityId]->parentId != -1){
+            // Parent may have already been removed
+            if(entityTree[entityTree[entityId]->parentId]){
+                std::vector<int>& parentCs = entityTree[entityTree[entityId]->parentId]->childrenIds;
+                parentCs.erase(std::remove(parentCs.begin(), parentCs.end(), entityId), parentCs.end()); // Erase-remove idiom
+            }
+        }
+        else{
+            rootIds.erase(std::remove(rootIds.begin(), rootIds.end(), entityId), rootIds.end()); // Erase-remove idiom
+        }
 
-        entityComponentSignatures[entity.GetId()].reset();
+        RemoveEntityFromSystems(*entityTree[entityId].get());
+
+        entityComponentSignatures[entityId].reset();
 
         // TODO: could have check to make sure id isnt already in list
         // should never happen but best to be sure
-        freeIds.push_back(entity.GetId());
+        freeIds.push_back(entityId);
 
         // Remove from entityTree
         // NOTE: this has to preserve the empty space
-        entityTree[entity.GetId()] = nullptr; 
+        entityTree[entityId] = nullptr; 
+        Debug::Log("deleted");
     }
     entitiesToBeRemoved.clear();
 }

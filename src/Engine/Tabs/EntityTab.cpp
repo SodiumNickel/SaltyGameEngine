@@ -140,7 +140,7 @@ void EntityTab::Begin(){
 
 
     // DD Target for unparenting entities, moving them to root
-    ImGui::InvisibleButton("entitytree_root", ImGui::GetContentRegionAvail()); // TODO: just chose arbitrary button size, should scale to fill tab
+    ImGui::InvisibleButton("entitytree_root", ImGui::GetContentRegionAvail()); 
     RClickMenu(-1);
     if (ImGui::BeginDragDropTarget())
     {
@@ -187,7 +187,7 @@ void EntityTab::DDSource(int id){
     if (ImGui::BeginDragDropSource())
     {
         ImGui::SetDragDropPayload("ENTITY", &id, sizeof(int));
-        ImGui::Text(registry->entityTree[id]->name.c_str());
+        ImGui::Text((registry->entityTree[id]->name + (engineData->showEntityIds ? " (id=" + std::to_string(id) + ")" : "")).c_str());
         ImGui::EndDragDropSource();
     }
 }
@@ -243,7 +243,7 @@ void EntityTab::RClickMenu(int id){
             entity.name = "Empty";
             entity.parentId = id;
             // Add as child to id (right clicked entity)
-            if(id == -1) registry->rootIds.push_back(childId);
+            if(id == -1) registry->rootIds.push_back(childId); // TODO: not sure if this stuff should happen in ECS
             else registry->entityTree[id]->childrenIds.push_back(childId);
             // Add entity to registry tree 
             if(registry->entityTree.size() <= childId) registry->entityTree.resize(childId + 1);
@@ -254,8 +254,7 @@ void EntityTab::RClickMenu(int id){
         // TODO: keep this at the bottom
         if(id != -1){
             // Remove entity and all of it's children
-            std::string removeName = "Remove " + registry->entityTree[id]->name;
-            if (ImGui::Selectable(removeName.c_str())){
+            if (ImGui::Selectable(("Remove " + registry->entityTree[id]->name).c_str())){
                 Entity entity = *registry->entityTree[id].get();
                 int parentId = entity.parentId;
 

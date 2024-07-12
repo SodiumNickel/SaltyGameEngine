@@ -17,6 +17,7 @@ SRC = $(wildcard src/*.cpp) \
 	  src/Game/ECS/*.cpp src/Game/AssetManager/*.cpp \
 	  src/Game/Helpers/*.cpp \
 
+# -fsanitize=address 
 default: # engine build
 	g++ $(SRC) -std=c++17 $(INCLUDE_DIRS) $(LIB_DIRS) $(LIBS) -o $(BUILD_DIR)/$(PROJECTNAME)
 

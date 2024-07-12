@@ -3,7 +3,12 @@
         {
             "name": "DefaultConfig",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/include/SDL2/**",
+                "${workspaceFolder}/include/imgui/**",
+                "${workspaceFolder}/include/glm/**",
+                "${workspaceFolder}/include/nlohmann/**",
+                "${workspaceFolder}/src/**"
             ],
             "defines": [
                 "_DEBUG",

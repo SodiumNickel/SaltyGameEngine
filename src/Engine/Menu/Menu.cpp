@@ -38,13 +38,35 @@ void Menu::Begin(){
 
                 std::string entityMessage = entity.name + " (id = " + std::to_string(entity.GetId()) + "): parentId = "
                                             + std::to_string(entity.parentId) + ", childrenIds = [";
+                int i = 0;
+                while(i < entity.childrenIds.size())
+                {
+                    entityMessage += std::to_string(entity.childrenIds[i]);
+                    i++;
+                    if(i < entity.childrenIds.size()) entityMessage += ", ";
+                }
+                entityMessage += "]";
 
                 Debug::Log(entityMessage, -1);
             }
 
             if (ImGui::MenuItem(engineData->showEntityIds ? "Hide EntityIds" : "Show EntityIds")) 
             { engineData->showEntityIds = !engineData->showEntityIds; }
-            //ShowExampleMenuFile();
+            
+            if (ImGui::MenuItem("Log Root Ids")) { 
+                std::string rootMessage = "rootIds = [";
+                int i = 0;
+                while(i < registry->rootIds.size())
+                {
+                    rootMessage += std::to_string(registry->rootIds[i]);
+                    i++;
+                    if(i < registry->rootIds.size()) rootMessage += ", ";
+                }
+                rootMessage += "]";
+
+                Debug::Log(rootMessage, -1);
+            }
+
             ImGui::EndMenu();
         }
 

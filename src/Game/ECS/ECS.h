@@ -173,7 +173,7 @@ private:
 
     // Set of entities that are flagged to be added or removed in next registry Update()
     std::set<Entity> entitiesToBeAdded;
-    std::set<Entity> entitiesToBeRemoved;
+    std::set<int> entitiesToBeRemoved;
 
     // Free entity ids from destroyed entities
     std::deque<int> freeIds;
