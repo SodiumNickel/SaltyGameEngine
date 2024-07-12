@@ -16,7 +16,7 @@ struct EngineData {
     int sceneIndex;
     std::string sceneName = "";
 
-    int selectedEntity = 0;
+    int selectedEntity = -1;
 
     // Only logs of at least logLevel will be considered
     int logLevel;

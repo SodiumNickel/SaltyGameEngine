@@ -258,6 +258,9 @@ void EntityTab::RClickMenu(int id){
                 Entity entity = *registry->entityTree[id].get();
                 int parentId = entity.parentId;
 
+                // If selected entity is removed, clear selection
+                if(engineData->selectedEntity == id) engineData->selectedEntity = -1;
+
                 // editHistory->Do(new EntityExistsEdit(registry, id, parentId, 0, false)); // TODO: pos
                 // TODO: this needs to happen linearly (i.e. editHistory fully finishes before registry destroys entity)
                 registry->DestroyEntity(entity); // TODO: also need to remove children, actually might do this in registry instead

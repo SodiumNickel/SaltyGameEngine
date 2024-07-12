@@ -97,7 +97,7 @@ void ComponentTab::Sprite(){
 
             // Create vector of values and add it to editHistory
             std::vector<std::unique_ptr<ComponentValue>>* values;
-            values->push_back(std::make_unique<ComponentValue>(sprite.filepath));
+            values->push_back(std::make_unique<ComponentValue>("")); // TODO: make this actual filepath
             values->push_back(std::make_unique<ComponentValue>(sprite.zIndex));
             editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, false, values));
 
@@ -162,48 +162,51 @@ void ComponentTab::Begin(){
 
     // TODO: this is not great, should be able to lock tabs, and then only need to update this when it changes
     selectedEntity = engineData->selectedEntity;
-    entity = *registry->entityTree[selectedEntity].get();
+    // If an entity is selected
+    if(selectedEntity != -1){
+        entity = *registry->entityTree[selectedEntity].get();
 
-    // Iterate through all possible components, displaying if HasComponent()
-    Transform(); // TODO: i might move the hasComponent check out here
-    Sprite();
-    Rigidbody();
-    BoxCollider();
+        // Iterate through all possible components, displaying if HasComponent()
+        Transform(); // TODO: i might move the hasComponent check out here
+        Sprite();
+        Rigidbody();
+        BoxCollider();
 
-    // Button and Dropdown list to allow adding components
-    if (ImGui::Button("Add Component")) {
-        // Only needs logic to open list, close is handled by list
-        if(!addComponentOpen) addComponentOpen = true;
-        // TEMP, TODO: get rid of this when proper detection below
-        else addComponentOpen = false;
+        // Button and Dropdown list to allow adding components
+        if (ImGui::Button("Add Component")) {
+            // Only needs logic to open list, close is handled by list
+            if(!addComponentOpen) addComponentOpen = true;
+            // TEMP, TODO: get rid of this when proper detection below
+            else addComponentOpen = false;
+        }
+
+        // Show options if the flag is set
+        if (addComponentOpen) {
+            ImGui::BeginChild("Component List", ImVec2(0, 100), true); // TODO: should probably adjust this height a bit
+
+            if (ImGui::Selectable("Sprite", false, entity.HasComponent<SpriteComponent>() ? ImGuiSelectableFlags_Disabled : 0)) {
+                entity.AddComponent<SpriteComponent>();
+                addComponentOpen = false;
+            }
+            if(ImGui::Selectable("Rigidbody", false, entity.HasComponent<RigidbodyComponent>() ? ImGuiSelectableFlags_Disabled : 0)){
+                entity.AddComponent<RigidbodyComponent>();
+
+                // nullptr -> Redo with default values
+                editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, true, nullptr));
+
+                addComponentOpen = false;
+            }
+            if (ImGui::Selectable("BoxCollider", false, ImGuiSelectableFlags_Disabled)) {
+                // BoxCollider Disabled for now, would like option to add multiple box components so needs more thought
+            }
+
+            ImGui::EndChild();
+
+            
+            // If user clicks anywhere outside of box, close it
+            // if(!ImGui::IsItemHovered() && ImGui::IsAnyMouseDown()) addComponentOpen = false;
+        }
+
     }
-
-    // Show options if the flag is set
-    if (addComponentOpen) {
-        ImGui::BeginChild("Component List", ImVec2(0, 100), true); // TODO: should probably adjust this height a bit
-
-        if (ImGui::Selectable("Sprite", false, entity.HasComponent<SpriteComponent>() ? ImGuiSelectableFlags_Disabled : 0)) {
-            entity.AddComponent<SpriteComponent>();
-            addComponentOpen = false;
-        }
-        if(ImGui::Selectable("Rigidbody", false, entity.HasComponent<RigidbodyComponent>() ? ImGuiSelectableFlags_Disabled : 0)){
-            entity.AddComponent<RigidbodyComponent>();
-
-            // nullptr -> Redo with default values
-            editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, true, nullptr));
-
-            addComponentOpen = false;
-        }
-        if (ImGui::Selectable("BoxCollider", false, ImGuiSelectableFlags_Disabled)) {
-            // BoxCollider Disabled for now, would like option to add multiple box components so needs more thought
-        }
-
-        ImGui::EndChild();
-
-        
-        // If user clicks anywhere outside of box, close it
-        // if(!ImGui::IsItemHovered() && ImGui::IsAnyMouseDown()) addComponentOpen = false;
-    }
-
     ImGui::End();
 }
