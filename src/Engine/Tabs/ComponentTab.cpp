@@ -86,8 +86,12 @@ void ComponentTab::Sprite(){
             ImGui::EndGroup();
 
             ImGui::Text("zIndex"); // TODO: this should probably be enumerated with a dropdown??? 
+            int prev = sprite.zIndex;
             ImGui::InputInt("##zindex", &sprite.zIndex); // kinda wanna call sorting layer, and then have z index seperately (as the finer setting)
-        
+            if(ImGui::IsItemActivated()) previ = prev;
+            if(ImGui::IsItemDeactivatedAfterEdit()) 
+            { editHistory->Do(new ComponentValueEdit(SPRITE, ZINDEX, registry, selectedEntity, ComponentValue(previ), ComponentValue(sprite.zIndex))); }
+
             ImGui::SeparatorText("");
         }
 

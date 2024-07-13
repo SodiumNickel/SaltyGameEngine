@@ -27,12 +27,15 @@ enum EComponentTypes {
 };
 // TODO: check out inline constexpr with std::array<std::string_view>
 enum EComponentVars {
+    // TRANSFORM
     POSITION_X,
     POSITION_Y,
     SCALE_X,
     SCALE_Y,
     ROTATION,
-    // SPRITE STUFF HERE
+    // SPRITE
+    ZINDEX,
+    // RIGIDBODY
     INITVEL_X,
     INITVEL_Y
 };

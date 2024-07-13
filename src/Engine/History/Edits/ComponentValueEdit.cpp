@@ -10,6 +10,7 @@ using json = nlohmann::json;
 
 #include "Game/ECS/ECS.h"
 #include "Game/Components/TransformComponent.h"
+#include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
 
 
@@ -35,9 +36,16 @@ void ComponentValueEdit::Apply(bool undo){
             }
             break;
         }
-        // case SPRITE:
-        //     // TODO:
-        //     break;
+        case SPRITE: {
+            auto& sprite = entity.GetComponent<SpriteComponent>();
+            switch(compVar){
+                case ZINDEX: sprite.zIndex = std::get<int>(val); break;
+                default:
+                    // TODO: log error - transform does not have ...
+                    break;
+            }
+            break;
+        }
         case RIGIDBODY: {
             auto& rigidbody = entity.GetComponent<RigidbodyComponent>();
             switch(compVar){
