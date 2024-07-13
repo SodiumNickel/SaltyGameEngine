@@ -96,10 +96,10 @@ void ComponentTab::Sprite(){
             notRemoved = true;
 
             // Create vector of values and add it to editHistory
-            std::vector<std::unique_ptr<ComponentValue>>* values;
-            values->push_back(std::make_unique<ComponentValue>("")); // TODO: make this actual filepath
+            std::vector<std::unique_ptr<ComponentValue>>* values; // TODO: this never gets deallocated (idk if it ever gets allocated in the first place??)
+            values->push_back(std::make_unique<ComponentValue>(sprite.filepath)); // TODO: make this actual filepath
             values->push_back(std::make_unique<ComponentValue>(sprite.zIndex));
-            editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, false, values));
+            editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, false, values)); // TODO: kinda wanna pass values by ref???
 
             entity.RemoveComponent<SpriteComponent>();
         }
