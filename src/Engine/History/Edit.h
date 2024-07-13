@@ -42,7 +42,7 @@ struct ComponentValue {
     ComponentValue() = default; // Used for ComponentTab to store values for undo
     ComponentValue(float f): f(f) {};
     ComponentValue(int i): i(i) {};
-    ComponentValue(std::string s): s(s) {};
+    ComponentValue(const std::string& s): s(s) {};
 };
 
 // When the user edits a value in the component, i.e. transform.position.x from 0.0f to 1.0f

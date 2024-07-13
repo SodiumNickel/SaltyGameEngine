@@ -17,7 +17,7 @@ public:
 
 class EntityTab : public ITab {
 private:
-    int index;
+    int index; // TODO: still dont know why i keep this lol, probably to delete from vector later??
 
     // Can be picked up by DD
     void DDSource(int id);
@@ -29,6 +29,11 @@ private:
     std::shared_ptr<EditHistory> editHistory;
     std::shared_ptr<EngineData> engineData;
     std::shared_ptr<Registry> registry;
+
+    // Used to open entity when a child is dropped into it
+    // NOTE: only one entity should need to be forced open at any time. This is a non-issue as to drop child into parent,
+    // all grandparents must already be open (otherwise we parent cannot be accessed)
+    int forceOpen = -1;
 public:
     EntityTab(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Registry> registry) 
     : engineData(engineData), editHistory(editHistory), registry(registry) {};

@@ -15,7 +15,7 @@
         }
       },
       "name": "Player",
-      "parent-id": -1,
+      "parent-id": 2,
       "transform": {
         "position": [
           881.0,
@@ -37,7 +37,7 @@
         }
       },
       "name": "Shop",
-      "parent-id": -1,
+      "parent-id": 2,
       "transform": {
         "position": [
           6.0,
@@ -52,7 +52,9 @@
     },
     {
       "children-ids": [
-        3
+        3,
+        1,
+        0
       ],
       "components": {},
       "name": "GroundTiles",
@@ -94,8 +96,7 @@
     {
       "children-ids": [
         5,
-        6,
-        7
+        6
       ],
       "components": {},
       "name": "Rocks",
@@ -135,7 +136,9 @@
       }
     },
     {
-      "children-ids": [],
+      "children-ids": [
+        7
+      ],
       "components": {
         "sprite": {
           "filepath": "StageDemo/Rocks/rock2.png",
@@ -157,7 +160,9 @@
       }
     },
     {
-      "children-ids": [],
+      "children-ids": [
+        8
+      ],
       "components": {
         "sprite": {
           "filepath": "StageDemo/Rocks/rock3.png",
@@ -165,7 +170,7 @@
         }
       },
       "name": "Rock 3",
-      "parent-id": 4,
+      "parent-id": 6,
       "transform": {
         "position": [
           715.0,
@@ -187,7 +192,7 @@
         }
       },
       "name": "Background",
-      "parent-id": -1,
+      "parent-id": 7,
       "transform": {
         "position": [
           -15.0,
@@ -202,11 +207,8 @@
     }
   ],
   "root-ids": [
-    0,
-    1,
     2,
-    4,
-    8
+    4
   ],
   "size": 9
 }

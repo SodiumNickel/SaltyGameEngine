@@ -37,6 +37,11 @@ void EntityTab::Begin(){
             node_flags |= ImGuiTreeNodeFlags_Selected;
 
             if(entityTree[rc]->childrenIds.size() > 0){ // Has children
+                // Occurs when we DD child into rc
+                if(forceOpen == rc){
+                    ImGui::SetNextItemOpen(true, 0);
+                    forceOpen = -1;
+                }
                 bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)rc, node_flags, 
                                                    (entityTree[rc]->name
                                                     + (engineData->showEntityIds ? " (id=" + std::to_string(rc) + ")" : "")).c_str());
@@ -70,6 +75,11 @@ void EntityTab::Begin(){
                             if (c == engineData->selectedEntity)
                                 child_flags |= ImGuiTreeNodeFlags_Selected;
 
+                            // Occurs when we DD child into c
+                            if(forceOpen == c){
+                                ImGui::SetNextItemOpen(true, 0);
+                                forceOpen = -1;
+                            }
                             if(entityTree[c]->childrenIds.size() > 0){ // Has children
                                 bool child_open = ImGui::TreeNodeEx((void*)(intptr_t)c, child_flags, 
                                                                     (entityTree[c]->name
@@ -223,6 +233,8 @@ void EntityTab::DDTarget(int id){
             registry->entityTree[id]->childrenIds.push_back(payloadId);
             registry->entityTree[payloadId]->parentId = id;  
 
+            // Force self open (to show where dropped entity is)
+            forceOpen = id;
 
             // Add to undo stack
             editHistory->Do(new ReparentEdit(registry, payloadId, parentId, prevPos, id, curPos));
@@ -258,7 +270,7 @@ void EntityTab::RClickMenu(int id){
                 Entity entity = *registry->entityTree[id].get();
                 int parentId = entity.parentId;
 
-                // If selected entity is removed, clear selection
+                // If selected entity (or any of its children) are removed, clear selection
                 if(engineData->selectedEntity == id) engineData->selectedEntity = -1;
 
                 // editHistory->Do(new EntityExistsEdit(registry, id, parentId, 0, false)); // TODO: pos
