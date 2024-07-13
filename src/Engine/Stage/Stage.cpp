@@ -73,7 +73,7 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
     // We store rootIds in json file now (also represented by parent: -1 in entities)
     for (int id : jRootIds) rootIds.push_back(id);
     // Select first entity in scene
-    if(rootIds.size() > 0) engineData->selectedEntity = rootIds[0];
+    if(rootIds.size() > 0) engineData->selectedEntity = rootIds[0]; // TODO: make sure this is fine on scene swap, might need an else -1
 
     for(int id = 0; id < size; id++){
         json jEntity = jEntities[id];

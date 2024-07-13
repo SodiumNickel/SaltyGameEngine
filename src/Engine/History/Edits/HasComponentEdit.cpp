@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <variant>
 
 #include <glm.hpp>
 #include <json.hpp>
@@ -26,17 +27,17 @@ void HasComponentEdit::Apply(bool undo){
     bool addComp = undo != add;
 
     switch(compType) {
-        case SPRITE:
-            if(addComp) {
-                if(!values) entity.AddComponent<SpriteComponent>(); // default values
-                else entity.AddComponent<SpriteComponent>((*values)[0]->s, (*values)[1]->i);
-            }
-            else entity.RemoveComponent<SpriteComponent>();
-            break;
+        // case SPRITE:
+        //     if(addComp) {
+        //         if(!values) entity.AddComponent<SpriteComponent>(); // default values
+        //         else entity.AddComponent<SpriteComponent>((*values)[0]->s, (*values)[1]->i);
+        //     }
+        //     else entity.RemoveComponent<SpriteComponent>();
+        //     break;
         case RIGIDBODY:
             if(addComp) {
-                if(!values) entity.AddComponent<RigidbodyComponent>(); // default values
-                else entity.AddComponent<RigidbodyComponent>(glm::vec2((*values)[0]->f, (*values)[1]->f));
+                if(values.empty()) entity.AddComponent<RigidbodyComponent>(); // default values
+                else entity.AddComponent<RigidbodyComponent>(glm::vec2(std::get<float>(values[0]), std::get<float>(values[1])));
             }
             else entity.RemoveComponent<RigidbodyComponent>();
             break;
@@ -60,32 +61,32 @@ void HasComponentEdit::ApplyJson(bool undo){
     bool addComp = undo != add;
 
     switch(compType) {
-        case SPRITE:
-        // "sprite": {
-        //   "filepath": "StageDemo/shop.png",
-        //   "zindex": 2
-        // }
-            if (addComp) {
-                if(!values) { // default values
-                    json jSprite = {
-                        {"filepath", ""},
-                        {"zindex", 0}
-                    };
-                    jComponents["sprite"] = jSprite;
-                }
-                else {
-                    json jSprite = {
-                        {"filepath", (*values)[0]->s},
-                        {"zindex", (*values)[1]->f}
-                    };
-                    jComponents["sprite"] = jSprite;
-                }
-            }
-            else jComponents.erase("sprite");
-            break;
+        // case SPRITE:
+        // // "sprite": {
+        // //   "filepath": "StageDemo/shop.png",
+        // //   "zindex": 2
+        // // }
+        //     if (addComp) {
+        //         if(values.empty()) { // default values
+        //             json jSprite = {
+        //                 {"filepath", ""},
+        //                 {"zindex", 0}
+        //             };
+        //             jComponents["sprite"] = jSprite;
+        //         }
+        //         else {
+        //             json jSprite = {
+        //                 {"filepath", values[0]->s},
+        //                 {"zindex", values[1]->f}
+        //             };
+        //             jComponents["sprite"] = jSprite;
+        //         }
+        //     }
+        //     else jComponents.erase("sprite");
+        //     break;
         case RIGIDBODY: 
             if(addComp) {
-                if(!values) { // default values
+                if(values.empty()) { // default values
                     json jRigidbody = {
                         {"initVelocity", {0.0, 0.0}}
                     };
@@ -93,7 +94,7 @@ void HasComponentEdit::ApplyJson(bool undo){
                 }
                 else {
                     json jRigidbody = {
-                        {"initVelocity", {(*values)[0]->f, (*values)[1]->f}}
+                        {"initVelocity", {std::get<float>(values[0]), std::get<float>(values[1])}}
                     };
                     jComponents["rigidbody"] = jRigidbody;
                 }

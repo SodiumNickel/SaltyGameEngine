@@ -26,41 +26,41 @@ void ComponentTab::Transform(){
 
         ImGui::Text("Position");
         ImGui::Text("x"); ImGui::SameLine();
-        float prevf = transform->position.x;
+        float prev = transform->position.x;
         ImGui::DragFloat("##posx", &transform->position.x, 1.0f);
-        if(ImGui::IsItemActivated()) prev.f = prevf;
+        if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_X, registry, selectedEntity, prev.f, transform->position.x)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform->position.x))); } 
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
-        prevf = transform->position.y;
+        prev = transform->position.y;
         ImGui::DragFloat("##posy", &transform->position.y, 1.0f);
-        if(ImGui::IsItemActivated()) prev.f = prevf;
+        if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, registry, selectedEntity, prev.f, transform->position.y)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform->position.y))); }
 
         ImGui::Text("Scale");
         ImGui::Text("x"); ImGui::SameLine();
-        prevf = transform->scale.x;
+        prev = transform->scale.x;
         ImGui::DragFloat("##scalex", &transform->scale.x, 0.005f); 
-        if(ImGui::IsItemActivated()) prev.f = prevf;
+        if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_X, registry, selectedEntity, prev.f, transform->scale.x)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform->scale.x))); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
-        prevf = transform->scale.y;
+        prev = transform->scale.y;
         ImGui::DragFloat("##scaley", &transform->scale.y, 0.005f);
-        if(ImGui::IsItemActivated()) prev.f = prevf;
+        if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, registry, selectedEntity, prev.f, transform->scale.y)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform->scale.y))); }
 
         ImGui::Text("Rotation");
         ImGui::Text("θ"); ImGui::SameLine(); // TODO: theta is not displaying properly in this font
-        prevf = transform->rotation;
+        prev = transform->rotation;
         ImGui::DragFloat("##rot", &transform->rotation, 0.25f);
-        if(ImGui::IsItemActivated()) prev.f = prevf;
+        if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, ROTATION, registry, selectedEntity, prev.f, transform->rotation)); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, ROTATION, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform->rotation))); }
 
         ImGui::SeparatorText("");
     }
@@ -92,17 +92,17 @@ void ComponentTab::Sprite(){
         }
 
         // User pressed close button on header, remove component
-        if(!notRemoved){
-            notRemoved = true;
+        // if(!notRemoved){
+        //     notRemoved = true;
 
-            // Create vector of values and add it to editHistory
-            std::vector<std::unique_ptr<ComponentValue>>* values; // TODO: this never gets deallocated (idk if it ever gets allocated in the first place??)
-            values->push_back(std::make_unique<ComponentValue>(sprite.filepath)); // TODO: make this actual filepath
-            values->push_back(std::make_unique<ComponentValue>(sprite.zIndex));
-            editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, false, values)); // TODO: kinda wanna pass values by ref???
+        //     // Create vector of values and add it to editHistory
+        //     std::vector<std::unique_ptr<ComponentValue>>* values; // TODO: this never gets deallocated (idk if it ever gets allocated in the first place??)
+        //     values->push_back(std::make_unique<ComponentValue>(sprite.filepath)); // TODO: make this actual filepath
+        //     values->push_back(std::make_unique<ComponentValue>(sprite.zIndex));
+        //     editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, false, values)); // TODO: kinda wanna pass values by ref???
 
-            entity.RemoveComponent<SpriteComponent>();
-        }
+        //     entity.RemoveComponent<SpriteComponent>();
+        // }
     }
 }
 void ComponentTab::Rigidbody(){
@@ -114,18 +114,18 @@ void ComponentTab::Rigidbody(){
 
             ImGui::Text("Initial Velocity");
             ImGui::Text("x"); ImGui::SameLine();
-            float prevf = rigidbody.initVelocity.x;
+            float prev = rigidbody.initVelocity.x;
             ImGui::DragFloat("##initx", &rigidbody.initVelocity.x, 0.005f); 
-            if(ImGui::IsItemActivated()) prev.f = prevf;
+            if(ImGui::IsItemActivated()) prevf = prev;
             if(ImGui::IsItemDeactivatedAfterEdit()) 
-            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_X, registry, selectedEntity, prev.f, rigidbody.initVelocity.x)); }
+            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(rigidbody.initVelocity.x))); }
             ImGui::SameLine();
             ImGui::Text("y"); ImGui::SameLine();
-            prevf = rigidbody.initVelocity.y;
+            prev = rigidbody.initVelocity.y;
             ImGui::DragFloat("##inity", &rigidbody.initVelocity.y, 0.005f);
-            if(ImGui::IsItemActivated()) prev.f = prevf;
+            if(ImGui::IsItemActivated()) prevf = prev;
             if(ImGui::IsItemDeactivatedAfterEdit()) 
-            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_Y, registry, selectedEntity, prev.f, rigidbody.initVelocity.y)); }
+            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(rigidbody.initVelocity.y))); }
 
             ImGui::SeparatorText("");
         }
@@ -135,9 +135,9 @@ void ComponentTab::Rigidbody(){
             notRemoved = true;
 
             // Create vector of values and add it to editHistory
-            std::vector<std::unique_ptr<ComponentValue>>* values = new std::vector<std::unique_ptr<ComponentValue>>();;
-            values->push_back(std::make_unique<ComponentValue>(rigidbody.initVelocity.x));
-            values->push_back(std::make_unique<ComponentValue>(rigidbody.initVelocity.y));
+            std::vector<ComponentValue> values;
+            values.push_back(ComponentValue(rigidbody.initVelocity.x));
+            values.push_back(ComponentValue(rigidbody.initVelocity.y));
             editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, false, values));
 
             entity.RemoveComponent<RigidbodyComponent>();
@@ -191,8 +191,9 @@ void ComponentTab::Begin(){
             if(ImGui::Selectable("Rigidbody", false, entity.HasComponent<RigidbodyComponent>() ? ImGuiSelectableFlags_Disabled : 0)){
                 entity.AddComponent<RigidbodyComponent>();
 
-                // nullptr -> Redo with default values
-                editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, true, nullptr));
+                // empty vector -> Redo with default values
+                // TODO: feel like this is a waste of space, do wish i could go back to using nullptr
+                editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, true, std::vector<ComponentValue>()));
 
                 addComponentOpen = false;
             }

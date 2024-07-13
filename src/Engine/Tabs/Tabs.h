@@ -43,7 +43,7 @@ public:
 class ComponentTab : public ITab {
 private:
     int index;
-    ComponentValue prev;
+    ComponentValue prevf; // TODO: currently all of them just use this (maybe should have seperate vars instead...)
     std::shared_ptr<EditHistory> editHistory;
     std::shared_ptr<EngineData> engineData; // TODO: not sure i will keep this in the end, currently just for selectedEntity
     std::shared_ptr<Registry> registry;
@@ -65,7 +65,7 @@ private:
     bool addComponentOpen = false;
 public:
     ComponentTab(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager) 
-    : engineData(engineData), editHistory(editHistory), registry(registry), assetManager(assetManager), prev() {};
+    : engineData(engineData), editHistory(editHistory), registry(registry), assetManager(assetManager) {};
     void Begin() override;
 };
 

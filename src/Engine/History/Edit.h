@@ -2,6 +2,7 @@
 #define EDIT_H
 
 #include <string>
+#include <variant>
 
 #include "Game/ECS/ECS.h"
 
@@ -35,15 +36,9 @@ enum EComponentVars {
     INITVEL_X,
     INITVEL_Y
 };
-struct ComponentValue {
-    float f;
-    int i;
-    std::string s; // TODO: should this be a pointer??
-    ComponentValue() = default; // Used for ComponentTab to store values for undo
-    ComponentValue(float f): f(f) {};
-    ComponentValue(int i): i(i) {};
-    ComponentValue(std::string& s): s(s) {};
-};
+
+// Used to store changes made to components
+typedef std::variant<int, float, std::string> ComponentValue;
 
 // When the user edits a value in the component, i.e. transform.position.x from 0.0f to 1.0f
 class ComponentValueEdit : public IEdit {
@@ -52,15 +47,11 @@ private:
     EComponentVars compVar;
     std::shared_ptr<Registry> registry;
     int entityId;
-    std::unique_ptr<ComponentValue> prev; // Used to undo action
-    std::unique_ptr<ComponentValue> cur; // Used to (re)do action
+    ComponentValue prev; // Used to undo action
+    ComponentValue cur; // Used to (re)do action
 public:
-    ComponentValueEdit(EComponentTypes compType, EComponentVars compVar, std::shared_ptr<Registry> registry, int entityId, float prevf, float curf): 
-        compType(compType), compVar(compVar), registry(registry), entityId(entityId), 
-        prev(std::make_unique<ComponentValue>(prevf)), cur(std::make_unique<ComponentValue>(curf)) {};
-    ComponentValueEdit(EComponentTypes compType, EComponentVars compVar, std::shared_ptr<Registry> registry, int entityId, int previ, int curi): 
-        compType(compType), compVar(compVar), registry(registry), entityId(entityId), 
-        prev(std::make_unique<ComponentValue>(previ)), cur(std::make_unique<ComponentValue>(curi)) {};
+    ComponentValueEdit(EComponentTypes compType, EComponentVars compVar, std::shared_ptr<Registry> registry, int entityId, ComponentValue prev, ComponentValue cur): 
+        compType(compType), compVar(compVar), registry(registry), entityId(entityId), prev(prev), cur(cur) {};
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;
@@ -74,12 +65,12 @@ private:
     std::shared_ptr<Registry> registry;
     int entityId;
     // Contains all values in deleted/added component (or is empty if they are all default)
-    std::vector<std::unique_ptr<ComponentValue>>* values; // TODO: pointer here to deallocate
+    std::vector<ComponentValue> values;
     // If the initial action was AddComponent (e.g. add = true -> undo() = RemoveComponent)
     bool add;
 public:
-    HasComponentEdit(EComponentTypes compType, std::shared_ptr<Registry> registry, int entityId, bool add, std::vector<std::unique_ptr<ComponentValue>>* values): 
-        compType(compType), registry(registry), entityId(entityId), add(add), values(values) {}; // TODO: pointer needs to be deallocated
+    HasComponentEdit(EComponentTypes compType, std::shared_ptr<Registry> registry, int entityId, bool add, std::vector<ComponentValue> values): 
+        compType(compType), registry(registry), entityId(entityId), add(add), values(values) {}; // TODO: not sure if this is copying entire vector, we should not do that
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;

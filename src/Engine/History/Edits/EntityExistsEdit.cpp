@@ -2,6 +2,8 @@
 
 #include <fstream>
 #include <iostream>
+#include <variant>
+#include <vector>
 
 #include <glm.hpp>
 #include <json.hpp>
@@ -26,15 +28,15 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, int entit
     Entity entity = *registry->entityTree[entityId].get();
 
     // Transform is on every entity, so need to do ComponentValueEdits instead
-    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, entity.transform->position.x, entity.transform->position.x));
-    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, entity.transform->position.y, entity.transform->position.y));
-    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, entity.transform->scale.x, entity.transform->scale.x));
-    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, entity.transform->scale.y, entity.transform->scale.y));
-    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, entityId, entity.transform->rotation, entity.transform->rotation));
+    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, ComponentValue(entity.transform->position.x), ComponentValue(entity.transform->position.x)));
+    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, ComponentValue(entity.transform->position.y), ComponentValue(entity.transform->position.y)));
+    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(entity.transform->scale.x), ComponentValue(entity.transform->scale.x))); // TODO: comp val def shouldnt need to be in both places...
+    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, ComponentValue(entity.transform->scale.y), ComponentValue(entity.transform->scale.y)));
+    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, entityId, ComponentValue(entity.transform->rotation), ComponentValue(entity.transform->rotation)));
 
     // Check for the other components
     if(entity.HasComponent<SpriteComponent>()){}
-    if(entity.HasComponent<RigidbodyComponent>()) components.push_back(std::make_unique<HasComponentEdit>(RIGIDBODY, registry, entityId, true, nullptr));
+    if(entity.HasComponent<RigidbodyComponent>()) components.push_back(std::make_unique<HasComponentEdit>(RIGIDBODY, registry, entityId, true, std::vector<ComponentValue>()));
     if(entity.HasComponent<BoxColliderComponent>()){}
 
     // Create edits for all children

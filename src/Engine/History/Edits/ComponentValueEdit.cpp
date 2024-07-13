@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <variant>
 
 #include <glm.hpp>
 #include <json.hpp>
@@ -17,17 +18,17 @@ using json = nlohmann::json;
  * ------------------------------------------------------------ */
 // Pre: entity.HasComponent<compType>() || compType = TRANSFORM
 void ComponentValueEdit::Apply(bool undo){
-    ComponentValue* val = undo ? prev.get() : cur.get(); 
+    ComponentValue& val = undo ? prev : cur; 
     Entity entity = *registry->entityTree[entityId].get();
     switch(compType) {
         case TRANSFORM: {
             auto& transform = *entity.transform;
             switch(compVar){
-                case POSITION_X: transform.position.x = val->f; break;
-                case POSITION_Y: transform.position.y = val->f; break;
-                case SCALE_X: transform.scale.x = val->f; break;
-                case SCALE_Y: transform.scale.y = val->f; break;
-                case ROTATION: transform.rotation = val->f; break;
+                case POSITION_X: transform.position.x = std::get<float>(val); break;
+                case POSITION_Y: transform.position.y = std::get<float>(val); break;
+                case SCALE_X: transform.scale.x = std::get<float>(val); break;
+                case SCALE_Y: transform.scale.y = std::get<float>(val); break;
+                case ROTATION: transform.rotation = std::get<float>(val); break;
                 default:
                     // TODO: log error - transform does not have ...
                     break;
@@ -40,8 +41,8 @@ void ComponentValueEdit::Apply(bool undo){
         case RIGIDBODY: {
             auto& rigidbody = entity.GetComponent<RigidbodyComponent>();
             switch(compVar){
-                case INITVEL_X: rigidbody.initVelocity.x = val->f; break;
-                case INITVEL_Y: rigidbody.initVelocity.y = val->f; break;
+                case INITVEL_X: rigidbody.initVelocity.x = std::get<float>(val); break;
+                case INITVEL_Y: rigidbody.initVelocity.y = std::get<float>(val); break;
                 default:
                     // TODO: log error - transform does not have ...
                     break;
@@ -60,7 +61,7 @@ void ComponentValueEdit::Apply(bool undo){
 }
 // Pre: entity["components"].contains(compType) || compType = TRANSFORM
 void ComponentValueEdit::ApplyJson(bool undo){
-    ComponentValue* val = undo ? prev.get() : cur.get(); 
+    ComponentValue& val = undo ? prev : cur; 
     std::ifstream g("EngineData/current-scene.json");
     json jScene = json::parse(g);
     json jEntity = jScene["entities"][entityId]; // TODO: maybe this should be jEntity
@@ -69,11 +70,11 @@ void ComponentValueEdit::ApplyJson(bool undo){
     switch(compType) {
         case TRANSFORM: {
             switch(compVar){ // TODO: this can be ["transform"]["position"] i think, should check
-                case POSITION_X: jEntity["transform"]["position"][0] = val->f; break;
-                case POSITION_Y: jEntity["transform"]["position"][1] = val->f; break;
-                case SCALE_X: jEntity["transform"]["scale"][0] = val->f; break;
-                case SCALE_Y: jEntity["transform"]["scale"][1] = val->f; break;
-                case ROTATION: jEntity["transform"]["rotation"] = val->f; break;
+                case POSITION_X: jEntity["transform"]["position"][0] = std::get<float>(val); break;
+                case POSITION_Y: jEntity["transform"]["position"][1] = std::get<float>(val); break;
+                case SCALE_X: jEntity["transform"]["scale"][0] = std::get<float>(val); break;
+                case SCALE_Y: jEntity["transform"]["scale"][1] = std::get<float>(val); break;
+                case ROTATION: jEntity["transform"]["rotation"] = std::get<float>(val); break;
                 default:
                     // TODO: log error - transform does not have ...
                     break;
@@ -85,8 +86,8 @@ void ComponentValueEdit::ApplyJson(bool undo){
         //     break;
         case RIGIDBODY: {
             switch(compVar){
-                case INITVEL_X: jComponents["rigidbody"]["initVelocity"][0] = val->f; break;
-                case INITVEL_Y: jComponents["rigidbody"]["initVelocity"][1] = val->f; break;
+                case INITVEL_X: jComponents["rigidbody"]["initVelocity"][0] = std::get<float>(val); break;
+                case INITVEL_Y: jComponents["rigidbody"]["initVelocity"][1] = std::get<float>(val); break;
                 default:
                     // TODO: log error - rb does not have ...
                     break;
