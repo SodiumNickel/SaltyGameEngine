@@ -3,19 +3,13 @@
     {
       "children-ids": [],
       "components": {
-        "rigidbody": {
-          "initVelocity": [
-            0.574999988079071,
-            1.401298464324817e-45
-          ]
-        },
         "sprite": {
           "filepath": "StageDemo/player.png",
           "zindex": 1
         }
       },
       "name": "Player",
-      "parent-id": 2,
+      "parent-id": -1,
       "transform": {
         "position": [
           881.0,
@@ -37,7 +31,7 @@
         }
       },
       "name": "Shop",
-      "parent-id": 2,
+      "parent-id": -1,
       "transform": {
         "position": [
           6.0,
@@ -53,8 +47,7 @@
     {
       "children-ids": [
         3,
-        1,
-        0
+        4
       ],
       "components": {},
       "name": "GroundTiles",
@@ -96,11 +89,12 @@
     {
       "children-ids": [
         5,
-        6
+        6,
+        7
       ],
       "components": {},
       "name": "Rocks",
-      "parent-id": -1,
+      "parent-id": 2,
       "transform": {
         "position": [
           0.0,
@@ -136,9 +130,7 @@
       }
     },
     {
-      "children-ids": [
-        7
-      ],
+      "children-ids": [],
       "components": {
         "sprite": {
           "filepath": "StageDemo/Rocks/rock2.png",
@@ -160,9 +152,7 @@
       }
     },
     {
-      "children-ids": [
-        8
-      ],
+      "children-ids": [],
       "components": {
         "sprite": {
           "filepath": "StageDemo/Rocks/rock3.png",
@@ -170,7 +160,7 @@
         }
       },
       "name": "Rock 3",
-      "parent-id": 6,
+      "parent-id": 4,
       "transform": {
         "position": [
           715.0,
@@ -192,7 +182,7 @@
         }
       },
       "name": "Background",
-      "parent-id": 7,
+      "parent-id": -1,
       "transform": {
         "position": [
           -15.0,
@@ -207,8 +197,10 @@
     }
   ],
   "root-ids": [
+    0,
+    1,
     2,
-    4
+    8
   ],
   "size": 9
 }

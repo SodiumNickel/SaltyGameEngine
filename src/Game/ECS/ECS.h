@@ -188,7 +188,7 @@ public:
     Entity CreateEntity();
     void DestroyEntity(Entity entity);
     void DestroyEntity(int entityId);
-    std::vector<std::unique_ptr<Entity>> entityTree;
+    std::vector<std::unique_ptr<Entity>> entityTree; // TODO: maybe this should just be the entities themselves???
     std::vector<int> rootIds; // All entities without parents (at the root of their respective tree)
 
     // Component management

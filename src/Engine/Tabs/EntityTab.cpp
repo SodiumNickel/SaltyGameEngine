@@ -270,12 +270,23 @@ void EntityTab::RClickMenu(int id){
                 Entity entity = *registry->entityTree[id].get();
                 int parentId = entity.parentId;
 
-                // If selected entity (or any of its children) are removed, clear selection
-                if(engineData->selectedEntity == id) engineData->selectedEntity = -1;
+                // If selected entity (or any of its parents) are removed, clear selection
+                std::stack<int> childrenIds; // TODO: maybe could find better name for this like lineage
+                childrenIds.push(id);
+                while(engineData->selectedEntity != -1 && !childrenIds.empty()){
+                    int cId = childrenIds.top(); 
+                    childrenIds.pop();
+                    if(cId == engineData->selectedEntity){
+                        engineData->selectedEntity = -1;
+                    }
+                    else if(registry->entityTree[cId]->childrenIds.size() > 0){
+                        for(int ccId : registry->entityTree[cId]->childrenIds) childrenIds.push(ccId);
+                    }  
+                }
 
                 // editHistory->Do(new EntityExistsEdit(registry, id, parentId, 0, false)); // TODO: pos
                 // TODO: this needs to happen linearly (i.e. editHistory fully finishes before registry destroys entity)
-                registry->DestroyEntity(entity); // TODO: also need to remove children, actually might do this in registry instead
+                registry->DestroyEntity(entity); 
             }
         }
 

@@ -16,7 +16,7 @@ struct EngineData {
     int sceneIndex;
     std::string sceneName = "";
 
-    int selectedEntity = -1;
+    int selectedEntity = -1; // TODO: should start at first thing in scene (i.e. rootIds[0])
 
     // Only logs of at least logLevel will be considered
     int logLevel;
