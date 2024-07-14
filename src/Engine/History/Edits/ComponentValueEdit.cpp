@@ -90,9 +90,13 @@ void ComponentValueEdit::ApplyJson(bool undo){
             }
             break;
         }
-        // case SPRITE:
-        //     // TODO:
-        //     break;
+        case SPRITE: {
+            switch(compVar){
+                case FILEPATH: jComponents["sprite"]["filepath"] = std::get<std::string>(val); break;
+                case ZINDEX: jComponents["sprite"]["zindex"] = std::get<int>(val); break;
+                break;
+            }
+        }
         case RIGIDBODY: {
             switch(compVar){
                 case INITVEL_X: jComponents["rigidbody"]["initVelocity"][0] = std::get<float>(val); break;
