@@ -7,4 +7,4 @@ Scene Demo above uses assets from:
 
 ## Style Guide
 The style of Salty Game Engine mostly follows the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) with a few small additions (e.g. enums being prefixed by E). \
-You may find the full Salty Style Guide [here](STYLE.md).
+You may find the (partially) full Salty Style Guide [here](STYLE.md).
