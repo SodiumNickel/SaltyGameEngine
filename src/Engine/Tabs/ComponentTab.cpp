@@ -100,17 +100,17 @@ void ComponentTab::Sprite(){
         }
 
         // User pressed close button on header, remove component
-        // if(!notRemoved){
-        //     notRemoved = true;
+        if(!notRemoved){
+            notRemoved = true;
 
-        //     // Create vector of values and add it to editHistory
-        //     std::vector<std::unique_ptr<ComponentValue>>* values; // TODO: this never gets deallocated (idk if it ever gets allocated in the first place??)
-        //     values->push_back(std::make_unique<ComponentValue>(sprite.filepath)); // TODO: make this actual filepath
-        //     values->push_back(std::make_unique<ComponentValue>(sprite.zIndex));
-        //     editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, false, values)); // TODO: kinda wanna pass values by ref???
+            // Create vector of values and add it to editHistory
+            std::vector<ComponentValue> values;
+            values.push_back(ComponentValue(sprite.filepath));
+            values.push_back(ComponentValue(sprite.zIndex));
+            editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, false, values));
 
-        //     entity.RemoveComponent<SpriteComponent>();
-        // }
+            entity.RemoveComponent<SpriteComponent>();
+        }
     }
 }
 void ComponentTab::Rigidbody(){
@@ -194,6 +194,10 @@ void ComponentTab::Begin(){
 
             if (ImGui::Selectable("Sprite", false, entity.HasComponent<SpriteComponent>() ? ImGuiSelectableFlags_Disabled : 0)) {
                 entity.AddComponent<SpriteComponent>();
+                
+                // TODO: unify comments for this section
+                editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, true, std::vector<ComponentValue>()));
+
                 addComponentOpen = false;
             }
             if(ImGui::Selectable("Rigidbody", false, entity.HasComponent<RigidbodyComponent>() ? ImGuiSelectableFlags_Disabled : 0)){
