@@ -43,10 +43,11 @@ public:
 class ComponentTab : public ITab {
 private:
     int index;
-    
-    float prevf;
+
     int previ;
-    
+    float prevf;
+    std::string prevs;
+
     std::shared_ptr<EditHistory> editHistory;
     std::shared_ptr<EngineData> engineData; // TODO: not sure i will keep this in the end, currently just for selectedEntity
     std::shared_ptr<Registry> registry;

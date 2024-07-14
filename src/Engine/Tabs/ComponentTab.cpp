@@ -75,7 +75,11 @@ void ComponentTab::Sprite(){
             // TODO: this should be a drag and drop thing, not a text input
             ImGui::BeginGroup();
             ImGui::Text("Filepath");
+            std::string prev1 = sprite.filepath;
             ImGui::InputText("##filepath", &sprite.filepath);
+            if(ImGui::IsItemActivated()) prevs = prev1;
+            if(ImGui::IsItemDeactivatedAfterEdit()) 
+            { editHistory->Do(new ComponentValueEdit(SPRITE, FILEPATH, registry, selectedEntity, ComponentValue(prevs), ComponentValue(sprite.filepath))); }
             ImGui::EndGroup();
 
             // TODO: kind of want to make this image bigger, but this will do for now
@@ -86,9 +90,9 @@ void ComponentTab::Sprite(){
             ImGui::EndGroup();
 
             ImGui::Text("zIndex"); // TODO: this should probably be enumerated with a dropdown??? 
-            int prev = sprite.zIndex;
+            int prev2 = sprite.zIndex;
             ImGui::InputInt("##zindex", &sprite.zIndex); // kinda wanna call sorting layer, and then have z index seperately (as the finer setting)
-            if(ImGui::IsItemActivated()) previ = prev;
+            if(ImGui::IsItemActivated()) previ = prev2;
             if(ImGui::IsItemDeactivatedAfterEdit()) 
             { editHistory->Do(new ComponentValueEdit(SPRITE, ZINDEX, registry, selectedEntity, ComponentValue(previ), ComponentValue(sprite.zIndex))); }
 

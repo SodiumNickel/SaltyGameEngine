@@ -34,6 +34,7 @@ enum EComponentVars {
     SCALE_Y,
     ROTATION,
     // SPRITE
+    FILEPATH,
     ZINDEX,
     // RIGIDBODY
     INITVEL_X,

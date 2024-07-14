@@ -39,6 +39,7 @@ void ComponentValueEdit::Apply(bool undo){
         case SPRITE: {
             auto& sprite = entity.GetComponent<SpriteComponent>();
             switch(compVar){
+                case FILEPATH: sprite.filepath = std::get<std::string>(val); break;
                 case ZINDEX: sprite.zIndex = std::get<int>(val); break;
                 default:
                     // TODO: log error - transform does not have ...
