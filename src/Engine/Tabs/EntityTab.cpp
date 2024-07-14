@@ -248,18 +248,18 @@ void EntityTab::RClickMenu(int id){
     if (ImGui::BeginPopup("Entity" + id))
     {  
         if (ImGui::Selectable(id == -1 ? "Add empty" : "Add empty (child)")){
-            Entity entity = registry->CreateEntity();
-            int childId = entity.GetId();
+            Entity child = registry->CreateEntity();
+            int childId = child.GetId();
 
             // Assign name and parentId
-            entity.name = "Empty";
-            entity.parentId = id;
+            child.name = "Empty";
+            child.parentId = id;
             // Add as child to id (right clicked entity)
             if(id == -1) registry->rootIds.push_back(childId); // TODO: not sure if this stuff should happen in ECS
             else registry->entityTree[id]->childrenIds.push_back(childId);
             // Add entity to registry tree 
             if(registry->entityTree.size() <= childId) registry->entityTree.resize(childId + 1);
-            registry->entityTree[childId] = std::make_unique<Entity>(entity);
+            registry->entityTree[childId] = std::make_unique<Entity>(child);
             
             // TODO: need to make sure this is parented correctly, and will have to push an undo change eventually
         }
