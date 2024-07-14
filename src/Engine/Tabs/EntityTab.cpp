@@ -261,15 +261,20 @@ void EntityTab::RClickMenu(int id){
             if(registry->entityTree.size() <= childId) registry->entityTree.resize(childId + 1);
             registry->entityTree[childId] = std::make_unique<Entity>(child);
             
-            // TODO: need to make sure this is parented correctly, and will have to push an undo change eventually
+            // Even we are adding to root, keeps forceOpen at -1 which does nothing
+            forceOpen = id;
+            // Select child (assumption that user creates entity to immediately edit)
+            engineData->selectedEntity = childId;
+
+            // Get value for undo
+            // Add entity always places at end of ids
+            int pos = id != -1 ? registry->entityTree[id]->childrenIds.size() : registry->rootIds.size();
+            editHistory->Do(new EntityExistsEdit(registry, childId, id, pos, true));
         }
         // TODO: keep this at the bottom
         if(id != -1){
             // Remove entity and all of it's children
             if (ImGui::Selectable(("Remove " + registry->entityTree[id]->name).c_str())){
-                Entity entity = *registry->entityTree[id].get();
-                int parentId = entity.parentId;
-
                 // If selected entity (or any of its parents) are removed, clear selection
                 std::stack<int> childrenIds; // TODO: maybe could find better name for this like lineage
                 childrenIds.push(id);
@@ -284,9 +289,20 @@ void EntityTab::RClickMenu(int id){
                     }  
                 }
 
-                // editHistory->Do(new EntityExistsEdit(registry, id, parentId, 0, false)); // TODO: pos
-                // TODO: this needs to happen linearly (i.e. editHistory fully finishes before registry destroys entity)
-                registry->DestroyEntity(entity); 
+                // Get values for undo
+                int parentId = registry->entityTree[id]->parentId;
+                // Find position in parent childrenIds
+                int pos = 0;
+                auto& pcIds = parentId != -1 ? registry->entityTree[parentId]->childrenIds : registry->rootIds;
+                // Pre: pcIds contains id
+                // I: pcIds[0..pos) does not contain id
+                while(pos < pcIds.size() && pcIds[pos] != id) pos++;
+                // Pre ^ I ^ G -> pcIds[pos] = id 
+                editHistory->Do(new EntityExistsEdit(registry, id, parentId, pos, false));
+                
+                // NOTE: This needs to happen linearly (i.e. editHistory fully finishes before registry destroys entity)
+                // All children/lineage is destroyed by registry
+                registry->DestroyEntity(id); 
             }
         }
 

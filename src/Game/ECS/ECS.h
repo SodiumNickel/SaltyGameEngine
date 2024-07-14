@@ -51,6 +51,7 @@ public:
     Entity(): id(-1) {}; // default constructor, never used // TODO: add a debug error for this in logger
     Entity(int id) : id(id) {}; // TODO: might want to initialize with values
     Entity(const Entity& entity) = default;
+
     int GetId() const;
     void Destroy();
 
@@ -68,7 +69,7 @@ public:
     template <typename TComponent> void RemoveComponent();
     template <typename TComponent> bool HasComponent() const;
     template <typename TComponent> TComponent& GetComponent() const;
-    // TODO: need to deallocate this
+
     TransformComponent* transform = new TransformComponent(); // all entities have a transform
     // TODO: if i store parentId as a public var, and then have a seperate header which only has certain capabilities
     // I can probably make that header just not have vars like parentId, and instead have parent

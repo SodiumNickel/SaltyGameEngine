@@ -5,13 +5,13 @@
       "components": {
         "rigidbody": {
           "initVelocity": [
-            0.0,
-            0.0
+            0.574999988079071,
+            1.401298464324817e-45
           ]
         },
         "sprite": {
-          "filepath": "StageDemo/shop.png",
-          "zindex": 2
+          "filepath": "StageDemo/player.png",
+          "zindex": 1
         }
       },
       "name": "Player",
@@ -23,7 +23,7 @@
         ],
         "rotation": 0.0,
         "scale": [
-          4.0,
+          -4.0,
           4.0
         ]
       }
