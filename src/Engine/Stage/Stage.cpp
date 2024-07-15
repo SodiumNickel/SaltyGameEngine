@@ -87,7 +87,7 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
         json jChildren = jEntity["children-ids"];
         if(!jChildren.empty()) entity.childrenIds = jChildren.get<std::vector<int>>();
         // Add entity to registry tree 
-        entityTree[id] = std::make_unique<Entity>(entity);
+        entityTree[id] = std::make_unique<Entity>(entity); // TODO: this should not be happening here lmao
 
         // Add transform to entity (again, all entities have a transform)
         json jTransform = jEntity["transform"];

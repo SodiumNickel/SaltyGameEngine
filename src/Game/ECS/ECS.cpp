@@ -1,6 +1,7 @@
 #include "Game/ECS/ECS.h"
 
 #include <algorithm>
+#include <deque>
 #include <stack>
 
 #include "Engine/Debug/SaltyDebug.h" // TODO: this needs to be removed in actual game build, could be done with def
@@ -74,6 +75,22 @@ Entity Registry::CreateEntity()
         freeIds.pop_front();
     }
 
+    Entity entity(entityId); // TODO: this is an ugly initialization, lets reformat
+    entity.registry = this;
+    entitiesToBeAdded.insert(entity);
+
+    return entity;
+}
+Entity Registry::CreateEntity(int entityId) // TODO: could potentially define out in game build
+{
+    // NOTE: CreateEntity(int entityId) is only called by engine, not in game build
+    // We will keep freeIds as a deque despite having to iterate through it here 
+    // Choosing to prioritize game efficiency over engine efficiency
+    auto it = std::find(freeIds.begin(), freeIds.end(), entityId);
+    // Should only be called by EntityExists edit currently, only occuring if we are re-adding a deleted entity
+    assert(it != freeIds.end()); // TODO: need to decide whether or not to keep assertions, probably should just keep them
+    
+    freeIds.erase(it);
     Entity entity(entityId); // TODO: this is an ugly initialization, lets reformat
     entity.registry = this;
     entitiesToBeAdded.insert(entity);

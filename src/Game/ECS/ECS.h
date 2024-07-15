@@ -177,7 +177,7 @@ private:
     std::set<int> entitiesToBeRemoved;
 
     // Free entity ids from destroyed entities
-    std::deque<int> freeIds;
+    std::deque<int> freeIds; // TODO: not sure why this is a deque rather than a stack...?
 
 public:
     Registry() { /*Logger::Log("Registry constructor called");*/ }
@@ -187,6 +187,7 @@ public:
 
     // Entity management
     Entity CreateEntity();
+    Entity CreateEntity(int entityId);
     void DestroyEntity(Entity entity);
     void DestroyEntity(int entityId);
     std::vector<std::unique_ptr<Entity>> entityTree; // TODO: maybe this should just be the entities themselves???

@@ -67,6 +67,9 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
 void EntityExistsEdit::Apply(bool undo){    
     // add = true -> undo() does Remove Entity, so addEntity = undo xor add (see truth table in HasComponentEdit::Apply())
     if(undo != add){ // Add entity
+        // Needs to add entity at same entityId as before, otherwise other features will break
+        // Pre: registry->entityTree[entityId] = nullptr
+        Entity entity = registry->CreateEntity(entityId);
 
     }
     else{ // Remove entity
