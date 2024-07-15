@@ -4,6 +4,8 @@
 #include <string>
 #include <variant>
 
+#include "Engine/EngineData.h"
+
 #include "Game/ECS/ECS.h"
 
 
@@ -110,6 +112,7 @@ public:
 class EntityExistsEdit : public IEdit {
 private:
     std::shared_ptr<Registry> registry;
+    std::shared_ptr<EngineData> engineData;
 
     int entityId;
     int parentId;
@@ -124,7 +127,7 @@ private:
     std::vector<std::unique_ptr<EntityExistsEdit>> childrenEdits;
 public:
     // Defined in EntityExistsEdit.cpp
-    EntityExistsEdit(std::shared_ptr<Registry> registry, int entityId, int parentId, int pos, bool add);
+    EntityExistsEdit(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, int entityId, int parentId, int pos, bool add);
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;

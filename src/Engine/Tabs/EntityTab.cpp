@@ -269,7 +269,7 @@ void EntityTab::RClickMenu(int id){
             // Get value for undo
             // Add entity always places at end of ids
             int pos = id != -1 ? registry->entityTree[id]->childrenIds.size() : registry->rootIds.size();
-            editHistory->Do(new EntityExistsEdit(registry, childId, id, pos, true));
+            editHistory->Do(new EntityExistsEdit(registry, engineData, childId, id, pos, true));
         }
         // TODO: keep this at the bottom
         if(id != -1){
@@ -298,7 +298,7 @@ void EntityTab::RClickMenu(int id){
                 // I: pcIds[0..pos) does not contain id
                 while(pos < pcIds.size() && pcIds[pos] != id) pos++;
                 // Pre ^ I ^ G -> pcIds[pos] = id 
-                editHistory->Do(new EntityExistsEdit(registry, id, parentId, pos, false));
+                editHistory->Do(new EntityExistsEdit(registry, engineData, id, parentId, pos, false));
                 
                 // NOTE: This needs to happen linearly (i.e. editHistory fully finishes before registry destroys entity)
                 // All children/lineage is destroyed by registry

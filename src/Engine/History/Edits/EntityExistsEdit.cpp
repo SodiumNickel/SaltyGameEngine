@@ -2,12 +2,15 @@
 
 #include <fstream>
 #include <iostream>
+#include <stack>
 #include <variant>
 #include <vector>
 
 #include <glm.hpp>
 #include <json.hpp>
 using json = nlohmann::json;
+
+#include "Engine/EngineData.h"
 
 #include "Game/ECS/ECS.h"
 #include "Game/Components/SpriteComponent.h"
@@ -18,8 +21,9 @@ using json = nlohmann::json;
 /* -----ENTITY EXISTS EDIT------------------------------- *
  *   When the user adds or removes an entity              *
  * ------------------------------------------------------ */
-EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, int entityId, int parentId, int pos, bool add){
+EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, int entityId, int parentId, int pos, bool add){
     this->registry = registry;
+    this->engineData = engineData;
     this->entityId = entityId;
     this->parentId = parentId;
     this->pos = pos;
@@ -47,7 +51,7 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, int entit
         std::vector<int>& childrenIds = entity.childrenIds;
         int i = 0;
         for (int &id : childrenIds){
-            childrenEdits.push_back(std::make_unique<EntityExistsEdit>(registry, id, entityId, i, add));
+            childrenEdits.push_back(std::make_unique<EntityExistsEdit>(registry, engineData, id, entityId, i, add));
             i++;
         }
     }
@@ -61,8 +65,28 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, int entit
 }
 
 void EntityExistsEdit::Apply(bool undo){    
-    
+    // add = true -> undo() does Remove Entity, so addEntity = undo xor add (see truth table in HasComponentEdit::Apply())
+    if(undo != add){ // Add entity
 
+    }
+    else{ // Remove entity
+        // If selected entity (or any of its parents) are removed, clear selection
+        std::stack<int> childrenIds; // TODO: maybe could find better name for this like lineage
+        childrenIds.push(entityId);
+        while(engineData->selectedEntity != -1 && !childrenIds.empty()){
+            int cId = childrenIds.top(); 
+            childrenIds.pop();
+            if(cId == engineData->selectedEntity){
+                engineData->selectedEntity = -1;
+            }
+            else if(registry->entityTree[cId]->childrenIds.size() > 0){
+                for(int ccId : registry->entityTree[cId]->childrenIds) childrenIds.push(ccId);
+            }  
+        }
+
+        // All children/lineage is destroyed by registry
+        registry->DestroyEntity(entityId); 
+    }
     // // Remove child from removeId
     // if(removeId == -1){
     //     std::vector<int>& rChildren = registry->rootIds;
