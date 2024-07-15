@@ -173,9 +173,8 @@ void Registry::Update()
         freeIds.push_back(entityId);
 
         // Remove from entityTree
-        // NOTE: this has to preserve the empty space
+        // NOTE: this has to preserve the empty space, i.e. entityTree cannot be shrunk mid scene 
         entityTree[entityId] = nullptr; 
-        Debug::Log("deleted");
     }
     entitiesToBeRemoved.clear();
 }

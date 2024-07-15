@@ -25,26 +25,38 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, int entit
     this->pos = pos;
     this->add = add;
 
-    Entity entity = *registry->entityTree[entityId].get();
+    // TODO: i can figure out which side to place the ComponentValue below, well actually has to be a componentvalue anyways so... maybe i should make it a ptr?
 
-    // Transform is on every entity, so need to do ComponentValueEdits instead
-    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, ComponentValue(entity.transform->position.x), ComponentValue(entity.transform->position.x)));
-    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, ComponentValue(entity.transform->position.y), ComponentValue(entity.transform->position.y)));
-    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(entity.transform->scale.x), ComponentValue(entity.transform->scale.x))); // TODO: comp val def shouldnt need to be in both places...
-    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, ComponentValue(entity.transform->scale.y), ComponentValue(entity.transform->scale.y)));
-    transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, entityId, ComponentValue(entity.transform->rotation), ComponentValue(entity.transform->rotation)));
+    // If we are removing, there is a lot of work to do
+    if(!add){
+        Entity entity = *registry->entityTree[entityId].get();
 
-    // Check for the other components
-    if(entity.HasComponent<SpriteComponent>()){}
-    if(entity.HasComponent<RigidbodyComponent>()) components.push_back(std::make_unique<HasComponentEdit>(RIGIDBODY, registry, entityId, true, std::vector<ComponentValue>()));
-    if(entity.HasComponent<BoxColliderComponent>()){}
+        // Transform is on every entity, so need to do ComponentValueEdits instead
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, ComponentValue(entity.transform->position.x), ComponentValue(entity.transform->position.x)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, ComponentValue(entity.transform->position.y), ComponentValue(entity.transform->position.y)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(entity.transform->scale.x), ComponentValue(entity.transform->scale.x))); // TODO: comp val def shouldnt need to be in both places... okay but it would have to be different for add = true./false
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, ComponentValue(entity.transform->scale.y), ComponentValue(entity.transform->scale.y)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, entityId, ComponentValue(entity.transform->rotation), ComponentValue(entity.transform->rotation)));
 
-    // Create edits for all children
-    std::vector<int>& childrenIds = entity.childrenIds;
-    int i = 0;
-    for (int &id : childrenIds){
-        childrenEdits.push_back(std::make_unique<EntityExistsEdit>(registry, id, entityId, i, add));
-        i++;
+        // Check for the other components
+        if(entity.HasComponent<SpriteComponent>()){}
+        if(entity.HasComponent<RigidbodyComponent>()){} // components.push_back(std::make_unique<HasComponentEdit>(RIGIDBODY, registry, entityId, true, std::vector<ComponentValue>()));
+        if(entity.HasComponent<BoxColliderComponent>()){}
+
+        // Create edits for all children
+        std::vector<int>& childrenIds = entity.childrenIds;
+        int i = 0;
+        for (int &id : childrenIds){
+            childrenEdits.push_back(std::make_unique<EntityExistsEdit>(registry, id, entityId, i, add));
+            i++;
+        }
+    }
+    else { // add = true, only default transform, entity has no children
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
     }
 }
 
