@@ -65,9 +65,7 @@ void Stage::LoadScene(int sceneIndex)
 }
 
 void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
-    auto& entityTree = registry->entityTree;
-    entityTree.clear(); // calls destructors of unique_ptr to deallocate
-    entityTree.resize(size);
+    registry->entityTree.clear(); // calls destructors of unique_ptr to deallocate
     auto& rootIds = registry->rootIds;
     rootIds.clear();
     // We store rootIds in json file now (also represented by parent: -1 in entities)
@@ -77,7 +75,7 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
 
     for(int id = 0; id < size; id++){
         json jEntity = jEntities[id];
-        Entity entity = registry->CreateEntity();
+        Entity& entity = registry->CreateEntity();
         assert(entity.GetId() == id); // TODO: this should be commented out eventually, pretty sure it is always true
 
         // Assign name and parentId
@@ -86,8 +84,6 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
         // Fill childrenIds
         json jChildren = jEntity["children-ids"];
         if(!jChildren.empty()) entity.childrenIds = jChildren.get<std::vector<int>>();
-        // Add entity to registry tree 
-        entityTree[id] = std::make_unique<Entity>(entity); // TODO: this should not be happening here lmao
 
         // Add transform to entity (again, all entities have a transform)
         json jTransform = jEntity["transform"];

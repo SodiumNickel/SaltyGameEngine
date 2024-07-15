@@ -22,13 +22,13 @@ void Entity::Destroy()
     registry->DestroyEntity(*this);
 }
 
-void System::AddEntityToSystem(Entity entity)
+void System::AddEntityToSystem(Entity entity) // TODO: should probably have this be a pointer now?
 {
     entities.push_back(entity);
 }
 
 // Removes first elem of entities with same Id as entity
-void System::RemoveEntityFromSystem(Entity entity)
+void System::RemoveEntityFromSystem(Entity entity) // TODO: this should be done by id i think
 {
     //TODO figure out better looking implementation
     /*
@@ -55,7 +55,7 @@ const Signature& System::GetComponentSignature() const
     return componentSignature;
 }
 
-Entity Registry::CreateEntity()
+Entity& Registry::CreateEntity()
 {
     int entityId;
 
@@ -63,9 +63,11 @@ Entity Registry::CreateEntity()
     { 
         // No free ids, expand entity ids
         entityId = numEntities++;
+        // Registry Invariant: entityComponentSignatures.size() = entityTree.size();
         if(entityId >= entityComponentSignatures.size())
         {
             entityComponentSignatures.resize(entityId + 1);
+            entityTree.resize(entityId + 1);
         }
     }
     else
@@ -75,13 +77,13 @@ Entity Registry::CreateEntity()
         freeIds.pop_front();
     }
 
-    Entity entity(entityId); // TODO: this is an ugly initialization, lets reformat
-    entity.registry = this;
-    entitiesToBeAdded.insert(entity);
+    entityTree[entityId] = std::make_unique<Entity>(entityId);
+    entityTree[entityId]->registry = this;
+    entitiesToBeAdded.insert(*entityTree[entityId].get()); // TODO: i am not a fan of this still
 
-    return entity;
+    return *entityTree[entityId].get();
 }
-Entity Registry::CreateEntity(int entityId) // TODO: could potentially define out in game build
+Entity& Registry::CreateEntity(int entityId) // TODO: could potentially define out in game build
 {
     // NOTE: CreateEntity(int entityId) is only called by engine, not in game build
     // We will keep freeIds as a deque despite having to iterate through it here 
@@ -91,11 +93,11 @@ Entity Registry::CreateEntity(int entityId) // TODO: could potentially define ou
     assert(it != freeIds.end()); // TODO: need to decide whether or not to keep assertions, probably should just keep them
     
     freeIds.erase(it);
-    Entity entity(entityId); // TODO: this is an ugly initialization, lets reformat
-    entity.registry = this;
-    entitiesToBeAdded.insert(entity);
+    entityTree[entityId] = std::make_unique<Entity>(entityId);
+    entityTree[entityId]->registry = this;
+    entitiesToBeAdded.insert(*entityTree[entityId].get()); // TODO: i am not a fan of this still
 
-    return entity;
+    return *entityTree[entityId].get();
 }
 
 void Registry::DestroyEntity(Entity entity)

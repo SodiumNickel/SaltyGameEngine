@@ -202,7 +202,7 @@ void Engine::UpdateGUI()
 
     // TODO: dont allow hide tab bar, also stop highlighting it when it is clicked on
     // Draw all tabs that are open
-    for (ITab* tab : openTabs){
+    for (ITab* tab : openTabs){ // TODO: im pretty sure i can keep these as unique ptrs if i iter with a while loop
         tab->Begin();
     }
 

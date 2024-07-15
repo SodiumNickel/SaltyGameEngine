@@ -58,8 +58,8 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
     else { // add = true, only default transform, entity has no children
         transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
         transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(1.0f), ComponentValue(1.0f)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, ComponentValue(1.0f), ComponentValue(1.0f)));
         transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
     }
 }

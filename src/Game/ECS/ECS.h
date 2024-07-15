@@ -186,11 +186,12 @@ public:
     void Update();
 
     // Entity management
-    Entity CreateEntity();
-    Entity CreateEntity(int entityId);
+    Entity& CreateEntity();
+    Entity& CreateEntity(int entityId);
     void DestroyEntity(Entity entity);
     void DestroyEntity(int entityId);
-    std::vector<std::unique_ptr<Entity>> entityTree; // TODO: maybe this should just be the entities themselves???
+
+    std::vector<std::unique_ptr<Entity>> entityTree;
     std::vector<int> rootIds; // All entities without parents (at the root of their respective tree)
 
     // Component management
@@ -205,6 +206,7 @@ public:
     template <typename TSystem> bool HasSystem() const;
     template <typename TSystem> TSystem& GetSystem() const;
     
+    // TODO: not sure why these two are public
     void AddEntityToSystems(Entity entity);
     void RemoveEntityFromSystems(Entity entity);
 };
