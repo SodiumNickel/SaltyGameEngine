@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <memory>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -111,11 +112,11 @@ int Engine::Initialize()
     menu = std::make_unique<Menu>(registry, engineData, editHistory);
 
     // Open initial tabs
-    openTabs.push_back(new EntityTab(engineData, editHistory, registry)); // TODO: this should be better pointers(?) tabs i mean
-    openTabs.push_back(new ComponentTab(engineData, editHistory, registry, assetManager)); // TODO: unify order of this
-    openTabs.push_back(new ScriptTab(registry));
-    openTabs.push_back(new AssetTab(registry));
-    openTabs.push_back(new LogTab(registry));
+    openTabs.push_back(std::make_unique<EntityTab>(engineData, editHistory, registry));
+    openTabs.push_back(std::make_unique<ComponentTab>(engineData, editHistory, registry, assetManager)); // TODO: unify order of this
+    openTabs.push_back(std::make_unique<ScriptTab>(registry));
+    openTabs.push_back(std::make_unique<AssetTab>(registry));
+    openTabs.push_back(std::make_unique<LogTab>(registry));
 
     isRunning = true;
     return 0;
@@ -202,8 +203,10 @@ void Engine::UpdateGUI()
 
     // TODO: dont allow hide tab bar, also stop highlighting it when it is clicked on
     // Draw all tabs that are open
-    for (ITab* tab : openTabs){ // TODO: im pretty sure i can keep these as unique ptrs if i iter with a while loop
-        tab->Begin();
+    int i = 0;
+    while(i < openTabs.size()){
+        openTabs[i]->Begin();
+        i++;
     }
 
     ImGui::ShowDemoWindow();
@@ -234,12 +237,8 @@ void Engine::Render()
 // Clean up
 void Engine::Destroy()
 {
-    auto it = openTabs.begin();
-    while(it != openTabs.end()){
-        delete *it;
-        // no need to avoid dangling ptr, as we are erasing from vector 
-        it = openTabs.erase(it);
-    }
+    // unique_ptr so will automatically delete 
+    openTabs.clear(); // TODO: might not even need this tbh
 
     ImGui_ImplSDLRenderer2_Shutdown();
     ImGui_ImplSDL2_Shutdown();

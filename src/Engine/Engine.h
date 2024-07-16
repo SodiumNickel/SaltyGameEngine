@@ -1,6 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
+#include <memory>
 #include <vector>
 
 #include <SDL.h>
@@ -34,7 +35,7 @@ class Engine {
         std::shared_ptr<EditHistory> editHistory;
         std::shared_ptr<Stage> stage;
         std::unique_ptr<Menu> menu;
-        std::vector<ITab*> openTabs;
+        std::vector<std::unique_ptr<ITab>> openTabs;
     public:
         Engine();
         ~Engine();
