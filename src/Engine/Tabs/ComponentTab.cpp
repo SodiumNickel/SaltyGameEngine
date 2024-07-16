@@ -20,52 +20,54 @@ void ComponentTab::Transform(){
     // All entities have a transform component
     if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
     {
+        Entity& entity = *registry->entityTree[selectedEntity].get();
         // TODO: Also create system that updates global transforms? i would prefer to have it whenever transform is changed but not sure if that would work
-        auto transform = entity.transform;
+        TransformComponent& transform = entity.GetComponent<TransformComponent>();
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.45f);
 
         ImGui::Text("Position");
         ImGui::Text("x"); ImGui::SameLine();
-        float prev = transform->position.x;
-        ImGui::DragFloat("##posx", &transform->position.x, 1.0f);
+        float prev = transform.position.x;
+        ImGui::DragFloat("##posx", &transform.position.x, 1.0f);
         if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform->position.x))); } 
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.position.x))); } 
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
-        prev = transform->position.y;
-        ImGui::DragFloat("##posy", &transform->position.y, 1.0f);
+        prev = transform.position.y;
+        ImGui::DragFloat("##posy", &transform.position.y, 1.0f);
         if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform->position.y))); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.position.y))); }
 
         ImGui::Text("Scale");
         ImGui::Text("x"); ImGui::SameLine();
-        prev = transform->scale.x;
-        ImGui::DragFloat("##scalex", &transform->scale.x, 0.005f); 
+        prev = transform.scale.x;
+        ImGui::DragFloat("##scalex", &transform.scale.x, 0.005f); 
         if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform->scale.x))); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.scale.x))); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
-        prev = transform->scale.y;
-        ImGui::DragFloat("##scaley", &transform->scale.y, 0.005f);
+        prev = transform.scale.y;
+        ImGui::DragFloat("##scaley", &transform.scale.y, 0.005f);
         if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform->scale.y))); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.scale.y))); }
 
         ImGui::Text("Rotation");
         ImGui::Text("θ"); ImGui::SameLine(); // TODO: theta is not displaying properly in this font
-        prev = transform->rotation;
-        ImGui::DragFloat("##rot", &transform->rotation, 0.25f);
+        prev = transform.rotation;
+        ImGui::DragFloat("##rot", &transform.rotation, 0.25f);
         if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, ROTATION, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform->rotation))); }
+        { editHistory->Do(new ComponentValueEdit(TRANSFORM, ROTATION, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.rotation))); }
 
         ImGui::SeparatorText("");
     }
 }
 void ComponentTab::Sprite(){
+    Entity& entity = *registry->entityTree[selectedEntity].get();
     if(entity.HasComponent<SpriteComponent>()){
         auto& sprite = entity.GetComponent<SpriteComponent>();
         if (ImGui::CollapsingHeader("Sprite", &notRemoved, ImGuiTreeNodeFlags_DefaultOpen))
@@ -114,6 +116,7 @@ void ComponentTab::Sprite(){
     }
 }
 void ComponentTab::Rigidbody(){
+    Entity& entity = *registry->entityTree[selectedEntity].get();
     if(entity.HasComponent<RigidbodyComponent>()){
         auto& rigidbody = entity.GetComponent<RigidbodyComponent>();
         if (ImGui::CollapsingHeader("Rigidbody", &notRemoved, ImGuiTreeNodeFlags_DefaultOpen))
@@ -153,6 +156,7 @@ void ComponentTab::Rigidbody(){
     }
 }
 void ComponentTab::BoxCollider(){
+    Entity& entity = *registry->entityTree[selectedEntity].get();
     if(entity.HasComponent<BoxColliderComponent>()){
         // will need some extra work to split up all the boxes here
         if (ImGui::CollapsingHeader("Box Collider", ImGuiTreeNodeFlags_DefaultOpen))
@@ -172,10 +176,10 @@ void ComponentTab::Begin(){
     selectedEntity = engineData->selectedEntity;
     // If an entity is selected
     if(selectedEntity != -1){
-        entity = *registry->entityTree[selectedEntity].get();
+        Entity& entity = *registry->entityTree[selectedEntity].get();
 
         // Iterate through all possible components, displaying if HasComponent()
-        Transform(); // TODO: i might move the hasComponent check out here
+        Transform();
         Sprite();
         Rigidbody();
         BoxCollider();

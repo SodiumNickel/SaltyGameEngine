@@ -13,6 +13,7 @@ using json = nlohmann::json;
 #include "Engine/EngineData.h"
 
 #include "Game/ECS/ECS.h"
+#include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
 #include "Game/Components/BoxColliderComponent.h"
@@ -33,14 +34,15 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
 
     // If we are removing, there is a lot of work to do
     if(!add){
-        Entity entity = *registry->entityTree[entityId].get();
+        Entity& entity = *registry->entityTree[entityId].get();
 
         // Transform is on every entity, so need to do ComponentValueEdits instead
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, ComponentValue(entity.transform->position.x), ComponentValue(entity.transform->position.x)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, ComponentValue(entity.transform->position.y), ComponentValue(entity.transform->position.y)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(entity.transform->scale.x), ComponentValue(entity.transform->scale.x))); // TODO: comp val def shouldnt need to be in both places... okay but it would have to be different for add = true./false
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, ComponentValue(entity.transform->scale.y), ComponentValue(entity.transform->scale.y)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, entityId, ComponentValue(entity.transform->rotation), ComponentValue(entity.transform->rotation)));
+        TransformComponent transform = entity.GetComponent<TransformComponent>();
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, ComponentValue(transform.position.x), ComponentValue(transform.position.x)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, ComponentValue(transform.position.y), ComponentValue(transform.position.y)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(transform.scale.x), ComponentValue(transform.scale.x))); // TODO: comp val def shouldnt need to be in both places... okay but it would have to be different for add = true./false
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, ComponentValue(transform.scale.y), ComponentValue(transform.scale.y)));
+        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, entityId, ComponentValue(transform.rotation), ComponentValue(transform.rotation)));
 
         // Check for the other components
         if(entity.HasComponent<SpriteComponent>()){}

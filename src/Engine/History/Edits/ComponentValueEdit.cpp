@@ -23,7 +23,7 @@ void ComponentValueEdit::Apply(bool undo){
     Entity entity = *registry->entityTree[entityId].get();
     switch(compType) {
         case TRANSFORM: {
-            auto& transform = *entity.transform;
+            TransformComponent& transform = entity.GetComponent<TransformComponent>();
             switch(compVar){
                 case POSITION_X: transform.position.x = std::get<float>(val); break;
                 case POSITION_Y: transform.position.y = std::get<float>(val); break;

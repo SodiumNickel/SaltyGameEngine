@@ -87,10 +87,10 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
 
         // Add transform to entity (again, all entities have a transform)
         json jTransform = jEntity["transform"];
-        auto transform = entity.transform;
-        transform->position = JsonToVec2(jTransform["position"]);
-        transform->scale = JsonToVec2(jTransform["scale"]);
-        transform->rotation = jTransform["rotation"];
+        TransformComponent& transform = entity.GetComponent<TransformComponent>();
+        transform.position = JsonToVec2(jTransform["position"]);
+        transform.scale = JsonToVec2(jTransform["scale"]);
+        transform.rotation = jTransform["rotation"];
 
         // Add all components to entity
         json jComponents = jEntity["components"];

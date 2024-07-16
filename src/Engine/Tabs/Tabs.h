@@ -53,7 +53,7 @@ private:
     std::shared_ptr<Registry> registry;
     std::shared_ptr<AssetManager> assetManager;
 
-    Entity entity;
+    // Entity entity;
     int entityId;
 
     int selectedEntity;

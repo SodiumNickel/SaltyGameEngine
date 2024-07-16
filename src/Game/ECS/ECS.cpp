@@ -7,7 +7,7 @@
 #include "Engine/Debug/SaltyDebug.h" // TODO: this needs to be removed in actual game build, could be done with def
 // needs to be availible in scripting anyways so need a way to remove it 
 // maybe can #define something in Engine/.. and do #ifndef something
-
+#include "Game/Components/TransformComponent.h"
 
 // Static variable for component Ids
 int IComponent::nextId = 0;
@@ -78,10 +78,13 @@ Entity& Registry::CreateEntity()
     }
 
     entityTree[entityId] = std::make_unique<Entity>(entityId);
-    entityTree[entityId]->registry = this;
-    entitiesToBeAdded.insert(*entityTree[entityId].get()); // TODO: i am not a fan of this still
+    // All entities have a transform
+    Entity& entity = *entityTree[entityId].get();
+    entity.registry = this;
+    entity.AddComponent<TransformComponent>();
+    entitiesToBeAdded.insert(entity); // TODO: i am not a fan of this still
 
-    return *entityTree[entityId].get();
+    return entity;
 }
 Entity& Registry::CreateEntity(int entityId) // TODO: could potentially define out in game build
 {
@@ -94,10 +97,13 @@ Entity& Registry::CreateEntity(int entityId) // TODO: could potentially define o
     
     freeIds.erase(it);
     entityTree[entityId] = std::make_unique<Entity>(entityId);
-    entityTree[entityId]->registry = this;
-    entitiesToBeAdded.insert(*entityTree[entityId].get()); // TODO: i am not a fan of this still
+    // All entities have a transform
+    Entity& entity = *entityTree[entityId].get();
+    entity.registry = this;
+    entity.AddComponent<TransformComponent>();
+    entitiesToBeAdded.insert(entity); // TODO: i am not a fan of this still
 
-    return *entityTree[entityId].get();
+    return entity;
 }
 
 void Registry::DestroyEntity(Entity entity)

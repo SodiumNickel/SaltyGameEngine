@@ -9,6 +9,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include<iostream> // TODO: remove later
+
 #include "Game/Components/TransformComponent.h"
 
 
@@ -43,6 +45,7 @@ public:
  *   Each entity has unique Id, just a list of components        *
  * ------------------------------------------------------------- */
 
+// TODO: entity could probably be a struct
 class Entity {
 private:
     int id;
@@ -70,7 +73,7 @@ public:
     template <typename TComponent> bool HasComponent() const;
     template <typename TComponent> TComponent& GetComponent() const;
 
-    TransformComponent* transform = new TransformComponent(); // all entities have a transform
+    // TODO: maybe disallow removecomponent for TransformComponent?
     // TODO: if i store parentId as a public var, and then have a seperate header which only has certain capabilities
     // I can probably make that header just not have vars like parentId, and instead have parent
 
