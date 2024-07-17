@@ -38,6 +38,7 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
 
         // Transform is on every entity, so need to do ComponentValueEdits instead
         TransformComponent transform = entity.GetComponent<TransformComponent>();
+        // TODO: this does not need to be a vector, can just be a const sized array
         transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, ComponentValue(transform.position.x), ComponentValue(transform.position.x)));
         transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, ComponentValue(transform.position.y), ComponentValue(transform.position.y)));
         transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(transform.scale.x), ComponentValue(transform.scale.x))); // TODO: comp val def shouldnt need to be in both places... okay but it would have to be different for add = true./false
@@ -92,30 +93,7 @@ void EntityExistsEdit::Apply(bool undo){
         // All children/lineage is destroyed by registry
         registry->DestroyEntity(entityId); 
     }
-    // // Remove child from removeId
-    // if(removeId == -1){
-    //     std::vector<int>& rChildren = registry->rootIds;
-    //     rChildren.erase(std::remove(rChildren.begin(), rChildren.end(), entityId), rChildren.end()); // Erase-remove idiom
-    // }
-    // else{
-    //     std::vector<int>& pChildren = registry->entityTree[removeId]->childrenIds;
-    //     pChildren.erase(std::remove(pChildren.begin(), pChildren.end(), entityId), pChildren.end()); // Erase-remove idiom
-    // }
-
-    // // Reparent child to addId at targetPos
-    // if(addId == -1){
-    //     auto& parentCs = registry->rootIds;
-    //     if(targetPos >= parentCs.size()) parentCs.push_back(entityId);
-    //     else parentCs.insert(parentCs.begin() + targetPos, entityId); 
-    // }
-    // else{
-    //     auto& parentCs = registry->entityTree[addId]->childrenIds;
-    //     if(targetPos >= parentCs.size()) parentCs.push_back(entityId);
-    //     else parentCs.insert(parentCs.begin() + targetPos, entityId); 
-    // }
-    // registry->entityTree[entityId]->parentId = addId;  
-
-
+    
     ApplyJson(undo);
 }
 

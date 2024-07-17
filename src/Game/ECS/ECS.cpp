@@ -96,6 +96,7 @@ Entity& Registry::CreateEntity(int entityId) // TODO: could potentially define o
     assert(it != freeIds.end()); // TODO: need to decide whether or not to keep assertions, probably should just keep them
     
     freeIds.erase(it);
+    // assert(entityTree[entityId] == nullptr); // TODO: make sure this assertion is correct (might be a common break)
     entityTree[entityId] = std::make_unique<Entity>(entityId);
     // All entities have a transform
     Entity& entity = *entityTree[entityId].get();
@@ -169,8 +170,7 @@ void Registry::Update()
     // Add entites from entitiesToBeAdded to registry
     for(auto entity : entitiesToBeAdded)
     { 
-        AddEntityToSystems(entity); 
-        // TODO: want to add to entity tree here
+        AddEntityToSystems(entity); // TODO: not sure why this is here? could just move to create entity
     }
     entitiesToBeAdded.clear();
     
