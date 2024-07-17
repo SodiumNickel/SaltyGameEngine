@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <stack>
+#include <memory>
 #include <vector>
 
 #include <imgui.h>
@@ -184,7 +185,7 @@ void EntityTab::Begin(){
             registry->entityTree[payloadId]->parentId = -1;   
 
             // Add to undo stack
-            editHistory->Do(new ReparentEdit(registry, payloadId, parentId, prevPos, -1, curPos));
+            editHistory->Do(std::move(std::make_unique<ReparentEdit>(registry, payloadId, parentId, prevPos, -1, curPos)));
         }
         ImGui::EndDragDropTarget();
     }
@@ -237,7 +238,7 @@ void EntityTab::DDTarget(int id){
             forceOpen = id;
 
             // Add to undo stack
-            editHistory->Do(new ReparentEdit(registry, payloadId, parentId, prevPos, id, curPos));
+            editHistory->Do(std::move(std::make_unique<ReparentEdit>(registry, payloadId, parentId, prevPos, id, curPos)));
         }
         ImGui::EndDragDropTarget();
     }
@@ -268,7 +269,7 @@ void EntityTab::RClickMenu(int id){
             // Get value for undo
             // Add entity always places at end of ids
             int pos = id != -1 ? registry->entityTree[id]->childrenIds.size() : registry->rootIds.size();
-            editHistory->Do(new EntityExistsEdit(registry, engineData, childId, id, pos, true));
+            editHistory->Do(std::move(std::make_unique<EntityExistsEdit>(registry, engineData, childId, id, pos, true)));
         }
         // TODO: keep this at the bottom
         if(id != -1){
@@ -297,7 +298,7 @@ void EntityTab::RClickMenu(int id){
                 // I: pcIds[0..pos) does not contain id
                 while(pos < pcIds.size() && pcIds[pos] != id) pos++;
                 // Pre ^ I ^ G -> pcIds[pos] = id 
-                editHistory->Do(new EntityExistsEdit(registry, engineData, id, parentId, pos, false));
+                editHistory->Do(std::move(std::make_unique<EntityExistsEdit>(registry, engineData, id, parentId, pos, false)));
                 
                 // NOTE: This needs to happen linearly (i.e. editHistory fully finishes before registry destroys entity)
                 // All children/lineage is destroyed by registry

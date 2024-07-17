@@ -11,20 +11,20 @@ using json = nlohmann::json;
 #include "Engine/History/Edit.h"
 
 
-void EditHistory::Do(IEdit* action){
+void EditHistory::Do(std::unique_ptr<IEdit> action){
     // Check that edit actually changed something
     if(action->ValidEdit()){
         Debug::Log("DO " + action->ToString(false), -1);
         action->ApplyJson(false);
         unsaved = true;
 
-        undoStack.push(action);
+        undoStack.push(std::move(action));
         canUndo = true;
 
         canRedo = false;
         while(!redoStack.empty()) {
-            delete redoStack.top();
-            // No need to avoid dangling ptr, as we are popping from stack 
+            // Is now a unique_ptr, no need to manually delete
+            // delete redoStack.top();
             redoStack.pop();
         }
     }
@@ -36,7 +36,7 @@ void EditHistory::Undo(){
     undoStack.top()->Apply(true);
     unsaved = true; // NOTE: edit a saved file then undo it, the file displays as unsaved. This seems reasonable (and was easier to implement...) 
 
-    redoStack.push(undoStack.top());
+    redoStack.push(std::move(undoStack.top()));
     canRedo = true;
 
     undoStack.pop(); // TODO: might need to deallocate this, idts we are pushing into redo stack anyways...
@@ -50,7 +50,7 @@ void EditHistory::Redo(){
     redoStack.top()->Apply(false);
     unsaved = true;
 
-    undoStack.push(redoStack.top());
+    undoStack.push(std::move(redoStack.top()));
     canUndo = true;
 
     redoStack.pop();  // TODO: might need to deallocate this, idts we are pushing into redo stack anyways...

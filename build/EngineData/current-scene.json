@@ -8,6 +8,10 @@
             0.574999988079071,
             1.401298464324817e-45
           ]
+        },
+        "sprite": {
+          "filepath": "StageDemo/player.png",
+          "zindex": 1
         }
       },
       "name": "Player",
@@ -177,28 +181,22 @@
     {
       "children-ids": [],
       "components": {
-        "rigidbody": {
-          "initVelocity": [
-            1.7799999713897705,
-            -2.4149999618530273
-          ]
-        },
         "sprite": {
           "filepath": "StageDemo/background.png",
-          "zindex": 1
+          "zindex": 0
         }
       },
       "name": "Background",
       "parent-id": -1,
       "transform": {
         "position": [
-          -237.0,
+          -15.0,
           0.0
         ],
         "rotation": 0.0,
         "scale": [
-          5.480000019073486,
-          2.140000104904175
+          4.15,
+          4.4
         ]
       }
     }

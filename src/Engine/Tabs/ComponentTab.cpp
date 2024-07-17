@@ -31,14 +31,14 @@ void ComponentTab::Transform(){
         ImGui::DragFloat("##posx", &transform.position.x, 1.0f);
         if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.position.x))); } 
+        { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.position.x)))); } 
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         prev = transform.position.y;
         ImGui::DragFloat("##posy", &transform.position.y, 1.0f);
         if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, POSITION_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.position.y))); }
+        { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.position.y)))); }
 
         ImGui::Text("Scale");
         ImGui::Text("x"); ImGui::SameLine();
@@ -46,14 +46,14 @@ void ComponentTab::Transform(){
         ImGui::DragFloat("##scalex", &transform.scale.x, 0.005f); 
         if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.scale.x))); }
+        { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.scale.x)))); }
         ImGui::SameLine();
         ImGui::Text("y"); ImGui::SameLine();
         prev = transform.scale.y;
         ImGui::DragFloat("##scaley", &transform.scale.y, 0.005f);
         if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, SCALE_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.scale.y))); }
+        { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.scale.y)))); }
 
         ImGui::Text("Rotation");
         ImGui::Text("θ"); ImGui::SameLine(); // TODO: theta is not displaying properly in this font
@@ -61,7 +61,7 @@ void ComponentTab::Transform(){
         ImGui::DragFloat("##rot", &transform.rotation, 0.25f);
         if(ImGui::IsItemActivated()) prevf = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) 
-        { editHistory->Do(new ComponentValueEdit(TRANSFORM, ROTATION, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.rotation))); }
+        { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.rotation)))); }
 
         ImGui::SeparatorText("");
     }
@@ -81,7 +81,7 @@ void ComponentTab::Sprite(){
             ImGui::InputText("##filepath", &sprite.filepath);
             if(ImGui::IsItemActivated()) prevs = prev1;
             if(ImGui::IsItemDeactivatedAfterEdit()) 
-            { editHistory->Do(new ComponentValueEdit(SPRITE, FILEPATH, registry, selectedEntity, ComponentValue(prevs), ComponentValue(sprite.filepath))); }
+            { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(SPRITE, FILEPATH, registry, selectedEntity, ComponentValue(prevs), ComponentValue(sprite.filepath)))); }
             ImGui::EndGroup();
 
             // TODO: kind of want to make this image bigger, but this will do for now
@@ -96,7 +96,7 @@ void ComponentTab::Sprite(){
             ImGui::InputInt("##zindex", &sprite.zIndex); // kinda wanna call sorting layer, and then have z index seperately (as the finer setting)
             if(ImGui::IsItemActivated()) previ = prev2;
             if(ImGui::IsItemDeactivatedAfterEdit()) 
-            { editHistory->Do(new ComponentValueEdit(SPRITE, ZINDEX, registry, selectedEntity, ComponentValue(previ), ComponentValue(sprite.zIndex))); }
+            { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(SPRITE, ZINDEX, registry, selectedEntity, ComponentValue(previ), ComponentValue(sprite.zIndex)))); }
 
             ImGui::SeparatorText("");
         }
@@ -109,7 +109,7 @@ void ComponentTab::Sprite(){
             std::vector<ComponentValue> values;
             values.push_back(ComponentValue(sprite.filepath));
             values.push_back(ComponentValue(sprite.zIndex));
-            editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, false, values));
+            editHistory->Do(std::move(std::make_unique<HasComponentEdit>(SPRITE, registry, selectedEntity, false, values)));
 
             entity.RemoveComponent<SpriteComponent>();
         }
@@ -129,14 +129,14 @@ void ComponentTab::Rigidbody(){
             ImGui::DragFloat("##initx", &rigidbody.initVelocity.x, 0.005f); 
             if(ImGui::IsItemActivated()) prevf = prev;
             if(ImGui::IsItemDeactivatedAfterEdit()) 
-            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(rigidbody.initVelocity.x))); }
+            { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(RIGIDBODY, INITVEL_X, registry, selectedEntity, ComponentValue(prevf), ComponentValue(rigidbody.initVelocity.x)))); }
             ImGui::SameLine();
             ImGui::Text("y"); ImGui::SameLine();
             prev = rigidbody.initVelocity.y;
             ImGui::DragFloat("##inity", &rigidbody.initVelocity.y, 0.005f);
             if(ImGui::IsItemActivated()) prevf = prev;
             if(ImGui::IsItemDeactivatedAfterEdit()) 
-            { editHistory->Do(new ComponentValueEdit(RIGIDBODY, INITVEL_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(rigidbody.initVelocity.y))); }
+            { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(RIGIDBODY, INITVEL_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(rigidbody.initVelocity.y)))); }
 
             ImGui::SeparatorText("");
         }
@@ -149,7 +149,7 @@ void ComponentTab::Rigidbody(){
             std::vector<ComponentValue> values;
             values.push_back(ComponentValue(rigidbody.initVelocity.x));
             values.push_back(ComponentValue(rigidbody.initVelocity.y));
-            editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, false, values));
+            editHistory->Do(std::move(std::make_unique<HasComponentEdit>(RIGIDBODY, registry, selectedEntity, false, values)));
 
             entity.RemoveComponent<RigidbodyComponent>();
         }
@@ -200,7 +200,7 @@ void ComponentTab::Begin(){
                 entity.AddComponent<SpriteComponent>();
                 
                 // TODO: unify comments for this section
-                editHistory->Do(new HasComponentEdit(SPRITE, registry, selectedEntity, true, std::vector<ComponentValue>()));
+                editHistory->Do(std::move(std::make_unique<HasComponentEdit>(SPRITE, registry, selectedEntity, true, std::vector<ComponentValue>())));
 
                 addComponentOpen = false;
             }
@@ -209,7 +209,7 @@ void ComponentTab::Begin(){
 
                 // empty vector -> Redo with default values
                 // TODO: feel like this is a waste of space, do wish i could go back to using nullptr
-                editHistory->Do(new HasComponentEdit(RIGIDBODY, registry, selectedEntity, true, std::vector<ComponentValue>()));
+                editHistory->Do(std::move(std::make_unique<HasComponentEdit>(RIGIDBODY, registry, selectedEntity, true, std::vector<ComponentValue>())));
 
                 addComponentOpen = false;
             }
