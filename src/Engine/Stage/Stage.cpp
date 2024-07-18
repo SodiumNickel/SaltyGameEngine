@@ -75,7 +75,7 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
 
     for(int id = 0; id < size; id++){
         json jEntity = jEntities[id];
-        Entity& entity = registry->CreateEntity();
+        Entity& entity = registry->EngineCreateEntity();
         assert(entity.GetId() == id); // TODO: this should be commented out eventually, pretty sure it is always true
 
         // Assign name and parentId

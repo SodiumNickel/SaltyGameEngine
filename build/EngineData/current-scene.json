@@ -29,9 +29,7 @@
       }
     },
     {
-      "children-ids": [
-        5
-      ],
+      "children-ids": [],
       "components": {
         "sprite": {
           "filepath": "StageDemo/shop.png",
@@ -95,6 +93,8 @@
     },
     {
       "children-ids": [
+        5,
+        6,
         7
       ],
       "components": {},
@@ -121,7 +121,7 @@
         }
       },
       "name": "Rock 1",
-      "parent-id": 1,
+      "parent-id": 4,
       "transform": {
         "position": [
           1168.0,
@@ -143,7 +143,7 @@
         }
       },
       "name": "Rock 2",
-      "parent-id": -1,
+      "parent-id": 4,
       "transform": {
         "position": [
           298.0,
@@ -202,12 +202,11 @@
     }
   ],
   "root-ids": [
+    0,
     1,
     2,
     4,
-    8,
-    6,
-    0
+    8
   ],
   "size": 9
 }

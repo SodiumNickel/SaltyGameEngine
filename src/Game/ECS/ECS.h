@@ -12,6 +12,8 @@
 
 #include<iostream> // TODO: remove later
 
+#include "Engine/Debug/SaltyDebug.h"
+
 #include "Game/Components/TransformComponent.h"
 
 
@@ -85,8 +87,9 @@ private:
 
     void OnParentIdChanged(int prevParentId, int newParentId); // TODO: not sure i like this naming convention
 public:
-    Entity(): id(-1) {}; // default constructor, never used // TODO: add a debug error for this in logger
-    Entity(int id) : id(id) {}; // TODO: might want to initialize with values
+    Entity(): id(-1) { Debug::Log("ERROR: Entity default constructor called", -1); }; // default constructor, never used
+    Entity(int id) : id(id) {}; // parentId defaults to -1, assumes at root
+    Entity(int id, int parentId) : id(id) { if(parentId != -1) this->parentId.ManuallySet(parentId); }; 
     Entity(const Entity& entity) = default;
 
     int GetId() const;
@@ -223,8 +226,9 @@ public:
     void Update();
 
     // Entity management
-    Entity& CreateEntity();
-    Entity& CreateEntity(int entityId);
+    Entity& CreateEntity(int parentId = -1); // defaults to root child, always arbitrary id
+    // Only for engine use (does not add as child), DO NOT CALL IN SCRIPTS // TODO: dont want this to be a suggestion, dk how to do that
+    Entity& EngineCreateEntity(int entityId = -1); // defaults to arbitrary id
     void DestroyEntity(Entity entity);
     void DestroyEntity(int entityId);
 

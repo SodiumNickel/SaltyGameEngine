@@ -115,8 +115,10 @@ private:
     std::shared_ptr<EngineData> engineData;
 
     int entityId;
+    std::string name;
     int parentId;
     int pos;
+    bool root; // If the entity was at the root of the tree deleted
 
     bool add;
     // Needs to store vector of components, to potentially restore them after
@@ -127,7 +129,7 @@ private:
     std::vector<std::unique_ptr<EntityExistsEdit>> childrenEdits;
 public:
     // Defined in EntityExistsEdit.cpp
-    EntityExistsEdit(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, int entityId, int parentId, int pos, bool add);
+    EntityExistsEdit(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, int entityId, std::string name, int parentId, int pos, bool root, bool add);
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;

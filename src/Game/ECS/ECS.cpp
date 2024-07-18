@@ -76,7 +76,7 @@ const Signature& System::GetComponentSignature() const
     return componentSignature;
 }
 
-Entity& Registry::CreateEntity()
+Entity& Registry::CreateEntity(int parentId) // default = -1
 {
     int entityId;
 
@@ -105,22 +105,55 @@ Entity& Registry::CreateEntity()
     entity.AddComponent<TransformComponent>();
     entitiesToBeAdded.insert(entity); // Will be added to systems in Update()
 
+    // Add as child to parentId
+    bool validParent = -1 < parentId && parentId < entityTree.size() && entityTree[parentId];
+    if(parentId != -1 && !validParent) Debug::Log("Assigned Entity to invalid parent, defaulting to root", -1);
+    // Add to root if an invalid parent is entered
+    if(parentId == -1 || !validParent) rootIds.push_back(entityId);
+    else {
+        entity.parentId.ManuallySet(parentId);
+        entityTree[parentId]->childrenIds.push_back(entityId);
+    }
+
     return entity;
 }
-Entity& Registry::CreateEntity(int entityId) // TODO: could potentially define out in game build
+// NOTE: CreateEntity(int entityId) is only called by Engine, entityId = -1 -> place in arbitrary location
+Entity& Registry::EngineCreateEntity(int entityId) // default = -1 // TODO: could potentially define out in game build
 {
-    // NOTE: CreateEntity(int entityId) is only called by engine, not in game build
-    // We will keep freeIds as a deque despite having to iterate through it here 
-    // Choosing to prioritize game efficiency over engine efficiency
-    auto it = std::find(freeIds.begin(), freeIds.end(), entityId);
-    // Should only be called by EntityExists edit currently, only occuring if we are re-adding a deleted entity
-    assert(it != freeIds.end()); 
+    int id = entityId;
+    if(id == -1){ // Place at first open location
+        if(freeIds.empty())
+        { 
+            // No free ids, expand entity ids
+            id = numEntities++;
+            // Registry Invariant: entityComponentSignatures.size() = entityTree.size();
+            if(id >= entityComponentSignatures.size())
+            {
+                entityComponentSignatures.resize(id + 1);
+                entityTree.resize(id + 1);
+            }
+        }
+        else
+        {
+            // Free id availible
+            id = freeIds.front();
+            freeIds.pop_front();
+        }
+    }
+    else{ // Place at specific entityId
+        // We will keep freeIds as a deque despite having to iterate through it here 
+        // Choosing to prioritize game efficiency over engine efficiency
+        auto it = std::find(freeIds.begin(), freeIds.end(), entityId);
+        // Should only be called by EntityExists edit currently, only occuring if we are re-adding a deleted entity
+        assert(it != freeIds.end()); 
+        
+        freeIds.erase(it);
+    }
     
-    freeIds.erase(it);
     // assert(entityTree[entityId] == nullptr); // TODO: make sure this assertion is correct (might be a common break)
-    entityTree[entityId] = std::make_unique<Entity>(entityId);
+    entityTree[id] = std::make_unique<Entity>(id);
     // All entities have a transform
-    Entity& entity = *entityTree[entityId].get();
+    Entity& entity = *entityTree[id].get();
     entity.registry = this;
     entity.AddComponent<TransformComponent>();
     entitiesToBeAdded.insert(entity); // TODO: i am not a fan of this still

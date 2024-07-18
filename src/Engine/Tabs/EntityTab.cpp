@@ -250,17 +250,10 @@ void EntityTab::RClickMenu(int id){
     if (ImGui::BeginPopup("Entity" + id))
     {  
         if (ImGui::Selectable(id == -1 ? "Add empty" : "Add empty (child)")){
-            Entity& child = registry->CreateEntity();
+            Entity& child = registry->CreateEntity(id); // TODO: might be able to call normal CreateEntity here...
             int childId = child.GetId();
-
-            // Assign name and parentId
+            // Assign name
             child.name = "Empty";
-            child.parentId.ManuallySet(id);
-            // Add as child to id (right clicked entity)
-            if(id == -1) registry->rootIds.push_back(childId); // TODO: not sure if this stuff should happen in ECS
-            else registry->entityTree[id]->childrenIds.push_back(childId);
-            // Add entity to registry tree 
-            if(registry->entityTree.size() <= childId) registry->entityTree.resize(childId + 1);
             
             // Even we are adding to root, keeps forceOpen at -1 which does nothing
             forceOpen = id;
@@ -270,7 +263,7 @@ void EntityTab::RClickMenu(int id){
             // Get value for undo
             // Add entity always places at end of ids
             int pos = id != -1 ? registry->entityTree[id]->childrenIds.size() : registry->rootIds.size();
-            editHistory->Do(std::move(std::make_unique<EntityExistsEdit>(registry, engineData, childId, id, pos, true)));
+            editHistory->Do(std::move(std::make_unique<EntityExistsEdit>(registry, engineData, childId, "Empty", id, pos, true, true)));
         }
         // TODO: keep this at the bottom
         if(id != -1){
@@ -291,6 +284,7 @@ void EntityTab::RClickMenu(int id){
                 }
 
                 // Get values for undo
+                std::string name = registry->entityTree[id]->name;
                 int parentId = registry->entityTree[id]->parentId;
                 // Find position in parent childrenIds
                 int pos = 0;
@@ -299,7 +293,7 @@ void EntityTab::RClickMenu(int id){
                 // I: pcIds[0..pos) does not contain id
                 while(pos < pcIds.size() && pcIds[pos] != id) pos++;
                 // Pre ^ I ^ G -> pcIds[pos] = id 
-                editHistory->Do(std::move(std::make_unique<EntityExistsEdit>(registry, engineData, id, parentId, pos, false)));
+                editHistory->Do(std::move(std::make_unique<EntityExistsEdit>(registry, engineData, id, name, parentId, pos, true, false)));
                 
                 // NOTE: This needs to happen linearly (i.e. editHistory fully finishes before registry destroys entity)
                 // All children/lineage is destroyed by registry

@@ -22,12 +22,14 @@ using json = nlohmann::json;
 /* -----ENTITY EXISTS EDIT------------------------------- *
  *   When the user adds or removes an entity              *
  * ------------------------------------------------------ */
-EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, int entityId, int parentId, int pos, bool add){
+EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, int entityId, std::string name, int parentId, int pos, bool root, bool add){
     this->registry = registry;
     this->engineData = engineData;
     this->entityId = entityId;
+    this->name = name;
     this->parentId = parentId;
     this->pos = pos;
+    this->root = root;
     this->add = add;
 
     // TODO: i can figure out which side to place the ComponentValue below, well actually has to be a componentvalue anyways so... maybe i should make it a ptr?
@@ -53,8 +55,8 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
         // Create edits for all children
         std::vector<int>& childrenIds = entity.childrenIds;
         int i = 0;
-        for (int &id : childrenIds){
-            childrenEdits.push_back(std::make_unique<EntityExistsEdit>(registry, engineData, id, entityId, i, add));
+        for (int id : childrenIds){
+            childrenEdits.push_back(std::make_unique<EntityExistsEdit>(registry, engineData, id, registry->entityTree[id]->name, entityId, i, false, add));
             i++;
         }
     }
@@ -72,8 +74,24 @@ void EntityExistsEdit::Apply(bool undo){
     if(undo != add){ // Add entity
         // Needs to add entity at same entityId as before, otherwise other features will break
         // Pre: registry->entityTree[entityId] = nullptr
-        Entity entity = registry->CreateEntity(entityId);
+        Entity& entity = registry->EngineCreateEntity(entityId);
+        entity.name = name;
+        // Insert into parent childrenIds at pos
+        if(parentId == -1){
+            registry->rootIds.insert(registry->rootIds.begin() + pos, entityId);
+        }
+        else{
+            entity.parentId.ManuallySet(parentId);
+            // Pre: registry->entityTree[parentId] != nullptr
+            auto& parentCs = registry->entityTree[parentId]->childrenIds;
+            parentCs.insert(parentCs.begin() + pos, entityId);
+        }
 
+        auto i = 0; // TODO: children edits should be array later
+        while(i < childrenEdits.size()){
+            childrenEdits[i]->Apply(undo);
+            i++;
+        }
     }
     else{ // Remove entity
         // If selected entity (or any of its parents) are removed, clear selection
@@ -94,7 +112,7 @@ void EntityExistsEdit::Apply(bool undo){
         registry->DestroyEntity(entityId); 
     }
     
-    ApplyJson(undo);
+    if(root) ApplyJson(undo);
 }
 
 void EntityExistsEdit::ApplyJson(bool undo){
