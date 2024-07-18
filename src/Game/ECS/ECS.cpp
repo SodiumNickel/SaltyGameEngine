@@ -17,6 +17,27 @@ int Entity::GetId() const
     return id;
 }
 
+// Called whenever parentId is reassigned
+void Entity::OnParentIdChanged(int prevParentId, int newParentId) {
+    // Remove child from removeId
+    if(prevParentId == -1){
+        std::vector<int>& rChildren = registry->rootIds;
+        rChildren.erase(std::remove(rChildren.begin(), rChildren.end(), id), rChildren.end()); // Erase-remove idiom
+    }
+    else{
+        std::vector<int>& pChildren = registry->entityTree[prevParentId]->childrenIds;
+        pChildren.erase(std::remove(pChildren.begin(), pChildren.end(), id), pChildren.end()); // Erase-remove idiom
+    }
+
+    // Reparent child to addId at targetPos
+    if(newParentId == -1){
+        registry->rootIds.push_back(id);
+    }
+    else{
+        registry->entityTree[newParentId]->childrenIds.push_back(id);
+    }
+}
+
 void Entity::Destroy()
 {
     registry->DestroyEntity(*this);

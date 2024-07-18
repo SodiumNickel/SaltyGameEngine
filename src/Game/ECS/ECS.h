@@ -1,6 +1,7 @@
 #ifndef ECS_H
 #define ECS_H
 
+#include <algorithm>
 #include <bitset>
 #include <deque>
 #include <memory>
@@ -50,6 +51,39 @@ class Entity {
 private:
     int id;
     // TODO: note: if this has access to registry, it can have some helper functions
+
+    // TODO: i refer to this as PInt for proxyInt, but if i need to use PInt elsewhere need to think about moving class outside
+    // Proxy class for managing parentId
+    class PInt {
+    private:
+        int parentId;
+        Entity* entity;
+    public:
+        PInt(Entity* entity, int parentId = -1)
+        : entity(entity), parentId(parentId) {}
+
+        // Overload assignment operator
+        PInt& operator=(int newParentId){
+            if (parentId != newParentId){
+                entity->OnParentIdChanged(parentId, newParentId);
+                parentId = newParentId;
+            }
+            return *this;
+        }
+
+        // Set parentId without calling the updater function, built for use in engine - not games
+        // YOU HAVE TO MANUALLY UPDATE ROOTIDS/CHILDRENIDS
+        void ManuallySet(int newParentId){
+            parentId = newParentId;
+        }
+
+        // Implicit conversion to int
+        operator int() const {
+            return parentId;
+        }
+    };
+
+    void OnParentIdChanged(int prevParentId, int newParentId); // TODO: not sure i like this naming convention
 public:
     Entity(): id(-1) {}; // default constructor, never used // TODO: add a debug error for this in logger
     Entity(int id) : id(id) {}; // TODO: might want to initialize with values
@@ -80,10 +114,10 @@ public:
     // TODO: might want to add this to initialization
     // TODO: might move parentId and childrenIds to private
     std::string name;
-    int parentId; // -1 if parent is root/scene
+    PInt parentId = PInt(this, -1); // -1 if parent is root/scene // TODO: should maybe initialize above? can just reassign
     std::vector<int> childrenIds;
 
-    class Registry* registry;
+    class Registry* registry; // TODO: would love to move this to private if i put it in initializer
 };
 
 /* -----SYSTEM-------------------------------------------------- *
@@ -307,7 +341,7 @@ TComponent& Registry::GetComponent(Entity entity) const
 }   
 
 
-/* ----ENTITY COMPONENT MANAGEMENT----------------------------------------------- */
+/* ----ENTITY COMPONENT MANAGEMENT------------------------------------------- */
 
 template <typename TComponent, typename ...TArgs>
 void Entity::AddComponent(TArgs&& ...args)

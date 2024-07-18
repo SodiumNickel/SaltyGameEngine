@@ -182,7 +182,7 @@ void EntityTab::Begin(){
             // Reparent payloadId to root (-1)
             int curPos = registry->rootIds.size(); // Entity will be placed at end
             registry->rootIds.push_back(payloadId);
-            registry->entityTree[payloadId]->parentId = -1;   
+            // registry->entityTree[payloadId]->parentId = -1; defaults to -1
 
             // Add to undo stack
             editHistory->Do(std::move(std::make_unique<ReparentEdit>(registry, payloadId, parentId, prevPos, -1, curPos)));
@@ -232,7 +232,8 @@ void EntityTab::DDTarget(int id){
             // reparent payloadId to id
             int curPos = registry->entityTree[id]->childrenIds.size(); // Entity will be placed at end
             registry->entityTree[id]->childrenIds.push_back(payloadId);
-            registry->entityTree[payloadId]->parentId = id;  
+            // Had to find position and already manually updated
+            registry->entityTree[payloadId]->parentId.ManuallySet(id);  
 
             // Force self open (to show where dropped entity is)
             forceOpen = id;
@@ -254,7 +255,7 @@ void EntityTab::RClickMenu(int id){
 
             // Assign name and parentId
             child.name = "Empty";
-            child.parentId = id;
+            child.parentId.ManuallySet(id);
             // Add as child to id (right clicked entity)
             if(id == -1) registry->rootIds.push_back(childId); // TODO: not sure if this stuff should happen in ECS
             else registry->entityTree[id]->childrenIds.push_back(childId);

@@ -80,7 +80,8 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
 
         // Assign name and parentId
         entity.name = jEntity["name"];
-        entity.parentId = jEntity["parent-id"];
+        // Everything is read from json file, can manually set parentId
+        entity.parentId.ManuallySet(jEntity["parent-id"]);
         // Fill childrenIds
         json jChildren = jEntity["children-ids"];
         if(!jChildren.empty()) entity.childrenIds = jChildren.get<std::vector<int>>();

@@ -42,7 +42,8 @@ void ReparentEdit::Apply(bool undo){
         if(targetPos >= parentCs.size()) parentCs.push_back(entityId);
         else parentCs.insert(parentCs.begin() + targetPos, entityId); 
     }
-    registry->entityTree[entityId]->parentId = addId;  
+    // Inserted at specfic position, so cannot use updater
+    registry->entityTree[entityId]->parentId.ManuallySet(addId);  
 
 
     ApplyJson(undo);
