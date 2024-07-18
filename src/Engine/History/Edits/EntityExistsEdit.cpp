@@ -48,8 +48,20 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
         transformValues.push_back(transform.rotation);
 
         // Check for the other components
-        if(entity.HasComponent<SpriteComponent>()){}
-        if(entity.HasComponent<RigidbodyComponent>()){} // components.push_back(std::make_unique<HasComponentEdit>(RIGIDBODY, registry, entityId, true, std::vector<ComponentValue>()));
+        if(entity.HasComponent<SpriteComponent>()){
+            auto& sprite = entity.GetComponent<SpriteComponent>();
+            std::vector<ComponentValue> values;
+            values.push_back(ComponentValue(sprite.filepath));
+            values.push_back(ComponentValue(sprite.zIndex));
+            components.push_back(std::make_unique<HasComponentEdit>(SPRITE, registry, entityId, false, values));
+        }
+        if(entity.HasComponent<RigidbodyComponent>()){
+            auto& rigidbody = entity.GetComponent<RigidbodyComponent>();
+            std::vector<ComponentValue> values;
+            values.push_back(ComponentValue(rigidbody.initVelocity.x));
+            values.push_back(ComponentValue(rigidbody.initVelocity.y));
+            components.push_back(std::make_unique<HasComponentEdit>(RIGIDBODY, registry, entityId, false, values));
+        } 
         if(entity.HasComponent<BoxColliderComponent>()){}
 
         // Create edits for all children
@@ -118,49 +130,22 @@ void EntityExistsEdit::Apply(bool undo){
         registry->DestroyEntity(entityId); 
     }
     
+    // Pre: all children/lineage has finished adding/removing themselves
     if(root) ApplyJson(undo);
 }
 
 void EntityExistsEdit::ApplyJson(bool undo){
-    // std::ifstream g("EngineData/current-scene.json");
-    // json scene = json::parse(g);
+    // Json changes to add/remove entities
 
-    // // ParentId from which to remove entity from
-    // int removeId = undo ? curParentId : prevParentId;
-    // // ParentId to add entity to
-    // int addId = undo ? prevParentId : curParentId;
-    // // Position in vector to target
-    // int targetPos = undo ? prevPos : curPos;
 
-    // scene["entities"][entityId]["parent-id"] = addId;
-    // // Remove entity from either root-ids or old parent's children-ids
-    // // Pre: __-ids containts entityId
-    // if(removeId == -1) {
-    //     json jRootIds = scene["root-ids"];
-    //     jRootIds.erase(std::remove(jRootIds.begin(), jRootIds.end(), entityId), jRootIds.end()); // Erase-remove idiom
-    //     scene["root-ids"] = jRootIds;
-    // }
-    // else {
-    //     json jParentCs = scene["entities"][removeId]["children-ids"];
-    //     jParentCs.erase(std::remove(jParentCs.begin(), jParentCs.end(), entityId), jParentCs.end()); // Erase-remove idiom
-    //     scene["entities"][removeId]["children-ids"] = jParentCs;
-    // }
-    // // Add entity to either root-ids or new parents children-ids
-    // if(addId == -1) {
-    //     json parentCs = scene["root-ids"];
-    //     if(targetPos >= parentCs.size()) parentCs.push_back(entityId);
-    //     else parentCs.insert(parentCs.begin() + targetPos, entityId); 
-    //     scene["root-ids"] = parentCs;
-    // }
-    // else {
-    //     json parentCs = scene["entities"][addId]["children-ids"];
-    //     if(targetPos >= parentCs.size()) parentCs.push_back(entityId);
-    //     else parentCs.insert(parentCs.begin() + targetPos, entityId); 
-    //     scene["entities"][addId]["children-ids"] = parentCs;
-    // }
+    // Component value changes have to happen after the entities are added back (NOT json changes)
+    // Transform json changes
 
-    // std::ofstream("EngineData/current-scene.json") << std::setw(2) << scene;
-    // g.close();
+    // Other component changes
+    // auto it = components.begin();
+    // while(it != components.end()){
+        
+    // }
 }
 
 bool EntityExistsEdit::ValidEdit(){
