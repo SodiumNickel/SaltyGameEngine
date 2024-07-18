@@ -82,7 +82,7 @@ Entity& Registry::CreateEntity()
     Entity& entity = *entityTree[entityId].get();
     entity.registry = this;
     entity.AddComponent<TransformComponent>();
-    entitiesToBeAdded.insert(entity); // TODO: i am not a fan of this still
+    entitiesToBeAdded.insert(entity); // Will be added to systems in Update()
 
     return entity;
 }
@@ -93,7 +93,7 @@ Entity& Registry::CreateEntity(int entityId) // TODO: could potentially define o
     // Choosing to prioritize game efficiency over engine efficiency
     auto it = std::find(freeIds.begin(), freeIds.end(), entityId);
     // Should only be called by EntityExists edit currently, only occuring if we are re-adding a deleted entity
-    assert(it != freeIds.end()); // TODO: need to decide whether or not to keep assertions, probably should just keep them
+    assert(it != freeIds.end()); 
     
     freeIds.erase(it);
     // assert(entityTree[entityId] == nullptr); // TODO: make sure this assertion is correct (might be a common break)
@@ -170,7 +170,7 @@ void Registry::Update()
     // Add entites from entitiesToBeAdded to registry
     for(auto entity : entitiesToBeAdded)
     { 
-        AddEntityToSystems(entity); // TODO: not sure why this is here? could just move to create entity
+        AddEntityToSystems(entity);
     }
     entitiesToBeAdded.clear();
     
