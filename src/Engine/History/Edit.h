@@ -122,7 +122,7 @@ private:
 
     bool add;
     // Needs to store vector of components, to potentially restore them after
-    std::vector<std::unique_ptr<ComponentValueEdit>> transformValues;
+    std::vector<float> transformValues;
     std::vector<std::unique_ptr<HasComponentEdit>> components;
 
     // Needs to store edits to re-add children

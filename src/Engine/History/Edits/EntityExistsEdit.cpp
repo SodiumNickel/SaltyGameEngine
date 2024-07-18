@@ -41,11 +41,11 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
         // Transform is on every entity, so need to do ComponentValueEdits instead
         TransformComponent transform = entity.GetComponent<TransformComponent>();
         // TODO: this does not need to be a vector, can just be a const sized array
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, ComponentValue(transform.position.x), ComponentValue(transform.position.x)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, ComponentValue(transform.position.y), ComponentValue(transform.position.y)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(transform.scale.x), ComponentValue(transform.scale.x))); // TODO: comp val def shouldnt need to be in both places... okay but it would have to be different for add = true./false
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, ComponentValue(transform.scale.y), ComponentValue(transform.scale.y)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, entityId, ComponentValue(transform.rotation), ComponentValue(transform.rotation)));
+        transformValues.push_back(transform.position.x);
+        transformValues.push_back(transform.position.y);
+        transformValues.push_back(transform.scale.x); 
+        transformValues.push_back(transform.scale.y);
+        transformValues.push_back(transform.rotation);
 
         // Check for the other components
         if(entity.HasComponent<SpriteComponent>()){}
@@ -61,11 +61,11 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
         }
     }
     else { // add = true, only default transform, entity has no children
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_X, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, POSITION_Y, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_X, registry, entityId, ComponentValue(1.0f), ComponentValue(1.0f)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, SCALE_Y, registry, entityId, ComponentValue(1.0f), ComponentValue(1.0f)));
-        transformValues.push_back(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, entityId, ComponentValue(0.0f), ComponentValue(0.0f)));
+        transformValues.push_back(0.0f);
+        transformValues.push_back(0.0f);
+        transformValues.push_back(1.0f);
+        transformValues.push_back(1.0f);
+        transformValues.push_back(0.0f);
     }
 }
 
@@ -86,6 +86,12 @@ void EntityExistsEdit::Apply(bool undo){
             auto& parentCs = registry->entityTree[parentId]->childrenIds;
             parentCs.insert(parentCs.begin() + pos, entityId);
         }
+
+        // Add components and values
+        auto& transform = entity.GetComponent<TransformComponent>();
+        transform.position.x = transformValues[0]; transform.position.y = transformValues[1];
+        transform.scale.x = transformValues[2]; transform.scale.x = transformValues[3];
+        transform.rotation = transformValues[4];
 
         auto i = 0; // TODO: children edits should be array later
         while(i < childrenEdits.size()){
