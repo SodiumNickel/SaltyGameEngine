@@ -163,10 +163,11 @@ void EntityExistsEdit::ApplyJson(bool undo){
         // }
     }
     else{ // Remove entity
-        jEntities.erase(jEntities.begin() + entityId);
+        jEntities[entityId] = {}; // written as null in json file
         if(root){ // Have to delete self from children-ids or root-ids
             if(parentId == -1){
-                
+                // Erase-remove idiom
+                jScene["root-ids"].erase(std::remove(jScene["root-ids"].begin(), jScene["root-ids"].end(), entityId), jScene["root-ids"].end()); 
             }
             else{
                 
