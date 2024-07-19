@@ -131,21 +131,42 @@ void EntityExistsEdit::Apply(bool undo){
     }
     
     // Pre: all children/lineage has finished adding/removing themselves
-    if(root) ApplyJson(undo);
+    // If we are deleting it can happen in any order
+    // If we are adding, we need to worry about entities being there before components
+    if(root || (undo == add)) ApplyJson(undo);
 }
 
 void EntityExistsEdit::ApplyJson(bool undo){
-    // Json changes to add/remove entities
+    std::ifstream g("EngineData/current-scene.json");
+    json jScene = json::parse(g);
+    json jEntities = jScene["entities"];
+
+    // add = true -> undo() does Remove Entity, so addEntity = undo xor add (see truth table in HasComponentEdit::Apply())
+    if(undo != add){ // Add entity (and components)
+        // Json changes to add/remove entities
 
 
-    // Component value changes have to happen after the entities are added back (NOT json changes)
-    // Transform json changes
+        // Component value changes have to happen after the entities are added back (NOT json changes)
+        // Transform json changes
 
-    // Other component changes
-    // auto it = components.begin();
-    // while(it != components.end()){
-        
-    // }
+        // Other component changes
+        // auto it = components.begin();
+        // while(it != components.end()){
+            
+        // }
+    }
+    else{ // Remove entity
+        jEntities.erase(jEntities.begin() + entityId);
+        if(root){ // Have to delete self from children-ids or root-ids
+
+        }
+    }
+
+    jScene["entities"] = jEntities;
+    std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
+    g.close();
+    
+    // need to make sure json is updated before we call next child thing
 }
 
 bool EntityExistsEdit::ValidEdit(){

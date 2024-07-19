@@ -59,12 +59,11 @@ void Stage::LoadScene(int sceneIndex)
 
     json jEntities = jScene["entities"];
     json jRootIds = jScene["root-ids"];
-    int size = jScene["size"];
     g.close();
-    CreateEntityTree(jEntities, jRootIds, size);
+    CreateEntityTree(jEntities, jRootIds);
 }
 
-void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
+void Stage::CreateEntityTree(json jEntities, json jRootIds){
     registry->entityTree.clear(); // calls destructors of unique_ptr to deallocate
     auto& rootIds = registry->rootIds;
     rootIds.clear();
@@ -73,7 +72,7 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds, int size){
     // Select first entity in scene
     if(rootIds.size() > 0) engineData->selectedEntity = rootIds[0]; // TODO: make sure this is fine on scene swap, might need an else -1
 
-    for(int id = 0; id < size; id++){
+    for(int id = 0; id < jEntities.size(); id++){
         json jEntity = jEntities[id];
         Entity& entity = registry->EngineCreateEntity();
         assert(entity.GetId() == id); // TODO: this should be commented out eventually, pretty sure it is always true
