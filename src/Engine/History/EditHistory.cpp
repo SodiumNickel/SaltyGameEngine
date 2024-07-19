@@ -69,6 +69,11 @@ void EditHistory::Save(){
     // Copy current-scene.json into saved scene
     std::ifstream g("EngineData/current-scene.json");
     json jScene = json::parse(g);
+    // Check if we need to fix the formatting
+    if(jScene["edit-flag"]){
+        
+    }
+    jScene.erase("edit-flag");
     std::ofstream("Unique/Scenes/" + sceneName + ".json") << std::setw(2) << jScene;
     g.close();
     

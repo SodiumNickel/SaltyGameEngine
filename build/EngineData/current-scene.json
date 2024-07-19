@@ -1,4 +1,5 @@
 {
+  "edit-flag": false,
   "entities": [
     {
       "children-ids": [],
@@ -207,6 +208,5 @@
     2,
     4,
     8
-  ],
-  "size": 9
+  ]
 }

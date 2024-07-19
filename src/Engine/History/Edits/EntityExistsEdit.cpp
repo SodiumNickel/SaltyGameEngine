@@ -133,9 +133,16 @@ void EntityExistsEdit::Apply(bool undo){
     // Pre: all children/lineage has finished adding/removing themselves
     // If we are deleting it can happen in any order
     // If we are adding, we need to worry about entities being there before components
-    if(root || (undo == add)) ApplyJson(undo);
+    if(root || (undo == add)) ApplyJson(undo); // TODO: apply json is called in Do, i actually think we may not have to worry about stuff if we include {}
 }
 
+// This is going to require more thought than I initially predicted
+// We have to preserve empty space in engine, but in json file there is no need, and once we reload from json file empty space
+// can be cleared
+// should write a large comment of thoughts here
+// maybe have a flag that says if it needs to be fixed? which is set to true on entityExists and false when its fixed on engine close
+// or fixed on engine open if needed
+//give current-scene a flag that says if it needs a run over, on save check the flag and that will determine if we need to
 void EntityExistsEdit::ApplyJson(bool undo){
     std::ifstream g("EngineData/current-scene.json");
     json jScene = json::parse(g);
@@ -158,7 +165,12 @@ void EntityExistsEdit::ApplyJson(bool undo){
     else{ // Remove entity
         jEntities.erase(jEntities.begin() + entityId);
         if(root){ // Have to delete self from children-ids or root-ids
-
+            if(parentId == -1){
+                
+            }
+            else{
+                
+            }
         }
     }
 

@@ -55,6 +55,8 @@ void Stage::LoadScene(int sceneIndex)
     
     std::ifstream g("Unique/Scenes/" + engineData->sceneName + ".json");
     json jScene = json::parse(g);
+    // Used to signify an ill-formatted edit was made (usually deleting an entity - which creates a {} entity space)
+    jScene["edit-flag"] = false; 
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
 
     json jEntities = jScene["entities"];
