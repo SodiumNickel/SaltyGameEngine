@@ -32,6 +32,9 @@ void Menu::Begin(){
         }
         // Only for use when developing engine
         if (ImGui::BeginMenu("Engine Debug")) {
+            if (ImGui::MenuItem(engineData->showEntityIds ? "Hide EntityIds" : "Show EntityIds")) 
+            { engineData->showEntityIds = !engineData->showEntityIds; }
+            
             if (ImGui::MenuItem("Log Selected Entity")) { 
                 int selectedEntity = engineData->selectedEntity;
                 Entity entity = *registry->entityTree[selectedEntity].get();
@@ -50,9 +53,6 @@ void Menu::Begin(){
                 Debug::Log(entityMessage, -1);
             }
 
-            if (ImGui::MenuItem(engineData->showEntityIds ? "Hide EntityIds" : "Show EntityIds")) 
-            { engineData->showEntityIds = !engineData->showEntityIds; }
-            
             if (ImGui::MenuItem("Log Root Ids")) { 
                 std::string rootMessage = "rootIds = [";
                 int i = 0;

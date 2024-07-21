@@ -69,11 +69,12 @@ void EditHistory::Save(){
     // Copy current-scene.json into saved scene
     std::ifstream g("EngineData/current-scene.json");
     json jScene = json::parse(g);
-    // Check if we need to fix the formatting
-    if(jScene["edit-flag"]){
-        
+    // Check if we need to remove any null entities
+    if(jScene["null-count"] > 0){
+        // im thinking of creating an array which tracks how much to decrement each thing
+        // capiche?
     }
-    jScene.erase("edit-flag");
+    jScene.erase("null-count");
     std::ofstream("Unique/Scenes/" + sceneName + ".json") << std::setw(2) << jScene;
     g.close();
     

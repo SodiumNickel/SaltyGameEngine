@@ -35,7 +35,7 @@ void Debug::Log(const std::string& message){
 // TODO: i dont do anything with the level yet, will have -1 be internal, 0 be standard, and other stuff later
 void Debug::Log(const std::string& message, int level){
     // TODO: should compare against global limit instead, but have this for debugging purposes
-    if(level >= 0){
+    if(level >= -1){
         LogEntry entry;
         entry.level = level;
         entry.message = "[" + SystemTime() + "] " + message; // TODO: could seperate these into diff sections for filtering

@@ -250,7 +250,7 @@ void EntityTab::RClickMenu(int id){
     if (ImGui::BeginPopup("Entity" + id))
     {  
         if (ImGui::Selectable(id == -1 ? "Add empty" : "Add empty (child)")){
-            Entity& child = registry->CreateEntity(id); // TODO: might be able to call normal CreateEntity here...
+            Entity& child = registry->CreateEntity(id); // The id here is the parentId of the new child
             int childId = child.GetId();
             // Assign name
             child.name = "Empty";
@@ -261,8 +261,8 @@ void EntityTab::RClickMenu(int id){
             engineData->selectedEntity = childId;
 
             // Get value for undo
-            // Add entity always places at end of ids
-            int pos = id != -1 ? registry->entityTree[id]->childrenIds.size() : registry->rootIds.size();
+            // Add entity always places at end of ids (has already been placed so -1)
+            int pos = id != -1 ? registry->entityTree[id]->childrenIds.size() - 1 : registry->rootIds.size() - 1;
             editHistory->Do(std::move(std::make_unique<EntityExistsEdit>(registry, engineData, childId, "Empty", id, pos, true, true)));
         }
         // TODO: keep this at the bottom

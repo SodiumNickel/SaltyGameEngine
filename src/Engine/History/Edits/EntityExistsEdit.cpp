@@ -10,6 +10,7 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
+#include "Engine/Debug/SaltyDebug.h"
 #include "Engine/EngineData.h"
 
 #include "Game/ECS/ECS.h"
@@ -32,8 +33,6 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
     this->root = root;
     this->add = add;
 
-    // TODO: i can figure out which side to place the ComponentValue below, well actually has to be a componentvalue anyways so... maybe i should make it a ptr?
-
     // If we are removing, there is a lot of work to do
     if(!add){
         Entity& entity = *registry->entityTree[entityId].get();
@@ -53,20 +52,20 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
             std::vector<ComponentValue> values;
             values.push_back(ComponentValue(sprite.filepath));
             values.push_back(ComponentValue(sprite.zIndex));
-            components.push_back(std::make_unique<HasComponentEdit>(SPRITE, registry, entityId, false, values));
+            components.push_back(std::make_unique<HasComponentEdit>(SPRITE, registry, entityId, true, values));
         }
         if(entity.HasComponent<RigidbodyComponent>()){
             auto& rigidbody = entity.GetComponent<RigidbodyComponent>();
             std::vector<ComponentValue> values;
             values.push_back(ComponentValue(rigidbody.initVelocity.x));
             values.push_back(ComponentValue(rigidbody.initVelocity.y));
-            components.push_back(std::make_unique<HasComponentEdit>(RIGIDBODY, registry, entityId, false, values));
+            components.push_back(std::make_unique<HasComponentEdit>(RIGIDBODY, registry, entityId, true, values));
         } 
         if(entity.HasComponent<BoxColliderComponent>()){}
 
         // Create edits for all children
-        std::vector<int>& childrenIds = entity.childrenIds;
-        int i = 0;
+        childrenIds = entity.childrenIds;
+        int i = 0; // For position
         for (int id : childrenIds){
             childrenEdits.push_back(std::make_unique<EntityExistsEdit>(registry, engineData, id, registry->entityTree[id]->name, entityId, i, false, add));
             i++;
@@ -105,6 +104,9 @@ void EntityExistsEdit::Apply(bool undo){
         transform.scale.x = transformValues[2]; transform.scale.x = transformValues[3];
         transform.rotation = transformValues[4];
 
+        // Cannot call other component edits until entity is added to json
+        // Those edits call json edits, so the entity needs to exist in json
+
         auto i = 0; // TODO: children edits should be array later
         while(i < childrenEdits.size()){
             childrenEdits[i]->Apply(undo);
@@ -130,19 +132,9 @@ void EntityExistsEdit::Apply(bool undo){
         registry->DestroyEntity(entityId); 
     }
     
-    // Pre: all children/lineage has finished adding/removing themselves
-    // If we are deleting it can happen in any order
-    // If we are adding, we need to worry about entities being there before components
-    if(root || (undo == add)) ApplyJson(undo); // TODO: apply json is called in Do, i actually think we may not have to worry about stuff if we include {}
+    ApplyJson(undo);
 }
 
-// This is going to require more thought than I initially predicted
-// We have to preserve empty space in engine, but in json file there is no need, and once we reload from json file empty space
-// can be cleared
-// should write a large comment of thoughts here
-// maybe have a flag that says if it needs to be fixed? which is set to true on entityExists and false when its fixed on engine close
-// or fixed on engine open if needed
-//give current-scene a flag that says if it needs a run over, on save check the flag and that will determine if we need to
 void EntityExistsEdit::ApplyJson(bool undo){
     std::ifstream g("EngineData/current-scene.json");
     json jScene = json::parse(g);
@@ -150,27 +142,75 @@ void EntityExistsEdit::ApplyJson(bool undo){
 
     // add = true -> undo() does Remove Entity, so addEntity = undo xor add (see truth table in HasComponentEdit::Apply())
     if(undo != add){ // Add entity (and components)
-        // Json changes to add/remove entities
-
-
-        // Component value changes have to happen after the entities are added back (NOT json changes)
-        // Transform json changes
-
-        // Other component changes
-        // auto it = components.begin();
-        // while(it != components.end()){
+        // Json changes to add entity
+        if(entityId < jEntities.size()){
+            assert(jEntities[entityId].empty());
+            jScene["null-count"] += -1; // -= does not exist
+            // Create entity (without components)
+            json jEntity = {
+                {"children-ids", {}},
+                {"components", {}},
+                {"name", name},
+                {"parent-id", parentId},
+                {"transform", {
+                    {"position", {transformValues[0], transformValues[1]}},
+                    {"scale", {transformValues[2], transformValues[3]}},
+                    {"rotation", transformValues[4]}
+                }}
+            };
+            auto it = childrenIds.begin();
+            while(it != childrenIds.end()){
+                jEntity["children-ids"].push_back(*it);
+                ++it;
+            }
+            jEntities[entityId] = jEntity;
+        }
+        else{ // Should only occur when manually creating a new entity (and not on subsequent undos and redos)
+            assert(entityId == jEntities.size());
+            // Just have to push back the default entity
+            json jEntity = {
+                {"children-ids", json::array()},
+                {"components", json::object()},
+                {"name", "Empty"},
+                {"parent-id", parentId},
+                {"transform", {
+                    {"position", {0.0, 0.0}},
+                    {"scale", {1.0, 1.0}},
+                    {"rotation", 0.0}
+                }}
+            };
             
-        // }
+            // entityId = jEntities.size(), so just add to end
+            jEntities.push_back(jEntity);
+        }
+
+        // NOTE: this happens whether or not overwritting null entity
+        // Parent of root should exist and not be null
+        if(root) {
+            if(parentId == -1){
+                jScene["root-ids"].insert(jScene["root-ids"].begin() + pos, entityId);
+            }
+            else{
+                json JParentCs = jEntities[parentId]["children-ids"];
+                JParentCs.insert(JParentCs.begin() + pos, entityId);
+                jEntities[parentId]["children-ids"] = JParentCs;
+            }
+        }
     }
     else{ // Remove entity
+        assert(!jEntities[entityId].empty()); // should not be able to delete a null object
         jEntities[entityId] = {}; // written as null in json file
+        jScene["null-count"] += 1;
         if(root){ // Have to delete self from children-ids or root-ids
             if(parentId == -1){
                 // Erase-remove idiom
                 jScene["root-ids"].erase(std::remove(jScene["root-ids"].begin(), jScene["root-ids"].end(), entityId), jScene["root-ids"].end()); 
             }
             else{
-                
+                json parentCs = jEntities[parentId]["children-ids"];
+                // Erase-remove idiom
+                parentCs.erase(std::remove(parentCs.begin(), parentCs.end(), entityId), parentCs.end()); // TODO: could delete by position instead
+                jEntities[parentId]["children-ids"] = parentCs;
             }
         }
     }
@@ -178,8 +218,23 @@ void EntityExistsEdit::ApplyJson(bool undo){
     jScene["entities"] = jEntities;
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
     g.close();
-    
-    // need to make sure json is updated before we call next child thing
+
+    /*
+    Some considerations for the components below. Was initially concerned about ApplyJson() being called by EditHistory::Do()
+    However, adding an entity on Do() -> components.empty(). So no need to worry about that.
+    This is normally used to both add the component and adjust the json on undo/redo
+    */
+    // If adding an entity
+    if(undo != add) {
+        // Pre: We have already created the json entity for entityId
+        int i = 0;
+        while(i < components.size()){
+            // When we pushed to components we set 'add' = true
+            // undo = false, add = true -> undo != add -> add component as desired
+            components[i]->Apply(false); 
+            i++;
+        }
+    }
 }
 
 bool EntityExistsEdit::ValidEdit(){
@@ -187,5 +242,8 @@ bool EntityExistsEdit::ValidEdit(){
 }
 
 std::string EntityExistsEdit::ToString(bool undo){
-    return "entity exists edit";
+    std::string msg = (undo != add ? "Adding" : "Removing");
+    msg +=  " entity: " + std::to_string(entityId) + ", parent: " + std::to_string(parentId) + ", pos: " + std::to_string(pos);
+    
+    return "EntityExistsEdit - " + msg;
 }

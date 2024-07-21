@@ -124,6 +124,8 @@ private:
     // Needs to store vector of components, to potentially restore them after
     std::vector<float> transformValues;
     std::vector<std::unique_ptr<HasComponentEdit>> components;
+    // Storing children-ids for json edits
+    std::vector<int> childrenIds;
 
     // Needs to store edits to re-add children
     std::vector<std::unique_ptr<EntityExistsEdit>> childrenEdits;
