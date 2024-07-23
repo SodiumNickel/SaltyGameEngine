@@ -199,9 +199,10 @@
           4.4
         ]
       }
-    }
+    },
+    null
   ],
-  "null-count": 0,
+  "null-count": 1,
   "root-ids": [
     0,
     1,

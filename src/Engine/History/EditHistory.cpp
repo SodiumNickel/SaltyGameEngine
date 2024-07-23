@@ -39,7 +39,7 @@ void EditHistory::Undo(){
     redoStack.push(std::move(undoStack.top()));
     canRedo = true;
 
-    undoStack.pop(); // TODO: might need to deallocate this, idts we are pushing into redo stack anyways...
+    undoStack.pop();
 
     if(undoStack.empty()) canUndo = false;
 }
@@ -53,7 +53,7 @@ void EditHistory::Redo(){
     undoStack.push(std::move(redoStack.top()));
     canUndo = true;
 
-    redoStack.pop();  // TODO: might need to deallocate this, idts we are pushing into redo stack anyways...
+    redoStack.pop();
 
     if(redoStack.empty()) canRedo = false;
 }
@@ -70,7 +70,7 @@ void EditHistory::Save(){
     std::ifstream g("EngineData/current-scene.json");
     json jScene = json::parse(g);
     // Check if we need to remove any null entities
-    if(jScene["null-count"] > 0){
+    if(jScene["null-count"].get<int>() > 0){
         // im thinking of creating an array which tracks how much to decrement each thing
         // capiche?
     }

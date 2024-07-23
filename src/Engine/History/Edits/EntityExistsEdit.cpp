@@ -78,9 +78,13 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
         transformValues.push_back(1.0f);
         transformValues.push_back(0.0f);
     }
+
+    // Recursive calls are in Apply, which is not called by EditHistory::Do()
+    // So have to manually ApplyJson() here
+    if(!root) ApplyJson(false);
 }
 
-void EntityExistsEdit::Apply(bool undo){    
+void EntityExistsEdit::Apply(bool undo){   
     // add = true -> undo() does Remove Entity, so addEntity = undo xor add (see truth table in HasComponentEdit::Apply())
     if(undo != add){ // Add entity
         // Needs to add entity at same entityId as before, otherwise other features will break
@@ -107,7 +111,7 @@ void EntityExistsEdit::Apply(bool undo){
         // Cannot call other component edits until entity is added to json
         // Those edits call json edits, so the entity needs to exist in json
 
-        auto i = 0; // TODO: children edits should be array later
+        int i = 0; // TODO: children edits should be array later
         while(i < childrenEdits.size()){
             childrenEdits[i]->Apply(undo);
             i++;
@@ -115,21 +119,15 @@ void EntityExistsEdit::Apply(bool undo){
     }
     else{ // Remove entity
         // If selected entity (or any of its parents) are removed, clear selection
-        std::stack<int> childrenIds; // TODO: maybe could find better name for this like lineage
-        childrenIds.push(entityId);
-        while(engineData->selectedEntity != -1 && !childrenIds.empty()){
-            int cId = childrenIds.top(); 
-            childrenIds.pop();
-            if(cId == engineData->selectedEntity){
-                engineData->selectedEntity = -1;
-            }
-            else if(registry->entityTree[cId]->childrenIds.size() > 0){
-                for(int ccId : registry->entityTree[cId]->childrenIds) childrenIds.push(ccId);
-            }  
+        int i = 0;
+        while(i < childrenEdits.size()){
+            childrenEdits[i]->Apply(undo);
+            i++;
         }
+        if(engineData->selectedEntity == entityId) engineData->selectedEntity = -1;
 
-        // All children/lineage is destroyed by registry
-        registry->DestroyEntity(entityId); 
+        // Will destroy tree rooted at entityId, no need for multiple calls
+        if(root) registry->DestroyEntity(entityId); 
     }
     
     ApplyJson(undo);
@@ -243,8 +241,8 @@ bool EntityExistsEdit::ValidEdit(){
 
 std::string EntityExistsEdit::ToString(bool undo){
     std::string msg = (undo != add ? "Adding" : "Removing");
-    msg +=  " entity: " + std::to_string(entityId) + ", parent: " + std::to_string(parentId) + ", pos: " + std::to_string(pos), 
-            + ", component count: " + std::to_string(components.size());
+    msg +=  " entity: " + std::to_string(entityId) + ", parent: " + std::to_string(parentId) + ", pos: " + std::to_string(pos) \
+            + ", component count: " + std::to_string(components.size()) + ", child count: " + std::to_string(childrenEdits.size());
     
     return "EntityExistsEdit - " + msg;
 }

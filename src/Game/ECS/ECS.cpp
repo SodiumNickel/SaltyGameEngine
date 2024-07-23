@@ -163,6 +163,7 @@ Entity& Registry::EngineCreateEntity(int entityId) // default = -1 // TODO: coul
 
 void Registry::DestroyEntity(Entity entity)
 {
+    // TODO: should probably be a queue, doesnt really matter but feels right for some reason
     std::stack<int> removeStack;
     removeStack.push(entity.GetId());
 
