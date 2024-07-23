@@ -200,9 +200,10 @@
         ]
       }
     },
+    null,
     null
   ],
-  "null-count": 1,
+  "null-count": 2,
   "root-ids": [
     0,
     1,

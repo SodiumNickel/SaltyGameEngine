@@ -116,6 +116,9 @@ void EntityExistsEdit::Apply(bool undo){
             childrenEdits[i]->Apply(undo);
             i++;
         }
+
+        // On re-add select the root
+        if(root) engineData->selectedEntity = entityId;
     }
     else{ // Remove entity
         // If selected entity (or any of its parents) are removed, clear selection
