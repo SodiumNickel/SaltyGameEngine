@@ -95,8 +95,7 @@
       "children-ids": [
         5,
         6,
-        7,
-        9
+        7
       ],
       "components": {},
       "name": "Rocks",
@@ -198,23 +197,6 @@
         "scale": [
           4.15,
           4.4
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {},
-      "name": "Empty",
-      "parent-id": 4,
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
         ]
       }
     }

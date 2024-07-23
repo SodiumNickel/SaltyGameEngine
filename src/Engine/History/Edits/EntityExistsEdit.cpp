@@ -101,7 +101,7 @@ void EntityExistsEdit::Apply(bool undo){
         // Add components and values
         auto& transform = entity.GetComponent<TransformComponent>();
         transform.position.x = transformValues[0]; transform.position.y = transformValues[1];
-        transform.scale.x = transformValues[2]; transform.scale.x = transformValues[3];
+        transform.scale.x = transformValues[2]; transform.scale.y = transformValues[3];
         transform.rotation = transformValues[4];
 
         // Cannot call other component edits until entity is added to json
@@ -145,11 +145,11 @@ void EntityExistsEdit::ApplyJson(bool undo){
         // Json changes to add entity
         if(entityId < jEntities.size()){
             assert(jEntities[entityId].empty());
-            jScene["null-count"] += -1; // -= does not exist
+            jScene["null-count"] = jScene["null-count"].get<int>() - 1;
             // Create entity (without components)
             json jEntity = {
-                {"children-ids", {}},
-                {"components", {}},
+                {"children-ids", json::array()},
+                {"components", json::object()},
                 {"name", name},
                 {"parent-id", parentId},
                 {"transform", {
@@ -198,9 +198,9 @@ void EntityExistsEdit::ApplyJson(bool undo){
         }
     }
     else{ // Remove entity
-        assert(!jEntities[entityId].empty()); // should not be able to delete a null object
+        assert(!jEntities[entityId].empty()); // should not be able to delete a null object, TODO will probably get rid of this assertion or at least make it a better test, i.e. a not null
         jEntities[entityId] = {}; // written as null in json file
-        jScene["null-count"] += 1;
+        jScene["null-count"] = jScene["null-count"].get<int>() + 1;
         if(root){ // Have to delete self from children-ids or root-ids
             if(parentId == -1){
                 // Erase-remove idiom
@@ -243,7 +243,8 @@ bool EntityExistsEdit::ValidEdit(){
 
 std::string EntityExistsEdit::ToString(bool undo){
     std::string msg = (undo != add ? "Adding" : "Removing");
-    msg +=  " entity: " + std::to_string(entityId) + ", parent: " + std::to_string(parentId) + ", pos: " + std::to_string(pos);
+    msg +=  " entity: " + std::to_string(entityId) + ", parent: " + std::to_string(parentId) + ", pos: " + std::to_string(pos), 
+            + ", component count: " + std::to_string(components.size());
     
     return "EntityExistsEdit - " + msg;
 }
