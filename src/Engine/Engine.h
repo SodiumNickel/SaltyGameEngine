@@ -29,6 +29,7 @@ class Engine {
         // Shared pointer used to pass engine data to tabs, stage, edit history
         std::shared_ptr<EngineData> engineData;
 
+        // Will be stored in Game along with other vars in Stage
         std::shared_ptr<Registry> registry; 
         std::shared_ptr<AssetManager> assetManager;
 
