@@ -28,6 +28,8 @@ class Stage {
         std::shared_ptr<Registry> registry;
         std::shared_ptr<AssetManager> assetManager;
 
+        void CreateEntityTree(json jEntities, json jRootIds);
+
         bool dragging = false;
         ImVec2 startMousePos;
         glm::vec2 startStageCenter; 
@@ -36,7 +38,6 @@ class Stage {
         ~Stage();
         void Initialize(SDL_Renderer* renderer, SDL_Texture* viewport);
         void LoadScene(int sceneIndex);
-        void CreateEntityTree(json jEntities, json jRootIds);
         void Run();
         void ProcessInput();
         void Update();

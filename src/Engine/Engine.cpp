@@ -18,7 +18,6 @@
 #include "Engine/Tabs/Tabs.h"
 
 
-// Constructor
 Engine::Engine()
 {
     // TODO: should initialize to scene that was last open, stored fps, etc.
@@ -28,7 +27,6 @@ Engine::Engine()
     isRunning = false;
 }
 
-// Destructor
 Engine::~Engine()
 {
     // Happens after clean up
