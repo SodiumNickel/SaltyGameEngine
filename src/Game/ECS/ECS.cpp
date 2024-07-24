@@ -220,6 +220,7 @@ void Registry::RemoveEntityFromSystems(Entity entity)
     }
 }
 
+// Adds/Removes entities from systems TODO: i kinda wanna rename this for clarity
 void Registry::Update()
 {
     // Add entites from entitiesToBeAdded to registry

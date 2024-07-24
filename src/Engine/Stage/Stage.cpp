@@ -14,13 +14,14 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
+#include "Engine/Systems/StageRenderSystem.h"
+
 #include "Game/ECS/ECS.h"
 #include "Game/Helpers/JsonHelper.h" // TODO: might remove this
 #include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
 // #include "../Components/BoxColliderComponent.h" might need for visual
-#include "Game/Systems/RenderSystem.h"
 
 
 // Constructor
@@ -42,7 +43,7 @@ void Stage::Initialize(SDL_Renderer* renderer, SDL_Texture* viewport)
     // TODO: check for saved scene number here, currently just loading demo
     LoadScene(0); // engine->sceneIndex
 
-    registry->AddSystem<RenderSystem>();
+    registry->AddSystem<StageRenderSystem>();
 }
 
 void Stage::LoadScene(int sceneIndex)
@@ -158,7 +159,7 @@ void Stage::Update()
 
     // Allows resizing of viewport, both by boundaries and zoom
     glm::vec2 stageZoom = glm::vec2(500.0f * zoom / stageSize.x, 500.0f * zoom / stageSize.y); // zoom scaled by scene aspect ratio
-    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, stageCenter, stageZoom);
+    registry->GetSystem<StageRenderSystem>().Update(renderer, assetManager, stageCenter, stageZoom);
 
     SDL_SetRenderTarget(renderer, NULL);
 }

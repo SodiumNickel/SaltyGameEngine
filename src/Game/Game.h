@@ -19,7 +19,6 @@ class Game {
         SDL_Window* window;
         int width, height;
         SDL_Renderer* renderer;
-        SDL_Texture* viewport;
 
         std::unique_ptr<Registry> registry; 
         std::unique_ptr<AssetManager> assetManager;

@@ -1,5 +1,5 @@
-#ifndef RENDERSYSTEM_H
-#define RENDERSYSTEM_H
+#ifndef STAGERENDERSYSTEM_H
+#define STAGERENDERSYSTEM_H
 
 #include <algorithm>
 #include <iostream>
@@ -12,16 +12,16 @@
 #include "Game/AssetManager/AssetManager.h"
 
 
-class RenderSystem : public System {
+class StageRenderSystem : public System {
 public:
-    RenderSystem()
+    StageRenderSystem()
     {
         // RequireComponent<TransformComponent>();
         RequireComponent<SpriteComponent>();
     }
 
     // TODO: should this be a unique_ptr for assetmanager in game?
-    void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, glm::vec2 cameraCenter, glm::vec2 cameraZoom)
+    void Update(SDL_Renderer* renderer, std::shared_ptr<AssetManager> assetManager, glm::vec2 cameraCenter, glm::vec2 cameraZoom)
     {
         // TODO: optimize by sorting sprite objects whenever they are added
         // Can do this with a simple insertion on frames with low entity additions
@@ -72,4 +72,4 @@ public:
     }
 };
 
-#endif // RENDERSYSTEM_H
+#endif // STAGERENDERSYSTEM_H
