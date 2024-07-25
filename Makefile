@@ -34,7 +34,9 @@ clean:
 G_NAME = game
 G_DIR = game-build
 
-G_INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/glm -Iinclude/nlohmann -Isrc/Game
+# TODO: note
+# NOTE: I include the entire source here so the headers have the right path, but should be restricted in actual engine
+G_INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/glm -Iinclude/nlohmann -Isrc
 
 G_LIB_DIRS = -Llib
 G_LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
@@ -44,5 +46,11 @@ G_SRC = src/main.cpp \
 	  	src/Game/ECS/*.cpp src/Game/AssetManager/*.cpp \
 	  	src/Game/Helpers/*.cpp \
 
-game: # Compiles game
-	g++ -g $(G_SRC) -std=c++17 $(G_INCLUDE_DIRS) $(G_LIB_DIRS) $(G_LIBS) -o $(G_BUILD_DIR)/$(G_ENGINE_NAME)
+g: # Compiles game
+	g++ -g $(G_SRC) -std=c++17 $(G_INCLUDE_DIRS) $(G_LIB_DIRS) $(G_LIBS) -o $(G_DIR)/$(G_NAME)
+
+grun:
+	cd $(G_DIR) && $(G_NAME)
+
+gdebug:
+	cd $(G_DIR) && gdb ./$(G_NAME)

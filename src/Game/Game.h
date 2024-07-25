@@ -5,7 +5,6 @@
 #include <vector>
 
 #include <SDL.h>
-#include <imgui.h>
 #include <json.hpp>
 using json = nlohmann::json;
 
@@ -28,6 +27,7 @@ class Game {
         Game();
         ~Game();
         int Initialize();
+        void LoadScene(int sceneIndex);
         void Run();
         void ProcessInput();
         void Update();
