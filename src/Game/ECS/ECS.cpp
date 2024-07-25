@@ -4,7 +4,7 @@
 #include <deque>
 #include <stack>
 
-#include "Engine/Debug/SaltyDebug.h" // TODO: this needs to be removed in actual game build, could be done with def
+// #include "Engine/Debug/SaltyDebug.h" // TODO: this needs to be removed in actual game build, could be done with def
 // needs to be availible in scripting anyways so need a way to remove it 
 // maybe can #define something in Engine/.. and do #ifndef something
 #include "Game/Components/TransformComponent.h"
@@ -107,7 +107,7 @@ Entity& Registry::CreateEntity(int parentId) // default = -1
 
     // Add as child to parentId
     bool validParent = -1 < parentId && parentId < entityTree.size() && entityTree[parentId];
-    if(parentId != -1 && !validParent) Debug::Log("Assigned Entity to invalid parent, defaulting to root", -1);
+    // if(parentId != -1 && !validParent) Debug::Log("Assigned Entity to invalid parent, defaulting to root", -1);
     // Add to root if an invalid parent is entered
     if(parentId == -1 || !validParent) rootIds.push_back(entityId);
     else {

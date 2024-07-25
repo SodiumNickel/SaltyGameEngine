@@ -12,7 +12,7 @@
 
 #include<iostream> // TODO: remove later
 
-#include "Engine/Debug/SaltyDebug.h"
+// #include "Engine/Debug/SaltyDebug.h"
 
 #include "Game/Components/TransformComponent.h"
 
@@ -87,7 +87,7 @@ private:
 
     void OnParentIdChanged(int prevParentId, int newParentId); // TODO: not sure i like this naming convention
 public:
-    Entity(): id(-1) { Debug::Log("ERROR: Entity default constructor called", -1); }; // default constructor, never used
+    Entity(): id(-1) { /* Debug::Log("ERROR: Entity default constructor called", -1); */ }; // default constructor, never used
     Entity(int id) : id(id) {}; // parentId defaults to -1, assumes at root
     Entity(int id, int parentId) : id(id) { if(parentId != -1) this->parentId.ManuallySet(parentId); }; 
     Entity(const Entity& entity) = default;

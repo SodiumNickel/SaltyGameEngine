@@ -119,7 +119,7 @@ void Game::Render()
     SDL_RenderClear(renderer);
 
     // Allows resizing of viewport, both by boundaries and zoom
-    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, glm::vec2(0,0), glm::vec2(1,1));
+    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, glm::vec2(0,0));
 
     SDL_RenderPresent(renderer);
 }

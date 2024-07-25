@@ -20,8 +20,8 @@ public:
         RequireComponent<SpriteComponent>();
     }
 
-    // TODO: should this be a unique_ptr for assetmanager in game?
-    void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, glm::vec2 cameraCenter, glm::vec2 cameraZoom)
+    // TODO: dont like this as a unique_ptr reference, or rather unsure if that is optimal?
+    void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, glm::vec2 cameraCenter)
     {
         // TODO: optimize by sorting sprite objects whenever they are added
         // Can do this with a simple insertion on frames with low entity additions
@@ -41,15 +41,12 @@ public:
 
             float cos = glm::cos(transform.rotation / 180 * 3.14);
             float sin = glm::sin(transform.rotation / 180 * 3.14);
-            glm::vec2 camScale = glm::normalize(glm::vec2(glm::abs(cameraZoom.x * cos) + glm::abs(cameraZoom.y * sin),
-                                                          glm::abs(cameraZoom.x * sin) + glm::abs(cameraZoom.y * cos)));
-            float magnitude = glm::length(cameraZoom);
 
             SDL_Rect dstRect = {
-                static_cast<int>((transform.position.x  - cameraCenter.x) * cameraZoom.x), // TODO: i dont think this scales properly off of center of object, scales off of corner
-                static_cast<int>(-(transform.position.y - cameraCenter.y) * cameraZoom.y), // Negative so position y-axis points "up"
-                static_cast<int>(textureSize.x * glm::abs(transform.scale.x) * camScale.x * magnitude),
-                static_cast<int>(textureSize.y * glm::abs(transform.scale.y) * camScale.y * magnitude)
+                static_cast<int>((transform.position.x  - cameraCenter.x)), 
+                static_cast<int>(-(transform.position.y - cameraCenter.y)), // Negative so position y-axis points "up"
+                static_cast<int>(textureSize.x * glm::abs(transform.scale.x)),
+                static_cast<int>(textureSize.y * glm::abs(transform.scale.y))
             };
 
             // Handle negative scales by flipping sprite

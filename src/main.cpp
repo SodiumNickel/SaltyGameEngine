@@ -1,17 +1,13 @@
-#include <cstdlib>
+#include "Game/Game.h"
 
-#include "Engine/Engine.h"
+// TODO: not a good comment here
+// Game main, will be shipped with rest of Game dir in engine build
+int main(int argc, char* argv[]){    
+    Game game;
 
-// TODO: make sure this is still true for all exports
-// Engine main, will NOT be shipped with game build
-int main(int argc, char* argv[]){
-    std::system("echo test");
-    
-    Engine engine;
-
-    if (engine.Initialize() < 0) return -1;
-    engine.Run();
-    engine.Destroy();
+    if (game.Initialize() < 0) return -1;
+    game.Run();
+    game.Destroy();
 
     return 0;
 }
