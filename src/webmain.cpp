@@ -12,8 +12,8 @@ static void WebLoop(void* arg){
             emscripten_cancel_main_loop();
         }
         else{
-            // game->ProcessInput();
-            // game->Update();
+            game->ProcessInput();
+            game->Update();
             game->Render();
         }
     }
@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
     Game game;
 
     if (game.Initialize() < 0) return -1;
-    emscripten_set_main_loop_arg(WebLoop, &game, -1, 1); // TODO: should we limit fps here at all? probably not, can do inside program i think
+    emscripten_set_main_loop_arg(WebLoop, &game, 60, 1); // TODO: should we limit fps here at all? probably not, can do inside program i think
 
     return 0;
 }

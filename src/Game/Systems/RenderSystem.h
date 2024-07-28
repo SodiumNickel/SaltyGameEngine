@@ -38,6 +38,8 @@ public:
             TransformComponent& transform = entity.GetComponent<TransformComponent>();
             const auto sprite = entity.GetComponent<SpriteComponent>();
             glm::vec2 textureSize = assetManager->GetTextureSize(sprite.filepath);
+            std::cout << sprite.filepath << '\n';
+
 
             float cos = glm::cos(transform.rotation / 180 * 3.14);
             float sin = glm::sin(transform.rotation / 180 * 3.14);

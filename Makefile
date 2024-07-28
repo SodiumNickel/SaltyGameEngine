@@ -57,9 +57,11 @@ W_SRC = src/webmain.cpp \
 
 W_FLAGS = -s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["jpg","png"]' -s ALLOW_MEMORY_GROWTH=1
 # Load Unique folder into the virtual filesystem Unique dir (preserves filepaths)
-W_PRELOAD = --preload-file Unique --use-preload-plugins
+W_PRELOAD = --preload-file $(W_DIR)/Unique@Unique --use-preload-plugins
 # TODO: decide between embed and preload, browser games shouldnt have too many files...
 # W_EMBED = 
+# Preload: Good for large assets, reduces initial download size, loads files at runtime.
+# Embed: Good for small assets, immediate access, increases initial download size.
 
 # TODO: remember not to include -g and to include -O2 in actual compilation
 g: # Compiles game
@@ -73,3 +75,4 @@ gdebug:
 
 gweb: # Compiles game for web
 	em++ $(W_SRC) -std=c++17 $(G_INCLUDE_DIRS) $(W_FLAGS) $(W_PRELOAD) -o $(W_DIR)/index.html
+# TODO: remember to make this only updates json later
