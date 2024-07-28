@@ -73,17 +73,11 @@ int Game::Initialize()
     assetManager = std::make_unique<AssetManager>();
 
     // TODO: check for saved scene number here, currently just default
-    // LoadScene(0);
+    LoadScene(0);
 
     // TODO: dont forget to add all systems here
     // TODO: could potentially do this in load scene, iff it finds proper components?, no wait dont think thatll work (assume they add components with scripts)
     registry->AddSystem<RenderSystem>();
-
-    // TESTS
-    Entity& entity = registry->CreateEntity();
-    assetManager->AddTexture(renderer, "big.png");
-    entity.AddComponent<SpriteComponent>("big.png", 0);
-    // END TESTS
 
     isRunning = true;
     return 0;
@@ -200,9 +194,6 @@ void Game::Render()
     SDL_RenderClear(renderer);
 
     registry->GetSystem<RenderSystem>().Update(renderer, assetManager, glm::vec2(0,0));
-    // TEMP
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-    SDL_RenderDrawLine(renderer, 0, 0, 640, 320);
 
     SDL_RenderPresent(renderer);
 }
