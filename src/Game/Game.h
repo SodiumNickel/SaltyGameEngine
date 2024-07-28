@@ -14,7 +14,6 @@ using json = nlohmann::json;
 
 class Game {
     private:
-        bool isRunning; 
         SDL_Window* window;
         int width, height;
         SDL_Renderer* renderer;
@@ -33,6 +32,8 @@ class Game {
         void Update();
         void Render();
         void Destroy();
+
+        bool isRunning; 
 };
 
 

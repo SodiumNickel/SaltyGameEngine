@@ -16,6 +16,7 @@ SRC = src/enginemain.cpp \
 	  src/Game/ECS/*.cpp src/Game/AssetManager/*.cpp \
 	  src/Game/Helpers/*.cpp \
 
+# TODO: consider optimization levels like -O1 or -O2
 # -fsanitize=address 
 default: # Compiles engine
 	g++ -g $(SRC) -std=c++17 $(INCLUDE_DIRS) $(LIB_DIRS) $(LIBS) -o $(BUILD_DIR)/$(ENGINE_NAME)
@@ -33,19 +34,34 @@ clean:
 # Game builds - for testing commands to be called by std::system()
 G_NAME = game
 G_DIR = game-build
+W_DIR = gweb-build
 
 # TODO: note
 # NOTE: I include the entire source here so the headers have the right path, but should be restricted in actual engine
 G_INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/glm -Iinclude/nlohmann -Isrc
+W_INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/glm -Iinclude/nlohmann -Iinclude/emscripten -Isrc
 
 G_LIB_DIRS = -Llib
 G_LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 G_SRC = src/main.cpp \
 	  	src/Game/Game.cpp \
-	  	src/Game/ECS/*.cpp src/Game/AssetManager/*.cpp \
-	  	src/Game/Helpers/*.cpp \
+	  	$(wildcard src/Game/ECS/*.cpp) $(wildcard src/Game/AssetManager/*.cpp) \
+	  	$(wildcard src/Game/Helpers/*.cpp) \
 
+# em++ won't compile unless space seperated (hence wildcard)
+W_SRC = src/webmain.cpp \
+	  	src/Game/Game.cpp \
+	  	$(wildcard src/Game/ECS/*.cpp) $(wildcard src/Game/AssetManager/*.cpp) \
+	  	$(wildcard src/Game/Helpers/*.cpp) \
+
+W_FLAGS = -s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["jpg","png"]' -s ALLOW_MEMORY_GROWTH=1
+# Load Unique folder into the virtual filesystem Unique dir (preserves filepaths)
+W_PRELOAD = --preload-file Unique --use-preload-plugins
+# TODO: decide between embed and preload, browser games shouldnt have too many files...
+# W_EMBED = 
+
+# TODO: remember not to include -g and to include -O2 in actual compilation
 g: # Compiles game
 	g++ -g $(G_SRC) -std=c++17 $(G_INCLUDE_DIRS) $(G_LIB_DIRS) $(G_LIBS) -o $(G_DIR)/$(G_NAME)
 
@@ -54,3 +70,6 @@ grun:
 
 gdebug:
 	cd $(G_DIR) && gdb ./$(G_NAME)
+
+gweb: # Compiles game for web
+	em++ $(W_SRC) -std=c++17 $(G_INCLUDE_DIRS) $(W_FLAGS) $(W_PRELOAD) -o $(W_DIR)/index.html

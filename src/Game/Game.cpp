@@ -38,18 +38,18 @@ int Game::Initialize()
     // Init main SDL window
     if(SDL_Init(SDL_INIT_VIDEO) < 0) { return -1; }
 
-    SDL_DisplayMode dm;
-    SDL_GetDesktopDisplayMode(0, &dm);
-    width = dm.w;
-    height = dm.h - 50; // adjusted for border size, 75
-    std::cout << width << ' ' << height << '\n';
+    //SDL_DisplayMode dm;
+    //SDL_GetDesktopDisplayMode(0, &dm);
+    //width = dm.w;
+    //height = dm.h - 50; // adjusted for border size, 75
+    // std::cout << width << ' ' << height << '\n';
 
     window = SDL_CreateWindow(
         "Game build", // TODO: should allow some more control over this, definitely name
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        width, height,
-        SDL_WINDOW_RESIZABLE
+        500, 500,
+        0 // SDL_WINDOW_RESIZABLE
     );
     if (!window){
         SDL_Quit();
@@ -73,11 +73,15 @@ int Game::Initialize()
     assetManager = std::make_unique<AssetManager>();
 
     // TODO: check for saved scene number here, currently just default
-    LoadScene(0);
+    // LoadScene(0);
 
     // TODO: dont forget to add all systems here
     // TODO: could potentially do this in load scene, iff it finds proper components?, no wait dont think thatll work (assume they add components with scripts)
     registry->AddSystem<RenderSystem>();
+
+    Entity& entity = registry->CreateEntity();
+    assetManager->AddTexture(renderer, "big.png");
+    entity.AddComponent<SpriteComponent>("big.png", 0);
 
     isRunning = true;
     return 0;
@@ -148,7 +152,7 @@ void Game::CreateEntityTree(json jEntities, json jRootIds){
     }
 }
 
-// Game main loop
+// Game main loop, not used in web builds
 void Game::Run() 
 {
     while(isRunning)
