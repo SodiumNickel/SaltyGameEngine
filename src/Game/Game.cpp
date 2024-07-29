@@ -17,7 +17,7 @@
 #include "Game/Components/RigidbodyComponent.h"
 // #include "../Components/BoxColliderComponent.h" might need for visual
 #include "Game/Systems/RenderSystem.h"
-
+#include "Game/Systems/PhysicsSystem.h"
 
 Game::Game()
 {
@@ -48,7 +48,7 @@ int Game::Initialize()
         "Game build", // TODO: should allow some more control over this, definitely name
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        500, 500,
+        1000, 500,
         0 // SDL_WINDOW_RESIZABLE
     );
     if (!window){
@@ -78,6 +78,7 @@ int Game::Initialize()
     // TODO: dont forget to add all systems here
     // TODO: could potentially do this in load scene, iff it finds proper components?, no wait dont think thatll work (assume they add components with scripts)
     registry->AddSystem<RenderSystem>();
+    registry->AddSystem<PhysicsSystem>();
 
     isRunning = true;
     return 0;
@@ -184,7 +185,10 @@ void Game::Update()
 {
     // TODO: Check for events here
     // TODO: probably call script updates here?
-    registry->Update();
+    registry->Update(); 
+    
+    // Update all systems
+    registry->GetSystem<PhysicsSystem>().Update(0.01f);
 }
 
 void Game::Render()

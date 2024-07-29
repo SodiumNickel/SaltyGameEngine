@@ -1,5 +1,5 @@
-#ifndef MOVEMENTSYSTEM_H
-#define MOVEMENTSYSTEM_H
+#ifndef PHYSICSSYSTEM_H
+#define PHYSICSSYSTEM_H
 
 #include "Game/ECS/ECS.h"
 #include "Game/Components/TransformComponent.h"
@@ -7,9 +7,9 @@
 
 
 // TODO: wanted to change the name of this, maybe just rigidbodysystem
-class MovementSystem : public System {
+class PhysicsSystem : public System {
     public:
-        MovementSystem()
+        PhysicsSystem()
         {
             // RequireComponent<TransformComponent>();
             RequireComponent<RigidbodyComponent>();
@@ -32,4 +32,4 @@ class MovementSystem : public System {
         }
 };
 
-#endif // MOVEMENTSYSTEM_H
+#endif // PHYSICSSYSTEM_H
