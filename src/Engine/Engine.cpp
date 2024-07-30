@@ -147,18 +147,39 @@ void Engine::ProcessInput()
                 isRunning = false;
                 break;
             case SDL_KEYDOWN:
+                if(event.key.repeat == 0){
+                    // Detect either control key being pressed
+                    if(event.key.keysym.scancode == SDL_SCANCODE_LCTRL) lCtrlHeld = true;
+                    else if(event.key.keysym.scancode == SDL_SCANCODE_RCTRL) rCtrlHeld = true;
+                    // If either control key is held, precondition of KeyDownInput is true, and should detect for shortcut
+                    else if(lCtrlHeld || rCtrlHeld) KeyDownInput(event.key.keysym.scancode);
+                }
+                break;
+            case SDL_KEYUP:
+                // Detect either control key being released
+                if(event.key.keysym.scancode == SDL_SCANCODE_LCTRL) lCtrlHeld = false;
+                else if(event.key.keysym.scancode == SDL_SCANCODE_RCTRL) rCtrlHeld = false;
+                break;
+            default:
                 break;
         }
         ImGui_ImplSDL2_ProcessEvent(&event);
     }
-
-    // Detect shortcut operations: Undo, Redo, Save, Copy, Cut, Paste, Export // TODO: remove this list once i actually implement stuff
-    // Oops this does it every frame regardless of if it was up last frame...
-    const Uint8* keyboard = SDL_GetKeyboardState(NULL);
-    if((keyboard[SDL_SCANCODE_LCTRL] || keyboard[SDL_SCANCODE_RCTRL])){
-        if(editHistory->canUndo && keyboard[SDL_SCANCODE_Z]) editHistory->Undo();
-        if(editHistory->canRedo && keyboard[SDL_SCANCODE_Y]) editHistory->Redo();
-        if(editHistory->unsaved && keyboard[SDL_SCANCODE_S]) editHistory->Save();
+}
+// Pre: One of the ctrl keys is held down -> potential for a shortcut
+void Engine::KeyDownInput(SDL_Scancode scancode){
+    switch(scancode){
+        case SDL_SCANCODE_Z:
+            if(editHistory->canUndo) editHistory->Undo();
+            break;
+        case SDL_SCANCODE_Y:
+            if(editHistory->canRedo) editHistory->Redo();
+            break;
+        case SDL_SCANCODE_S:
+            if(editHistory->unsaved) editHistory->Save();
+            break;
+        default:
+            break;
     }
 }
 

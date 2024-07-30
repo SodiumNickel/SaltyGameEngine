@@ -34,6 +34,10 @@ class Engine {
         std::shared_ptr<AssetManager> assetManager;
 
         std::shared_ptr<EditHistory> editHistory;
+        // For shortcutted input handling (i.e. Undo)
+        bool lCtrlHeld;
+        bool rCtrlHeld;
+
         std::shared_ptr<Stage> stage;
         std::unique_ptr<Menu> menu;
         std::vector<std::unique_ptr<ITab>> openTabs;
@@ -42,7 +46,8 @@ class Engine {
         ~Engine();
         int Initialize();
         void Run();
-        void ProcessInput();
+        void ProcessInput(); // TODO: some of this can def be private, not sure thats a big issue though
+        void KeyDownInput(SDL_Scancode scancode);
         void UpdateViewport();
         void UpdateGUI();
         void Render();

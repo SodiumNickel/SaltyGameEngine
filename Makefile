@@ -14,7 +14,7 @@ SRC = src/enginemain.cpp \
 	  src/Engine/History/*.cpp src/Engine/History/Edits/*.cpp src/Engine/Debug/*.cpp \
 	  src/Game/Game.cpp \
 	  src/Game/ECS/*.cpp src/Game/AssetManager/*.cpp \
-	  src/Game/Helpers/*.cpp \
+	  src/Game/Input/*.cpp src/Game/Helpers/*.cpp \
 
 # TODO: consider optimization levels like -O1 or -O2
 # -fsanitize=address 

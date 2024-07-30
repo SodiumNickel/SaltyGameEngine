@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <string>
 
+#include <SDL.h>
+
 
 struct EngineData {
     EngineData(int sceneIndex, uint64_t targetFrameTime) : sceneIndex(sceneIndex), targetFrameTime(targetFrameTime) {};
