@@ -12,6 +12,7 @@
 
 #include "Game/ECS/ECS.h"
 #include "Game/Helpers/JsonHelper.h" // TODO: might remove this
+#include "Game/Input/SaltyInput.h"
 #include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
@@ -169,6 +170,10 @@ void Game::Run()
 
 void Game::ProcessInput()
 {
+    // Clear keyboard inputs frame last frame
+    std::memset(Input::KeyDown, 0, sizeof(Input::KeyDown));
+    std::memset(Input::KeyUp, 0, sizeof(Input::KeyUp));
+
     SDL_Event event;
     while(SDL_PollEvent(&event)){
         switch(event.type){
@@ -190,21 +195,23 @@ void Game::ProcessInput()
             // at end, keydown sets keyheld to 1 (i.e. take the bitwise-or)
             // this way if game has low frame-rate and player inputs downs and ups multiple times in 1 frame
             case SDL_KEYDOWN:
-                if(event.key.repeat == 0) std::cout << "Key Down: " << SDL_GetKeyName(event.key.keysym.sym) << std::endl;
+                if(event.key.repeat == 0) Input::KeyDown[event.key.keysym.scancode] = 1;
                 break;
             case SDL_KEYUP:
-                std::cout << "Key Up: " << SDL_GetKeyName(event.key.keysym.sym) << std::endl;
+                Input::KeyUp[event.key.keysym.scancode] = 1;
                 break;
-            case SDL_CONTROLLERBUTTONDOWN:
-                std::cout << "Controller Button Down: " << static_cast<int>(event.cbutton.button) << std::endl;
-                break;
-            case SDL_CONTROLLERBUTTONUP:
-                std::cout << "Controller Button Up: " << static_cast<int>(event.cbutton.button) << std::endl;
-                break;
+            // case SDL_CONTROLLERBUTTONDOWN:
+            //     std::cout << "Controller Button Down: " << static_cast<int>(event.cbutton.button) << std::endl;
+            //     break;
+            // case SDL_CONTROLLERBUTTONUP:
+            //     std::cout << "Controller Button Up: " << static_cast<int>(event.cbutton.button) << std::endl;
+            //     break;
             default:
                 break;
         }
     }
+
+    if(Input::KeyDown[SDL_SCANCODE_W]) std::cout << "W\n";
 }
 
 void Game::Update()

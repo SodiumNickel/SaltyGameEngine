@@ -47,13 +47,13 @@ G_LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 G_SRC = src/main.cpp \
 	  	src/Game/Game.cpp \
 	  	$(wildcard src/Game/ECS/*.cpp) $(wildcard src/Game/AssetManager/*.cpp) \
-	  	$(wildcard src/Game/Helpers/*.cpp) \
+	  	$(wildcard src/Game/Helpers/*.cpp) $(wildcard src/Game/Input/*.cpp) \
 
 # em++ won't compile unless space seperated (hence wildcard)
 W_SRC = src/webmain.cpp \
 	  	src/Game/Game.cpp \
 	  	$(wildcard src/Game/ECS/*.cpp) $(wildcard src/Game/AssetManager/*.cpp) \
-	  	$(wildcard src/Game/Helpers/*.cpp) \
+	  	$(wildcard src/Game/Helpers/*.cpp) $(wildcard src/Game/Input/*.cpp) \
 
 W_FLAGS = -s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["jpg","png"]' -s ALLOW_MEMORY_GROWTH=1
 # Load Unique folder into the virtual filesystem Unique dir (preserves filepaths)
