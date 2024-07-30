@@ -183,6 +183,7 @@ void Game::ProcessInput()
             // i think this is a good start, can always change later!
             case SDL_KEYDOWN:
                 std::cout << "Key Down: " << SDL_GetKeyName(event.key.keysym.sym) << std::endl;
+                
                 break;
             case SDL_KEYUP:
                 std::cout << "Key Up: " << SDL_GetKeyName(event.key.keysym.sym) << std::endl;
@@ -206,7 +207,7 @@ void Game::Update()
     registry->Update(); 
     
     // Update all systems
-    registry->GetSystem<PhysicsSystem>().Update(1.0f);
+    registry->GetSystem<PhysicsSystem>().Update(1.0f); // TODO: not sure this should be before scripts... imagine we have someone falling very fast, then teleported, could go through ground
 }
 
 void Game::Render()
