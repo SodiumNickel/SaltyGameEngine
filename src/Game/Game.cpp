@@ -49,7 +49,7 @@ int Game::Initialize()
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         1000, 500,
-        0 // SDL_WINDOW_RESIZABLE
+        SDL_WINDOW_RESIZABLE
     );
     if (!window){
         SDL_Quit();
@@ -169,13 +169,31 @@ void Game::Run()
 
 void Game::ProcessInput()
 {
-    SDL_Event e;
-    while(SDL_PollEvent(&e)){
-        switch(e.type){
+    SDL_Event event;
+    while(SDL_PollEvent(&event)){
+        switch(event.type){
             case SDL_QUIT:
                 isRunning = false;
                 break; // TODO: all of these do them every frame, should only do it on first frame down, wait until up
-            case SDL_KEYDOWN: // TODO: implement proper key detection, and use it here instead
+            // i am thinking of having something similar to unity's new input system
+            // i.e. you set input types such as "jump" and a list of keys map to that
+            // i think this will allow easier key remapping
+            // should probably also store most recent key press for cases such as the mentioned remapping keys
+            // where we need to be able to remap to any possible key
+            // i think this is a good start, can always change later!
+            case SDL_KEYDOWN:
+                std::cout << "Key Down: " << SDL_GetKeyName(event.key.keysym.sym) << std::endl;
+                break;
+            case SDL_KEYUP:
+                std::cout << "Key Up: " << SDL_GetKeyName(event.key.keysym.sym) << std::endl;
+                break;
+            case SDL_CONTROLLERBUTTONDOWN:
+                std::cout << "Controller Button Down: " << static_cast<int>(event.cbutton.button) << std::endl;
+                break;
+            case SDL_CONTROLLERBUTTONUP:
+                std::cout << "Controller Button Up: " << static_cast<int>(event.cbutton.button) << std::endl;
+                break;
+            default:
                 break;
         }
     }
@@ -188,7 +206,7 @@ void Game::Update()
     registry->Update(); 
     
     // Update all systems
-    registry->GetSystem<PhysicsSystem>().Update(0.01f);
+    registry->GetSystem<PhysicsSystem>().Update(1.0f);
 }
 
 void Game::Render()

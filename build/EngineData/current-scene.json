@@ -10,7 +10,7 @@
           ]
         },
         "sprite": {
-          "filepath": "",
+          "filepath": "StageDemo/player.png",
           "zindex": 1
         }
       },
