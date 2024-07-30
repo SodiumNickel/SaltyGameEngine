@@ -23,6 +23,7 @@ Engine::Engine()
     // TODO: should initialize to scene that was last open, stored fps, etc.
     engineData = std::make_shared<EngineData>(0, 8);
     editHistory = std::make_shared<EditHistory>(engineData); // TODO: could move this into initialize, especially if it needs scene
+    
     // Set to true on success of Initialize()
     isRunning = false;
 }
@@ -112,7 +113,7 @@ int Engine::Initialize()
     // Open initial tabs
     openTabs.push_back(std::make_unique<EntityTab>(engineData, editHistory, registry));
     openTabs.push_back(std::make_unique<ComponentTab>(engineData, editHistory, registry, assetManager)); // TODO: unify order of this
-    openTabs.push_back(std::make_unique<ScriptTab>(registry));
+    openTabs.push_back(std::make_unique<ScriptTab>(engineData, editHistory, registry));
     openTabs.push_back(std::make_unique<AssetTab>(registry));
     openTabs.push_back(std::make_unique<LogTab>(registry));
 

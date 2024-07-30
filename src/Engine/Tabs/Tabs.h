@@ -76,9 +76,17 @@ public:
 class ScriptTab : public ITab {
 private:
     int index;
+
+    std::string prevs;
+
+    std::shared_ptr<EditHistory> editHistory;
+    std::shared_ptr<EngineData> engineData; // TODO: not sure i will keep this in the end, currently just for selectedEntity
     std::shared_ptr<Registry> registry;
+
+    int selectedEntity;
 public:
-    ScriptTab(std::shared_ptr<Registry> registry) : registry(registry) {};
+    ScriptTab(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Registry> registry) 
+    : editHistory(editHistory), engineData(engineData), registry(registry) {}; // TODO: really need to unify order here
     void Begin() override;
 };
 

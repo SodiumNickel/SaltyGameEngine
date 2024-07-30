@@ -6,6 +6,7 @@
 #include <imgui.h>
 #include <imgui_stdlib.h>
 
+#include "Engine/EngineData.h"
 #include "Engine/History/Edit.h"
 
 #include "Game/ECS/ECS.h"
@@ -177,6 +178,15 @@ void ComponentTab::Begin(){
     // If an entity is selected
     if(selectedEntity != -1){
         Entity& entity = *registry->entityTree[selectedEntity].get();
+
+        // For changing entity name
+        ImGui::PushItemWidth(ImGui::GetWindowWidth());
+        std::string prev = entity.name;
+        ImGui::InputText("##name", &entity.name);
+        if(ImGui::IsItemActivated()) prevs = prev;
+        if(ImGui::IsItemDeactivatedAfterEdit()) // Used arbitrary ECOmponentVar in POSITION_X, is not read by NAME edit
+        { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(NAME, POSITION_X, registry, selectedEntity, ComponentValue(prevs), ComponentValue(entity.name)))); }
+        ImGui::SeparatorText("");
 
         // Iterate through all possible components, displaying if HasComponent()
         Transform();

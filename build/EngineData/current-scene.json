@@ -3,6 +3,12 @@
     {
       "children-ids": [],
       "components": {
+        "rigidbody": {
+          "initVelocity": [
+            0.574999988079071,
+            1.401298464324817e-45
+          ]
+        },
         "sprite": {
           "filepath": "StageDemo/player.png",
           "zindex": 1

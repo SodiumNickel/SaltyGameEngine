@@ -22,6 +22,7 @@ public:
  * ------------------------------------------------------ */
 
 enum EComponentTypes {
+    NAME, // Okay, entity.name is not technically a component, but using ComponentValueEdit is convenient for name edits
     TRANSFORM,
     SPRITE,
     RIGIDBODY,

@@ -20,8 +20,12 @@ using json = nlohmann::json;
 // Pre: entity.HasComponent<compType>() || compType = TRANSFORM
 void ComponentValueEdit::Apply(bool undo){
     ComponentValue& val = undo ? prev : cur; 
-    Entity entity = *registry->entityTree[entityId].get();
+    Entity& entity = *registry->entityTree[entityId].get();
     switch(compType) {
+        case NAME: {
+            entity.name = std::get<std::string>(val);
+            break;
+        }
         case TRANSFORM: {
             TransformComponent& transform = entity.GetComponent<TransformComponent>();
             switch(compVar){
@@ -77,6 +81,10 @@ void ComponentValueEdit::ApplyJson(bool undo){
     json jComponents = jEntity["components"];
 
     switch(compType) {
+        case NAME: {
+            jEntity["name"] = std::get<std::string>(val);
+            break;
+        }
         case TRANSFORM: {
             switch(compVar){ // TODO: this can be ["transform"]["position"] i think, should check
                 case POSITION_X: jEntity["transform"]["position"][0] = std::get<float>(val); break;
@@ -130,6 +138,9 @@ std::string ComponentValueEdit::ToString(bool undo){
     
     std::string componentName = "UNDEFINED COMPONENT";
     switch(compType) {
+        case NAME:
+            componentName = "Name";
+            break;
         case TRANSFORM:
             componentName = "Transform";
             break;
