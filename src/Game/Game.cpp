@@ -157,8 +157,8 @@ void Game::Run()
     {
         ProcessInput();
 
-        uint64_t curFrameTime = SDL_GetTicks64();
-        uint64_t deltaTime = curFrameTime - prevFrameTime;
+        // Temp deltaTime before delay
+        uint64_t deltaTime = SDL_GetTicks64() - prevFrameTime;
         if(deltaTime < targetFrameTime) SDL_Delay(targetFrameTime - deltaTime);
         // Actual deltaTime after potential delay
         deltaTime = SDL_GetTicks64() - prevFrameTime;

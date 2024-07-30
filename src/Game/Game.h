@@ -21,7 +21,6 @@ class Game {
         std::unique_ptr<Registry> registry; 
         std::unique_ptr<AssetManager> assetManager;
 
-        uint64_t prevFrameTime;
         // In ms
         uint64_t targetFrameTime = 8;
 
@@ -39,6 +38,7 @@ class Game {
         void Destroy();
 
         bool isRunning; 
+        uint64_t prevFrameTime;
 };
 
 
