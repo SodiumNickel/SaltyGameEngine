@@ -180,20 +180,6 @@ void Game::ProcessInput()
             case SDL_QUIT:
                 isRunning = false;
                 break; // TODO: all of these do them every frame, should only do it on first frame down, wait until up
-            // i am thinking of having something similar to unity's new input system
-            // i.e. you set input types such as "jump" and a list of keys map to that
-            // i think this will allow easier key remapping
-            // should probably also store most recent key press for cases such as the mentioned remapping keys
-            // where we need to be able to remap to any possible key
-            // i think this is a good start, can always change later!
-
-            // Want an array for KeyDown, KeyUp[KEY_W], KeyHeld
-
-            // On start of loop keydown, keyup set to 0
-            // keyheld stays same
-            // keyup sets keyheld to 0
-            // at end, keydown sets keyheld to 1 (i.e. take the bitwise-or)
-            // this way if game has low frame-rate and player inputs downs and ups multiple times in 1 frame
             case SDL_KEYDOWN:
                 if(event.key.repeat == 0) Input::KeyDown[event.key.keysym.scancode] = 1;
                 break;
@@ -211,7 +197,8 @@ void Game::ProcessInput()
         }
     }
 
-    if(Input::KeyDown[SDL_SCANCODE_W]) std::cout << "W\n";
+    // TODO: KeyHeld still not implemented
+    // TODO: controller input not implemented
 }
 
 void Game::Update()
