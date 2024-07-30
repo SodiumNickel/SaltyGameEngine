@@ -21,6 +21,10 @@ class Game {
         std::unique_ptr<Registry> registry; 
         std::unique_ptr<AssetManager> assetManager;
 
+        uint64_t prevFrameTime;
+        // In ms
+        uint64_t targetFrameTime = 8;
+
         void CreateEntityTree(json jEntities, json jRootIds);
     public:
         Game();
@@ -29,7 +33,8 @@ class Game {
         void LoadScene(int sceneIndex);
         void Run();
         void ProcessInput();
-        void Update();
+        // deltaTime converted into seconds here
+        void Update(float deltaTime);
         void Render();
         void Destroy();
 

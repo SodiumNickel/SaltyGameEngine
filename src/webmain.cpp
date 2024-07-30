@@ -13,7 +13,7 @@ static void WebLoop(void* arg){
         }
         else{
             game->ProcessInput();
-            game->Update();
+            game->Update(0.1f);
             game->Render();
         }
     }

@@ -156,15 +156,19 @@ void Game::Run()
     while(isRunning)
     {
         ProcessInput();
-        Update();
-        Render();
 
-        // NOTE: was having issues with high gpu usage before, will still allow for a (pseudo) uncapped frame rate in settings
-        // Limits frame rate to 1/targetFrameTime 
-        // uint64_t curFrameTime = SDL_GetTicks64();
-        // uint64_t deltaTime = curFrameTime - GameData->prevFrameTime;
-        // if(deltaTime < engineData->targetFrameTime) SDL_Delay(engineData->targetFrameTime - deltaTime);
-        // engineData->prevFrameTime = SDL_GetTicks64();
+        uint64_t curFrameTime = SDL_GetTicks64();
+        uint64_t deltaTime = curFrameTime - prevFrameTime;
+        if(deltaTime < targetFrameTime) SDL_Delay(targetFrameTime - deltaTime);
+        // Actual deltaTime after potential delay
+        deltaTime = SDL_GetTicks64() - prevFrameTime;
+
+        // NOTE: prevFrameTime is called before Update, but Update still recieves deltaTime from before
+        // This is so Update recieves accurate deltas even if Update takes time to finish
+        prevFrameTime = SDL_GetTicks64();
+        Update(deltaTime / 1000.0f);
+
+        Render();
     }
 }
 
@@ -201,14 +205,14 @@ void Game::ProcessInput()
     // TODO: controller input not implemented
 }
 
-void Game::Update()
+void Game::Update(float deltaTime)
 {
     // TODO: Check for events here
     // TODO: probably call script updates here?
     registry->Update(); 
     
     // Update all systems
-    registry->GetSystem<PhysicsSystem>().Update(1.0f); // TODO: not sure this should be before scripts... imagine we have someone falling very fast, then teleported, could go through ground
+    registry->GetSystem<PhysicsSystem>().Update(deltaTime); // TODO: not sure this should be before scripts... imagine we have someone falling very fast, then teleported, could go through ground
 }
 
 void Game::Render()
