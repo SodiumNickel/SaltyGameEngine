@@ -140,19 +140,25 @@ void Engine::Run()
 
 void Engine::ProcessInput()
 {
-    SDL_Event e;
-    while(SDL_PollEvent(&e)){
-        switch(e.type){
+    SDL_Event event;
+    while(SDL_PollEvent(&event)){
+        switch(event.type){
             case SDL_QUIT:
                 isRunning = false;
-                break; // TODO: all of these do them every frame, should only do it on first frame down, wait until up
-            case SDL_KEYDOWN: // TODO: implement proper key detection, and use it here instead
-                if(editHistory->canUndo && e.key.keysym.sym == SDLK_z) editHistory->Undo();
-                else if(editHistory->canRedo && e.key.keysym.sym == SDLK_y) editHistory->Redo();
-                else if(editHistory->unsaved && e.key.keysym.sym == SDLK_s) editHistory->Save();
+                break;
+            case SDL_KEYDOWN:
                 break;
         }
-        ImGui_ImplSDL2_ProcessEvent(&e);
+        ImGui_ImplSDL2_ProcessEvent(&event);
+    }
+
+    // Detect shortcut operations: Undo, Redo, Save, Copy, Cut, Paste, Export // TODO: remove this list once i actually implement stuff
+    // Oops this does it every frame regardless of if it was up last frame...
+    const Uint8* keyboard = SDL_GetKeyboardState(NULL);
+    if((keyboard[SDL_SCANCODE_LCTRL] || keyboard[SDL_SCANCODE_RCTRL])){
+        if(editHistory->canUndo && keyboard[SDL_SCANCODE_Z]) editHistory->Undo();
+        if(editHistory->canRedo && keyboard[SDL_SCANCODE_Y]) editHistory->Redo();
+        if(editHistory->unsaved && keyboard[SDL_SCANCODE_S]) editHistory->Save();
     }
 }
 

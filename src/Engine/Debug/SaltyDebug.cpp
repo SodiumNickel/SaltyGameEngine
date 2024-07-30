@@ -19,7 +19,7 @@ std::string SystemTime()
 }
 
 // Initializes empty vector of log entries
-std::vector<LogEntry> Debug::logEntries;
+std::vector<LogEntry> Debug::LogEntries;
 
 void Debug::Log(const std::string& message){
     LogEntry entry;
@@ -29,7 +29,7 @@ void Debug::Log(const std::string& message){
     entry.message.erase(std::remove(entry.message.begin(), entry.message.end(), '\0'), entry.message.end()); // Erase-remove Idiom
 
     std::cout << entry.message << '\n';
-    Debug::logEntries.push_back(entry);
+    Debug::LogEntries.push_back(entry);
 }
 
 // TODO: i dont do anything with the level yet, will have -1 be internal, 0 be standard, and other stuff later
@@ -43,6 +43,6 @@ void Debug::Log(const std::string& message, int level){
         entry.message.erase(std::remove(entry.message.begin(), entry.message.end(), '\0'), entry.message.end()); // Erase-remove Idiom
 
         std::cout << entry.message << '\n';
-        Debug::logEntries.push_back(entry);
+        Debug::LogEntries.push_back(entry);
     }
 }

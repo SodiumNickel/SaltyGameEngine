@@ -181,9 +181,16 @@ void Game::ProcessInput()
             // should probably also store most recent key press for cases such as the mentioned remapping keys
             // where we need to be able to remap to any possible key
             // i think this is a good start, can always change later!
+
+            // Want an array for KeyDown, KeyUp[KEY_W], KeyHeld
+
+            // On start of loop keydown, keyup set to 0
+            // keyheld stays same
+            // keyup sets keyheld to 0
+            // at end, keydown sets keyheld to 1 (i.e. take the bitwise-or)
+            // this way if game has low frame-rate and player inputs downs and ups multiple times in 1 frame
             case SDL_KEYDOWN:
-                std::cout << "Key Down: " << SDL_GetKeyName(event.key.keysym.sym) << std::endl;
-                
+                if(event.key.repeat == 0) std::cout << "Key Down: " << SDL_GetKeyName(event.key.keysym.sym) << std::endl;
                 break;
             case SDL_KEYUP:
                 std::cout << "Key Up: " << SDL_GetKeyName(event.key.keysym.sym) << std::endl;
