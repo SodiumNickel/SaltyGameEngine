@@ -44,25 +44,25 @@ class ComponentTab : public ITab {
 private:
     int index;
 
+    // Used to store previous values for Undo
     int previ;
     float prevf;
     std::string prevs;
 
     std::shared_ptr<EditHistory> editHistory;
-    std::shared_ptr<EngineData> engineData; // TODO: not sure i will keep this in the end, currently just for selectedEntity
+    std::shared_ptr<EngineData> engineData;
     std::shared_ptr<Registry> registry;
     std::shared_ptr<AssetManager> assetManager;
 
-    // Entity entity;
-    int entityId;
-
+    // Lock prevents selected entity from updating (with some edge cases surrounding -1)
+    bool locked = false;
     int selectedEntity;
 
-    // TODO: this should just access entity by id from above
     void Transform();
     void Sprite();
     void Rigidbody();
     void BoxCollider();
+
     // Used to show close button on CollapsingHeader
     bool notRemoved = true; 
 
@@ -80,9 +80,10 @@ private:
     std::string prevs;
 
     std::shared_ptr<EditHistory> editHistory;
-    std::shared_ptr<EngineData> engineData; // TODO: not sure i will keep this in the end, currently just for selectedEntity
+    std::shared_ptr<EngineData> engineData;
     std::shared_ptr<Registry> registry;
-
+    
+    bool locked = false;
     int selectedEntity;
 public:
     ScriptTab(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Registry> registry) 

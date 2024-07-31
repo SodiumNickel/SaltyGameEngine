@@ -178,35 +178,13 @@
         ]
       }
     },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/background.png",
-          "zindex": 0
-        }
-      },
-      "name": "Background",
-      "parent-id": -1,
-      "transform": {
-        "position": [
-          -15.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          4.15,
-          4.4
-        ]
-      }
-    }
+    null
   ],
-  "null-count": 0,
+  "null-count": 1,
   "root-ids": [
     0,
     1,
     2,
-    4,
-    8
+    4
   ]
 }

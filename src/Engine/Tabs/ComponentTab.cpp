@@ -171,10 +171,22 @@ void ComponentTab::BoxCollider(){
 
 // TODO: i want component boxes in tab to reopen when switching, or optimally they store who is open
 void ComponentTab::Begin(){
-    ImGui::Begin("Components");
+    // TODO: Currently just use unsaved icon as a lock icon
+    ImGui::Begin("Components", NULL, locked ? ImGuiWindowFlags_UnsavedDocument : 0);
+    ImGui::OpenPopupOnItemClick("ComponentsPopup", ImGuiPopupFlags_MouseButtonRight);
+    if (ImGui::BeginPopupContextItem("ComponentsPopup"))
+    {
+        if(ImGui::MenuItem(locked ? "Unlock Tab" : "Lock Tab")) locked = !locked;
+        ImGui::EndPopup();
+    }
 
-    // TODO: this is not great, should be able to lock tabs, and then only need to update this when it changes
-    selectedEntity = engineData->selectedEntity;
+    // Specifically, if locked on -1, will instead lock on first clicked entity
+    // If locked on entity that is deleted, allow change to -1
+    if(!locked || selectedEntity == -1) selectedEntity = engineData->selectedEntity;
+    else { // locked && selectedEntity != -1
+        if(registry->entityTree[selectedEntity] == nullptr) selectedEntity = -1;
+    }
+    
     // If an entity is selected
     if(selectedEntity != -1){
         Entity& entity = *registry->entityTree[selectedEntity].get();
