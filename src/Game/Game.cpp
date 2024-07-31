@@ -208,7 +208,7 @@ void Game::ProcessInput()
     // TODO: see note
     // NOTE: When a KeyDown and KeyUp happen in the same frame, KeyHeld is set to whichever one happens last
     //       this has the effect that we can have KeyDown = 1, KeyUp = 1, KeyHeld = 0 (which is intended... for now)
-    
+
     // TODO: controller input not implemented
 }
 

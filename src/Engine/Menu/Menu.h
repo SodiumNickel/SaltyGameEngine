@@ -16,8 +16,14 @@ private:
     std::shared_ptr<EngineData> engineData; // TODO: engine data is unused rn, not sure if itll be useful later
     std::shared_ptr<EditHistory> editHistory;
 
+    /* Export Handling */
+    void ExportPopup();
+    void ExportWindows();
+    void ExportWeb();
+
     /* FPS Display */
     bool showFps = false;
+    void FPSMetric();
     // Average over last n frames (2 seconds)
     int n;
     std::vector<float> lastNFrames;

@@ -7,17 +7,24 @@
 #include <imgui.h>
 
 #include "Engine/Debug/SaltyDebug.h"
-#include "Engine/Export/Export.h"
 #include "Engine/History/EditHistory.h"
 
 void Menu::Begin(){
     if (ImGui::BeginMainMenuBar()) {
+        bool exportPopup = false;
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Save", "CTRL+S", false, editHistory->unsaved )) { editHistory->Save(); }
-            if (ImGui::MenuItem("Export", "CTRL+???")) {  }
-            
+            if (ImGui::MenuItem("Export", "CTRL+???")) { exportPopup = true; }
+
             ImGui::EndMenu();
         }
+        // Will open on File/Export being clicked
+        if(exportPopup){
+            ImGui::OpenPopup("Export");
+            exportPopup = false;
+        }
+        Menu::ExportPopup();
+
         if (ImGui::BeginMenu("Edit")) {
             if (ImGui::MenuItem("Undo", "CTRL+Z", false, editHistory->canUndo)) { editHistory->Undo(); }
             if (ImGui::MenuItem("Redo", "CTRL+Y", false, editHistory->canRedo)) { editHistory->Redo(); }
@@ -83,28 +90,33 @@ void Menu::Begin(){
 
             ImGui::EndMenu();
         }
-
+        
         /* Calculation for the displayed frame rate - done regardless of if fps is actually displayed */
-        // I: totalNFrames = sum(lastNFrames)
-        totalNFrames -= lastNFrames[lastFrameIndex];
-        lastNFrames[lastFrameIndex] = ImGui::GetIO().DeltaTime;
-        totalNFrames += lastNFrames[lastFrameIndex];
-        lastFrameIndex = (lastFrameIndex + 1) % n;
-
-        // Caps display at 1000 fps, TODO: is this a proper maximum, cant imagine anyone would need more
-        int avgFps = n / std::max(0.001f, totalNFrames);
-        if(avgFps == prevFps) sameFpsInRow += 1; 
-        else sameFpsInRow = 0;
-        prevFps = avgFps;
-
-        // Extra smoothing by ensuring the change is at least 3 or it has been the same for n/4 frames (1/4 second)
-        if(avgFps <= displayedFps - 3 || avgFps >= displayedFps + 3 || sameFpsInRow >= n/4) displayedFps = avgFps;
-
-        if(showFps){
-            std::string fps = "FPS: " + std::to_string(displayedFps);
-            ImGui::Text(fps.c_str());
-        }
+        FPSMetric();
 
         ImGui::EndMainMenuBar();
+    }
+}
+
+// TODO: if i add more metrics seperate into another file
+void Menu::FPSMetric(){
+    // I: totalNFrames = sum(lastNFrames)
+    totalNFrames -= lastNFrames[lastFrameIndex];
+    lastNFrames[lastFrameIndex] = ImGui::GetIO().DeltaTime;
+    totalNFrames += lastNFrames[lastFrameIndex];
+    lastFrameIndex = (lastFrameIndex + 1) % n;
+
+    // Caps display at 1000 fps, TODO: is this a proper maximum, cant imagine anyone would need more
+    int avgFps = n / std::max(0.001f, totalNFrames);
+    if(avgFps == prevFps) sameFpsInRow += 1; 
+    else sameFpsInRow = 0;
+    prevFps = avgFps;
+
+    // Extra smoothing by ensuring the change is at least 3 or it has been the same for n/4 frames (1/4 second)
+    if(avgFps <= displayedFps - 3 || avgFps >= displayedFps + 3 || sameFpsInRow >= n/4) displayedFps = avgFps;
+
+    if(showFps){
+        std::string fps = "FPS: " + std::to_string(displayedFps);
+        ImGui::Text(fps.c_str());
     }
 }

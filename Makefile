@@ -10,7 +10,8 @@ LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 SRC = src/enginemain.cpp \
 	  $(wildcard imgui/*.cpp) \
 	  src/Engine/Engine.cpp \
-	  src/Engine/Stage/*.cpp src/Engine/Menu/*.cpp src/Engine/Tabs/*.cpp \
+	  src/Engine/Stage/*.cpp src/Engine/Tabs/*.cpp \
+	  src/Engine/Menu/*.cpp src/Engine/Menu/Export/*.cpp \
 	  src/Engine/History/*.cpp src/Engine/History/Edits/*.cpp src/Engine/Debug/*.cpp \
 	  src/Game/Game.cpp \
 	  src/Game/ECS/*.cpp src/Game/AssetManager/*.cpp \
