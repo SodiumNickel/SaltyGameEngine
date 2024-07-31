@@ -185,10 +185,14 @@ void Game::ProcessInput()
                 isRunning = false;
                 break; // TODO: all of these do them every frame, should only do it on first frame down, wait until up
             case SDL_KEYDOWN:
-                if(event.key.repeat == 0) Input::KeyDown[event.key.keysym.scancode] = 1;
+                if(event.key.repeat == 0) {
+                    Input::KeyDown[event.key.keysym.scancode] = 1;
+                    Input::KeyHeld[event.key.keysym.scancode] = 1;
+                }
                 break;
             case SDL_KEYUP:
                 Input::KeyUp[event.key.keysym.scancode] = 1;
+                Input::KeyHeld[event.key.keysym.scancode] = 0;
                 break;
             // case SDL_CONTROLLERBUTTONDOWN:
             //     std::cout << "Controller Button Down: " << static_cast<int>(event.cbutton.button) << std::endl;
@@ -200,17 +204,11 @@ void Game::ProcessInput()
                 break;
         }
     }
-    
-    // TODO: v Could maybe track last input on each key, and then set it based on that?, would simplify logic below too
-    // TODO: there needs to be more thought if down and up happen in same frame, not sure how that handles
-    // KeyHeld logic - First take bitwise xor with Up (Pre: all that were held were 1 last frame)
-    //               - Then take bitwise or with Down (NOTE: this has side-effect that if Up+Down in same frame, Held = true)
-    int i = 0;
-    while(i < sizeof(Input::KeyHeld)){ // KeyHeld is a bool array
-        Input::KeyHeld[i] = (Input::KeyHeld[i] != Input::KeyUp[i]) || Input::KeyDown[i];
-        i++;
-    }
 
+    // TODO: see note
+    // NOTE: When a KeyDown and KeyUp happen in the same frame, KeyHeld is set to whichever one happens last
+    //       this has the effect that we can have KeyDown = 1, KeyUp = 1, KeyHeld = 0 (which is intended... for now)
+    
     // TODO: controller input not implemented
 }
 
