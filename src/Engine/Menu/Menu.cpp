@@ -14,7 +14,7 @@ void Menu::Begin(){
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Save", "CTRL+S", false, editHistory->unsaved )) { editHistory->Save(); }
             if (ImGui::MenuItem("Export", "CTRL+???", false, true )) {  }
-            //ShowExampleMenuFile();
+            
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit")) {
@@ -24,6 +24,18 @@ void Menu::Begin(){
             if (ImGui::MenuItem("Cut", "CTRL+X")) {}
             if (ImGui::MenuItem("Copy", "CTRL+C")) {}
             if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+            ImGui::EndMenu();
+        }
+        if(ImGui::BeginMenu("Engine")){
+            if (ImGui::BeginMenu("Add Tab")) {
+                // TODO: didn't actually implement either of these, i actually cannot think of a case where it would be useful?
+                // with locks and scripts and comps being seperate
+                // however, i could definitely have missed some case so will leave space for it here
+                // TODO: don't think i need to add any other tabs?
+                ImGui::MenuItem("Component Tab");
+                ImGui::MenuItem("Script Tab");
+                ImGui::EndMenu();
+            }
             ImGui::EndMenu();
         }
         if(ImGui::BeginMenu("Metrics")){
