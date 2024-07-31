@@ -201,7 +201,16 @@ void Game::ProcessInput()
         }
     }
     
-    // TODO: KeyHeld still not implemented
+    // TODO: v Could maybe track last input on each key, and then set it based on that?, would simplify logic below too
+    // TODO: there needs to be more thought if down and up happen in same frame, not sure how that handles
+    // KeyHeld logic - First take bitwise xor with Up (Pre: all that were held were 1 last frame)
+    //               - Then take bitwise or with Down (NOTE: this has side-effect that if Up+Down in same frame, Held = true)
+    int i = 0;
+    while(i < sizeof(Input::KeyHeld)){ // KeyHeld is a bool array
+        Input::KeyHeld[i] = (Input::KeyHeld[i] != Input::KeyUp[i]) || Input::KeyDown[i];
+        i++;
+    }
+
     // TODO: controller input not implemented
 }
 
