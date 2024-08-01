@@ -5,8 +5,8 @@
       "components": {
         "rigidbody": {
           "initVelocity": [
-            0.574999988079071,
-            1.401298464324817e-45
+            -30.0,
+            0.0
           ]
         },
         "sprite": {
@@ -19,7 +19,7 @@
       "transform": {
         "position": [
           881.0,
-          -515.0
+          -371.0
         ],
         "rotation": 0.0,
         "scale": [

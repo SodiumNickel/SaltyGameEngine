@@ -56,6 +56,7 @@ W_SRC = src/webmain.cpp \
 	  	$(wildcard src/Game/ECS/*.cpp) $(wildcard src/Game/AssetManager/*.cpp) \
 	  	$(wildcard src/Game/Helpers/*.cpp) $(wildcard src/Game/Input/*.cpp) \
 
+# TODO: do i need SDL2_IMAGE_FORMATS?
 W_FLAGS = -s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["jpg","png"]' -s ALLOW_MEMORY_GROWTH=1
 # Load Unique folder into the virtual filesystem Unique dir (preserves filepaths)
 W_PRELOAD = --preload-file $(W_DIR)/Unique@Unique --use-preload-plugins
