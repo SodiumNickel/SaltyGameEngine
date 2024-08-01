@@ -20,6 +20,10 @@ struct EngineData {
 
     int selectedEntity = -1; // TODO: should start at first thing in scene (i.e. rootIds[0])
 
+    // For exporting game builds
+    std::string gameName = "Game name";
+    std::string gameFilepath = "";
+
     // Only logs of at least logLevel will be considered
     int logLevel;
 
