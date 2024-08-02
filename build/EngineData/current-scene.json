@@ -5,7 +5,7 @@
       "components": {
         "rigidbody": {
           "initVelocity": [
-            -30.0,
+            50.0,
             0.0
           ]
         },
@@ -18,12 +18,12 @@
       "parent-id": -1,
       "transform": {
         "position": [
-          881.0,
+          166.0,
           -371.0
         ],
         "rotation": 0.0,
         "scale": [
-          -4.0,
+          4.0,
           4.0
         ]
       }

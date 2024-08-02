@@ -99,4 +99,13 @@ void Menu::ExportWeb(){
     } else {
         std::cerr << "Compilation failed!\n";
     }
+
+    // Overwrite index.html - assuming we are building for itch.io so includes added window focus
+    std::string copy = "xcopy /I /Y .\\Make\\index.html " + engineData->gameFilepath + "\\\"" + engineData->gameName + "\"";
+    result = system(copy.c_str());
+    if (result == 0) {
+        std::cout << "Copy index successful!\n";
+    } else {
+        std::cerr << "Copy index failed!\n";
+    }
 }
