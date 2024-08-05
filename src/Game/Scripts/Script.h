@@ -10,7 +10,7 @@ protected:
     TransformComponent* transform;
 public:
     virtual void Start() = 0; 
-    virtual void Update(float deltaTime) = 0;     
+    virtual void Update(float dt) = 0;     
 };
 
 // TODO: this will be altered by engine to initialize script objects

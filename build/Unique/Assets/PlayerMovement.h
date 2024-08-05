@@ -1,5 +1,3 @@
-#include "PlayerMovement.h"
-
 #include "Game/Scripts/Script.h" // TODO: I want this to be a better path
 // TODO: also want to include the SaltyEngine.h (including debug, input, etc.)
 #include "Game/Input/SaltyInput.h"
@@ -25,23 +23,19 @@ typedef SpriteComponent* Sprite;
 // TODO: with above, when you do GetComponent<> is has to be the full SpriteComponent...
 // semi okay with this tbh
 
-// TODO: NOTE: Decided to seperate header file and .cpp file
-// Helps with correctness of c++ code, and may even be quicker to access stuff for jams
-// TODO: when you double click on something in engine, open both .h and .cpp
-// TODO: also group them inside file directory
+class PlayerMovement : public IScript {
+// TODO: remove comments from section, also find a better way of finding the location of rivate and ublic.
+private: 
+    float speed = 30.0f;
+    string name;
+    SF_ int val; // TODO: might do opposite actually, include a def for ones that should be serialized, maybe just SF?
 
-// Called before the first frame of Update()
-void PlayerMovement::Start(){
-    val = 3;
-}
+    SF_ Sprite test;
+    SF_ Transform player;
+public:
+    // Initialization will be handled by engine (including that of SF_ variables)
+    PlayerMovement(Entity* entity, Transform transform);
 
-// TODO: may add more detail
-// Called every frame before Render() 
-void PlayerMovement::Update(float deltaTime){
-    if(Input::KeyHeld[SDL_SCANCODE_A]){
-        transform->position.x -= deltaTime * speed;
-    }
-    if(Input::KeyHeld[SDL_SCANCODE_D]){
-        transform->position.x += deltaTime * speed;
-    }
-}
+    void Start() override;
+    void Update(float dt) override;
+};

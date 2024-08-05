@@ -39,7 +39,9 @@ void ScriptTab::Begin(){
         { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(NAME, POSITION_X, registry, selectedEntity, ComponentValue(prevs), ComponentValue(entity.name)))); }
         ImGui::SeparatorText("");
 
-        // Display all scripts and their 
+        // Display all scripts (on this entity) and their serialized variables
+        // TODO: currently always displaying PlayerMovement script bc thats the only one i have, remove this soon tm
+        std::string scriptFilepath = "PlayerMovement.cpp";
     }
 
     ImGui::End();
