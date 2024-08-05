@@ -38,7 +38,22 @@ void ScriptTab::Begin(){
         if(ImGui::IsItemDeactivatedAfterEdit()) // Used arbitrary ECOmponentVar in POSITION_X, is not read by NAME edit
         { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(NAME, POSITION_X, registry, selectedEntity, ComponentValue(prevs), ComponentValue(entity.name)))); }
         ImGui::SeparatorText("");
+
+        // Display all scripts and their 
     }
 
     ImGui::End();
 }
+
+// TODO: NOTE THAT you cannot nest comments in c++ (thank you) 
+// COMMENT RULES:
+// Start from beginning of file (or from "private:" in this case)
+//      First detect: // -> get rid of rest of line and contine
+//      First detect: /* -> parse until first */ deleting on the way
+
+// ACTUAL PARSING:
+// Seperate by semicolons, looking for TOKENS (i.e. SF, HEADER())
+// Note that there may be multiple TOKENS (if we want to serialize as like a slider or something)
+
+// TODO: note - only need to look at script(s) added to current entity, and then on save have to process all of those
+

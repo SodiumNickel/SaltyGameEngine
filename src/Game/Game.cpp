@@ -214,12 +214,13 @@ void Game::ProcessInput()
 
 void Game::Update(float deltaTime)
 {
+    // Update all systems
+    registry->GetSystem<PhysicsSystem>().Update(deltaTime); 
+
     // TODO: Check for events here
     // TODO: probably call script updates here?
-    registry->Update(); 
+    registry->Update(); // TODO: not sure where this should be (which order)
     
-    // Update all systems
-    registry->GetSystem<PhysicsSystem>().Update(deltaTime); // TODO: not sure this should be before scripts... imagine we have someone falling very fast, then teleported, could go through ground
 }
 
 void Game::Render()
