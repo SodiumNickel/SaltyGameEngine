@@ -23,6 +23,7 @@ typedef SpriteComponent* Sprite;
 // TODO: with above, when you do GetComponent<> is has to be the full SpriteComponent...
 // semi okay with this tbh
 
+// TODO: eventually might make a text editor abstraction for this
 class PlayerMovement : public IScript {
 // TODO: remove comments from section, also find a better way of finding the location of rivate and ublic.
 private: 
