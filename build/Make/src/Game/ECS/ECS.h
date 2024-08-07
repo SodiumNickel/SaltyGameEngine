@@ -220,8 +220,8 @@ private:
     std::deque<int> freeIds; // TODO: not sure why this is a deque rather than a stack...?
 
 public:
-    Registry() { /*Logger::Log("Registry constructor called");*/ }
-    ~Registry() { /*Logger::Log("Registry destructor called");*/ }
+    Registry() {  }
+    ~Registry() {  }
 
     void Update();
 
