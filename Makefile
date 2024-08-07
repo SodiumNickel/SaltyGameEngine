@@ -2,10 +2,10 @@
 ENGINE_NAME = saltyengine
 BUILD_DIR = build
 
-INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/imgui -Iinclude/glm -Iinclude/nlohmann -Isrc
+INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/imgui -Iinclude/glm -Iinclude/nlohmann -Iinclude/soloud -Isrc
 
 LIB_DIRS = -Llib
-LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
 SRC = src/enginemain.cpp \
 	  $(wildcard imgui/*.cpp) \
@@ -39,11 +39,11 @@ W_DIR = gweb-build
 
 # TODO: note
 # NOTE: I include the entire source here so the headers have the right path, but should be restricted in actual engine
-G_INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/glm -Iinclude/nlohmann -Isrc
-W_INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/glm -Iinclude/nlohmann -Iinclude/emscripten -Isrc
+G_INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/glm -Iinclude/nlohmann -Iinclude/soloud -Isrc
+W_INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/glm -Iinclude/nlohmann -Iinclude/emscripten -Iinclude/soloud -Isrc
 
 G_LIB_DIRS = -Llib
-G_LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+G_LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
 G_SRC = src/main.cpp \
 	  	src/Game/Game.cpp \

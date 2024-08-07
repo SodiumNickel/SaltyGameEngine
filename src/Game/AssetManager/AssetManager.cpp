@@ -6,13 +6,9 @@
 #include <SDL_ttf.h>
 #include <glm.hpp>
 
-
 AssetManager::AssetManager() {}
 
-AssetManager::~AssetManager()
-{
-    ClearAssets();
-}
+AssetManager::~AssetManager() { ClearAssets(); }
 
 void AssetManager::ClearAssets()
 {
