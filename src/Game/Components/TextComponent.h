@@ -10,6 +10,7 @@ struct TextComponent {
     std::string filepath;
     std::string text;
     glm::vec2 offset;
+    // TODO: for now zIndex is not used right now, will rework render system later
     int zIndex;
     SDL_Color color;
 

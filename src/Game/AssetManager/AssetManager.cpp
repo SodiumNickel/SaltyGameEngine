@@ -45,13 +45,13 @@ void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& filepat
 
 SDL_Texture* AssetManager::GetTexture(const std::string& filepath)
 {
-    // TODO: am assuming it is called on actual id, actually should be, because it is only called internally??
+    assert(textures.count(filepath));
     return textures[filepath];
 }
 
 glm::vec2 AssetManager::GetTextureSize(const std::string& filepath)
 {
-    // TODO: am assuming it is called on actual id, make this an assertion
+    assert(textureSizes.count(filepath));
     return textureSizes[filepath];
 }
 
@@ -61,6 +61,6 @@ void AssetManager::AddFont(const std::string& filepath, int fontSize){
 }
 
 TTF_Font* AssetManager::GetFont(const std::string& filepath){
-    // TODO: am assuming it is called on actual id, make this an assertion
+    assert(fonts.count(filepath));
     return fonts[filepath];
 }
