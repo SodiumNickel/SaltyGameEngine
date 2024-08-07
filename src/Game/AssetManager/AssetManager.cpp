@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <glm.hpp>
 
 
@@ -18,6 +19,10 @@ void AssetManager::ClearAssets()
     for(auto texture : textures)
     { SDL_DestroyTexture(texture.second); }
     textures.clear();
+
+    for(auto font : fonts)
+    { TTF_CloseFont(font.second); }
+    fonts.clear();
 }
 
 void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& filepath)
@@ -46,6 +51,16 @@ SDL_Texture* AssetManager::GetTexture(const std::string& filepath)
 
 glm::vec2 AssetManager::GetTextureSize(const std::string& filepath)
 {
-    // TODO: am assuming it is called on actual id
+    // TODO: am assuming it is called on actual id, make this an assertion
     return textureSizes[filepath];
+}
+
+
+void AssetManager::AddFont(const std::string& filepath, int fontSize){
+    fonts.emplace(filepath, TTF_OpenFont(("Unique/Assets/" + filepath).c_str(), fontSize));
+}
+
+TTF_Font* AssetManager::GetFont(const std::string& filepath){
+    // TODO: am assuming it is called on actual id, make this an assertion
+    return fonts[filepath];
 }
