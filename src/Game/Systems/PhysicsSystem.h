@@ -26,6 +26,8 @@ class PhysicsSystem : public System {
 
                 transform.position.x += rigidbody.velocity.x * deltaTime;
                 transform.position.y += rigidbody.velocity.y * deltaTime;
+
+                //Logger::Log(std::to_string(transform.position.x) + ", " + std::to_string(transform.position.y));
             }
         }
 };
