@@ -5,7 +5,7 @@ BUILD_DIR = build
 INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/imgui -Iinclude/glm -Iinclude/nlohmann -Isrc
 
 LIB_DIRS = -Llib
-LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer
+LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
 SRC = src/enginemain.cpp \
 	  $(wildcard imgui/*.cpp) \

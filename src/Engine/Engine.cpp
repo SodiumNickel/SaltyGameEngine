@@ -6,6 +6,8 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <imgui.h>
 #include <imgui_impl_sdl2.h>
 #include <imgui_impl_sdlrenderer2.h>
@@ -61,6 +63,13 @@ int Engine::Initialize()
     SDL_Surface* icon_surf = IMG_Load("EngineAssets/logotemp.png"); // TODO: make engine specific logo
     if(!icon_surf){std::cout << "failed icon_surf imgload";}
     SDL_SetWindowIcon(window, icon_surf);
+
+    // Init audio/mixer
+    // Note: this only allows .wav files which is what i plan to use // TODO: <- true? should prolly force .wav
+    // if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 2048) == -1) { return -1; } // TODO: not 100% sure there are good audio settings
+
+    // Init fonts/ttf
+    if(TTF_Init() == -1) { return -1; }
 
     // Create renderer for Stage
     renderer = SDL_CreateRenderer(window, -1, 0);
@@ -272,6 +281,8 @@ void Engine::Destroy()
 
     SDL_DestroyTexture(viewport);
     SDL_DestroyRenderer(renderer);
+    TTF_Quit();
+    // Mix_CloseAudio();    
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
