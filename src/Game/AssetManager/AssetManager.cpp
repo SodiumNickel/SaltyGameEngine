@@ -6,7 +6,7 @@
 #include <SDL_ttf.h>
 #include <glm.hpp>
 
-
+// TODO: asset manager should have access to renderer, this is also why textures will not render
 AssetManager::AssetManager() {}
 
 AssetManager::~AssetManager() { ClearAssets(); }

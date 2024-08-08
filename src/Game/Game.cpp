@@ -36,6 +36,9 @@ Game::~Game()
 // Returns 0 if successful
 int Game::Initialize()
 {
+    // TODO:
+    // NOTE: in web build i might want to load differently
+
     // Init main SDL window
     if(SDL_Init(SDL_INIT_VIDEO) < 0) { return -1; }
 

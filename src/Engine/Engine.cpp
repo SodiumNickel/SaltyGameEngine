@@ -38,6 +38,30 @@ Engine::~Engine()
 // Returns 0 if successful
 int Engine::Initialize()
 {
+    // Handling creation before window is opened (so we do not sit on a blank screen)
+    registry = std::make_shared<Registry>();
+    assetManager = std::make_shared<AssetManager>();
+
+    // NOTE: These will be rendered in Engine::UpdateGUI() so no need to worry about ImGui not being initialized
+    // Will be initialized with renderer and viewport below, this also creates the initial scene in registry
+    stage = std::make_shared<Stage>(engineData, registry, assetManager);
+    // Menu bar on top of screen
+    menu = std::make_unique<Menu>(registry, engineData, editHistory);
+    // Open initial tabs
+    openTabs.push_back(std::make_unique<EntityTab>(engineData, editHistory, registry));
+    openTabs.push_back(std::make_unique<ComponentTab>(engineData, editHistory, registry, assetManager)); // TODO: unify order of this
+    openTabs.push_back(std::make_unique<ScriptTab>(engineData, editHistory, registry));
+    openTabs.push_back(std::make_unique<AssetTab>(registry));
+    openTabs.push_back(std::make_unique<LogTab>(registry));
+
+    // Init audio/mixer
+    // Note: this only allows .wav files which is what i plan to use // TODO: <- true? should prolly force .wav
+    // if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 2048) == -1) { return -1; } // TODO: not 100% sure there are good audio settings
+
+    // Init fonts/ttf
+    // if(TTF_Init() == -1) { return -1; } // TODO: do i need to init video before this?? idk if this does anything
+
+    // Main window appears now
     // Init main SDL window
     if(SDL_Init(SDL_INIT_VIDEO) < 0) { return -1; }
 
@@ -63,13 +87,7 @@ int Engine::Initialize()
     SDL_Surface* icon_surf = IMG_Load("EngineAssets/logotemp.png"); // TODO: make engine specific logo
     if(!icon_surf){std::cout << "failed icon_surf imgload";}
     SDL_SetWindowIcon(window, icon_surf);
-
-    // Init audio/mixer
-    // Note: this only allows .wav files which is what i plan to use // TODO: <- true? should prolly force .wav
-    // if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 2048) == -1) { return -1; } // TODO: not 100% sure there are good audio settings
-
-    // Init fonts/ttf
-    if(TTF_Init() == -1) { return -1; }
+    // TODO: do i have to free surface here?
 
     // Create renderer for Stage
     renderer = SDL_CreateRenderer(window, -1, 0);
@@ -87,12 +105,8 @@ int Engine::Initialize()
         800, 800
     );
 
-    // Create registry
-    registry = std::make_shared<Registry>();
-    assetManager = std::make_shared<AssetManager>();
-
-    // Create stage with access to renderer/viewport
-    stage = std::make_shared<Stage>(engineData, registry, assetManager);
+    // Give stage with access to renderer/viewport
+    // TODO: The LoadScene here can be moved earlier if we dont load the assets, can optimize asset loading in general
     stage->Initialize(renderer, viewport);
 
     // Init imgui
@@ -116,15 +130,6 @@ int Engine::Initialize()
         renderer
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
-
-    menu = std::make_unique<Menu>(registry, engineData, editHistory);
-
-    // Open initial tabs
-    openTabs.push_back(std::make_unique<EntityTab>(engineData, editHistory, registry));
-    openTabs.push_back(std::make_unique<ComponentTab>(engineData, editHistory, registry, assetManager)); // TODO: unify order of this
-    openTabs.push_back(std::make_unique<ScriptTab>(engineData, editHistory, registry));
-    openTabs.push_back(std::make_unique<AssetTab>(registry));
-    openTabs.push_back(std::make_unique<LogTab>(registry));
 
     isRunning = true;
     return 0;
@@ -170,6 +175,8 @@ void Engine::ProcessInput()
                 if(event.key.keysym.scancode == SDL_SCANCODE_LCTRL) lCtrlHeld = false;
                 else if(event.key.keysym.scancode == SDL_SCANCODE_RCTRL) rCtrlHeld = false;
                 break;
+            // TEMP TODO
+            // case SDL_MOUSEBUTTONDOWN:
             default:
                 break;
         }
