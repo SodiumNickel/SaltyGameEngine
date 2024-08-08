@@ -2,13 +2,14 @@
 ENGINE_NAME = saltyengine
 BUILD_DIR = build
 
-INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/imgui -Iinclude/glm -Iinclude/nlohmann -Isrc
+INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/imgui -Iinclude/glm -Iinclude/nlohmann -Iinclude/soloud -Ilibsrc/soloud/wav -Isrc
 
 LIB_DIRS = -Llib
-LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
+LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
 SRC = src/enginemain.cpp \
-	  $(wildcard imgui/*.cpp) \
+	  libsrc/imgui/*.cpp \
+	  libsrc/soloud/core/*.cpp libsrc/soloud/sdl2_static/*.cpp libsrc/soloud/wav/*.cpp libsrc/soloud/wav/stb_vorbis.c \
 	  src/Engine/Engine.cpp \
 	  src/Engine/Stage/*.cpp src/Engine/Tabs/*.cpp \
 	  src/Engine/Menu/*.cpp src/Engine/Menu/Export/*.cpp \
@@ -17,10 +18,12 @@ SRC = src/enginemain.cpp \
 	  src/Game/ECS/*.cpp src/Game/AssetManager/*.cpp \
 	  src/Game/Input/*.cpp src/Game/Helpers/*.cpp \
 
+FLAGS = -DWITH_SDL2_STATIC
+
 # TODO: consider optimization levels like -O1 or -O2
 # -fsanitize=address 
 default: # Compiles engine
-	g++ -g $(SRC) -std=c++17 $(INCLUDE_DIRS) $(LIB_DIRS) $(LIBS) -o $(BUILD_DIR)/$(ENGINE_NAME)
+	g++ -g $(SRC) -std=c++17 $(INCLUDE_DIRS) $(LIB_DIRS) $(LIBS) $(FLAGS) -o $(BUILD_DIR)/$(ENGINE_NAME)
 
 run:
 	cd $(BUILD_DIR) && $(ENGINE_NAME)

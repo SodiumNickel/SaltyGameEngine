@@ -10,6 +10,8 @@
 #include <imgui.h>
 #include <imgui_impl_sdl2.h>
 #include <imgui_impl_sdlrenderer2.h>
+#include "soloud.h"
+#include "soloud_wav.h"
 
 // TODO: this isnt used rn
 #include "Engine/Debug/SaltyDebug.h"
@@ -40,6 +42,8 @@ int Engine::Initialize()
     // Handling creation before window is opened (so we do not sit on a blank screen)
     registry = std::make_shared<Registry>();
     assetManager = std::make_shared<AssetManager>();
+    audioSource = std::make_shared<SoLoud::Soloud>();
+    audioSource->init();
 
     // NOTE: These will be rendered in Engine::UpdateGUI() so no need to worry about ImGui not being initialized
     // Will be initialized with renderer and viewport below, this also creates the initial scene in registry
@@ -130,6 +134,9 @@ int Engine::Initialize()
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
 
+    // TEMP: TODO
+    wav.load("Unique/Assets/boop.wav");
+
     isRunning = true;
     return 0;
 }
@@ -192,6 +199,8 @@ void Engine::KeyDownInput(SDL_Scancode scancode){
             if(editHistory->canRedo) editHistory->Redo();
             break;
         case SDL_SCANCODE_S:
+            // TEMP
+            audioSource->play(wav);
             if(editHistory->unsaved) editHistory->Save();
             break;
         default:
@@ -280,6 +289,7 @@ void Engine::Destroy()
 {
     // unique_ptr so will automatically delete 
     openTabs.clear(); // TODO: might not even need this tbh
+    audioSource->deinit();
 
     ImGui_ImplSDLRenderer2_Shutdown();
     ImGui_ImplSDL2_Shutdown();

@@ -6,6 +6,8 @@
 
 #include <SDL.h>
 #include <imgui.h>
+#include "soloud.h"
+#include "soloud_wav.h" // TEMP
 
 #include "Engine/EngineData.h"
 #include "Engine/History/EditHistory.h"
@@ -32,6 +34,9 @@ class Engine {
         // Will be stored in Game along with other vars in Stage
         std::shared_ptr<Registry> registry; 
         std::shared_ptr<AssetManager> assetManager;
+        std::shared_ptr<SoLoud::Soloud> audioSource;
+        // TEMP
+        SoLoud::Wav wav;
 
         std::shared_ptr<EditHistory> editHistory;
         // For shortcutted input handling (i.e. Undo)
