@@ -10,8 +10,8 @@
 #include <imgui.h>
 #include <imgui_impl_sdl2.h>
 #include <imgui_impl_sdlrenderer2.h>
-#include "soloud.h"
-#include "soloud_wav.h"
+#include <soloud.h>
+#include <soloud_wav.h>
 
 // TODO: this isnt used rn
 #include "Engine/Debug/SaltyDebug.h"

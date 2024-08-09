@@ -6,8 +6,8 @@
 
 #include <SDL.h>
 #include <imgui.h>
-#include "soloud.h"
-#include "soloud_wav.h" // TEMP
+#include <soloud.h>
+#include <soloud_wav.h> // TEMP
 
 #include "Engine/EngineData.h"
 #include "Engine/History/EditHistory.h"
