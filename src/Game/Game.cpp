@@ -177,9 +177,12 @@ void Game::Run()
 
 void Game::ProcessInput()
 {
-    // Clear keyboard inputs frame last frame
+    // Clear keyboard inputs from last frame
     std::memset(Input::KeyDown, 0, sizeof(Input::KeyDown));
     std::memset(Input::KeyUp, 0, sizeof(Input::KeyUp));
+    // Clear mouse inputs from last frame
+    std::memset(Input::MouseDown, 0, sizeof(Input::MouseDown));
+    std::memset(Input::MouseUp, 0, sizeof(Input::MouseUp));
 
     SDL_Event event;
     while(SDL_PollEvent(&event)){
@@ -187,6 +190,7 @@ void Game::ProcessInput()
             case SDL_QUIT:
                 isRunning = false;
                 break; // TODO: all of these do them every frame, should only do it on first frame down, wait until up
+            // Keyboard Down/Up
             case SDL_KEYDOWN:
                 if(event.key.repeat == 0) {
                     Input::KeyDown[event.key.keysym.scancode] = 1;
@@ -196,6 +200,55 @@ void Game::ProcessInput()
             case SDL_KEYUP:
                 Input::KeyUp[event.key.keysym.scancode] = 1;
                 Input::KeyHeld[event.key.keysym.scancode] = 0;
+                break;
+            // Mouse Down/Up
+            case SDL_MOUSEBUTTONDOWN:
+                switch(event.button.button){
+                    case SDL_BUTTON_LEFT:
+                        Input::MouseDown[1] = 1;
+                        Input::MouseHeld[1] = 1;
+                        break;
+                    case SDL_BUTTON_MIDDLE: 
+                        Input::MouseDown[3] = 1;
+                        Input::MouseHeld[3] = 1;
+                        break;
+                    case SDL_BUTTON_RIGHT: // NOTE: I think having M2 (right click) is more standard, goes against SDL codes
+                        Input::MouseDown[2] = 1;
+                        Input::MouseHeld[2] = 1;
+                        break;
+                    case SDL_BUTTON_X1:
+                        Input::MouseDown[4] = 1;
+                        Input::MouseHeld[4] = 1;
+                        break;
+                    case SDL_BUTTON_X2:
+                        Input::MouseDown[5] = 1;
+                        Input::MouseHeld[5] = 1;
+                        break;
+                }
+                break;
+            case SDL_MOUSEBUTTONUP:
+                switch(event.button.button){
+                    case SDL_BUTTON_LEFT:
+                        Input::MouseUp[1] = 1;
+                        Input::MouseHeld[1] = 0;
+                        break;
+                    case SDL_BUTTON_MIDDLE: 
+                        Input::MouseUp[3] = 1;
+                        Input::MouseHeld[3] = 0;
+                        break;
+                    case SDL_BUTTON_RIGHT: // NOTE: I think having M2 (right click) is more standard, goes against SDL codes
+                        Input::MouseUp[2] = 1;
+                        Input::MouseHeld[2] = 0;
+                        break;
+                    case SDL_BUTTON_X1:
+                        Input::MouseUp[4] = 1;
+                        Input::MouseHeld[4] = 0;
+                        break;
+                    case SDL_BUTTON_X2:
+                        Input::MouseUp[5] = 1;
+                        Input::MouseHeld[5] = 0;
+                        break;
+                }
                 break;
             // case SDL_CONTROLLERBUTTONDOWN:
             //     std::cout << "Controller Button Down: " << static_cast<int>(event.cbutton.button) << std::endl;

@@ -181,8 +181,6 @@ void Engine::ProcessInput()
                 if(event.key.keysym.scancode == SDL_SCANCODE_LCTRL) lCtrlHeld = false;
                 else if(event.key.keysym.scancode == SDL_SCANCODE_RCTRL) rCtrlHeld = false;
                 break;
-            // TEMP TODO
-            // case SDL_MOUSEBUTTONDOWN:
             default:
                 break;
         }
