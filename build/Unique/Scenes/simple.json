@@ -3,6 +3,24 @@
       {
         "children-ids": [],
         "components": {
+          },
+        "name": "CAMERA",
+        "parent-id": -1,
+        "transform": {
+          "position": [
+            0.0,
+            0.0
+          ],
+          "rotation": 0.0,
+          "scale": [
+            1.0,
+            1.0
+          ]
+        }
+      },
+      {
+        "children-ids": [],
+        "components": {
             "sprite":{
                 "filepath": "StageDemo/player.png",
                 "zindex": 1
@@ -29,5 +47,5 @@
         }
       }
     ],
-    "root-ids": [0]
+    "root-ids": [0, 1]
   }

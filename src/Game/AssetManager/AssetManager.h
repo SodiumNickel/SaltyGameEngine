@@ -12,8 +12,8 @@
 
 class AssetManager {
 private:
-    std::map<std::string, SDL_Texture*> textures;
-    std::map<std::string, glm::vec2> textureSizes;
+    std::map<std::string, SDL_Texture*> textures; // TODO: could probably combine these two into one map, so we dont need to double access
+    std::map<std::string, glm::vec2> textureSizes; // two
     // TODO: might have seperate font system later (with textures already made)
     std::map<std::string, TTF_Font*> fonts;
     // SoLoud::AudioSource is superclass of Wav and WavStream

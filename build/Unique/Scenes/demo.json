@@ -2,6 +2,23 @@
   "entities": [
     {
       "children-ids": [],
+      "components": {},
+      "name": "CAMERA",
+      "parent-id": -1,
+      "transform": {
+        "position": [
+          0.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
       "components": {
         "rigidbody": {
           "initVelocity": [
@@ -52,7 +69,7 @@
     },
     {
       "children-ids": [
-        3
+        4
       ],
       "components": {},
       "name": "GroundTiles",
@@ -78,7 +95,7 @@
         }
       },
       "name": "Ground",
-      "parent-id": 2,
+      "parent-id": 3,
       "transform": {
         "position": [
           -80.0,
@@ -93,9 +110,9 @@
     },
     {
       "children-ids": [
-        5,
         6,
-        7
+        7,
+        8
       ],
       "components": {},
       "name": "Rocks",
@@ -121,7 +138,7 @@
         }
       },
       "name": "Rock 1",
-      "parent-id": 4,
+      "parent-id": 5,
       "transform": {
         "position": [
           1168.0,
@@ -143,7 +160,7 @@
         }
       },
       "name": "Rock 2",
-      "parent-id": 4,
+      "parent-id": 5,
       "transform": {
         "position": [
           298.0,
@@ -165,7 +182,7 @@
         }
       },
       "name": "Rock 3",
-      "parent-id": 4,
+      "parent-id": 5,
       "transform": {
         "position": [
           715.0,
@@ -205,7 +222,8 @@
     0,
     1,
     2,
-    4,
-    8
+    3,
+    5,
+    7
   ]
 }
