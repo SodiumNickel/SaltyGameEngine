@@ -20,6 +20,9 @@
 #include "Game/Systems/RenderSystem.h"
 #include "Game/Systems/PhysicsSystem.h"
 
+// TODO: might seperate these salty things into another folder
+#include "Game/Audio/SaltyAudio.h"
+
 Game::Game()
 {
     // TODO: should initialize to scene that was last open, stored fps, etc.
@@ -36,8 +39,11 @@ Game::~Game()
 // Returns 0 if successful
 int Game::Initialize()
 {
+    registry = std::make_unique<Registry>();
+    assetManager = std::make_unique<AssetManager>();
     // TODO:
     // NOTE: in web build i might want to load differently
+    Audio::soloud.init();
 
     // Init main SDL window
     if(SDL_Init(SDL_INIT_VIDEO) < 0) { return -1; }
@@ -72,9 +78,6 @@ int Game::Initialize()
         SDL_Quit();
         return -1;
     }
-
-    registry = std::make_unique<Registry>();
-    assetManager = std::make_unique<AssetManager>();
 
     // TODO: check for saved scene number here, currently just default
     LoadScene(0);
@@ -293,6 +296,8 @@ void Game::Render()
 // Clean up
 void Game::Destroy()
 {
+    Audio::soloud.deinit();
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
