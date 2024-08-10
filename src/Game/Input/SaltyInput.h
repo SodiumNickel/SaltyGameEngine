@@ -1,5 +1,6 @@
 #ifndef SALTYINPUT_H
 #define SALTYINPUT_H
+// Will be included in user scripts, indicated by "Salty" being part of name
 
 #include <SDL.h>
 
@@ -13,7 +14,6 @@ enum EMouseButtons {
     NUM_M = 8 // TODO: have this at power of 2 rn, also unsure about names
 };
 
-// Will be included in user scripts, indicated by "Salty" being part of name
 class Input {
     public:
         // Keys that were pressed this frame
