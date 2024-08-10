@@ -26,8 +26,8 @@ class Audio {
     // going to give id to AudioSource object, and when loaded it will assign an id
     public:
         // Both should only be accessed internally, but have to be static here
-        static SoLoud::Soloud soloud;
-        static std::vector<std::unique_ptr<SoLoud::AudioSource>> sounds;
+        static SoLoud::Soloud Soloud; // TODO: do i like these in caps??
+        static std::vector<std::unique_ptr<SoLoud::AudioSource>> Sounds;
 
         static void Load(AudioSource& audioSource);
         static void Play(AudioSource audioSource);

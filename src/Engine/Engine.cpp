@@ -20,6 +20,7 @@
 #include "Engine/Menu/Menu.h"
 #include "Engine/Tabs/Tabs.h"
 
+#include "Game/Audio/SaltyAudio.h"
 
 Engine::Engine()
 {
@@ -42,8 +43,7 @@ int Engine::Initialize()
     // Handling creation before window is opened (so we do not sit on a blank screen)
     registry = std::make_shared<Registry>();
     assetManager = std::make_shared<AssetManager>();
-    audioSource = std::make_shared<SoLoud::Soloud>();
-    audioSource->init();
+    Audio::Soloud.init();
 
     // NOTE: These will be rendered in Engine::UpdateGUI() so no need to worry about ImGui not being initialized
     // Will be initialized with renderer and viewport below, this also creates the initial scene in registry
@@ -198,7 +198,7 @@ void Engine::KeyDownInput(SDL_Scancode scancode){
             break;
         case SDL_SCANCODE_S:
             // TEMP
-            audioSource->play(wav);
+            Audio::Soloud.play(wav);
             if(editHistory->unsaved) editHistory->Save();
             break;
         default:
@@ -287,7 +287,7 @@ void Engine::Destroy()
 {
     // unique_ptr so will automatically delete 
     openTabs.clear(); // TODO: might not even need this tbh
-    audioSource->deinit();
+    Audio::Soloud.deinit();
 
     ImGui_ImplSDLRenderer2_Shutdown();
     ImGui_ImplSDL2_Shutdown();

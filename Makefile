@@ -7,6 +7,7 @@ INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/imgui -Iinclude/glm -Iinclude/nlohmann -
 LIB_DIRS = -Llib
 LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
+# TODO: a lot of these folders just have 1 .h and 1. cpp file, could just write it out tbh...
 SRC = src/enginemain.cpp \
 	  libsrc/imgui/*.cpp \
 	  libsrc/soloud/core/*.cpp libsrc/soloud/sdl2_static/*.cpp libsrc/soloud/wav/*.cpp libsrc/soloud/wav/stb_vorbis.c \
@@ -16,6 +17,7 @@ SRC = src/enginemain.cpp \
 	  src/Engine/History/*.cpp src/Engine/History/Edits/*.cpp src/Engine/Debug/*.cpp \
 	  src/Game/Game.cpp \
 	  src/Game/ECS/*.cpp src/Game/AssetManager/*.cpp \
+	  src/Game/Audio/*.cpp \
 	  src/Game/Input/*.cpp src/Game/Helpers/*.cpp \
 
 FLAGS = -DWITH_SDL2_STATIC

@@ -34,7 +34,6 @@ class Engine {
         // Will be stored in Game along with other vars in Stage
         std::shared_ptr<Registry> registry; 
         std::shared_ptr<AssetManager> assetManager;
-        std::shared_ptr<SoLoud::Soloud> audioSource;
         // TEMP
         SoLoud::Wav wav;
 

@@ -43,7 +43,7 @@ int Game::Initialize()
     assetManager = std::make_unique<AssetManager>();
     // TODO:
     // NOTE: in web build i might want to load differently
-    Audio::soloud.init();
+    Audio::Soloud.init();
 
     // Init main SDL window
     if(SDL_Init(SDL_INIT_VIDEO) < 0) { return -1; }
@@ -296,7 +296,7 @@ void Game::Render()
 // Clean up
 void Game::Destroy()
 {
-    Audio::soloud.deinit();
+    Audio::Soloud.deinit();
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
