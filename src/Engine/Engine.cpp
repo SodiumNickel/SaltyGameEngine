@@ -135,9 +135,9 @@ int Engine::Initialize()
     ImGui_ImplSDLRenderer2_Init(renderer);
 
     // TEMP: TODO
-    aud.filepath = "Unique/Assets/boop.wav";
-    aud.stream = false;
-    Audio::Load(aud);
+    sound.filepath = "Unique/Assets/boop.wav";
+    sound.stream = true;
+    Audio::Load(sound);
 
     isRunning = true;
     return 0;
@@ -200,7 +200,7 @@ void Engine::KeyDownInput(SDL_Scancode scancode){
             break;
         case SDL_SCANCODE_S:
             // TEMP
-            Audio::Play(aud);
+            Audio::Play(sound);
             if(editHistory->unsaved) editHistory->Save();
             break;
         default:

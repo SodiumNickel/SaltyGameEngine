@@ -35,7 +35,7 @@ class Engine {
         std::shared_ptr<Registry> registry; 
         std::shared_ptr<AssetManager> assetManager;
         // TEMP
-        AudioSource aud;
+        Sound sound;
 
         std::shared_ptr<EditHistory> editHistory;
         // For shortcutted input handling (i.e. Undo)

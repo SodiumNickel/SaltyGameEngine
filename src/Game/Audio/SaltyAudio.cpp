@@ -14,9 +14,9 @@ SoLoud::Soloud Audio::Soloud;
 std::vector<std::unique_ptr<SoLoud::AudioSource>> Audio::Sounds;
 std::deque<int> Audio::freeIds;
 
-void Audio::Load(AudioSource& audioSource){
+void Audio::Load(Sound& sound){
     // audioSource has not been loaded yet <-> id = -1
-    assert(audioSource.id == -1); // TODO: maybe this should be just send a debug log later, dont want to crash stuff from randomly loading twice
+    assert(sound.id == -1); // TODO: maybe this should be just send a debug log later, dont want to crash stuff from randomly loading twice
     int id = -1;
 
     // To limit amount of space taken
@@ -34,24 +34,24 @@ void Audio::Load(AudioSource& audioSource){
     }
 
     // Load audio and place into Audio::Sounds
-    if(audioSource.stream) { 
+    if(sound.stream) { 
         auto wavstream = std::make_unique<SoLoud::WavStream>();
-        wavstream->load(audioSource.filepath.c_str()); // TODO: should probably auto add the Unique/Assets/ here
+        wavstream->load(sound.filepath.c_str()); // TODO: should probably auto add the Unique/Assets/ here
         Audio::Sounds[id] = std::move(wavstream);
     }
     else { 
         auto wav = std::make_unique<SoLoud::Wav>();
-        wav->load(audioSource.filepath.c_str());
+        wav->load(sound.filepath.c_str());
         Audio::Sounds[id] = std::move(wav);
     }
 
     // Signifies that sound has been loaded and can be played
-    audioSource.id = id;
+    sound.id = id;
 }
 
 // No need to pass this by ref, just need id
-void Audio::Play(AudioSource audioSource){
-    int id = audioSource.id;
+void Audio::Play(Sound sound){
+    int id = sound.id;
     // 0 <= ensures audioSource has been loaded
     // < size for bounds on loaded sounds
     // != nullptr ensures audioSource has not be deloaded
@@ -59,6 +59,6 @@ void Audio::Play(AudioSource audioSource){
     // TODO: tbh, could just load sound here if id = -1... but again, a later change
     // TODO: cont - i think its good to still have a Load() thing incase we want to load at start or specific times, but still a nice failsafe
 
-    SoLoud::AudioSource& sound = *Audio::Sounds[id].get();
-    Audio::Soloud.play(sound);
+    SoLoud::AudioSource& aud = *Audio::Sounds[id].get();
+    Audio::Soloud.play(aud);
 }

@@ -11,9 +11,8 @@
 #include <soloud_audiosource.h>
 
 
-// TODO: not sure i want the name to be AudioSource... will  think about this
 // TODO: should probably do some proxy stuff here, for modifying values
-struct AudioSource {
+struct Sound {
     std::string filepath;
     bool stream;
 
@@ -34,8 +33,8 @@ class Audio {
         static std::deque<int> freeIds; // TODO: probably should just use queue or stack, dont have time to think bout rn
 
         // TODO: definitely need an Audio::ClearLoadedSounds();
-        static void Load(AudioSource& audioSource);
-        static void Play(AudioSource audioSource);
+        static void Load(Sound& sound);
+        static void Play(Sound sound);
 };
 
 #endif // SALTYAUDIO_H
