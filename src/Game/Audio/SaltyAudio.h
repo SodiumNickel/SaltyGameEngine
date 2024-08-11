@@ -2,11 +2,14 @@
 #define SALTYAUDIO_H
 // Will be included in user scripts, indicated by "Salty" being part of name
 
+#include <deque>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include <soloud.h>
+#include <soloud_audiosource.h>
+
 
 // TODO: not sure i want the name to be AudioSource... will  think about this
 // TODO: should probably do some proxy stuff here, for modifying values
@@ -28,7 +31,9 @@ class Audio {
         // Both should only be accessed internally, but have to be static here
         static SoLoud::Soloud Soloud; // TODO: do i like these in caps??
         static std::vector<std::unique_ptr<SoLoud::AudioSource>> Sounds;
+        static std::deque<int> freeIds; // TODO: probably should just use queue or stack, dont have time to think bout rn
 
+        // TODO: definitely need an Audio::ClearLoadedSounds();
         static void Load(AudioSource& audioSource);
         static void Play(AudioSource audioSource);
 };

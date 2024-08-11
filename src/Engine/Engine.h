@@ -17,7 +17,7 @@
 
 #include "Game/ECS/ECS.h"
 #include "Game/AssetManager/AssetManager.h"
-
+#include "Game/Audio/SaltyAudio.h" // TODO: TEMP
 
 class Engine {
     private:
@@ -35,7 +35,7 @@ class Engine {
         std::shared_ptr<Registry> registry; 
         std::shared_ptr<AssetManager> assetManager;
         // TEMP
-        SoLoud::Wav wav;
+        AudioSource aud;
 
         std::shared_ptr<EditHistory> editHistory;
         // For shortcutted input handling (i.e. Undo)
