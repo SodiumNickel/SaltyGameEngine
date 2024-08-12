@@ -1,4 +1,4 @@
-#include "Game/Salty/Audio/SaltyAudio.h"
+#include "Game/Salty/SaltyAudio.h"
 
 #include <deque>
 #include <memory>

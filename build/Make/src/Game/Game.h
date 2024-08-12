@@ -10,7 +10,7 @@ using json = nlohmann::json;
 
 #include "Game/ECS/ECS.h"
 #include "Game/AssetManager/AssetManager.h"
-#include "Game/Salty/Audio/SaltyAudio.h"
+#include "Game/Salty/SaltyAudio.h"
 
 class Game {
     private:

@@ -17,7 +17,7 @@
 
 #include "Game/ECS/ECS.h"
 #include "Game/AssetManager/AssetManager.h"
-#include "Game/Salty/Audio/SaltyAudio.h" // TODO: TEMP
+#include "Game/Salty/SaltyAudio.h" // TODO: TEMP
 
 class Engine {
     private:

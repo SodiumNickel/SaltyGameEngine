@@ -1,11 +1,11 @@
 #include "Game/Scripts/Script.h" // TODO: I want this to be a better path
 // TODO: also want to include the SaltyEngine.h (including debug, input, etc.)
-#include "Game/Salty/Input/SaltyInput.h"
+#include "Game/Salty/SaltyInput.h"
 #include "Game/ECS/ECS.h" // TODO: put into salty engine, also put all components
 #include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
 
-#include "Game/Salty/Audio/SaltyAudio.h"
+#include "Game/Salty/SaltyAudio.h"
 
 #include <SDL.h>
 

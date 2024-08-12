@@ -20,7 +20,7 @@
 #include "Engine/Menu/Menu.h"
 #include "Engine/Tabs/Tabs.h"
 
-#include "Game/Salty/Audio/SaltyAudio.h"
+#include "Game/Salty/SaltyAudio.h"
 
 Engine::Engine()
 {

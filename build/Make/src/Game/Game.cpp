@@ -13,7 +13,7 @@
 
 #include "Game/ECS/ECS.h"
 #include "Game/Helpers/JsonHelper.h" // TODO: might remove this
-#include "Game/Salty/Input/SaltyInput.h"
+#include "Game/Salty/SaltyInput.h"
 #include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
@@ -22,7 +22,7 @@
 #include "Game/Systems/PhysicsSystem.h"
 
 // TODO: might seperate these salty things into another folder
-#include "Game/Salty/Audio/SaltyAudio.h"
+#include "Game/Salty/SaltyAudio.h"
 
 Game::Game()
 {
