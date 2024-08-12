@@ -43,7 +43,7 @@ int Engine::Initialize()
     // Handling creation before window is opened (so we do not sit on a blank screen)
     registry = std::make_shared<Registry>();
     assetManager = std::make_shared<AssetManager>();
-    Audio::Soloud.init();
+    Audio::soloud.init();
 
     // NOTE: These will be rendered in Engine::UpdateGUI() so no need to worry about ImGui not being initialized
     // Will be initialized with renderer and viewport below, this also creates the initial scene in registry
@@ -134,6 +134,10 @@ int Engine::Initialize()
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
 
+    //TEMP
+    sound.filepath = "boop.wav";
+    Audio::Load(sound);
+
     isRunning = true;
     return 0;
 }
@@ -194,6 +198,8 @@ void Engine::KeyDownInput(SDL_Scancode scancode){
             if(editHistory->canRedo) editHistory->Redo();
             break;
         case SDL_SCANCODE_S:
+            // TEMP
+            Audio::Play(sound);
             if(editHistory->unsaved) editHistory->Save();
             break;
         default:
@@ -282,7 +288,7 @@ void Engine::Destroy()
 {
     // unique_ptr so will automatically delete 
     openTabs.clear(); // TODO: might not even need this tbh
-    Audio::Soloud.deinit();
+    Audio::soloud.deinit();
 
     ImGui_ImplSDLRenderer2_Shutdown();
     ImGui_ImplSDL2_Shutdown();

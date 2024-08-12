@@ -40,6 +40,8 @@ class Engine {
         bool lCtrlHeld;
         bool rCtrlHeld;
 
+        Sound sound;
+
         std::shared_ptr<Stage> stage;
         std::unique_ptr<Menu> menu;
         std::vector<std::unique_ptr<ITab>> openTabs;

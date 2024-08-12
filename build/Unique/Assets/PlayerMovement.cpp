@@ -42,8 +42,7 @@ void PlayerMovement::Start(){
     sound.stream = false;
     Audio::Load(sound);
 
-    // TODO??
-    // Camera::position.x = 1;
+    Camera::position.x = 1;
 }
 
 // TODO: may add more detail

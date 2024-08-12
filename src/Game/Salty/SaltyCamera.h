@@ -5,6 +5,7 @@
 #include <glm.hpp>
 
 class Camera {
+public:
     static glm::vec2 position;
     static float rotation;
 

@@ -23,6 +23,7 @@
 
 // TODO: might seperate these salty things into another folder
 #include "Game/Salty/SaltyAudio.h"
+#include "Game/Salty/SaltyCamera.h"
 
 Game::Game()
 {
@@ -44,7 +45,7 @@ int Game::Initialize()
     assetManager = std::make_unique<AssetManager>();
     // TODO:
     // NOTE: in web build i might want to load differently
-    Audio::Soloud.init();
+    Audio::soloud.init();
 
     // Init main SDL window
     if(SDL_Init(SDL_INIT_VIDEO) < 0) { return -1; }
@@ -298,7 +299,7 @@ void Game::Render()
     SDL_SetRenderDrawColor(renderer, 40, 40, 100, 255);
     SDL_RenderClear(renderer);
 
-    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, glm::vec2(0,0));
+    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, Camera::position);
 
     SDL_RenderPresent(renderer);
 }
@@ -306,7 +307,7 @@ void Game::Render()
 // Clean up
 void Game::Destroy()
 {
-    Audio::Soloud.deinit();
+    Audio::soloud.deinit();
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

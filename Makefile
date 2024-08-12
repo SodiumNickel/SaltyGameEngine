@@ -19,12 +19,14 @@ SRC = src/enginemain.cpp \
 	  src/Game/ECS/*.cpp src/Game/AssetManager/*.cpp \
 	  src/Game/Salty/*.cpp src/Game/Helpers/*.cpp \
 
+# Compiles SoLoud statically with SDL2
 FLAGS = -DWITH_SDL2_STATIC
 
 # TODO: consider optimization levels like -O1 or -O2
 # -fsanitize=address 
 default: # Compiles engine
 	g++ -g $(SRC) -std=c++17 $(INCLUDE_DIRS) $(LIB_DIRS) $(LIBS) $(FLAGS) -o $(BUILD_DIR)/$(ENGINE_NAME)
+	xcopy /E /I /Y .\src\Game .\$(BUILD_DIR)\Make\src\Game > nul
 
 run:
 	cd $(BUILD_DIR) && $(ENGINE_NAME)
@@ -35,6 +37,24 @@ debug:
 clean:
 	cd $(BUILD_DIR) && del $(ENGINE_NAME).exe && del imgui.ini;
 
+copygame:
+	xcopy /E /I /Y .\src\Game .\$(BUILD_DIR)\Make\src\Game > nul
+
+# To compile SoLoud
+SOL_SRC = libsrc/soloud/core/*.cpp libsrc/soloud/sdl2_static/*.cpp libsrc/soloud/wav/*.cpp libsrc/soloud/wav/stb_vorbis.c 
+SOL_INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/soloud -Ilibsrc/soloud/wav
+
+SOL_FLAGS = -DWITH_SDL2_STATIC
+
+# Creates and indexes libsoloud static
+libsoloud.a: $(SOL_SRC)
+	g++ -c $(SOL_SRC) -std=c++17 $(SOL_INCLUDE_DIRS) $(SOL_FLAGS)
+	ar rcs lib/libsoloud.a *.o
+	ranlib lib/libsoloud.a
+	del *.o
+
+cleansoloud: 
+	del *.o
 
 # Game builds - for testing commands to be called by std::system()
 G_NAME = game
