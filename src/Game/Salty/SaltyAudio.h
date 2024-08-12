@@ -28,8 +28,8 @@ class Audio {
     // going to give id to AudioSource object, and when loaded it will assign an id
     public:
         // Both should only be accessed internally, but have to be static here
-        static SoLoud::Soloud Soloud; // TODO: do i like these in caps??
-        static std::vector<std::unique_ptr<SoLoud::AudioSource>> Sounds;
+        static SoLoud::Soloud soloud; // TODO: do i like these in caps??
+        static std::vector<std::unique_ptr<SoLoud::AudioSource>> sounds;
         static std::deque<int> freeIds; // TODO: probably should just use queue or stack, dont have time to think bout rn
 
         // TODO: definitely need an Audio::ClearLoadedSounds();

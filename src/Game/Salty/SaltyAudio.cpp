@@ -10,8 +10,8 @@
 #include <soloud_wavstream.h>
 
 // Initializes Soloud engine and Sounds vector
-SoLoud::Soloud Audio::Soloud;
-std::vector<std::unique_ptr<SoLoud::AudioSource>> Audio::Sounds;
+SoLoud::Soloud Audio::soloud;
+std::vector<std::unique_ptr<SoLoud::AudioSource>> Audio::sounds;
 std::deque<int> Audio::freeIds;
 
 void Audio::Load(Sound& sound){
@@ -23,8 +23,8 @@ void Audio::Load(Sound& sound){
     if(freeIds.empty())
     { 
         // No free ids, expand entity ids
-        id = Audio::Sounds.size();
-        Audio::Sounds.resize(id + 1);
+        id = Audio::sounds.size();
+        Audio::sounds.resize(id + 1);
     }
     else
     {
@@ -33,16 +33,16 @@ void Audio::Load(Sound& sound){
         freeIds.pop_front();
     }
 
-    // Load audio and place into Audio::Sounds
+    // Load audio and place into Audio::sounds
     if(sound.stream) { 
         auto wavstream = std::make_unique<SoLoud::WavStream>();
         wavstream->load(("Unique/Assets/" + sound.filepath).c_str()); // TODO: should probably auto add the Unique/Assets/ here
-        Audio::Sounds[id] = std::move(wavstream);
+        Audio::sounds[id] = std::move(wavstream);
     }
     else { 
         auto wav = std::make_unique<SoLoud::Wav>();
         wav->load(("Unique/Assets/" + sound.filepath).c_str());
-        Audio::Sounds[id] = std::move(wav);
+        Audio::sounds[id] = std::move(wav);
     }
 
     // Signifies that sound has been loaded and can be played
@@ -55,10 +55,10 @@ void Audio::Play(Sound sound){
     // 0 <= ensures audioSource has been loaded
     // < size for bounds on loaded sounds
     // != nullptr ensures audioSource has not be deloaded
-    assert(0 <= id && id < Audio::Sounds.size() && Audio::Sounds[id] != nullptr); // TODO: need id to be within len, and then also needs to not be nullptr
+    assert(0 <= id && id < Audio::sounds.size() && Audio::sounds[id] != nullptr); // TODO: need id to be within len, and then also needs to not be nullptr
     // TODO: tbh, could just load sound here if id = -1... but again, a later change
     // TODO: cont - i think its good to still have a Load() thing incase we want to load at start or specific times, but still a nice failsafe
 
-    SoLoud::AudioSource& aud = *Audio::Sounds[id].get();
-    Audio::Soloud.play(aud);
+    SoLoud::AudioSource& aud = *Audio::sounds[id].get();
+    Audio::soloud.play(aud);
 }

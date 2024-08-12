@@ -8,8 +8,10 @@
 #include "Game/Components/SpriteComponent.h"
 
 #include "Game/Salty/SaltyAudio.h"
+#include "Game/Salty/SaltyCamera.h"
 
 #include <SDL.h>
+#include <glm.hpp>
 
 // TODO: think about
 // TODO: dont think LOCAL is the best name for this, but will use a similar method to keep vars not serialized
@@ -39,6 +41,9 @@ void PlayerMovement::Start(){
     sound.filepath = "boop.wav";
     sound.stream = false;
     Audio::Load(sound);
+
+    // TODO??
+    // Camera::position.x = 1;
 }
 
 // TODO: may add more detail
