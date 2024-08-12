@@ -1,4 +1,4 @@
-#include "Game/Input/SaltyInput.h"
+#include "Game/Salty/Input/SaltyInput.h"
 
 // Initialize input arrays
 bool Input::KeyDown[SDL_NUM_SCANCODES] = {0};

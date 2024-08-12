@@ -9,10 +9,11 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <soloud.h>
 
 #include "Game/ECS/ECS.h"
 #include "Game/Helpers/JsonHelper.h" // TODO: might remove this
-#include "Game/Input/SaltyInput.h"
+#include "Game/Salty/Input/SaltyInput.h"
 #include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
@@ -21,7 +22,7 @@
 #include "Game/Systems/PhysicsSystem.h"
 
 // TODO: might seperate these salty things into another folder
-#include "Game/Audio/SaltyAudio.h"
+#include "Game/Salty/Audio/SaltyAudio.h"
 
 Game::Game()
 {
@@ -86,6 +87,11 @@ int Game::Initialize()
     // TODO: could potentially do this in load scene, iff it finds proper components?, no wait dont think thatll work (assume they add components with scripts)
     registry->AddSystem<RenderSystem>();
     registry->AddSystem<PhysicsSystem>();
+
+    // TEMP: TODO
+    sound.filepath = "boop.wav";
+    sound.stream = true;
+    Audio::Load(sound);
 
     isRunning = true;
     return 0;
@@ -269,6 +275,10 @@ void Game::ProcessInput()
     //       this has the effect that we can have KeyDown = 1, KeyUp = 1, KeyHeld = 0 (which is intended... for now)
 
     // TODO: controller input not implemented
+
+    if(Input::KeyDown[SDL_SCANCODE_W]){
+        Audio::Play(sound);
+    }
 }
 
 void Game::Update(float deltaTime)

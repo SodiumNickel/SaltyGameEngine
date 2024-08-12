@@ -20,7 +20,7 @@
 #include "Engine/Menu/Menu.h"
 #include "Engine/Tabs/Tabs.h"
 
-#include "Game/Audio/SaltyAudio.h"
+#include "Game/Salty/Audio/SaltyAudio.h"
 
 Engine::Engine()
 {
@@ -134,11 +134,6 @@ int Engine::Initialize()
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
 
-    // TEMP: TODO
-    sound.filepath = "Unique/Assets/boop.wav";
-    sound.stream = true;
-    Audio::Load(sound);
-
     isRunning = true;
     return 0;
 }
@@ -199,8 +194,6 @@ void Engine::KeyDownInput(SDL_Scancode scancode){
             if(editHistory->canRedo) editHistory->Redo();
             break;
         case SDL_SCANCODE_S:
-            // TEMP
-            Audio::Play(sound);
             if(editHistory->unsaved) editHistory->Save();
             break;
         default:

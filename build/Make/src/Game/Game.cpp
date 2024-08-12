@@ -9,16 +9,20 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <soloud.h>
 
 #include "Game/ECS/ECS.h"
 #include "Game/Helpers/JsonHelper.h" // TODO: might remove this
-#include "Game/Input/SaltyInput.h"
+#include "Game/Salty/Input/SaltyInput.h"
 #include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
 // #include "../Components/BoxColliderComponent.h" might need for visual
 #include "Game/Systems/RenderSystem.h"
 #include "Game/Systems/PhysicsSystem.h"
+
+// TODO: might seperate these salty things into another folder
+#include "Game/Salty/Audio/SaltyAudio.h"
 
 Game::Game()
 {
@@ -36,6 +40,12 @@ Game::~Game()
 // Returns 0 if successful
 int Game::Initialize()
 {
+    registry = std::make_unique<Registry>();
+    assetManager = std::make_unique<AssetManager>();
+    // TODO:
+    // NOTE: in web build i might want to load differently
+    Audio::Soloud.init();
+
     // Init main SDL window
     if(SDL_Init(SDL_INIT_VIDEO) < 0) { return -1; }
 
@@ -70,9 +80,6 @@ int Game::Initialize()
         return -1;
     }
 
-    registry = std::make_unique<Registry>();
-    assetManager = std::make_unique<AssetManager>();
-
     // TODO: check for saved scene number here, currently just default
     LoadScene(0);
 
@@ -80,6 +87,11 @@ int Game::Initialize()
     // TODO: could potentially do this in load scene, iff it finds proper components?, no wait dont think thatll work (assume they add components with scripts)
     registry->AddSystem<RenderSystem>();
     registry->AddSystem<PhysicsSystem>();
+
+    // TEMP: TODO
+    sound.filepath = "boop.wav";
+    sound.stream = true;
+    Audio::Load(sound);
 
     isRunning = true;
     return 0;
@@ -174,9 +186,12 @@ void Game::Run()
 
 void Game::ProcessInput()
 {
-    // Clear keyboard inputs frame last frame
+    // Clear keyboard inputs from last frame
     std::memset(Input::KeyDown, 0, sizeof(Input::KeyDown));
     std::memset(Input::KeyUp, 0, sizeof(Input::KeyUp));
+    // Clear mouse inputs from last frame
+    std::memset(Input::MouseDown, 0, sizeof(Input::MouseDown));
+    std::memset(Input::MouseUp, 0, sizeof(Input::MouseUp));
 
     SDL_Event event;
     while(SDL_PollEvent(&event)){
@@ -184,6 +199,7 @@ void Game::ProcessInput()
             case SDL_QUIT:
                 isRunning = false;
                 break; // TODO: all of these do them every frame, should only do it on first frame down, wait until up
+            // Keyboard Down/Up
             case SDL_KEYDOWN:
                 if(event.key.repeat == 0) {
                     Input::KeyDown[event.key.keysym.scancode] = 1;
@@ -193,6 +209,55 @@ void Game::ProcessInput()
             case SDL_KEYUP:
                 Input::KeyUp[event.key.keysym.scancode] = 1;
                 Input::KeyHeld[event.key.keysym.scancode] = 0;
+                break;
+            // Mouse Down/Up
+            case SDL_MOUSEBUTTONDOWN:
+                switch(event.button.button){
+                    case SDL_BUTTON_LEFT:
+                        Input::MouseDown[1] = 1;
+                        Input::MouseHeld[1] = 1;
+                        break;
+                    case SDL_BUTTON_MIDDLE: 
+                        Input::MouseDown[3] = 1;
+                        Input::MouseHeld[3] = 1;
+                        break;
+                    case SDL_BUTTON_RIGHT: // NOTE: I think having M2 (right click) is more standard, goes against SDL codes
+                        Input::MouseDown[2] = 1;
+                        Input::MouseHeld[2] = 1;
+                        break;
+                    case SDL_BUTTON_X1:
+                        Input::MouseDown[4] = 1;
+                        Input::MouseHeld[4] = 1;
+                        break;
+                    case SDL_BUTTON_X2:
+                        Input::MouseDown[5] = 1;
+                        Input::MouseHeld[5] = 1;
+                        break;
+                }
+                break;
+            case SDL_MOUSEBUTTONUP:
+                switch(event.button.button){
+                    case SDL_BUTTON_LEFT:
+                        Input::MouseUp[1] = 1;
+                        Input::MouseHeld[1] = 0;
+                        break;
+                    case SDL_BUTTON_MIDDLE: 
+                        Input::MouseUp[3] = 1;
+                        Input::MouseHeld[3] = 0;
+                        break;
+                    case SDL_BUTTON_RIGHT: // NOTE: I think having M2 (right click) is more standard, goes against SDL codes
+                        Input::MouseUp[2] = 1;
+                        Input::MouseHeld[2] = 0;
+                        break;
+                    case SDL_BUTTON_X1:
+                        Input::MouseUp[4] = 1;
+                        Input::MouseHeld[4] = 0;
+                        break;
+                    case SDL_BUTTON_X2:
+                        Input::MouseUp[5] = 1;
+                        Input::MouseHeld[5] = 0;
+                        break;
+                }
                 break;
             // case SDL_CONTROLLERBUTTONDOWN:
             //     std::cout << "Controller Button Down: " << static_cast<int>(event.cbutton.button) << std::endl;
@@ -210,16 +275,21 @@ void Game::ProcessInput()
     //       this has the effect that we can have KeyDown = 1, KeyUp = 1, KeyHeld = 0 (which is intended... for now)
 
     // TODO: controller input not implemented
+
+    if(Input::KeyDown[SDL_SCANCODE_W]){
+        Audio::Play(sound);
+    }
 }
 
 void Game::Update(float deltaTime)
 {
+    // Update all systems
+    registry->GetSystem<PhysicsSystem>().Update(deltaTime); 
+
     // TODO: Check for events here
     // TODO: probably call script updates here?
-    registry->Update(); 
+    registry->Update(); // TODO: not sure where this should be (which order)
     
-    // Update all systems
-    registry->GetSystem<PhysicsSystem>().Update(deltaTime); // TODO: not sure this should be before scripts... imagine we have someone falling very fast, then teleported, could go through ground
 }
 
 void Game::Render()
@@ -236,6 +306,8 @@ void Game::Render()
 // Clean up
 void Game::Destroy()
 {
+    Audio::Soloud.deinit();
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

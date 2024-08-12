@@ -1,9 +1,11 @@
 #include "Game/Scripts/Script.h" // TODO: I want this to be a better path
 // TODO: also want to include the SaltyEngine.h (including debug, input, etc.)
-#include "Game/Input/SaltyInput.h"
+#include "Game/Salty/Input/SaltyInput.h"
 #include "Game/ECS/ECS.h" // TODO: put into salty engine, also put all components
 #include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
+
+#include "Game/Salty/Audio/SaltyAudio.h"
 
 #include <SDL.h>
 
@@ -33,6 +35,8 @@ private:
 
     SF_ Sprite test;
     SF_ Transform player;
+
+    Sound sound;
 public:
     // Initialization will be handled by engine (including that of SF_ variables)
     PlayerMovement(Entity* entity, Transform transform);

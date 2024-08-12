@@ -2,10 +2,12 @@
 
 #include "Game/Scripts/Script.h" // TODO: I want this to be a better path
 // TODO: also want to include the SaltyEngine.h (including debug, input, etc.)
-#include "Game/Input/SaltyInput.h"
+#include "Game/Salty/Input/SaltyInput.h"
 #include "Game/ECS/ECS.h" // TODO: put into salty engine, also put all components
 #include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
+
+#include "Game/Salty/Audio/SaltyAudio.h"
 
 #include <SDL.h>
 
@@ -33,6 +35,10 @@ typedef SpriteComponent* Sprite;
 // Called before the first frame of Update()
 void PlayerMovement::Start(){
     val = 3;
+
+    sound.filepath = "boop.wav";
+    sound.stream = false;
+    Audio::Load(sound);
 }
 
 // TODO: may add more detail
@@ -43,5 +49,9 @@ void PlayerMovement::Update(float deltaTime){
     }
     if(Input::KeyHeld[SDL_SCANCODE_D]){
         transform->position.x += deltaTime * speed;
+    }
+
+    if(Input::KeyDown[SDL_SCANCODE_W]){
+        Audio::Play(sound);
     }
 }

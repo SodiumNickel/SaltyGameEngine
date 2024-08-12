@@ -10,7 +10,7 @@ using json = nlohmann::json;
 
 #include "Game/ECS/ECS.h"
 #include "Game/AssetManager/AssetManager.h"
-
+#include "Game/Salty/Audio/SaltyAudio.h"
 
 class Game {
     private:
@@ -20,6 +20,9 @@ class Game {
 
         std::unique_ptr<Registry> registry; 
         std::unique_ptr<AssetManager> assetManager;
+
+        // TEMP
+        Sound sound;
 
         // In ms
         uint64_t targetFrameTime = 8;

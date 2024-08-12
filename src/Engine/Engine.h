@@ -17,7 +17,7 @@
 
 #include "Game/ECS/ECS.h"
 #include "Game/AssetManager/AssetManager.h"
-#include "Game/Audio/SaltyAudio.h" // TODO: TEMP
+#include "Game/Salty/Audio/SaltyAudio.h" // TODO: TEMP
 
 class Engine {
     private:
@@ -34,8 +34,6 @@ class Engine {
         // Will be stored in Game along with other vars in Stage
         std::shared_ptr<Registry> registry; 
         std::shared_ptr<AssetManager> assetManager;
-        // TEMP
-        Sound sound;
 
         std::shared_ptr<EditHistory> editHistory;
         // For shortcutted input handling (i.e. Undo)

@@ -1,4 +1,4 @@
-#include "SaltyAudio.h"
+#include "Game/Salty/Audio/SaltyAudio.h"
 
 #include <deque>
 #include <memory>
@@ -36,12 +36,12 @@ void Audio::Load(Sound& sound){
     // Load audio and place into Audio::Sounds
     if(sound.stream) { 
         auto wavstream = std::make_unique<SoLoud::WavStream>();
-        wavstream->load(sound.filepath.c_str()); // TODO: should probably auto add the Unique/Assets/ here
+        wavstream->load(("Unique/Assets/" + sound.filepath).c_str()); // TODO: should probably auto add the Unique/Assets/ here
         Audio::Sounds[id] = std::move(wavstream);
     }
     else { 
         auto wav = std::make_unique<SoLoud::Wav>();
-        wav->load(sound.filepath.c_str());
+        wav->load(("Unique/Assets/" + sound.filepath).c_str());
         Audio::Sounds[id] = std::move(wav);
     }
 
