@@ -1,3 +1,6 @@
+# TEMP
+# EXTRA = -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid -static-libgcc
+
 # Engine builds
 ENGINE_NAME = saltyengine
 BUILD_DIR = build
@@ -22,11 +25,15 @@ SRC = src/enginemain.cpp \
 # Compiles SoLoud statically with SDL2
 FLAGS = -DWITH_SDL2_STATIC
 
+# TODO: Supress console window  -mwindows
+
+
 # TODO: consider optimization levels like -O1 or -O2
 # -fsanitize=address 
 default: # Compiles engine
 	g++ -g $(SRC) -std=c++17 $(INCLUDE_DIRS) $(LIB_DIRS) $(LIBS) $(FLAGS) -o $(BUILD_DIR)/$(ENGINE_NAME)
 	xcopy /E /I /Y .\src\Game .\$(BUILD_DIR)\Make\src\Game > nul
+# TODO: this needs to clear it too, in case of moving stuff around
 
 run:
 	cd $(BUILD_DIR) && $(ENGINE_NAME)
@@ -44,10 +51,10 @@ copygame:
 SOL_SRC = libsrc/soloud/core/*.cpp libsrc/soloud/sdl2_static/*.cpp libsrc/soloud/wav/*.cpp libsrc/soloud/wav/stb_vorbis.c 
 SOL_INCLUDE_DIRS = -Iinclude/SDL2 -Iinclude/soloud -Ilibsrc/soloud/wav
 
-SOL_FLAGS = -DWITH_SDL2_STATIC
+SOL_FLAGS = -DWITH_SDL2_STATIC -lstdc++
 
 # Creates and indexes libsoloud static
-libsoloud.a: $(SOL_SRC)
+libsoloud.a: 
 	g++ -c $(SOL_SRC) -std=c++17 $(SOL_INCLUDE_DIRS) $(SOL_FLAGS)
 	ar rcs lib/libsoloud.a *.o
 	ranlib lib/libsoloud.a

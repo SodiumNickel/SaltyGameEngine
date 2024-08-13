@@ -33,13 +33,29 @@ void Menu::ExportWindows(){
     // Compile game into .exe
     std::string src = "Make/src/main.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
                       "Make/src/Game/AssetManager/AssetManager.cpp Make/src/Game/Helpers/JsonHelper.cpp "
-                      "Make/src/Game/Input/SaltyInput.cpp ";
-    std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -IMake/src ";
-    std::string lib = "-LMake/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image ";
+                      "Make/src/Game/Salty/SaltyInput.cpp Make/src/Game/Salty/SaltyAudio.cpp Make/src/Game/Salty/SaltyCamera.cpp ";
+    // TODO: statically link soloud instead
+    std::string soloudcore = "Make/libsrc/soloud/core/soloud.cpp Make/libsrc/soloud/core/soloud_audiosource.cpp"
+                         " Make/libsrc/soloud/core/soloud_bus.cpp Make/libsrc/soloud/core/soloud_core_3d.cpp"
+                         " Make/libsrc/soloud/core/soloud_core_basicops.cpp Make/libsrc/soloud/core/soloud_core_faderops.cpp"
+                         " Make/libsrc/soloud/core/soloud_core_filterops.cpp Make/libsrc/soloud/core/soloud_core_getters.cpp"
+                         " Make/libsrc/soloud/core/soloud_core_setters.cpp Make/libsrc/soloud/core/soloud_core_voicegroup.cpp"
+                         " Make/libsrc/soloud/core/soloud_core_voiceops.cpp Make/libsrc/soloud/core/soloud_fader.cpp"
+                         " Make/libsrc/soloud/core/soloud_fft.cpp Make/libsrc/soloud/core/soloud_fft_lut.cpp"
+                         " Make/libsrc/soloud/core/soloud_file.cpp Make/libsrc/soloud/core/soloud_filter.cpp"
+                         " Make/libsrc/soloud/core/soloud_misc.cpp Make/libsrc/soloud/core/soloud_queue.cpp"
+                         " Make/libsrc/soloud/core/soloud_thread.cpp ";
+    std::string soloudother = " Make/libsrc/soloud/sdl2_static/soloud_sdl2_static.cpp Make/libsrc/soloud/wav/dr_impl.cpp"
+                              " Make/libsrc/soloud/wav/soloud_wav.cpp Make/libsrc/soloud/wav/soloud_wavstream.cpp "
+                              " Make/libsrc/soloud/wav/stb_vorbis.c ";
+    std::string flags =  "-DWITH_SDL2_STATIC ";                        
+    // END TODO
+    std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -IMake/include/soloud -Iake/libsrc/soloud/wav -IMake/src ";
+    std::string lib = "-LMake/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf ";
     std::string out = "-o \"" + engineData->gameFilepath + "\"/\"" + engineData->gameName + "\"/\"" + engineData->gameName + ".exe\"";
 
     // TODO: do need a way to determine that user has proper packages installed (is it just mingw here?)
-    std::string make = "g++ " + src + "-std=c++17 " + inc + lib + out;
+    std::string make = "g++ " + src + soloudcore + soloudother + "-std=c++17 " + inc + lib + flags + out;
     result = system(make.c_str());
     // TODO: v also want to rename result
     // TEMP
