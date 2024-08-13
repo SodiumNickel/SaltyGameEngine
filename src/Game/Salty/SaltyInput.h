@@ -30,6 +30,10 @@ class Input {
         static bool MouseHeld[NUM_M];
         // Mouse buttons that were released this frame
         static bool MouseUp[NUM_M];
+        // TODO: i want these to be scaled to world position, need to do some math
+        static int MouseX;
+        static int MouseY;
+        
 };
 
 #endif // SALTYINPUT_H

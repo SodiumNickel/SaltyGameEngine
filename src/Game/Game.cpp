@@ -260,6 +260,10 @@ void Game::ProcessInput()
                         break;
                 }
                 break;
+            case SDL_MOUSEMOTION:
+                Input::MouseX = event.motion.x;
+                Input::MouseY = event.motion.y; // TODO: should probably be loaded at start of app
+                break;
             // case SDL_CONTROLLERBUTTONDOWN:
             //     std::cout << "Controller Button Down: " << static_cast<int>(event.cbutton.button) << std::endl;
             //     break;
@@ -279,7 +283,9 @@ void Game::ProcessInput()
 
     if(Input::KeyDown[SDL_SCANCODE_W]){
         Audio::Play(sound);
+        Camera::position.x += 30;
     }
+    std::cout << Input::MouseX << ", " << Input::MouseY <<'\n';
 }
 
 void Game::Update(float deltaTime)
