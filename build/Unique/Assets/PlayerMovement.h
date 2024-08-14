@@ -2,8 +2,6 @@
 // TODO: also want to include the SaltyEngine.h (including debug, input, etc.)
 #include "Game/Salty/SaltyInput.h"
 #include "Game/ECS/ECS.h" // TODO: put into salty engine, also put all components
-#include "Game/Components/TransformComponent.h"
-#include "Game/Components/SpriteComponent.h"
 
 #include "Game/Salty/SaltyAudio.h"
 
@@ -18,14 +16,11 @@
 #define _SF
 #define SLIDER(min, max) // Except for ones with arguments? maybe just do this one in engine?
 // Should also have ones for like headers and stuff for making engine organization easier
-typedef std::string string; 
-// I think this is good to have for convenience here
-typedef TransformComponent Transform;
-typedef SpriteComponent Sprite;
-// TODO: with above, when you do GetComponent<> is has to be the full SpriteComponent...
-// semi okay with this tbh
-#include <array>
+
 #include <variant>
+#include <vector>
+
+#include "Game/Salty/SaltyTypes.h"
 
 // TODO: eventually might make a text editor abstraction for this
 class PlayerMovement : public IScript {
@@ -46,7 +41,7 @@ public:
 
     // TODO: actually just constructor which takes those two things, and then an array of std::variant<SaltyTypes>
     // which just takes valid variable types and then assigns them (written in build)
-    PlayerMovement(Entity* entity, Transform* transform, std::array<std::variant<int, float>, 3> serializedVars)
+    PlayerMovement(Entity* entity, Transform* transform, std::vector<SaltyType> serializedVars) // TODO: didnt want this to be a vector, but not sure i can get arroundd it here?
     : IScript(entity, transform), val(std::get<int>(serializedVars[0])) {};
 
     void Start() override;

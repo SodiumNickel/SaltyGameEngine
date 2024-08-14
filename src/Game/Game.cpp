@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <stack>
+#include <vector>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -14,9 +15,7 @@
 #include "Game/ECS/ECS.h"
 #include "Game/Helpers/JsonHelper.h" // TODO: might remove this
 #include "Game/Salty/SaltyInput.h"
-#include "Game/Components/TransformComponent.h"
-#include "Game/Components/SpriteComponent.h"
-#include "Game/Components/RigidbodyComponent.h"
+#include "Game/Salty/SaltyTypes.h"
 // #include "../Components/BoxColliderComponent.h" might need for visual
 #include "Game/Systems/RenderSystem.h"
 #include "Game/Systems/PhysicsSystem.h"
@@ -179,6 +178,10 @@ void Game::CreateEntityTree(json jEntities, json jRootIds){
             std::string scriptName = jEntityScripts[sId]["name"];
             // TODO: just want to be able to initialize script rn, can worry about where to put it later
 
+            // TODO: make sure i like this name
+            std::vector<SaltyType> serializedVars;
+
+
             // Maybe both are array (script one has types and the entity one has values?)
             // For components, values just store entityIds
             // For audio needs to store object with multiple values
@@ -189,6 +192,35 @@ void Game::CreateEntityTree(json jEntities, json jRootIds){
             // create map during build that goes from string to object type (i have page open on phone)
         }
     }
+}
+
+SaltyType Game::CreateArg(std::string& type, json jVal){
+    // jType will contain a of SaltyType, jVal will be a value of that type
+    if(type == "int"){ // TODO: not a big fan of this big if else stuff, find a workaround, either a switch case, or a mapping to another function on a dict
+        return SaltyType(jVal.get<int>());
+    }
+    else if(type == "float"){
+        return SaltyType(jVal.get<float>());
+    }
+    else if(type == "string"){
+        return SaltyType(jVal.get<std::string>());
+    }
+    else if(type == "Transform"){
+        
+    }
+    else if(type == "Sprite"){
+
+    }
+    else if(type == "Rigidbody"){
+
+    }
+    else if(type == "Sound"){
+
+    }
+
+    // type does not exist
+    // TODO: this should never happen, crash with proper message
+    assert(false);
 }
 
 // Game main loop, not used in web builds

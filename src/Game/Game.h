@@ -11,6 +11,7 @@ using json = nlohmann::json;
 #include "Game/ECS/ECS.h"
 #include "Game/AssetManager/AssetManager.h"
 #include "Game/Salty/SaltyAudio.h"
+#include "Game/Salty/SaltyTypes.h"
 
 class Game {
     private:
@@ -28,6 +29,7 @@ class Game {
         uint64_t targetFrameTime = 8;
 
         void CreateEntityTree(json jEntities, json jRootIds);
+        SaltyType CreateArg(std::string& type, json jVal);
     public:
         Game();
         ~Game();
