@@ -22,7 +22,7 @@ using json = nlohmann::json;
 #include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
 // #include "../Components/BoxColliderComponent.h" might need for visual
-
+#include "Game/Salty/SaltyCamera.h"
 
 // Constructor
 Stage::Stage(std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager)
@@ -63,7 +63,12 @@ void Stage::LoadScene(int sceneIndex)
 
     json jEntities = jScene["entities"];
     json jRootIds = jScene["root-ids"];
+    json jCamera = jScene["camera"];
     g.close();
+
+    Camera::position = JsonToVec2(jCamera["position"]);
+    Camera::aspectRatio = JsonToVec2(jCamera["aspectRatio"]);
+
     CreateEntityTree(jEntities, jRootIds);
 }
 

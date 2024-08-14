@@ -9,7 +9,7 @@ public:
     static glm::vec2 position;
     static float rotation;
 
-    static glm::vec2 dimensions;
+    static glm::vec2 aspectRatio;
 };
 
 #endif

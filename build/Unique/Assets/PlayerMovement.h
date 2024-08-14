@@ -20,8 +20,8 @@
 // Should also have ones for like headers and stuff for making engine organization easier
 typedef std::string string; 
 // I think this is good to have for convenience here
-typedef TransformComponent* Transform;
-typedef SpriteComponent* Sprite;
+typedef TransformComponent Transform;
+typedef SpriteComponent Sprite;
 // TODO: with above, when you do GetComponent<> is has to be the full SpriteComponent...
 // semi okay with this tbh
 
@@ -33,13 +33,14 @@ private:
     string name;
     SF_ int val; // TODO: might do opposite actually, include a def for ones that should be serialized, maybe just SF?
 
-    SF_ Sprite test;
-    SF_ Transform player;
+    SF_ Sprite* test;
+    SF_ Transform* player;
 
     Sound sound;
 public:
     // Initialization will be handled by engine (including that of SF_ variables)
-    PlayerMovement(Entity* entity, Transform transform);
+    PlayerMovement(Entity* entity, Transform* transform);
+    // TODO: just add a new constructor with everything
 
     void Start() override;
     void Update(float dt) override;

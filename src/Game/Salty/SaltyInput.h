@@ -7,8 +7,8 @@
 // TODO: kinda wanna move this to another file...
 enum EMouseButtons {
     M_LEFT = 1,
-    M_RIGHT = 2,
-    M_MIDDLE = 3,
+    M_RIGHT = 2, // NOTE: I think having M2 (right click) is more standard, goes against SDL codes
+    M_MID = 3,
     M_FOUR = 4,
     M_FIVE = 5,
     NUM_M = 8 // TODO: have this at power of 2 rn, also unsure about names

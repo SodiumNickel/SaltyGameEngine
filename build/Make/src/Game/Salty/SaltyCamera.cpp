@@ -4,4 +4,4 @@
 
 glm::vec2 Camera::position = glm::vec2(0,0);
 float Camera::rotation = 0;
-glm::vec2 Camera::dimensions = glm::vec2(0,0);
+glm::vec2 Camera::aspectRatio = glm::vec2(0,0);

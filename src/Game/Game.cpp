@@ -108,13 +108,15 @@ void Game::LoadScene(int sceneIndex)
     
     std::ifstream g("Unique/Scenes/" + sceneName + ".json");
     json jScene = json::parse(g);
-    // After deleting an entity we need to preserve the space for engine ({} in json), these need to removed in actual files
-    jScene["null-count"] = 0; 
-    std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
 
     json jEntities = jScene["entities"];
     json jRootIds = jScene["root-ids"];
+    json jCamera = jScene["camera"];
     g.close();
+
+    Camera::position = JsonToVec2(jCamera["position"]);
+    Camera::aspectRatio = JsonToVec2(jCamera["aspectRatio"]);
+
     CreateEntityTree(jEntities, jRootIds);
 }
 
@@ -125,6 +127,7 @@ void Game::CreateEntityTree(json jEntities, json jRootIds){
     // We store rootIds in json file now (also represented by parent: -1 in entities)
     for (int id : jRootIds) rootIds.push_back(id);
 
+    // Create entities and add components
     for(int id = 0; id < jEntities.size(); id++){
         json jEntity = jEntities[id];
         Entity& entity = registry->EngineCreateEntity();
@@ -160,6 +163,31 @@ void Game::CreateEntityTree(json jEntities, json jRootIds){
             entity.AddComponent<RigidbodyComponent>(initVelocity);
         }
         // TODO: remember to add rest of components here
+    }
+
+    // Add scripts to entities
+    std::ifstream f("Unique/scripts.json");
+    json jScripts = json::parse(f);
+    f.close();
+
+    for(int id = 0; id < jEntities.size(); id++){
+        json jEntityScripts = jEntities[id]["scripts"];
+        Entity& entity = *registry->entityTree[id].get();
+
+        // Add all scripts to entity
+        for(int sId = 0; sId < jEntityScripts.size(); sId++){
+            std::string scriptName = jEntityScripts[sId]["name"];
+            // TODO: just want to be able to initialize script rn, can worry about where to put it later
+
+            // Maybe both are array (script one has types and the entity one has values?)
+            // For components, values just store entityIds
+            // For audio needs to store object with multiple values
+
+            // Also need way to actually create the script
+            // Need way to unfold these values into object creation
+            // need to create script somehow, maybe this is done during build?? like a large switch case of script names, and we fill in some slot below
+            // create map during build that goes from string to object type (i have page open on phone)
+        }
     }
 }
 
@@ -215,48 +243,48 @@ void Game::ProcessInput()
             case SDL_MOUSEBUTTONDOWN:
                 switch(event.button.button){
                     case SDL_BUTTON_LEFT:
-                        Input::MouseDown[1] = 1;
-                        Input::MouseHeld[1] = 1;
+                        Input::MouseDown[M_LEFT] = 1;
+                        Input::MouseHeld[M_LEFT] = 1;
                         break;
                     case SDL_BUTTON_MIDDLE: 
-                        Input::MouseDown[3] = 1;
-                        Input::MouseHeld[3] = 1;
+                        Input::MouseDown[M_MID] = 1;
+                        Input::MouseHeld[M_MID] = 1;
                         break;
-                    case SDL_BUTTON_RIGHT: // NOTE: I think having M2 (right click) is more standard, goes against SDL codes
-                        Input::MouseDown[2] = 1;
-                        Input::MouseHeld[2] = 1;
+                    case SDL_BUTTON_RIGHT: 
+                        Input::MouseDown[M_RIGHT] = 1;
+                        Input::MouseHeld[M_RIGHT] = 1;
                         break;
                     case SDL_BUTTON_X1:
-                        Input::MouseDown[4] = 1;
-                        Input::MouseHeld[4] = 1;
+                        Input::MouseDown[M_FOUR] = 1;
+                        Input::MouseHeld[M_FOUR] = 1;
                         break;
                     case SDL_BUTTON_X2:
-                        Input::MouseDown[5] = 1;
-                        Input::MouseHeld[5] = 1;
+                        Input::MouseDown[M_FIVE] = 1;
+                        Input::MouseHeld[M_FIVE] = 1;
                         break;
                 }
                 break;
             case SDL_MOUSEBUTTONUP:
                 switch(event.button.button){
                     case SDL_BUTTON_LEFT:
-                        Input::MouseUp[1] = 1;
-                        Input::MouseHeld[1] = 0;
+                        Input::MouseUp[M_LEFT] = 1;
+                        Input::MouseHeld[M_LEFT] = 0;
                         break;
                     case SDL_BUTTON_MIDDLE: 
-                        Input::MouseUp[3] = 1;
-                        Input::MouseHeld[3] = 0;
+                        Input::MouseUp[M_MID] = 1;
+                        Input::MouseHeld[M_MID] = 0;
                         break;
-                    case SDL_BUTTON_RIGHT: // NOTE: I think having M2 (right click) is more standard, goes against SDL codes
-                        Input::MouseUp[2] = 1;
-                        Input::MouseHeld[2] = 0;
+                    case SDL_BUTTON_RIGHT: 
+                        Input::MouseUp[M_RIGHT] = 1;
+                        Input::MouseHeld[M_RIGHT] = 0;
                         break;
                     case SDL_BUTTON_X1:
-                        Input::MouseUp[4] = 1;
-                        Input::MouseHeld[4] = 0;
+                        Input::MouseUp[M_FOUR] = 1;
+                        Input::MouseHeld[M_FOUR] = 0;
                         break;
                     case SDL_BUTTON_X2:
-                        Input::MouseUp[5] = 1;
-                        Input::MouseHeld[5] = 0;
+                        Input::MouseUp[M_FIVE] = 1;
+                        Input::MouseHeld[M_FIVE] = 0;
                         break;
                 }
                 break;

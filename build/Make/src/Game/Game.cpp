@@ -108,13 +108,15 @@ void Game::LoadScene(int sceneIndex)
     
     std::ifstream g("Unique/Scenes/" + sceneName + ".json");
     json jScene = json::parse(g);
-    // After deleting an entity we need to preserve the space for engine ({} in json), these need to removed in actual files
-    jScene["null-count"] = 0; 
-    std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
 
     json jEntities = jScene["entities"];
     json jRootIds = jScene["root-ids"];
+    json jCamera = jScene["camera"];
     g.close();
+
+    Camera::position = JsonToVec2(jCamera["position"]);
+    Camera::aspectRatio = JsonToVec2(jCamera["aspectRatio"]);
+
     CreateEntityTree(jEntities, jRootIds);
 }
 
@@ -215,50 +217,54 @@ void Game::ProcessInput()
             case SDL_MOUSEBUTTONDOWN:
                 switch(event.button.button){
                     case SDL_BUTTON_LEFT:
-                        Input::MouseDown[1] = 1;
-                        Input::MouseHeld[1] = 1;
+                        Input::MouseDown[M_LEFT] = 1;
+                        Input::MouseHeld[M_LEFT] = 1;
                         break;
                     case SDL_BUTTON_MIDDLE: 
-                        Input::MouseDown[3] = 1;
-                        Input::MouseHeld[3] = 1;
+                        Input::MouseDown[M_MID] = 1;
+                        Input::MouseHeld[M_MID] = 1;
                         break;
-                    case SDL_BUTTON_RIGHT: // NOTE: I think having M2 (right click) is more standard, goes against SDL codes
-                        Input::MouseDown[2] = 1;
-                        Input::MouseHeld[2] = 1;
+                    case SDL_BUTTON_RIGHT: 
+                        Input::MouseDown[M_RIGHT] = 1;
+                        Input::MouseHeld[M_RIGHT] = 1;
                         break;
                     case SDL_BUTTON_X1:
-                        Input::MouseDown[4] = 1;
-                        Input::MouseHeld[4] = 1;
+                        Input::MouseDown[M_FOUR] = 1;
+                        Input::MouseHeld[M_FOUR] = 1;
                         break;
                     case SDL_BUTTON_X2:
-                        Input::MouseDown[5] = 1;
-                        Input::MouseHeld[5] = 1;
+                        Input::MouseDown[M_FIVE] = 1;
+                        Input::MouseHeld[M_FIVE] = 1;
                         break;
                 }
                 break;
             case SDL_MOUSEBUTTONUP:
                 switch(event.button.button){
                     case SDL_BUTTON_LEFT:
-                        Input::MouseUp[1] = 1;
-                        Input::MouseHeld[1] = 0;
+                        Input::MouseUp[M_LEFT] = 1;
+                        Input::MouseHeld[M_LEFT] = 0;
                         break;
                     case SDL_BUTTON_MIDDLE: 
-                        Input::MouseUp[3] = 1;
-                        Input::MouseHeld[3] = 0;
+                        Input::MouseUp[M_MID] = 1;
+                        Input::MouseHeld[M_MID] = 0;
                         break;
-                    case SDL_BUTTON_RIGHT: // NOTE: I think having M2 (right click) is more standard, goes against SDL codes
-                        Input::MouseUp[2] = 1;
-                        Input::MouseHeld[2] = 0;
+                    case SDL_BUTTON_RIGHT: 
+                        Input::MouseUp[M_RIGHT] = 1;
+                        Input::MouseHeld[M_RIGHT] = 0;
                         break;
                     case SDL_BUTTON_X1:
-                        Input::MouseUp[4] = 1;
-                        Input::MouseHeld[4] = 0;
+                        Input::MouseUp[M_FOUR] = 1;
+                        Input::MouseHeld[M_FOUR] = 0;
                         break;
                     case SDL_BUTTON_X2:
-                        Input::MouseUp[5] = 1;
-                        Input::MouseHeld[5] = 0;
+                        Input::MouseUp[M_FIVE] = 1;
+                        Input::MouseHeld[M_FIVE] = 0;
                         break;
                 }
+                break;
+            case SDL_MOUSEMOTION:
+                Input::MouseX = event.motion.x;
+                Input::MouseY = event.motion.y; // TODO: should probably be loaded at start of app
                 break;
             // case SDL_CONTROLLERBUTTONDOWN:
             //     std::cout << "Controller Button Down: " << static_cast<int>(event.cbutton.button) << std::endl;
@@ -279,7 +285,9 @@ void Game::ProcessInput()
 
     if(Input::KeyDown[SDL_SCANCODE_W]){
         Audio::Play(sound);
+        Camera::position.x += 30;
     }
+    std::cout << Input::MouseX << ", " << Input::MouseY <<'\n';
 }
 
 void Game::Update(float deltaTime)

@@ -1,5 +1,9 @@
 {
-    "entities": [
+  "camera": {
+    "position": [0.0, 0.0],
+    "aspectRatio": [1, 1]
+  },  
+  "entities": [
       {
         "children-ids": [],
         "components": {
@@ -16,6 +20,11 @@
           },
         "name": "Player",
         "parent-id": -1,
+        "scripts":[
+          {
+            "name":"PlayerMovement"
+          }
+        ],
         "transform": {
           "position": [
             956.0,

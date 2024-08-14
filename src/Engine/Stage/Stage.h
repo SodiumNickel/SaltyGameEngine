@@ -28,8 +28,8 @@ class Stage {
         std::shared_ptr<Registry> registry;
         std::shared_ptr<AssetManager> assetManager;
 
-        void CreateEntityTree(json jEntities, json jRootIds);
-
+        void CreateEntityTree(json jEntities, json jRootIds); 
+        
         bool dragging = false;
         ImVec2 startMousePos;
         glm::vec2 startStageCenter; 
