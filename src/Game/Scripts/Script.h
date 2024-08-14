@@ -9,6 +9,9 @@ protected:
     Entity* entity;
     TransformComponent* transform;
 public:
+    IScript(Entity* entity, TransformComponent* transform)
+    : entity(entity), transform(transform) {};
+
     virtual void Start() = 0; 
     virtual void Update(float dt) = 0;     
 };

@@ -24,6 +24,8 @@ typedef TransformComponent Transform;
 typedef SpriteComponent Sprite;
 // TODO: with above, when you do GetComponent<> is has to be the full SpriteComponent...
 // semi okay with this tbh
+#include <array>
+#include <variant>
 
 // TODO: eventually might make a text editor abstraction for this
 class PlayerMovement : public IScript {
@@ -41,6 +43,11 @@ public:
     // Initialization will be handled by engine (including that of SF_ variables)
     PlayerMovement(Entity* entity, Transform* transform);
     // TODO: just add a new constructor with everything
+
+    // TODO: actually just constructor which takes those two things, and then an array of std::variant<SaltyTypes>
+    // which just takes valid variable types and then assigns them (written in build)
+    PlayerMovement(Entity* entity, Transform* transform, std::array<std::variant<int, float>, 3> serializedVars)
+    : IScript(entity, transform), val(std::get<int>(serializedVars[0])) {};
 
     void Start() override;
     void Update(float dt) override;
