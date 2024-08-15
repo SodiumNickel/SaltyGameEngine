@@ -1,6 +1,5 @@
 #include "PlayerMovement.h"
 
-#include "Game/Scripts/Script.h" // TODO: I want this to be a better path
 // TODO: also want to include the SaltyEngine.h (including debug, input, etc.)
 #include "Game/Salty/SaltyInput.h"
 #include "Game/ECS/ECS.h" // TODO: put into salty engine, also put all components
@@ -55,7 +54,7 @@ void PlayerMovement::Update(float deltaTime){
         transform->position.x += deltaTime * speed;
     }
 
-    if(Input::KeyDown[SDL_SCANCODE_W]){
+    if(Input::KeyDown[SDL_SCANCODE_S]){
         Audio::Play(sound);
     }
 }

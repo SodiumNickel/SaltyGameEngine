@@ -22,7 +22,8 @@
         "parent-id": -1,
         "scripts":[
           {
-            "name":"PlayerMovement"
+            "filepath":"PlayerMovement",
+            "vals": [1, 0]
           }
         ],
         "transform": {

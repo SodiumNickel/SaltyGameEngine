@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <bitset>
 #include <deque>
+#include <map>
 #include <memory>
 #include <set>
 #include <typeindex>
@@ -43,6 +44,23 @@ public:
     }
 };
 
+/* -----SCRIPT-------------------------------------------------- *
+ *   The user can add scripts to be used by entities             *
+ * ------------------------------------------------------------- */
+class Entity; // Forward declaration, full def below IScript
+
+class IScript {
+protected:
+    // TODO: Do i store owner entity and transform here?
+    Entity* entity;
+    TransformComponent* transform;
+public:
+    IScript(Entity* entity, TransformComponent* transform)
+    : entity(entity), transform(transform) {};
+
+    virtual void Start() = 0; 
+    virtual void Update(float dt) = 0;     
+};
 
 /* -----ENTITY-------------------------------------------------- *
  *   Each entity has unique Id, just a list of components        *
@@ -119,6 +137,11 @@ public:
     std::string name;
     PInt parentId = PInt(this, -1); // -1 if parent is root/scene // TODO: should maybe initialize above? can just reassign
     std::vector<int> childrenIds;
+
+    // TODO: these should be hidden from user
+    // Map from typeid().name to script itself
+    std::map<std::string, IScript*> scripts;
+    void UpdateScripts(float deltaTime);
 
     class Registry* registry; // TODO: would love to move this to private if i put it in initializer
 };

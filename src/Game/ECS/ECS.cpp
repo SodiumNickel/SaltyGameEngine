@@ -43,6 +43,12 @@ void Entity::Destroy()
     registry->DestroyEntity(*this);
 }
 
+void Entity::UpdateScripts(float deltaTime){
+    for (const auto& pair : scripts) {
+        pair.second->Update(deltaTime);
+    }
+}
+
 void System::AddEntityToSystem(Entity entity) // TODO: should probably have this be a pointer now?
 {
     entities.push_back(entity);

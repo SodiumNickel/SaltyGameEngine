@@ -1,8 +1,9 @@
 {
-    "list":[
+    "filepaths":[
         "PlayerMovement"
     ],
     "PlayerMovement":[
-        "int"
+        "int",
+        "Transform"
     ]
 }

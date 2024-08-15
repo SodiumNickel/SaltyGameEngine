@@ -29,7 +29,7 @@ class Game {
         uint64_t targetFrameTime = 8;
 
         void CreateEntityTree(json jEntities, json jRootIds);
-        SaltyType CreateArg(std::string& type, json jVal);
+        SaltyType CreateArg(json jType, json jVal);
     public:
         Game();
         ~Game();

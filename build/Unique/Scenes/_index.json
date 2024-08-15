@@ -1,6 +1,6 @@
 {
     "scenes":[
-        { "name":"demo" },
-        { "name":"simple" }
+        { "name":"simple" },
+        { "name":"demo" }
     ]
 }

@@ -24,6 +24,8 @@
 #include "Game/Salty/SaltyAudio.h"
 #include "Game/Salty/SaltyCamera.h"
 
+#include "Game/Helpers/MakeHelper.h"
+
 Game::Game()
 {
     // TODO: should initialize to scene that was last open, stored fps, etc.
@@ -171,30 +173,32 @@ void Game::CreateEntityTree(json jEntities, json jRootIds){
 
     for(int id = 0; id < jEntities.size(); id++){
         json jEntityScripts = jEntities[id]["scripts"];
-        Entity& entity = *registry->entityTree[id].get();
+        Entity* entity = registry->entityTree[id].get();
 
         // Add all scripts to entity
         for(int sId = 0; sId < jEntityScripts.size(); sId++){
-            std::string scriptName = jEntityScripts[sId]["name"];
+            std::string scriptFilepath = jEntityScripts[sId]["filepath"];
             // TODO: just want to be able to initialize script rn, can worry about where to put it later
+            json jTypes = jScripts[scriptFilepath];
+            json jVals = jEntityScripts[sId]["vals"];
+            assert(jTypes.size() == jVals.size());
 
             // TODO: make sure i like this name
             std::vector<SaltyType> serializedVars;
+            for(int aId = 0; aId < jVals.size(); aId++){
+                serializedVars.push_back(CreateArg(jTypes[aId], jVals[aId]));
+            }
 
-
-            // Maybe both are array (script one has types and the entity one has values?)
-            // For components, values just store entityIds
-            // For audio needs to store object with multiple values
-
-            // Also need way to actually create the script
-            // Need way to unfold these values into object creation
-            // need to create script somehow, maybe this is done during build?? like a large switch case of script names, and we fill in some slot below
-            // create map during build that goes from string to object type (i have page open on phone)
+            // Creates script with proper arguments
+            IScript* script = scriptMap[scriptFilepath](entity, &entity->GetComponent<TransformComponent>(), serializedVars);
+            std::cout << typeid(*script).name() << '\n'; // TODO: remove this soon, can directly pushback too
+            entity->scripts[typeid(*script).name()] = script;
         }
     }
 }
 
-SaltyType Game::CreateArg(std::string& type, json jVal){
+SaltyType Game::CreateArg(json jType, json jVal){
+    std::string type = jType.get<std::string>();
     // jType will contain a of SaltyType, jVal will be a value of that type
     if(type == "int"){ // TODO: not a big fan of this big if else stuff, find a workaround, either a switch case, or a mapping to another function on a dict
         return SaltyType(jVal.get<int>());
@@ -205,17 +209,36 @@ SaltyType Game::CreateArg(std::string& type, json jVal){
     else if(type == "string"){
         return SaltyType(jVal.get<std::string>());
     }
+    else if(type == "Entity"){
+        int id = jVal.get<int>();
+        // TODO: should probably assert that it is in range too
+        Entity* entity = registry->entityTree[id].get();
+        return SaltyType(entity);
+    }
     else if(type == "Transform"){
-        
+        int id = jVal.get<int>();
+        // TODO: should probably assert that it is in range too
+        assert(registry->entityTree[id]->HasComponent<TransformComponent>());
+        TransformComponent* transform = &registry->entityTree[id]->GetComponent<TransformComponent>();
+        return SaltyType(transform);
     }
     else if(type == "Sprite"){
-
+        int id = jVal.get<int>();
+        assert(registry->entityTree[id]->HasComponent<SpriteComponent>());
+        SpriteComponent* sprite = &registry->entityTree[id]->GetComponent<SpriteComponent>();
+        return SaltyType(sprite);
     }
     else if(type == "Rigidbody"){
-
+        int id = jVal.get<int>();
+        assert(registry->entityTree[id]->HasComponent<RigidbodyComponent>());
+        RigidbodyComponent* rigidbody = &registry->entityTree[id]->GetComponent<RigidbodyComponent>();
+        return SaltyType(rigidbody);
     }
     else if(type == "Sound"){
-
+        Sound sound;
+        sound.filepath = jVal["filepath"].get<std::string>();
+        sound.stream = jVal["stream"].get<bool>();
+        return SaltyType(sound);
     }
 
     // type does not exist
@@ -355,6 +378,10 @@ void Game::Update(float deltaTime)
 
     // TODO: Check for events here
     // TODO: probably call script updates here?
+    for(int i = 0; i < registry->entityTree.size(); i++){
+        if(registry->entityTree[i] != nullptr) registry->entityTree[i]->UpdateScripts(deltaTime);
+    }
+
     registry->Update(); // TODO: not sure where this should be (which order)
     
 }
