@@ -34,7 +34,9 @@ void Menu::ExportWindows(){
     std::string src = "Make/src/main.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
                       "Make/src/Game/AssetManager/AssetManager.cpp Make/src/Game/Helpers/JsonHelper.cpp "
                       "Make/src/Game/Salty/SaltyInput.cpp Make/src/Game/Salty/SaltyAudio.cpp Make/src/Game/Salty/SaltyCamera.cpp ";
-    // TODO: statically link soloud instead
+    // TODO: EDITED BY ENGINE, SHOULD just be a variable tbh
+    std::string usersrc = "Unique/Assets/PlayerMovement.cpp ";
+    // TODO: statically link soloud instead, or acatually.... might be fine
     std::string soloudcore = "Make/libsrc/soloud/core/soloud.cpp Make/libsrc/soloud/core/soloud_audiosource.cpp"
                          " Make/libsrc/soloud/core/soloud_bus.cpp Make/libsrc/soloud/core/soloud_core_3d.cpp"
                          " Make/libsrc/soloud/core/soloud_core_basicops.cpp Make/libsrc/soloud/core/soloud_core_faderops.cpp"
@@ -50,12 +52,12 @@ void Menu::ExportWindows(){
                               " Make/libsrc/soloud/wav/stb_vorbis.c ";
     std::string flags =  "-DWITH_SDL2_STATIC ";                        
     // END TODO
-    std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src ";
+    std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src -IUnique/Assets ";
     std::string lib = "-LMake/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf ";
     std::string out = "-o \"" + engineData->gameFilepath + "\"/\"" + engineData->gameName + "\"/\"" + engineData->gameName + ".exe\"";
 
     // TODO: do need a way to determine that user has proper packages installed (is it just mingw here?)
-    std::string make = "g++ " + src + soloudcore + soloudother + "-std=c++17 " + inc + lib + flags + out;
+    std::string make = "g++ " + src + usersrc + soloudcore + soloudother + "-std=c++17 " + inc + lib + flags + out;
     result = system(make.c_str());
     // TODO: v also want to rename result
     // TEMP
@@ -100,6 +102,8 @@ void Menu::ExportWeb(){
     std::string src = "Make/src/webmain.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
                       "Make/src/Game/AssetManager/AssetManager.cpp Make/src/Game/Helpers/JsonHelper.cpp "
                       "Make/src/Game/Salty/SaltyInput.cpp Make/src/Game/Salty/SaltyAudio.cpp Make/src/Game/Salty/SaltyCamera.cpp ";
+    // TODO: EDITED BY ENGINE, SHOULD just be a variable tbh
+    std::string usersrc = "Unique/Assets/PlayerMovement.cpp ";
     // TODO: statically link soloud instead
     std::string soloudcore = "Make/libsrc/soloud/core/soloud.cpp Make/libsrc/soloud/core/soloud_audiosource.cpp"
                          " Make/libsrc/soloud/core/soloud_bus.cpp Make/libsrc/soloud/core/soloud_core_3d.cpp"
@@ -116,13 +120,13 @@ void Menu::ExportWeb(){
                               " Make/libsrc/soloud/wav/stb_vorbis.c ";
     std::string flags =  "-DWITH_SDL2_STATIC ";                        
     // END TODO
-    std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -Iinclude/emscripten -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src ";
+    std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -Iinclude/emscripten -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src -IUnique/Assets ";
     std::string wflags = "-s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s ALLOW_MEMORY_GROWTH=1 ";
     std::string preload = "--preload-file .\\Unique@Unique --use-preload-plugins ";
     std::string out = "-o \"" + engineData->gameFilepath + "\"/\"" + engineData->gameName + "\"/index.html";
 
     // TODO: do need a way to determine that user has proper packages installed (is it just mingw here?)
-    std::string make = "em++ " + src + soloudcore + soloudother + "-std=c++17 " + inc + wflags + flags + preload + out;
+    std::string make = "em++ " + src + usersrc + soloudcore + soloudother + "-std=c++17 " + inc + wflags + flags + preload + out;
     result = system(make.c_str());
     // TODO: v also want to rename result
     // TEMP

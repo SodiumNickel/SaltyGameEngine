@@ -43,6 +43,11 @@ void Entity::Destroy()
     registry->DestroyEntity(*this);
 }
 
+void Entity::StartScripts(){
+    for (const auto& pair : scripts) {
+        pair.second->Start();
+    }
+}
 void Entity::UpdateScripts(float deltaTime){
     for (const auto& pair : scripts) {
         pair.second->Update(deltaTime);

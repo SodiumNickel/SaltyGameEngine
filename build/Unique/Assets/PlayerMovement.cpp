@@ -20,13 +20,6 @@
 #define SF
 #define _SF
 #define SLIDER(min, max) // Except for ones with arguments? maybe just do this one in engine?
-// Should also have ones for like headers and stuff for making engine organization easier
-typedef std::string string; 
-// I think this is good to have for convenience here
-typedef TransformComponent* Transform;
-typedef SpriteComponent* Sprite;
-// TODO: with above, when you do GetComponent<> is has to be the full SpriteComponent...
-// semi okay with this tbh
 
 // TODO: NOTE: Decided to seperate header file and .cpp file
 // Helps with correctness of c++ code, and may even be quicker to access stuff for jams
@@ -35,8 +28,6 @@ typedef SpriteComponent* Sprite;
 
 // Called before the first frame of Update()
 void PlayerMovement::Start(){
-    val = 3;
-
     sound.filepath = "boop.wav";
     sound.stream = false;
     Audio::Load(sound);
@@ -48,13 +39,18 @@ void PlayerMovement::Start(){
 // Called every frame before Render() 
 void PlayerMovement::Update(float deltaTime){
     if(Input::KeyHeld[SDL_SCANCODE_A]){
-        transform->position.x -= deltaTime * speed;
+        player->position.x -= deltaTime * speed;
     }
     if(Input::KeyHeld[SDL_SCANCODE_D]){
         transform->position.x += deltaTime * speed;
     }
+    if(Input::KeyUp[SDL_SCANCODE_0]){
+        std::cout << "0\n";
+    }
 
     if(Input::KeyDown[SDL_SCANCODE_S]){
         Audio::Play(sound);
+        std::cout << val << '\n';
+        val += 3;
     }
 }

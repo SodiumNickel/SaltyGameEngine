@@ -119,6 +119,9 @@ void Game::LoadScene(int sceneIndex)
     Camera::aspectRatio = JsonToVec2(jCamera["aspectRatio"]);
 
     CreateEntityTree(jEntities, jRootIds);
+    for(int id = 0; id < registry->entityTree.size(); id++){
+        if(registry->entityTree[id] != nullptr) registry->entityTree[id]->StartScripts();
+    }
 }
 
 void Game::CreateEntityTree(json jEntities, json jRootIds){
@@ -368,7 +371,7 @@ void Game::ProcessInput()
         Audio::Play(sound);
         Camera::position.x += 30;
     }
-    std::cout << Input::MouseX << ", " << Input::MouseY <<'\n';
+    //std::cout << Input::MouseX << ", " << Input::MouseY <<'\n';
 }
 
 void Game::Update(float deltaTime)
@@ -378,8 +381,8 @@ void Game::Update(float deltaTime)
 
     // TODO: Check for events here
     // TODO: probably call script updates here?
-    for(int i = 0; i < registry->entityTree.size(); i++){
-        if(registry->entityTree[i] != nullptr) registry->entityTree[i]->UpdateScripts(deltaTime);
+    for(int id = 0; id < registry->entityTree.size(); id++){
+        if(registry->entityTree[id] != nullptr) registry->entityTree[id]->UpdateScripts(deltaTime);
     }
 
     registry->Update(); // TODO: not sure where this should be (which order)

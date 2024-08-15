@@ -55,7 +55,7 @@ protected:
     Entity* entity;
     TransformComponent* transform;
 public:
-    IScript(Entity* entity, Transform* transform)
+    IScript(Entity* entity, TransformComponent* transform)
     : entity(entity), transform(transform) {};
 
     virtual void Start() = 0; 
@@ -141,6 +141,7 @@ public:
     // TODO: these should be hidden from user
     // Map from typeid().name to script itself
     std::map<std::string, IScript*> scripts;
+    void StartScripts();
     void UpdateScripts(float deltaTime);
 
     class Registry* registry; // TODO: would love to move this to private if i put it in initializer

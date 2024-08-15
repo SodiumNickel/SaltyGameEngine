@@ -141,6 +141,7 @@ public:
     // TODO: these should be hidden from user
     // Map from typeid().name to script itself
     std::map<std::string, IScript*> scripts;
+    void StartScripts();
     void UpdateScripts(float deltaTime);
 
     class Registry* registry; // TODO: would love to move this to private if i put it in initializer

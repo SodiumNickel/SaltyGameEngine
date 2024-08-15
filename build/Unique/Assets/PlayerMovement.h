@@ -35,7 +35,7 @@ private:
     Sound sound;
 public:
     // Initialization will be handled by engine (including that of SF_ variables)
-    PlayerMovement(Entity* entity, Transform* transform);
+    // PlayerMovement(Entity* entity, Transform* transform) {};
     // TODO: just add a new constructor with everything
 
     // TODO: actually just constructor which takes those two things, and then an array of std::variant<SaltyTypes>

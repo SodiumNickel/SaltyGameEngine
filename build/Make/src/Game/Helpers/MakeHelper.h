@@ -4,6 +4,7 @@
 // but that is a later issue lol
 
 // USER SCRIPT INCLUDES - written by engine
+#include "PlayerMovement.h"
 
 #include "Game/ECS/ECS.h"
 #include "Game/Salty/SaltyTypes.h"
@@ -13,12 +14,13 @@
 #include <string>
 
 template<typename TScript> 
-IScript* createInstance(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars) { 
+IScript* CreateInstance(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars) { 
     return new TScript(entity, transform, serializedVars); 
 }
 
 std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)> scriptMap = {
     // USER SCRIPT MAPPING - written by engine
+    {"PlayerMovement", &CreateInstance<PlayerMovement>}
 };
 
 #endif
