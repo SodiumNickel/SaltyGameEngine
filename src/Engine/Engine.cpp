@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <fstream>
 #include <memory>
 
 #include <SDL.h>
@@ -11,6 +12,8 @@
 #include <imgui_impl_sdl2.h>
 #include <imgui_impl_sdlrenderer2.h>
 #include <soloud.h>
+#include <json.hpp>
+using json = nlohmann::json;
 
 // TODO: this isnt used rn
 #include "Engine/Debug/SaltyDebug.h"
@@ -133,6 +136,14 @@ int Engine::Initialize()
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
 
+    // Add all scripts to EngineData
+    std::ifstream f("Unique/scripts.json");
+    json jScripts = json::parse(f)["filepaths"];
+    f.close();
+    for(int scriptIdx = 0; scriptIdx < jScripts.size(); scriptIdx++){
+        engineData->scriptFilepaths.push_back(jScripts[scriptIdx].get<std::string>());
+    }
+
     isRunning = true;
     return 0;
 }
@@ -182,6 +193,9 @@ void Engine::ProcessInput()
         }
         ImGui_ImplSDL2_ProcessEvent(&event);
     }
+
+    // Check if there were any changes to script SF_ vars (in header files)
+    
 }
 // Pre: One of the ctrl keys is held down -> potential for a shortcut
 void Engine::KeyDownInput(SDL_Scancode scancode){

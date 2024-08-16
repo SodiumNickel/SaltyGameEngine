@@ -7,7 +7,7 @@
 #include "Engine/EngineData.h"
 
 #include "Game/ECS/ECS.h"
-
+#include "Game/Salty/SaltyTypes.h"
 
 class IEdit {
 public:
@@ -133,6 +133,29 @@ private:
 public:
     // Defined in EntityExistsEdit.cpp
     EntityExistsEdit(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, int entityId, std::string name, int parentId, int pos, bool root, bool add);
+    void Apply(bool undo) override;
+    void ApplyJson(bool undo) override;
+    bool ValidEdit() override;
+    std::string ToString(bool undo) override;
+};
+
+/* -----SCRIPT MANAGEMENT-------------------------------- *
+ *   Adding/removing scripts, editing SF_ values          *
+ * ------------------------------------------------------ */
+
+// When the user edits a value one of their scripts
+class ScriptValueEdit : public IEdit {
+private:    
+    std::shared_ptr<EngineData> engineData;
+    int entityId;
+    std::string filepath;
+    std::string type;
+    std::string name;
+    SaltyType prev; // Used to undo action
+    SaltyType cur; // Used to (re)do action // TODO: should prolly be saltytype ref
+public:
+    ScriptValueEdit(std::shared_ptr<EngineData> engineData, int entityId, std::string filepath, std::string type, std::string name, SaltyType prev, SaltyType cur): 
+        engineData(engineData), entityId(entityId), filepath(filepath), type(type), name(name), prev(prev), cur(cur) {};
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;

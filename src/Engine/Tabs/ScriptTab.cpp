@@ -12,7 +12,8 @@
 
 void ScriptTab::Begin(){
     // TODO: Currently just use unsaved icon as a lock icon
-    ImGui::Begin("Scripts", NULL, locked ? ImGuiWindowFlags_UnsavedDocument : 0);
+    ImGui::Begin("Scripts", NULL, locked ? ImGuiWindowFlags_UnsavedDocument : 0);    
+    
     ImGui::OpenPopupOnItemClick("ScriptsPopup", ImGuiPopupFlags_MouseButtonRight);
     if (ImGui::BeginPopupContextItem("ScrtiptsPopup"))
     {

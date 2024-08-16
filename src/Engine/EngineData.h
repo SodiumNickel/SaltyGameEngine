@@ -30,6 +30,7 @@ struct EngineData {
 
     // Stores which scripts each entity in current scene has (and their serialized variable values)
     std::vector<std::vector<ScriptData>> scriptTree; // TODO: maybe we make this a ptr to ScriptData later
+    std::vector<std::string> scriptFilepaths;
 
     // For exporting game builds
     std::string gameName = "Game name";
