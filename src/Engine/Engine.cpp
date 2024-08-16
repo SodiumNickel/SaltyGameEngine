@@ -59,10 +59,6 @@ int Engine::Initialize()
     openTabs.push_back(std::make_unique<AssetTab>(registry));
     openTabs.push_back(std::make_unique<LogTab>(registry));
 
-    // Init audio/mixer
-    // Note: this only allows .wav files which is what i plan to use // TODO: <- true? should prolly force .wav
-    // if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 2048) == -1) { return -1; } // TODO: not 100% sure there are good audio settings
-
     // Init fonts/ttf
     // if(TTF_Init() == -1) { return -1; } // TODO: do i need to init video before this?? idk if this does anything
 

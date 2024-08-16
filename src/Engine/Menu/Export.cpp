@@ -124,8 +124,11 @@ void Menu::ExportWindows(){
     std::string src = "Make/src/main.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
                       "Make/src/Game/AssetManager/AssetManager.cpp Make/src/Game/Salty/SaltyDebug.cpp "
                       "Make/src/Game/Salty/SaltyInput.cpp Make/src/Game/Salty/SaltyAudio.cpp Make/src/Game/Salty/SaltyCamera.cpp ";
-    // TODO: EDITED BY ENGINE, SHOULD just be a variable tbh
-    std::string usersrc = "Unique/Assets/PlayerMovement.cpp ";
+    // Add user made scripts into source files
+    std::string usersrc = "";
+    for(int scriptIdx = 0; scriptIdx < engineData->scriptFilepaths.size(); scriptIdx++){
+        usersrc += "Unique/Assets/" + engineData->scriptFilepaths[scriptIdx] + ".cpp ";
+    }
     // TODO: statically link soloud instead, or acatually.... might be fine
     std::string soloudcore = "Make/libsrc/soloud/core/soloud.cpp Make/libsrc/soloud/core/soloud_audiosource.cpp"
                          " Make/libsrc/soloud/core/soloud_bus.cpp Make/libsrc/soloud/core/soloud_core_3d.cpp"
@@ -197,8 +200,11 @@ void Menu::ExportWeb(){
     std::string src = "Make/src/webmain.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
                       "Make/src/Game/AssetManager/AssetManager.cpp Make/src/Game/Salty/SaltyDebug.cpp "
                       "Make/src/Game/Salty/SaltyInput.cpp Make/src/Game/Salty/SaltyAudio.cpp Make/src/Game/Salty/SaltyCamera.cpp ";
-    // TODO: EDITED BY ENGINE, SHOULD just be a variable tbh
-    std::string usersrc = "Unique/Assets/PlayerMovement.cpp ";
+    // Add user made scripts into source files
+    std::string usersrc = "";
+    for(int scriptIdx = 0; scriptIdx < engineData->scriptFilepaths.size(); scriptIdx++){
+        usersrc += "Unique/Assets/" + engineData->scriptFilepaths[scriptIdx] + ".cpp ";
+    }
     // TODO: statically link soloud instead
     std::string soloudcore = "Make/libsrc/soloud/core/soloud.cpp Make/libsrc/soloud/core/soloud_audiosource.cpp"
                          " Make/libsrc/soloud/core/soloud_bus.cpp Make/libsrc/soloud/core/soloud_core_3d.cpp"
@@ -213,7 +219,7 @@ void Menu::ExportWeb(){
     std::string soloudother = "Make/libsrc/soloud/sdl2_static/soloud_sdl2_static.cpp Make/libsrc/soloud/wav/dr_impl.cpp"
                               " Make/libsrc/soloud/wav/soloud_wav.cpp Make/libsrc/soloud/wav/soloud_wavstream.cpp "
                               " Make/libsrc/soloud/wav/stb_vorbis.c ";
-    std::string flags =  "-DWITH_SDL2_STATIC ";                        
+    std::string flags =  "-DWITH_SDL2_STATIC -DWEBBUILD ";                        
     // END TODO
     std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -Iinclude/emscripten -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src -IUnique/Assets ";
     std::string wflags = "-s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s ALLOW_MEMORY_GROWTH=1 ";
