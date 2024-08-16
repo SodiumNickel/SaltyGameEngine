@@ -9,6 +9,7 @@
 #include "Engine/History/EditHistory.h"
 
 #include "Game/AssetManager/AssetManager.h"
+#include "Game/Salty/SaltyTypes.h"
 
 class ITab {
 public:
@@ -85,6 +86,9 @@ private:
     
     bool locked = false;
     int selectedEntity;
+
+    // Renders UI to edit script argument in engine
+    void RenderArgument(std::string type, SaltyType& value);
 public:
     ScriptTab(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Registry> registry) 
     : editHistory(editHistory), engineData(engineData), registry(registry) {}; // TODO: really need to unify order here

@@ -31,7 +31,11 @@
           "filepath": "PlayerMovement",
           "vals": [
             1,
-            0
+            0,
+            {
+              "filepath": "boop.wav",
+              "stream": true
+            }
           ]
         }
       ],

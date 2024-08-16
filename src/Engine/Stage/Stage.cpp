@@ -147,7 +147,6 @@ void Stage::CreateScriptData(int entityId, std::string& filepath, json jTypes, j
         scriptData.varNames.push_back(jNames[argIdx].get<std::string>());
         scriptData.varValues.push_back(CreateArg(jTypes[argIdx], jVals[argIdx]));
     }
-    std::cout << scriptData.filepath << '\n';
 
     if(engineData->scriptTree.size() <= entityId) engineData->scriptTree.resize(entityId + 1);
     engineData->scriptTree[entityId].push_back(scriptData);

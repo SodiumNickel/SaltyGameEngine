@@ -5,11 +5,13 @@
     "PlayerMovement":{
         "names":[
             "val",
-            "player"
+            "player",
+            "sound"
         ],
         "types":[
         "int",
-        "Transform"
+        "Transform",
+        "Sound"
         ]
     }
 }

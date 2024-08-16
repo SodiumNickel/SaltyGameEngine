@@ -23,7 +23,9 @@
         "scripts":[
           {
             "filepath":"PlayerMovement",
-            "vals": [1, 0]
+            "vals": [1, 0, 
+                    {"filepath":"boop.wav", "stream":true}
+                  ]
           }
         ],
         "transform": {
