@@ -32,7 +32,7 @@ void Menu::ExportWindows(){
 
     // Compile game into .exe
     std::string src = "Make/src/main.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
-                      "Make/src/Game/AssetManager/AssetManager.cpp Make/src/Game/Helpers/JsonHelper.cpp "
+                      "Make/src/Game/AssetManager/AssetManager.cpp "
                       "Make/src/Game/Salty/SaltyInput.cpp Make/src/Game/Salty/SaltyAudio.cpp Make/src/Game/Salty/SaltyCamera.cpp ";
     // TODO: EDITED BY ENGINE, SHOULD just be a variable tbh
     std::string usersrc = "Unique/Assets/PlayerMovement.cpp ";
@@ -100,7 +100,7 @@ void Menu::ExportWeb(){
 
     // Compile game into .exe
     std::string src = "Make/src/webmain.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
-                      "Make/src/Game/AssetManager/AssetManager.cpp Make/src/Game/Helpers/JsonHelper.cpp "
+                      "Make/src/Game/AssetManager/AssetManager.cpp "
                       "Make/src/Game/Salty/SaltyInput.cpp Make/src/Game/Salty/SaltyAudio.cpp Make/src/Game/Salty/SaltyCamera.cpp ";
     // TODO: EDITED BY ENGINE, SHOULD just be a variable tbh
     std::string usersrc = "Unique/Assets/PlayerMovement.cpp ";

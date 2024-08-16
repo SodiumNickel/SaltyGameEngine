@@ -17,7 +17,6 @@ using json = nlohmann::json;
 #include "Engine/Systems/StageRenderSystem.h"
 
 #include "Game/ECS/ECS.h"
-#include "Game/Helpers/JsonHelper.h" // TODO: might remove this
 #include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
@@ -66,8 +65,8 @@ void Stage::LoadScene(int sceneIndex)
     json jCamera = jScene["camera"];
     g.close();
 
-    Camera::position = JsonToVec2(jCamera["position"]);
-    Camera::aspectRatio = JsonToVec2(jCamera["aspectRatio"]);
+    Camera::position = glm::vec2(jCamera["position"][0], jCamera["position"][1]);
+    Camera::aspectRatio = glm::vec2(jCamera["aspectRatio"][0], jCamera["aspectRatio"][1]);
 
     CreateEntityTree(jEntities, jRootIds);
 }
@@ -97,8 +96,8 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds){
         // Add transform to entity (again, all entities have a transform)
         json jTransform = jEntity["transform"];
         TransformComponent& transform = entity.GetComponent<TransformComponent>();
-        transform.position = JsonToVec2(jTransform["position"]);
-        transform.scale = JsonToVec2(jTransform["scale"]);
+        transform.position = glm::vec2(jTransform["position"][0], jTransform["position"][1]);
+        transform.scale = glm::vec2(jTransform["scale"][0], jTransform["scale"][1]);
         transform.rotation = jTransform["rotation"];
 
         // Add all components to entity
@@ -112,7 +111,7 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds){
         }
         if(jComponents.contains("rigidbody")){
             json jValues = jComponents["rigidbody"];
-            glm::vec2 initVelocity = JsonToVec2(jValues["initVelocity"]);
+            glm::vec2 initVelocity = glm::vec2(jValues["initVelocity"][0], jValues["initVelocity"][1]);
             entity.AddComponent<RigidbodyComponent>(initVelocity);
         }
 
