@@ -22,9 +22,6 @@ class Game {
         std::unique_ptr<Registry> registry; 
         std::unique_ptr<AssetManager> assetManager;
 
-        // TEMP
-        Sound sound;
-
         // In ms
         uint64_t targetFrameTime = 8;
 

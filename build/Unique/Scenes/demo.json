@@ -20,7 +20,7 @@
       },
       "name": "Player",
       "parent-id": -1,
-      "scripts":[],
+      "scripts":{},
       "transform": {
         "position": [
           166.0,
@@ -43,7 +43,7 @@
       },
       "name": "Shop",
       "parent-id": -1,
-      "scripts":[],
+      "scripts":{},
       "transform": {
         "position": [
           461.0,
@@ -63,7 +63,7 @@
       "components": {},
       "name": "GroundTiles",
       "parent-id": -1,
-      "scripts":[],
+      "scripts":{},
       "transform": {
         "position": [
           0.0,
@@ -86,7 +86,7 @@
       },
       "name": "Ground",
       "parent-id": 2,
-      "scripts":[],
+      "scripts":{},
       "transform": {
         "position": [
           -80.0,
@@ -108,7 +108,7 @@
       "components": {},
       "name": "Rocks",
       "parent-id": -1,
-      "scripts":[],
+      "scripts":{},
       "transform": {
         "position": [
           0.0,
@@ -131,7 +131,7 @@
       },
       "name": "Rock 1",
       "parent-id": 4,
-      "scripts":[],
+      "scripts":{},
       "transform": {
         "position": [
           1168.0,
@@ -154,7 +154,7 @@
       },
       "name": "Rock 2",
       "parent-id": 4,
-      "scripts":[],
+      "scripts":{},
       "transform": {
         "position": [
           298.0,
@@ -177,7 +177,7 @@
       },
       "name": "Rock 3",
       "parent-id": 4,
-      "scripts":[],
+      "scripts":{},
       "transform": {
         "position": [
           715.0,
@@ -200,7 +200,7 @@
       },
       "name": "Background",
       "parent-id": -1,
-      "scripts":[],
+      "scripts":{},
       "transform": {
         "position": [
           -15.0,

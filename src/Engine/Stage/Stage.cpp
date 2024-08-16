@@ -124,12 +124,12 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds){
         json jEntityScripts = jEntities[id]["scripts"];
 
         // Add all scripts to entity
-        for(int scriptIdx = 0; scriptIdx < jEntityScripts.size(); scriptIdx++){
-            std::string scriptFilepath = jEntityScripts[scriptIdx]["filepath"];
+        for(auto scriptIt = jEntityScripts.begin(); scriptIt != jEntityScripts.end(); ++scriptIt){
+            std::string scriptFilepath = scriptIt.key();
 
             json jTypes = jScripts[scriptFilepath]["types"];
             json jNames = jScripts[scriptFilepath]["names"];
-            json jVals = jEntityScripts[scriptIdx]["vals"];
+            json jVals = scriptIt.value();
             assert(jTypes.size() == jVals.size() && jNames.size() == jVals.size());
 
             CreateScriptData(id, scriptFilepath, jTypes, jNames, jVals);

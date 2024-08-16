@@ -42,7 +42,6 @@ void HandleUserScripts(){
         map += "{\"" + filepath + "\", &CreateInstance<" + "PlayerMovement" + ">}";
         if(scriptIdx + 1 < jScripts.size()) map += ", ";
     }
-
     
     std::string userScripts1 =
 "#ifndef USERSCRIPTS_H\n\

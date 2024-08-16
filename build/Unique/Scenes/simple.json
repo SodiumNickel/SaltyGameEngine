@@ -20,14 +20,11 @@
           },
         "name": "Player",
         "parent-id": -1,
-        "scripts":[
-          {
-            "filepath":"PlayerMovement",
-            "vals": [1, 0, 
+        "scripts":{
+          "PlayerMovement":[1, 0, 
                     {"filepath":"boop.wav", "stream":true}
                   ]
-          }
-        ],
+        },
         "transform": {
           "position": [
             956.0,

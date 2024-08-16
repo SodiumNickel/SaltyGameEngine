@@ -7,7 +7,6 @@
 #include <SDL.h>
 #include <imgui.h>
 #include <soloud.h>
-#include <soloud_wav.h> // TEMP
 
 #include "Engine/EngineData.h"
 #include "Engine/History/EditHistory.h"
@@ -39,8 +38,6 @@ class Engine {
         // For shortcutted input handling (i.e. Undo)
         bool lCtrlHeld;
         bool rCtrlHeld;
-
-        Sound sound;
 
         std::shared_ptr<Stage> stage;
         std::unique_ptr<Menu> menu;

@@ -11,7 +11,6 @@
 #include <imgui_impl_sdl2.h>
 #include <imgui_impl_sdlrenderer2.h>
 #include <soloud.h>
-#include <soloud_wav.h>
 
 // TODO: this isnt used rn
 #include "Engine/Debug/SaltyDebug.h"
@@ -134,10 +133,6 @@ int Engine::Initialize()
     );
     ImGui_ImplSDLRenderer2_Init(renderer);
 
-    //TEMP
-    sound.filepath = "boop.wav";
-    Audio::Load(sound);
-
     isRunning = true;
     return 0;
 }
@@ -198,8 +193,6 @@ void Engine::KeyDownInput(SDL_Scancode scancode){
             if(editHistory->canRedo) editHistory->Redo();
             break;
         case SDL_SCANCODE_S:
-            // TEMP
-            Audio::Play(sound);
             if(editHistory->unsaved) editHistory->Save();
             break;
         default:

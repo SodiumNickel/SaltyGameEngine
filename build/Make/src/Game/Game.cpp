@@ -43,8 +43,6 @@ int Game::Initialize()
 {
     registry = std::make_unique<Registry>();
     assetManager = std::make_unique<AssetManager>();
-    // TODO:
-    // NOTE: in web build i might want to load differently
     Audio::soloud.init();
 
     // Init main SDL window
@@ -88,11 +86,6 @@ int Game::Initialize()
     // TODO: could potentially do this in load scene, iff it finds proper components?, no wait dont think thatll work (assume they add components with scripts)
     registry->AddSystem<RenderSystem>();
     registry->AddSystem<PhysicsSystem>();
-
-    // TEMP: TODO
-    sound.filepath = "boop.wav";
-    sound.stream = true;
-    Audio::Load(sound);
 
     isRunning = true;
     return 0;
@@ -178,11 +171,11 @@ void Game::CreateEntityTree(json jEntities, json jRootIds){
         Entity* entity = registry->entityTree[id].get();
 
         // Add all scripts to entity
-        for(int scriptIdx = 0; scriptIdx < jEntityScripts.size(); scriptIdx++){
-            std::string scriptFilepath = jEntityScripts[scriptIdx]["filepath"];
+        for(auto scriptIt = jEntityScripts.begin(); scriptIt != jEntityScripts.end(); ++scriptIt){
+            std::string scriptFilepath = scriptIt.key();
+            json jVals = scriptIt.value();
 
             json jTypes = jScripts[scriptFilepath]["types"];
-            json jVals = jEntityScripts[scriptIdx]["vals"];
             assert(jTypes.size() == jVals.size());
 
             // TODO: make sure i like this name
@@ -365,12 +358,6 @@ void Game::ProcessInput()
     //       this has the effect that we can have KeyDown = 1, KeyUp = 1, KeyHeld = 0 (which is intended... for now)
 
     // TODO: controller input not implemented
-
-    if(Input::KeyDown[SDL_SCANCODE_W]){
-        Audio::Play(sound);
-        Camera::position.x += 30;
-    }
-    //std::cout << Input::MouseX << ", " << Input::MouseY <<'\n';
 }
 
 void Game::Update(float deltaTime)
