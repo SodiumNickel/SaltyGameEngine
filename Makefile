@@ -32,6 +32,9 @@ FLAGS = -DWITH_SDL2_STATIC
 default: # Compiles engine
 	g++ -g $(SRC) -std=c++17 $(INCLUDE_DIRS) $(LIB_DIRS) $(LIBS) $(FLAGS) -o $(BUILD_DIR)/$(ENGINE_NAME)
 	xcopy /E /I /Y .\src\Game .\$(BUILD_DIR)\Make\src\Game > nul
+	xcopy /E /I /Y .\src\main.cpp .\$(BUILD_DIR)\Make\src > nul
+	xcopy /E /I /Y .\src\webmain.cpp .\$(BUILD_DIR)\Make\src > nul
+	xcopy /E /I /Y .\src\SaltyEngine.h .\$(BUILD_DIR)\Make\src > nul
 # TODO: this needs to clear it too, in case of moving stuff around
 
 run:
