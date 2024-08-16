@@ -33,7 +33,12 @@ void HandleUserScripts(){
     for(int scriptIdx = 0; scriptIdx < jScripts.size(); scriptIdx++){
         std::string filepath = jScripts[scriptIdx].get<std::string>();
         inc += "#include \"" + filepath + ".h\"\n";
-        // {"PlayerMovement", &CreateInstance<PlayerMovement>} TODO: add proper CLASSNAME here, just look at last "/"
+        // Assumes class name is given by name of file
+        // TODO: add a check here that debug logs a proper error if not
+        int lastSlashPos = filepath.find_last_of('/');
+        std::string className = filepath;
+        if (lastSlashPos != std::string::npos) className = filepath.substr(lastSlashPos + 1);
+
         map += "{\"" + filepath + "\", &CreateInstance<" + "PlayerMovement" + ">}";
         if(scriptIdx + 1 < jScripts.size()) map += ", ";
     }
