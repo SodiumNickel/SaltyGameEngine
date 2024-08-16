@@ -4,7 +4,7 @@
 
 #include <imgui.h>
 
-#include "Engine/Debug/SaltyDebug.h"
+#include "Game/Salty/SaltyDebug.h"
 
 
 void LogTab::Begin(){

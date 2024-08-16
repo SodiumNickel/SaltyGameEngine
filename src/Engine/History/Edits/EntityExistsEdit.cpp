@@ -10,7 +10,7 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
-#include "Engine/Debug/SaltyDebug.h"
+#include "Game/Salty/SaltyDebug.h"
 #include "Engine/EngineData.h"
 
 #include "Game/ECS/ECS.h"

@@ -6,7 +6,7 @@
 
 #include <imgui.h>
 
-#include "Engine/Debug/SaltyDebug.h"
+#include "Game/Salty/SaltyDebug.h"
 #include "Engine/History/EditHistory.h"
 
 void Menu::Begin(){

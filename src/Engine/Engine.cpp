@@ -16,7 +16,7 @@
 using json = nlohmann::json;
 
 // TODO: this isnt used rn
-#include "Engine/Debug/SaltyDebug.h"
+#include "Game/Salty/SaltyDebug.h"
 #include "Engine/EngineData.h"
 #include "Engine/History/EditHistory.h"
 #include "Engine/Menu/Menu.h"

@@ -4,7 +4,8 @@
 #include <deque>
 #include <stack>
 
-// #include "Engine/Debug/SaltyDebug.h" // TODO: this needs to be removed in actual game build, could be done with def
+// #include #include "Game/Salty/SaltyDebug.h"
+// TODO: this needs to be removed in actual game build, could be done with def
 // needs to be availible in scripting anyways so need a way to remove it 
 // maybe can #define something in Engine/.. and do #ifndef something
 #include "Game/Components/TransformComponent.h"
