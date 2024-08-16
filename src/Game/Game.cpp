@@ -179,17 +179,17 @@ void Game::CreateEntityTree(json jEntities, json jRootIds){
         Entity* entity = registry->entityTree[id].get();
 
         // Add all scripts to entity
-        for(int sId = 0; sId < jEntityScripts.size(); sId++){
-            std::string scriptFilepath = jEntityScripts[sId]["filepath"];
-            // TODO: just want to be able to initialize script rn, can worry about where to put it later
-            json jTypes = jScripts[scriptFilepath];
-            json jVals = jEntityScripts[sId]["vals"];
+        for(int scriptIdx = 0; scriptIdx < jEntityScripts.size(); scriptIdx++){
+            std::string scriptFilepath = jEntityScripts[scriptIdx]["filepath"];
+
+            json jTypes = jScripts[scriptFilepath]["types"];
+            json jVals = jEntityScripts[scriptIdx]["vals"];
             assert(jTypes.size() == jVals.size());
 
             // TODO: make sure i like this name
             std::vector<SaltyType> serializedVars;
-            for(int aId = 0; aId < jVals.size(); aId++){
-                serializedVars.push_back(CreateArg(jTypes[aId], jVals[aId]));
+            for(int argIdx = 0; argIdx < jVals.size(); argIdx++){
+                serializedVars.push_back(CreateArg(jTypes[argIdx], jVals[argIdx]));
             }
 
             // Creates script with proper arguments

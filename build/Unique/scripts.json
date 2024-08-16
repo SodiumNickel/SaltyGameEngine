@@ -2,8 +2,14 @@
     "filepaths":[
         "PlayerMovement"
     ],
-    "PlayerMovement":[
+    "PlayerMovement":{
+        "names":[
+            "val",
+            "player"
+        ],
+        "types":[
         "int",
         "Transform"
-    ]
+        ]
+    }
 }

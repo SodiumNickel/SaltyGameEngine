@@ -115,7 +115,69 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds){
             glm::vec2 initVelocity = JsonToVec2(jValues["initVelocity"]);
             entity.AddComponent<RigidbodyComponent>(initVelocity);
         }
+
+        // Add Scripts to engineData->scriptTree
+        // NOTE: this is different from adding actual IScripts to the entity, and is just for engine purposes
+        // for that reason, no need to do it after all entities are added, not referencing actual entities or components
+        std::ifstream f("Unique/scripts.json");
+        json jScripts = json::parse(f);
+        f.close();
+        json jEntityScripts = jEntities[id]["scripts"];
+
+        // Add all scripts to entity
+        for(int scriptIdx = 0; scriptIdx < jEntityScripts.size(); scriptIdx++){
+            std::string scriptFilepath = jEntityScripts[scriptIdx]["filepath"];
+
+            json jTypes = jScripts[scriptFilepath]["types"];
+            json jNames = jScripts[scriptFilepath]["names"];
+            json jVals = jEntityScripts[scriptIdx]["vals"];
+            assert(jTypes.size() == jVals.size() && jNames.size() == jVals.size());
+
+            CreateScriptData(id, scriptFilepath, jTypes, jNames, jVals);
+        }
     }
+}
+
+void Stage::CreateScriptData(int entityId, std::string& filepath, json jTypes, json jNames, json jVals){
+    ScriptData scriptData;
+    scriptData.filepath = filepath;
+
+    for(int argIdx = 0; argIdx < jTypes.size(); argIdx++){
+        scriptData.varTypes.push_back(jTypes[argIdx].get<std::string>());
+        scriptData.varNames.push_back(jNames[argIdx].get<std::string>());
+        scriptData.varValues.push_back(CreateArg(jTypes[argIdx], jVals[argIdx]));
+    }
+    std::cout << scriptData.filepath << '\n';
+
+    if(engineData->scriptTree.size() <= entityId) engineData->scriptTree.resize(entityId + 1);
+    engineData->scriptTree[entityId].push_back(scriptData);
+}
+
+SaltyType Stage::CreateArg(json jType, json jVal){
+    std::string type = jType.get<std::string>();
+    // jType will contain a of SaltyType, jVal will be a value of that type
+    if(type == "int"){ // TODO: not a big fan of this big if else stuff, find a workaround, either a switch case, or a mapping to another function on a dict
+        return SaltyType(jVal.get<int>());
+    }
+    else if(type == "float"){
+        return SaltyType(jVal.get<float>());
+    }
+    else if(type == "string"){
+        return SaltyType(jVal.get<std::string>());
+    }
+    else if(type == "Entity" || type == "Transform" || type == "Sprite" || type == "Rigidbody"){
+        return SaltyType(jVal.get<int>()); // Just returns entity id for engine
+    }
+    else if(type == "Sound"){
+        Sound sound;
+        sound.filepath = jVal["filepath"].get<std::string>();
+        sound.stream = jVal["stream"].get<bool>();
+        return SaltyType(sound);
+    }
+
+    // type does not exist
+    // TODO: this should never happen, crash with proper message
+    assert(false);
 }
 
 // Single loop

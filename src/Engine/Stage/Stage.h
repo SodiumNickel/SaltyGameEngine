@@ -29,7 +29,9 @@ class Stage {
         std::shared_ptr<AssetManager> assetManager;
 
         void CreateEntityTree(json jEntities, json jRootIds); 
-        
+        void CreateScriptData(int entityId, std::string& filepath, json jTypes, json jNames, json jVals);
+        SaltyType CreateArg(json jType, json jVal);
+
         bool dragging = false;
         ImVec2 startMousePos;
         glm::vec2 startStageCenter; 
