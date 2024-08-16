@@ -1,9 +1,12 @@
 #include "Engine/Menu/Menu.h"
 
 #include <cstdlib>
+#include <fstream>
 
 #include <imgui.h>
 #include <imgui_stdlib.h>
+#include <json.hpp>
+using json = nlohmann::json;
 
 void Menu::ExportPopup(){
     if (ImGui::BeginPopupModal("Export"))
@@ -21,11 +24,82 @@ void Menu::ExportPopup(){
 
 // Adds user made scripts to UserScripts.h (includes and map)
 void HandleUserScripts(){
+    // Parse script data
+    std::ifstream f("Unique/scripts.json");
+    json jScripts = json::parse(f)["filepaths"];
+    f.close();
+    std::string inc = "";
+    std::string map = "";
+    for(int scriptIdx = 0; scriptIdx < jScripts.size(); scriptIdx++){
+        std::string filepath = jScripts[scriptIdx].get<std::string>();
+        inc += "#include \"" + filepath + ".h\"\n";
+        // {"PlayerMovement", &CreateInstance<PlayerMovement>} TODO: add proper CLASSNAME here, just look at last "/"
+        map += "{\"" + filepath + "\", &CreateInstance<" + "PlayerMovement" + ">}";
+        if(scriptIdx + 1 < jScripts.size()) map += ", ";
+    }
 
+    
+    std::string userScripts1 =
+"#ifndef USERSCRIPTS_H\n\
+#define USERSCRIPTS_H\n\
+\n\
+// USER SCRIPT INCLUDES - written by engine\n";
+    // Will place include here
+    std::string userScripts2 =
+"\n\
+#include \"Game/ECS/ECS.h\"\n\
+#include \"Game/Salty/SaltyTypes.h\"\n\
+\n\
+#include <map>\n\
+#include <memory>\n\
+#include <string>\n\
+\n\
+template<typename TScript> \n\
+IScript* CreateInstance(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars) { \n\
+    return new TScript(entity, transform, serializedVars); \n\
+}\n\
+\n\
+std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)> scriptMap = {\n\
+// USER SCRIPT MAPPING - written by engine\n";
+    // Will place mappings here
+    std::string userScripts3 = 
+"\n};\n\
+\n\
+#endif // USERSCRIPTS_H";
+
+    std::ofstream g("Make/src/Game/UserScripts.h");
+    g << userScripts1 + inc + userScripts2 + map + userScripts3;
+    g.close();
 }
 // Removes user made scripts from UserScripts.h (includes and map)
 void UnhandleUserScripts(){
+    std::string userScripts = 
+    "#ifndef USERSCRIPTS_H\n\
+    #define USERSCRIPTS_H\n\
+    \n\
+    // USER SCRIPT INCLUDES - written by engine\n\
+    \n\
+    #include \"Game/ECS/ECS.h\"\n\
+    #include \"Game/Salty/SaltyTypes.h\"\n\
+    \n\
+    #include <map>\n\
+    #include <memory>\n\
+    #include <string>\n\
+    \n\
+    template<typename TScript> \n\
+    IScript* CreateInstance(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars) { \n\
+        return new TScript(entity, transform, serializedVars); \n\
+    }\n\
+    \n\
+    std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)> scriptMap = {\n\
+        // USER SCRIPT MAPPING - written by engine\n\
+    };\n\
+    \n\
+    #endif // USERSCRIPTS_H";
 
+    std::ofstream f("Make/src/Game/UserScripts.h");
+    f << userScripts;
+    f.close();
 }
 
 void Menu::ExportWindows(){

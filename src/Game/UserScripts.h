@@ -1,7 +1,5 @@
 #ifndef USERSCRIPTS_H
 #define USERSCRIPTS_H
-// TODO: this and json helper (i.e. as function local to file) should probably be removed/moved somewhere else
-// but that is a later issue lol
 
 // USER SCRIPT INCLUDES - written by engine
 
@@ -13,7 +11,7 @@
 #include <string>
 
 template<typename TScript> 
-IScript* createInstance(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars) { 
+IScript* CreateInstance(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars) { 
     return new TScript(entity, transform, serializedVars); 
 }
 

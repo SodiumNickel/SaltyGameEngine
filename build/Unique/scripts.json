@@ -9,9 +9,9 @@
             "sound"
         ],
         "types":[
-        "int",
-        "Transform",
-        "Sound"
+            "int",
+            "Transform",
+            "Sound"
         ]
     }
 }
