@@ -19,6 +19,15 @@ void Menu::ExportPopup(){
     }
 }
 
+// Adds user made scripts to UserScripts.h (includes and map)
+void HandleUserScripts(){
+
+}
+// Removes user made scripts from UserScripts.h (includes and map)
+void UnhandleUserScripts(){
+
+}
+
 void Menu::ExportWindows(){
     // TODO: do the thing where we loop through (1), (2) until we find a valid path
     // Create directory for game inside of gameFilepath 
@@ -29,6 +38,9 @@ void Menu::ExportWindows(){
     } else {
         std::cerr << "Created dir failed!\n";
     }
+    
+    // Paired with UnhandleUserScripts() below, links user made scripts to other source files
+    HandleUserScripts();
 
     // Compile game into .exe
     std::string src = "Make/src/main.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
@@ -85,6 +97,8 @@ void Menu::ExportWindows(){
     } else {
         std::cerr << "Copy dll's failed!\n";
     }
+
+    UnhandleUserScripts();
 }
 
 void Menu::ExportWeb(){
@@ -97,6 +111,9 @@ void Menu::ExportWeb(){
     } else {
         std::cerr << "Created dir failed!\n";
     }
+
+    // Paired with UnhandleUserScripts() below, links user made scripts to other source files
+    HandleUserScripts();
 
     // Compile game into .exe
     std::string src = "Make/src/webmain.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
@@ -144,4 +161,6 @@ void Menu::ExportWeb(){
     } else {
         std::cerr << "Copy index failed!\n";
     }
+
+    UnhandleUserScripts();
 }
