@@ -23,7 +23,7 @@
 #include "Game/Salty/SaltyAudio.h"
 #include "Game/Salty/SaltyCamera.h"
 
-#include "Game/UserScripts.h"
+#include "Game/UserScripts.cpp"
 
 Game::Game()
 {

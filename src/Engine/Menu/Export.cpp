@@ -22,7 +22,7 @@ void Menu::ExportPopup(){
     }
 }
 
-// Adds user made scripts to UserScripts.h (includes and map)
+// Adds user made scripts to UserScripts.cpp (includes and map)
 void HandleUserScripts(){
     // Parse script data
     std::ifstream f("Unique/scripts.json");
@@ -69,39 +69,41 @@ std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)>
     std::string userScripts3 = 
 "\n};\n\
 \n\
+// USER SCRIPT CONSTRUCTORS - written by engine\n\n\
 #endif // USERSCRIPTS_H";
 
-    std::ofstream g("Make/src/Game/UserScripts.h");
+    std::ofstream g("Make/src/Game/UserScripts.cpp");
     g << userScripts1 + inc + userScripts2 + map + userScripts3;
     g.close();
 }
-// Removes user made scripts from UserScripts.h (includes and map)
+// Removes user made scripts from UserScripts.cpp (includes and map)
 void UnhandleUserScripts(){
     std::string userScripts = 
-    "#ifndef USERSCRIPTS_H\n\
-    #define USERSCRIPTS_H\n\
-    \n\
-    // USER SCRIPT INCLUDES - written by engine\n\
-    \n\
-    #include \"Game/ECS/ECS.h\"\n\
-    #include \"Game/Salty/SaltyTypes.h\"\n\
-    \n\
-    #include <map>\n\
-    #include <memory>\n\
-    #include <string>\n\
-    \n\
-    template<typename TScript> \n\
-    IScript* CreateInstance(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars) { \n\
-        return new TScript(entity, transform, serializedVars); \n\
-    }\n\
-    \n\
-    std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)> scriptMap = {\n\
-        // USER SCRIPT MAPPING - written by engine\n\
-    };\n\
-    \n\
-    #endif // USERSCRIPTS_H";
+"#ifndef USERSCRIPTS_H\n\
+#define USERSCRIPTS_H\n\
+\n\
+// USER SCRIPT INCLUDES - written by engine\n\
+\n\
+#include \"Game/ECS/ECS.h\"\n\
+#include \"Game/Salty/SaltyTypes.h\"\n\
+\n\
+#include <map>\n\
+#include <memory>\n\
+#include <string>\n\
+\n\
+template<typename TScript> \n\
+IScript* CreateInstance(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars) { \n\
+    return new TScript(entity, transform, serializedVars); \n\
+}\n\
+\n\
+std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)> scriptMap = {\n\
+    // USER SCRIPT MAPPING - written by engine\n\
+};\n\
+\n\
+// USER SCRIPT CONSTRUCTORS - written by engine\n\n\
+#endif // USERSCRIPTS_H";
 
-    std::ofstream f("Make/src/Game/UserScripts.h");
+    std::ofstream f("Make/src/Game/UserScripts.cpp");
     f << userScripts;
     f.close();
 }
