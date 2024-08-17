@@ -58,6 +58,8 @@ void PlayerMovement::Update(float dt){
     }
 }
 ```
+In-engine editing for example script above.
+![script](https://github.com/user-attachments/assets/18ab0ec8-afa2-4ec6-b83a-809ec215beb1)
 
 ## Style Guide
 The style of Salty Game Engine mostly follows the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) with a few small additions (e.g. enums being prefixed by E). \
