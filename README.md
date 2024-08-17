@@ -7,6 +7,12 @@ Scene Demo above uses assets from:
 - [Oak Woods Environment — brullov](https://brullov.itch.io/oak-woods)
 - [Generic Character Asset — brullov](https://brullov.itch.io/generic-char-asset)
 
+## Features
+- **Browser Support:** Compile and run your games on Windows and the Web.
+- **Modular Architecture:** Easily extend or replace components (and Renderer) without modifying the core engine. 
+- **Custom Script System:** Write game logic in native C++ with  scripting API.
+- Memory-Efficient Audio: Supports multiple streaming sources with dynamic loading and unloading of audio to optimize memory usage.
+
 ## Scripting Example
 Salty Engine has native C++ scripting, allowing for serialized (SF_) variables for convenient in-engine editing. An example script is shown below.
 ```cpp
@@ -59,6 +65,7 @@ void PlayerMovement::Update(float dt){
 }
 ```
 In-engine editing for example script above.
+
 ![script](https://github.com/user-attachments/assets/18ab0ec8-afa2-4ec6-b83a-809ec215beb1)
 
 ## Style Guide
