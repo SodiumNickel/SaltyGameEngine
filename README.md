@@ -10,7 +10,7 @@ Scene Demo above uses assets from:
 ## Features
 - **Browser Support:** Compile and run your games on Windows and the Web.
 - **Modular Architecture:** Easily extend or replace components (and renderer/asset manager) without modifying the core engine. 
-- **Custom Script System:** Write game logic in native C++ with custom scripting API.
+- **Native Scripting System:** Write game logic in C++ with custom scripting API.
 - **Memory-Efficient Audio:** Supports multiple streaming sources with dynamic loading and unloading of audio to optimize memory usage.
 
 ## Scripting Example
