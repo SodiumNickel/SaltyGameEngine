@@ -44,14 +44,16 @@ void PlayerMovement::Start(){
 }
 
 // Called every frame before Render() 
-void PlayerMovement::Update(float deltaTime){
+void PlayerMovement::Update(float dt){
     if(Input::KeyHeld[SDL_SCANCODE_A]){
-        transform->position.x -= deltaTime * speed;
+        transform->position.x -= dt * speed;
     }
     if(Input::KeyHeld[SDL_SCANCODE_D]){
-        transform->position.x += deltaTime * speed;
+        transform->position.x += dt * speed;
     }
 
+    jumpTimer -= dt;
+    
     if(Input::KeyDown[SDL_SCANCODE_W] && jumpTimer <= 0){
         jumpTimer = 1.0f;
         rb->velocity.y = 3.0f;
