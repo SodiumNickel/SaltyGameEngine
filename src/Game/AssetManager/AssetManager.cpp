@@ -42,13 +42,14 @@ void AssetManager::AddTexture(SDL_Renderer* renderer, const std::string& filepat
 
 SDL_Texture* AssetManager::GetTexture(const std::string& filepath)
 {
-    assert(textures.count(filepath));
+    // TODO: add this back once i add drag and drop (also count out default "")
+    // assert(textures.count(filepath));
     return textures[filepath];
 }
 
 glm::vec2 AssetManager::GetTextureSize(const std::string& filepath)
 {
-    assert(textureSizes.count(filepath));
+    // assert(textureSizes.count(filepath));
     return textureSizes[filepath];
 }
 
@@ -58,6 +59,6 @@ void AssetManager::AddFont(const std::string& filepath, int fontSize){
 }
 
 TTF_Font* AssetManager::GetFont(const std::string& filepath){
-    assert(fonts.count(filepath));
+    // assert(fonts.count(filepath));
     return fonts[filepath];
 }

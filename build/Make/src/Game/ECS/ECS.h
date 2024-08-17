@@ -66,7 +66,6 @@ public:
  *   Each entity has unique Id, just a list of components        *
  * ------------------------------------------------------------- */
 
-// TODO: entity could probably be a struct
 class Entity {
 private:
     int id;

@@ -15,9 +15,6 @@ private:
 public:
     // Initialization will be handled by engine (including that of SF_ variables)
     PlayerMovement(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars);
-    // : IScript(entity, transform), 
-    // val(std::get<int>(serializedVars[0])), player(std::get<Transform*>(serializedVars[1])) 
-    // {};
 
     void Start() override;
     void Update(float dt) override;

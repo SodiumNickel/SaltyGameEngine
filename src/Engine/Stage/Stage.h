@@ -21,8 +21,6 @@ class Stage {
     private:
         SDL_Renderer* renderer;
         SDL_Texture* viewport;
-        // SDL_Rect camera; might need this later just for outline
-        // also need it for the "stage" camera
 
         std::shared_ptr<EngineData> engineData;
         std::shared_ptr<Registry> registry;
@@ -46,7 +44,8 @@ class Stage {
         void Destroy();
 
         // TODO: do any of these have to be public??
-        glm::vec2 stageCenter = glm::vec2(100.0f, 100.0f);
+        // What scene position is in the top left of stage
+        glm::vec2 stageCenter = glm::vec2(0.0f, 0.0f);
         ImVec2 stageSize;
         float zoom = 1; // TODO: use this to zoom in on viewport on scroll
 };

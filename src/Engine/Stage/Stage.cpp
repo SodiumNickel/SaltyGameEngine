@@ -228,6 +228,19 @@ void Stage::Update()
     registry->GetSystem<StageRenderSystem>().Update(renderer, assetManager, stageCenter, stageZoom);
 
     SDL_SetRenderTarget(renderer, NULL);
+    
+    // Get the ImGui window's draw list
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+    ImVec2 botLeft = ImGui::GetCursorScreenPos();  
+    ImVec2 winSize = ImGui::GetWindowSize();
+
+    ImVec2 p1 = ImVec2((Camera::position.x  - stageCenter.x) * stageZoom.x, 
+                       -(Camera::position.y - stageCenter.y) * stageZoom.y);
+    ImVec2 p2 = ImVec2(p1.x + Camera::aspectRatio.x * stageZoom.x, p1.y - Camera::aspectRatio.y * stageZoom.y);
+
+    // Draw the non-filled rectangle (outline)
+    draw_list->AddRect(p1, p2, IM_COL32(255, 233, 0, 230), 0.0f, 0, 2.0f);
 }
 
 void Stage::Destroy()
