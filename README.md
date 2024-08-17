@@ -36,10 +36,7 @@ public:
 
 // Called before the first frame of Update()
 void PlayerMovement::Start(){
-    sound.filepath = "jump.wav";
-    sound.stream = false;
     Audio::Load(sound);
-
     Camera::position = transform->position;
 }
 
