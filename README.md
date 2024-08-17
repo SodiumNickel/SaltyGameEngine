@@ -2,7 +2,7 @@
 
 A lightweight 2D C++ game engine, developed for the creation of browser games. 
 
-![SaltyDemo](https://github.com/SodiumNickel/SaltyGameEngine/assets/139382010/8e7c5aa2-7d66-47b0-9439-7bb0797a979c)
+![SaltyDemo](https://github.com/user-attachments/assets/7f4ab5ce-6c41-4686-9f6c-7091fae3f139)
 Scene Demo above uses assets from:
 - [Oak Woods Environment — brullov](https://brullov.itch.io/oak-woods)
 - [Generic Character Asset — brullov](https://brullov.itch.io/generic-char-asset)
