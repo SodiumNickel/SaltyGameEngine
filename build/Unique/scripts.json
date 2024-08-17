@@ -4,13 +4,13 @@
     ],
     "PlayerMovement":{
         "names":[
-            "val",
-            "player",
-            "sound"
+            "speed",
+            "rb",
+            "jumpSound"
         ],
         "types":[
-            "int",
-            "Transform",
+            "float",
+            "Rigidbody",
             "Sound"
         ]
     }

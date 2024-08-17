@@ -21,7 +21,7 @@
         "name": "Player",
         "parent-id": -1,
         "scripts":{
-          "PlayerMovement":[1, 0, 
+          "PlayerMovement":[10.0, 0, 
                     {"filepath":"boop.wav", "stream":true}
                   ]
         },

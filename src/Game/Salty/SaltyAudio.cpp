@@ -50,6 +50,20 @@ void Audio::Load(Sound& sound){
     sound.id = id;
 }
 
+// NOTE: this will also stop the sound
+void Audio::Deload(Sound& sound){
+    // assert(sound.id != -1);
+    // TODO: allowing multiple Deload calls on one sound right now
+    // Will not do anything on further calls
+
+    if(sound.id != -1){
+        Audio::soloud.stopAudioSource(*Audio::sounds[sound.id].get());
+        Audio::sounds[sound.id].reset();
+        sound.id = -1;
+    }
+}
+
+
 // No need to pass this by ref, just need id
 void Audio::Play(Sound sound){
     int id = sound.id;

@@ -51,7 +51,7 @@ void ScriptTab::Begin(){
             {
                 for(int argIdx = 0; argIdx < curScript.varNames.size(); argIdx++){
                     ImGui::Text(curScript.varNames[argIdx].c_str());
-                    RenderArgument(curScript.varTypes[argIdx], curScript.varValues[argIdx]);
+                    RenderArgument(curScript.varTypes[argIdx], curScript.varValues[argIdx], argIdx);
                 }
                 
                 ImGui::SeparatorText("");
@@ -62,34 +62,39 @@ void ScriptTab::Begin(){
     ImGui::End();
 }
 
-void ScriptTab::RenderArgument(std::string type, SaltyType& value){
+void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
+    std::string tag = "##scriptarg" + std::to_string(argIdx);
     if(type == "int"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.95f);
-        ImGui::InputInt("##scriptarg", &std::get<int>(value));
+        ImGui::InputInt(tag.c_str(), &std::get<int>(value));
     }
     else if(type == "float"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth());
-        ImGui::DragFloat("##scriptarg", &std::get<float>(value), 0.1f);
+        ImGui::DragFloat(tag.c_str(), &std::get<float>(value), 0.1f);
     }
     else if(type == "string"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth());
-        ImGui::InputText("##scriptarg", &std::get<std::string>(value));
+        ImGui::InputText(tag.c_str(), &std::get<std::string>(value));
     }
     else if(type == "Entity"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.95f);
-        ImGui::InputInt("##scriptarg", &std::get<int>(value));
+        ImGui::InputInt(tag.c_str(), &std::get<int>(value));
+        ImGui::Text("Entity: "); ImGui::SameLine();
+        ImGui::Text((registry->entityTree[std::get<int>(value)]->name).c_str());
     }
     else if(type == "Transform" || type == "Sprite" || type == "Rigidbody"){
-        ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.95f);
-        ImGui::InputInt("##scriptarg", &std::get<int>(value));
+        ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5f);
+        ImGui::InputInt(tag.c_str(), &std::get<int>(value)); ImGui::SameLine();
+        ImGui::Text("Entity: "); ImGui::SameLine();
+        ImGui::Text((registry->entityTree[std::get<int>(value)]->name).c_str());
     }
     else if(type == "Sound"){
         Sound& sound = std::get<Sound>(value);
         ImGui::Text("Filepath"); ImGui::SameLine();
-        ImGui::InputText("##scriptarg1", &sound.filepath);
+        ImGui::InputText((tag + "a").c_str(), &sound.filepath);
 
         ImGui::Text("Stream"); ImGui::SameLine();
-        ImGui::Checkbox("##scriptarg2", &sound.stream);
+        ImGui::Checkbox((tag + "b").c_str(), &sound.stream);
     }
 }
 

@@ -16,12 +16,12 @@ void PlayerMovement::Start(){
 
 // TODO: may add more detail
 // Called every frame before Render() 
-void PlayerMovement::Update(float deltaTime){
+void PlayerMovement::Update(float dt){
     if(Input::KeyHeld[SDL_SCANCODE_A]){
-        player->position.x -= deltaTime * speed;
+        player->position.x -= dt * speed;
     }
     if(Input::KeyHeld[SDL_SCANCODE_D]){
-        transform->position.x += deltaTime * speed;
+        transform->position.x += dt * speed;
     }
     if(Input::KeyUp[SDL_SCANCODE_0]){
         std::cout << "0\n";

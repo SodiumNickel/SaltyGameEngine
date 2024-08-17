@@ -1,7 +1,13 @@
 {
   "camera": {
-    "position": [0.0, 0.0],
-    "aspectRatio": [1, 1]
+    "aspectRatio": [
+      1,
+      1
+    ],
+    "position": [
+      0.0,
+      0.0
+    ]
   },
   "entities": [
     {
@@ -20,15 +26,15 @@
       },
       "name": "Player",
       "parent-id": -1,
-      "scripts":{},
+      "scripts": {},
       "transform": {
         "position": [
-          166.0,
-          -371.0
+          890.0,
+          -512.0
         ],
         "rotation": 0.0,
         "scale": [
-          4.0,
+          -4.0,
           4.0
         ]
       }
@@ -38,18 +44,18 @@
       "components": {
         "sprite": {
           "filepath": "StageDemo/shop.png",
-          "zindex": 2
+          "zindex": 1
         }
       },
       "name": "Shop",
       "parent-id": -1,
-      "scripts":{},
+      "scripts": {},
       "transform": {
         "position": [
-          461.0,
+          37.0,
           -199.0
         ],
-        "rotation": 45.0,
+        "rotation": 0.0,
         "scale": [
           3.0,
           3.5
@@ -63,7 +69,7 @@
       "components": {},
       "name": "GroundTiles",
       "parent-id": -1,
-      "scripts":{},
+      "scripts": {},
       "transform": {
         "position": [
           0.0,
@@ -86,7 +92,7 @@
       },
       "name": "Ground",
       "parent-id": 2,
-      "scripts":{},
+      "scripts": {},
       "transform": {
         "position": [
           -80.0,
@@ -108,7 +114,7 @@
       "components": {},
       "name": "Rocks",
       "parent-id": -1,
-      "scripts":{},
+      "scripts": {},
       "transform": {
         "position": [
           0.0,
@@ -131,7 +137,7 @@
       },
       "name": "Rock 1",
       "parent-id": 4,
-      "scripts":{},
+      "scripts": {},
       "transform": {
         "position": [
           1168.0,
@@ -154,7 +160,7 @@
       },
       "name": "Rock 2",
       "parent-id": 4,
-      "scripts":{},
+      "scripts": {},
       "transform": {
         "position": [
           298.0,
@@ -177,7 +183,7 @@
       },
       "name": "Rock 3",
       "parent-id": 4,
-      "scripts":{},
+      "scripts": {},
       "transform": {
         "position": [
           715.0,
@@ -200,7 +206,7 @@
       },
       "name": "Background",
       "parent-id": -1,
-      "scripts":{},
+      "scripts": {},
       "transform": {
         "position": [
           -15.0,

@@ -33,6 +33,7 @@ class Audio {
 
         // TODO: definitely need an Audio::ClearLoadedSounds();
         static void Load(Sound& sound);
+        static void Deload(Sound& sound);
         static void Play(Sound sound);
 };
 
