@@ -11,7 +11,7 @@ Scene Demo above uses assets from:
 - **Browser Support:** Compile and run your games on Windows and the Web.
 - **Modular Architecture:** Easily extend or replace components (and Renderer) without modifying the core engine. 
 - **Custom Script System:** Write game logic in native C++ with  scripting API.
-- Memory-Efficient Audio: Supports multiple streaming sources with dynamic loading and unloading of audio to optimize memory usage.
+- **Memory-Efficient Audio:** Supports multiple streaming sources with dynamic loading and unloading of audio to optimize memory usage.
 
 ## Scripting Example
 Salty Engine has native C++ scripting, allowing for serialized (SF_) variables for convenient in-engine editing. An example script is shown below.
