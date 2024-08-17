@@ -1,6 +1,3 @@
-#ifndef USERSCRIPTS_H
-#define USERSCRIPTS_H
-
 // USER SCRIPT INCLUDES - written by engine
 
 #include "Game/ECS/ECS.h"
@@ -20,4 +17,3 @@ std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)>
 };
 
 // USER SCRIPT CONSTRUCTORS - written by engine
-#endif // USERSCRIPTS_H

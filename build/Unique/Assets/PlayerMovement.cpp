@@ -5,12 +5,6 @@
 // TODO: when you double click on something in engine, open both .h and .cpp
 // TODO: also group them inside file directory
 
-// TEMP:
-PlayerMovement::PlayerMovement(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars)
-: IScript(entity, transform), 
-val(std::get<int>(serializedVars[0])), player(std::get<Transform*>(serializedVars[1])) // THIS IS THE PART I HAVE TO ADD
-{};
-
 // Called before the first frame of Update()
 void PlayerMovement::Start(){
     sound.filepath = "boop.wav";

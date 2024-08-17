@@ -26,12 +26,13 @@ void Menu::ExportPopup(){
 void HandleUserScripts(){
     // Parse script data
     std::ifstream f("Unique/scripts.json");
-    json jScripts = json::parse(f)["filepaths"];
+    json jScripts = json::parse(f);
     f.close();
     std::string inc = "";
     std::string map = "";
-    for(int scriptIdx = 0; scriptIdx < jScripts.size(); scriptIdx++){
-        std::string filepath = jScripts[scriptIdx].get<std::string>();
+    std::string con = "";
+    for(int scriptIdx = 0; scriptIdx < jScripts["filepaths"].size(); scriptIdx++){
+        std::string filepath = jScripts["filepaths"][scriptIdx].get<std::string>();
         inc += "#include \"" + filepath + ".h\"\n";
         // Assumes class name is given by name of file
         // TODO: add a check here that debug logs a proper error if not
@@ -39,15 +40,29 @@ void HandleUserScripts(){
         std::string className = filepath;
         if (lastSlashPos != std::string::npos) className = filepath.substr(lastSlashPos + 1);
 
-        map += "{\"" + filepath + "\", &CreateInstance<" + "PlayerMovement" + ">}";
-        if(scriptIdx + 1 < jScripts.size()) map += ", ";
+        map += "{\"" + filepath + "\", &CreateInstance<" + className + ">}";
+        if(scriptIdx + 1 < jScripts["filepaths"].size()) map += ", ";
+
+        con += className + "::" + className + "(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars)\n";
+        con += ": IScript(entity, transform), \n";
+        // varName(std::get<varType>(serializedVars[i])), 
+        json jNames = jScripts[filepath]["names"];
+        json jTypes = jScripts[filepath]["types"];
+        for(int argIdx = 0; argIdx < jNames.size(); argIdx++){
+            std::string type = jTypes[argIdx];
+            if(type == "Entity" || type == "Transform" || type == "Sprite" || type == "Rigidbody") type += "*";
+            con += jNames[argIdx].get<std::string>() + "(std::get<" + type + ">(serializedVars[" + std::to_string(argIdx) + "]))";
+            if(argIdx + 1 < jNames.size()) con += ", ";
+        }
+        con += "{};\n\n";
     }
+    // PlayerMovement::PlayerMovement(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars)
+    // : IScript(entity, transform), 
+    // val(std::get<int>(serializedVars[0])), player(std::get<Transform*>(serializedVars[1])) // THIS IS THE PART I HAVE TO ADD
+    // {};
     
     std::string userScripts1 =
-"#ifndef USERSCRIPTS_H\n\
-#define USERSCRIPTS_H\n\
-\n\
-// USER SCRIPT INCLUDES - written by engine\n";
+"// USER SCRIPT INCLUDES - written by engine\n";
     // Will place include here
     std::string userScripts2 =
 "\n\
@@ -69,20 +84,16 @@ std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)>
     std::string userScripts3 = 
 "\n};\n\
 \n\
-// USER SCRIPT CONSTRUCTORS - written by engine\n\n\
-#endif // USERSCRIPTS_H";
+// USER SCRIPT CONSTRUCTORS - written by engine\n";
 
     std::ofstream g("Make/src/Game/UserScripts.cpp");
-    g << userScripts1 + inc + userScripts2 + map + userScripts3;
+    g << userScripts1 + inc + userScripts2 + map + userScripts3 + con;
     g.close();
 }
 // Removes user made scripts from UserScripts.cpp (includes and map)
 void UnhandleUserScripts(){
     std::string userScripts = 
-"#ifndef USERSCRIPTS_H\n\
-#define USERSCRIPTS_H\n\
-\n\
-// USER SCRIPT INCLUDES - written by engine\n\
+"// USER SCRIPT INCLUDES - written by engine\n\
 \n\
 #include \"Game/ECS/ECS.h\"\n\
 #include \"Game/Salty/SaltyTypes.h\"\n\
@@ -100,8 +111,7 @@ std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)>
     // USER SCRIPT MAPPING - written by engine\n\
 };\n\
 \n\
-// USER SCRIPT CONSTRUCTORS - written by engine\n\n\
-#endif // USERSCRIPTS_H";
+// USER SCRIPT CONSTRUCTORS - written by engine";
 
     std::ofstream f("Make/src/Game/UserScripts.cpp");
     f << userScripts;

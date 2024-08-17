@@ -1,6 +1,3 @@
-#ifndef USERSCRIPTS_H
-#define USERSCRIPTS_H
-
 // USER SCRIPT INCLUDES - written by engine
 
 #include "Game/ECS/ECS.h"
@@ -18,5 +15,3 @@ IScript* CreateInstance(Entity* entity, Transform* transform, std::vector<SaltyT
 std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)> scriptMap = {
     // USER SCRIPT MAPPING - written by engine
 };
-
-#endif // USERSCRIPTS_H
