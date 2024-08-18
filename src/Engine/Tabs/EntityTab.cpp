@@ -151,43 +151,46 @@ void EntityTab::Begin(){
 
 
     // DD Target for unparenting entities, moving them to root
-    ImGui::InvisibleButton("entitytree_root", ImGui::GetContentRegionAvail()); 
-    RClickMenu(-1);
-    if (ImGui::BeginDragDropTarget())
-    {
-        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
+    ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
+    if(contentRegionAvail.x != 0 && contentRegionAvail.y != 0){
+        ImGui::InvisibleButton("entitytree_root", contentRegionAvail); 
+        RClickMenu(-1);
+        if (ImGui::BeginDragDropTarget())
         {
-            IM_ASSERT(payload->DataSize == sizeof(int));
-            int payloadId = *(const int*)payload->Data;
-            
-            // Intended: re-parenting to same entity has effect that entity goes to end of childIds
-            // unparent payloadId from its parent
-            int parentId = registry->entityTree[payloadId]->parentId;
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
+            {
+                IM_ASSERT(payload->DataSize == sizeof(int));
+                int payloadId = *(const int*)payload->Data;
+                
+                // Intended: re-parenting to same entity has effect that entity goes to end of childIds
+                // unparent payloadId from its parent
+                int parentId = registry->entityTree[payloadId]->parentId;
 
-            int prevPos;
-            // Remove from previous parent
-            // parentId = -1 -> parent is scene/root
-            if(parentId == -1){
-                std::vector<int>& rChildren = registry->rootIds;
-                auto iter = std::find(rChildren.begin(), rChildren.end(), payloadId);
-                rChildren.erase(iter);
-                prevPos = iter - rChildren.begin();
-            }
-            else{
-                std::vector<int>& pChildren = registry->entityTree[parentId]->childrenIds;
-                auto iter = std::find(pChildren.begin(), pChildren.end(), payloadId);
-                pChildren.erase(iter);
-                prevPos = iter - pChildren.begin();
-            }
-            // Reparent payloadId to root (-1)
-            int curPos = registry->rootIds.size(); // Entity will be placed at end
-            registry->rootIds.push_back(payloadId);
-            // registry->entityTree[payloadId]->parentId = -1; defaults to -1
+                int prevPos;
+                // Remove from previous parent
+                // parentId = -1 -> parent is scene/root
+                if(parentId == -1){
+                    std::vector<int>& rChildren = registry->rootIds;
+                    auto iter = std::find(rChildren.begin(), rChildren.end(), payloadId);
+                    rChildren.erase(iter);
+                    prevPos = iter - rChildren.begin();
+                }
+                else{
+                    std::vector<int>& pChildren = registry->entityTree[parentId]->childrenIds;
+                    auto iter = std::find(pChildren.begin(), pChildren.end(), payloadId);
+                    pChildren.erase(iter);
+                    prevPos = iter - pChildren.begin();
+                }
+                // Reparent payloadId to root (-1)
+                int curPos = registry->rootIds.size(); // Entity will be placed at end
+                registry->rootIds.push_back(payloadId);
+                // registry->entityTree[payloadId]->parentId = -1; defaults to -1
 
-            // Add to undo stack
-            editHistory->Do(std::move(std::make_unique<ReparentEdit>(registry, payloadId, parentId, prevPos, -1, curPos)));
+                // Add to undo stack
+                editHistory->Do(std::move(std::make_unique<ReparentEdit>(registry, payloadId, parentId, prevPos, -1, curPos)));
+            }
+            ImGui::EndDragDropTarget();
         }
-        ImGui::EndDragDropTarget();
     }
 
 

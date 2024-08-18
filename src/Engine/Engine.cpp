@@ -241,17 +241,19 @@ void Engine::UpdateGUI()
     menu->Begin();
 
     // Stage
-    ImGui::Begin("Stage");
+    //ImGui::SetNextWindowSizeConstraints(ImVec2(200, 200), ImVec2(FLT_MAX, FLT_MAX));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Remove padding
+    ImGui::Begin("Stage", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
     
     ImVec2 stageSize = ImGui::GetWindowSize();
-    stageSize.x -= 16; // makes all borders equal size
-    stageSize.y -= 35; // adjusted for tab bar, hides scroll
-
     stage->stageSize = stageSize;
+    stage->stageStartPos = ImGui::GetCursorScreenPos();
+
     ImGui::Image((ImTextureID)viewport, stageSize);
     UpdateViewport();
 
     ImGui::End();
+    ImGui::PopStyleVar(); // Restore padding for other windows
 
     // TODO: dont allow hide tab bar, also stop highlighting it when it is clicked on
     // Draw all tabs that are open
