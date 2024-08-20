@@ -205,7 +205,6 @@ void Stage::ProcessInput()
     if(ImGui::IsItemHovered()){
         auto& io = ImGui::GetIO();
         zoom = std::max(0.01f, 10.0f * io.MouseWheel * io.DeltaTime + zoom); // TODO: might want to scale this off of how zoomed we already are? e.g. slow down when really zoomed out
-        zoom = 1;
     }
     // std::cout << zoom << '\n';
     // TODO: 1.375, actually i think it has something to do with the top left scaling
@@ -224,25 +223,21 @@ void Stage::Update()
     SDL_SetRenderDrawColor(renderer, 40, 40, 100, 255);
     SDL_RenderClear(renderer);
 
-    // Allows resizing of viewport, both by boundaries and zoom
-    float stageZoom = 500.0f / stageSize;
+    // TODO: make sure this zoom adjustment makes sense and leave a better comment
+    float stageZoom = 500.0f * zoom / stageSize;
     registry->GetSystem<StageRenderSystem>().Update(renderer, assetManager, stageCenter, stageZoom);
 
+    // Draw camera outline
+    SDL_Rect cameraRect = {
+                static_cast<int>((Camera::position.x  - stageCenter.x) * stageZoom), 
+                static_cast<int>(-(Camera::position.y - stageCenter.y) * stageZoom), // Negative so position y-axis points "up"
+                static_cast<int>(Camera::aspectRatio.x * stageZoom), // TODO: def need to adjust this when scale is added OR ZOOM, CALL IT ZOOM OR MAG MAYBE?
+                static_cast<int>(Camera::aspectRatio.y * stageZoom)
+    };
+    SDL_SetRenderDrawColor(renderer, 255, 215, 0, 230);
+    SDL_RenderDrawRect(renderer, &cameraRect);
+
     SDL_SetRenderTarget(renderer, NULL);
-    
-    // Get the ImGui window's draw list
-    ImDrawList* draw_list = ImGui::GetWindowDrawList();
-
-    // ImVec2 p1 = ImVec2((Camera::position.x  - stageCenter.x) * stageZoom.x, 
-    //                    -(Camera::position.y - stageCenter.y) * stageZoom.y);
-    // ImVec2 p2 = ImVec2(p1.x + Camera::aspectRatio.x * stageZoom.x, p1.y - Camera::aspectRatio.y * stageZoom.y);
-
-    //ImVec2 p1 = ImVec2(stageStartPos.x + (0 - stageCenter.x) * stageZoom, stageStartPos.y + (0 - stageCenter.y) * stageZoom);
-    //ImVec2 p1 = ImVec2(botLeft.x + stageSize.x/2, botLeft.y - stageSize.y/2);
-    //ImVec2 p2 = ImVec2(botLeft.x + stageSize.x/2, botLeft.y - stageSize.y/2);
-
-    // Draw the non-filled rectangle (outline)
-    // draw_list->AddRect(p1, p1, IM_COL32(255, 233, 0, 230), 0.0f, 0, 2.0f);
 }
 
 void Stage::Destroy()

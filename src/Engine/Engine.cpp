@@ -215,7 +215,7 @@ void Engine::KeyDownInput(SDL_Scancode scancode){
 void Engine::UpdateGUI()
 {
     // Full window background (hidden)
-    SDL_SetRenderDrawColor(renderer, 120, 180, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 120, 180, 255, 255); // TODO: should probably allow user to select bg color, probably never used tbh
     SDL_RenderClear(renderer);
 
     ImGui_ImplSDLRenderer2_NewFrame();
@@ -247,8 +247,7 @@ void Engine::UpdateGUI()
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Remove padding
     ImGui::Begin("Stage", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
     
-    // TODO: we should have some check for if max screen size changes
-    stage->stageStartPos = ImGui::GetCursorScreenPos();
+    // TODO: we should have some check for if max screen size changes (to update viewport, should only happen if they change screen resolution? or use 2 monitors??)
 
     // NOTE: max := max(width, height), the user's larger screen dimension
     // This is an upper bound on the possible size of the viewport, so image does not need to change when the viewport resizes

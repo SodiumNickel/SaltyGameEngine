@@ -44,8 +44,8 @@ public:
             float sin = glm::sin(transform.rotation / 180 * 3.14);
 
             SDL_Rect dstRect = {
-                static_cast<int>((transform.position.x  - stageCenter.x)), 
-                static_cast<int>(-(transform.position.y - stageCenter.y)), // Negative so position y-axis points "up"
+                static_cast<int>((transform.position.x  - stageCenter.x) * stageZoom), 
+                static_cast<int>(-(transform.position.y - stageCenter.y) * stageZoom), // Negative so position y-axis points "up"
                 static_cast<int>(textureSize.x * glm::abs(transform.scale.x)),
                 static_cast<int>(textureSize.y * glm::abs(transform.scale.y))
             };
