@@ -109,6 +109,8 @@ int Engine::Initialize()
     // Give stage with access to renderer/viewport
     // TODO: The LoadScene here can be moved earlier if we dont load the assets, can optimize asset loading in general
     stage->Initialize(renderer, viewport);
+    max = glm::max(width, height);
+    stage->stageSize = max;
 
     // Init imgui
     IMGUI_CHECKVERSION();
@@ -245,11 +247,13 @@ void Engine::UpdateGUI()
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Remove padding
     ImGui::Begin("Stage", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
     
-    ImVec2 stageSize = ImGui::GetWindowSize();
-    stage->stageSize = stageSize;
+    // TODO: we should have some check for if max screen size changes
     stage->stageStartPos = ImGui::GetCursorScreenPos();
 
-    ImGui::Image((ImTextureID)viewport, stageSize);
+    // NOTE: max := max(width, height), the user's larger screen dimension
+    // This is an upper bound on the possible size of the viewport, so image does not need to change when the viewport resizes
+    // This removes the jittering issue from before
+    ImGui::Image((ImTextureID)viewport, ImVec2(max, max));
     UpdateViewport();
 
     ImGui::End();

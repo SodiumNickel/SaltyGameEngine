@@ -17,6 +17,7 @@ std::deque<int> Audio::freeIds;
 // Give id to Sound object, and when loaded it will assign an id
 void Audio::Load(Sound& sound){
     // audioSource has not been loaded yet <-> id = -1
+    // TODO: agreed with the below, log an error (i.e. color it red)
     assert(sound.id == -1); // TODO: maybe this should be just send a debug log later, dont want to crash stuff from randomly loading twice
     int id = -1;
 

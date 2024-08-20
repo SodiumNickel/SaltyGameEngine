@@ -46,7 +46,7 @@ class Stage {
         // TODO: do any of these have to be public??
         // What scene position is in the top left of stage
         glm::vec2 stageCenter = glm::vec2(0.0f, 0.0f);
-        ImVec2 stageSize;
+        float stageSize;
         ImVec2 stageStartPos;
         float zoom = 1; // TODO: use this to zoom in on viewport on scroll
 };

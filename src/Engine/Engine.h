@@ -22,7 +22,8 @@ class Engine {
     private:
         bool isRunning; 
         SDL_Window* window;
-        int width, height;
+        // The width, height, and max(width, height) of the engine window
+        int width, height, max;
         SDL_Renderer* renderer;
         SDL_Texture* viewport;
         ImGuiWindowFlags dockspace_flags;

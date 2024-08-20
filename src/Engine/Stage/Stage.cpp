@@ -205,6 +205,7 @@ void Stage::ProcessInput()
     if(ImGui::IsItemHovered()){
         auto& io = ImGui::GetIO();
         zoom = std::max(0.01f, 10.0f * io.MouseWheel * io.DeltaTime + zoom); // TODO: might want to scale this off of how zoomed we already are? e.g. slow down when really zoomed out
+        zoom = 1;
     }
     // std::cout << zoom << '\n';
     // TODO: 1.375, actually i think it has something to do with the top left scaling
@@ -224,7 +225,7 @@ void Stage::Update()
     SDL_RenderClear(renderer);
 
     // Allows resizing of viewport, both by boundaries and zoom
-    glm::vec2 stageZoom = glm::vec2(500.0f * zoom / stageSize.x, 500.0f * zoom / stageSize.y); // zoom scaled by scene aspect ratio
+    float stageZoom = 500.0f / stageSize;
     registry->GetSystem<StageRenderSystem>().Update(renderer, assetManager, stageCenter, stageZoom);
 
     SDL_SetRenderTarget(renderer, NULL);
@@ -236,13 +237,12 @@ void Stage::Update()
     //                    -(Camera::position.y - stageCenter.y) * stageZoom.y);
     // ImVec2 p2 = ImVec2(p1.x + Camera::aspectRatio.x * stageZoom.x, p1.y - Camera::aspectRatio.y * stageZoom.y);
 
-    ImVec2 p1 = ImVec2(stageStartPos.x, stageStartPos.y);
-    ImVec2 p2 = ImVec2(stageStartPos.x, stageStartPos.y);   
+    //ImVec2 p1 = ImVec2(stageStartPos.x + (0 - stageCenter.x) * stageZoom, stageStartPos.y + (0 - stageCenter.y) * stageZoom);
     //ImVec2 p1 = ImVec2(botLeft.x + stageSize.x/2, botLeft.y - stageSize.y/2);
     //ImVec2 p2 = ImVec2(botLeft.x + stageSize.x/2, botLeft.y - stageSize.y/2);
 
     // Draw the non-filled rectangle (outline)
-    draw_list->AddRect(p1, p2, IM_COL32(255, 233, 0, 230), 0.0f, 0, 2.0f);
+    // draw_list->AddRect(p1, p1, IM_COL32(255, 233, 0, 230), 0.0f, 0, 2.0f);
 }
 
 void Stage::Destroy()
