@@ -244,9 +244,14 @@ void Engine::UpdateGUI()
 
     // Stage
     //ImGui::SetNextWindowSizeConstraints(ImVec2(200, 200), ImVec2(FLT_MAX, FLT_MAX));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Remove padding
-    ImGui::Begin("Stage", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
     
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Remove padding (for viewport)
+    ImGui::Begin("Stage", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar);
+    
+    ImGui::PopStyleVar(); // Restore padding for menu
+    stage->Menu();
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0)); // Remove padding (for viewport)
+
     // TODO: we should have some check for if max screen size changes (to update viewport, should only happen if they change screen resolution? or use 2 monitors??)
 
     // NOTE: max := max(width, height), the user's larger screen dimension

@@ -178,6 +178,25 @@ SaltyType Stage::CreateArg(json jType, json jVal){
     assert(false);
 }
 
+void Stage::Menu() {
+    if (ImGui::BeginMenuBar()) {
+        if (ImGui::BeginMenu("Camera")) {
+            ImGui::PushItemWidth(100.0f); // TODO: this should really be calculated better
+
+            ImGui::Text("Position");
+            ImGui::Text("x"); ImGui::SameLine();
+            ImGui::DragFloat("##posx", &Camera::position.x, 1.0f);
+            ImGui::SameLine();
+            ImGui::Text("y"); ImGui::SameLine();
+            ImGui::DragFloat("##posy", &Camera::position.y, 1.0f);
+            
+            ImGui::PopItemWidth();
+            ImGui::EndMenu();
+        }
+        ImGui::EndMenuBar(); 
+    }
+}
+
 // Single loop
 void Stage::Run() 
 {

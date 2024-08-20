@@ -39,6 +39,8 @@ void ScriptTab::Begin(){
         if(ImGui::IsItemActivated()) prevs = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) // Used arbitrary EComponentVar in POSITION_X, is not read by NAME edit
         { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(NAME, POSITION_X, registry, selectedEntity, ComponentValue(prevs), ComponentValue(entity.name)))); }
+        
+        ImGui::PopItemWidth();
         ImGui::SeparatorText("");
 
         // Resize script tree if it does not have a vector for the current entity yet
@@ -67,26 +69,31 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
     if(type == "int"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.95f);
         ImGui::InputInt(tag.c_str(), &std::get<int>(value));
+        ImGui::PopItemWidth();
     }
     else if(type == "float"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth());
         ImGui::DragFloat(tag.c_str(), &std::get<float>(value), 0.1f);
+        ImGui::PopItemWidth();
     }
     else if(type == "string"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth());
         ImGui::InputText(tag.c_str(), &std::get<std::string>(value));
+        ImGui::PopItemWidth();
     }
     else if(type == "Entity"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.95f);
         ImGui::InputInt(tag.c_str(), &std::get<int>(value));
         ImGui::Text("Entity: "); ImGui::SameLine();
         ImGui::Text((registry->entityTree[std::get<int>(value)]->name).c_str());
+        ImGui::PopItemWidth();
     }
     else if(type == "Transform" || type == "Sprite" || type == "Rigidbody"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5f);
         ImGui::InputInt(tag.c_str(), &std::get<int>(value)); ImGui::SameLine();
         ImGui::Text("Entity: "); ImGui::SameLine();
         ImGui::Text((registry->entityTree[std::get<int>(value)]->name).c_str());
+        ImGui::PopItemWidth();
     }
     else if(type == "Sound"){
         Sound& sound = std::get<Sound>(value);

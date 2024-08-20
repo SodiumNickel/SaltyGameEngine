@@ -1,8 +1,8 @@
 {
   "camera": {
     "aspectRatio": [
-      1,
-      1
+      1000,
+      500
     ],
     "position": [
       0.0,

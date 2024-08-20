@@ -64,6 +64,7 @@ void ComponentTab::Transform(){
         if(ImGui::IsItemDeactivatedAfterEdit()) 
         { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(TRANSFORM, ROTATION, registry, selectedEntity, ComponentValue(prevf), ComponentValue(transform.rotation)))); }
 
+        ImGui::PopItemWidth();
         ImGui::SeparatorText("");
     }
 }
@@ -99,6 +100,7 @@ void ComponentTab::Sprite(){
             if(ImGui::IsItemDeactivatedAfterEdit()) 
             { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(SPRITE, ZINDEX, registry, selectedEntity, ComponentValue(previ), ComponentValue(sprite.zIndex)))); }
 
+            ImGui::PopItemWidth();
             ImGui::SeparatorText("");
         }
 
@@ -139,6 +141,7 @@ void ComponentTab::Rigidbody(){
             if(ImGui::IsItemDeactivatedAfterEdit()) 
             { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(RIGIDBODY, INITVEL_Y, registry, selectedEntity, ComponentValue(prevf), ComponentValue(rigidbody.initVelocity.y)))); }
 
+            ImGui::PopItemWidth();
             ImGui::SeparatorText("");
         }
 
@@ -198,6 +201,8 @@ void ComponentTab::Begin(){
         if(ImGui::IsItemActivated()) prevs = prev;
         if(ImGui::IsItemDeactivatedAfterEdit()) // Used arbitrary ECOmponentVar in POSITION_X, is not read by NAME edit
         { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(NAME, POSITION_X, registry, selectedEntity, ComponentValue(prevs), ComponentValue(entity.name)))); }
+        
+        ImGui::PopItemWidth();
         ImGui::SeparatorText("");
 
         // Iterate through all possible components, displaying if HasComponent()
