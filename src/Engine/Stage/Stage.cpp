@@ -66,7 +66,8 @@ void Stage::LoadScene(int sceneIndex)
     g.close();
 
     Camera::position = glm::vec2(jCamera["position"][0], jCamera["position"][1]);
-    Camera::aspectRatio = glm::vec2(jCamera["aspectRatio"][0], jCamera["aspectRatio"][1]);
+    Camera::aspectRatio = glm::ivec2(jCamera["aspectRatio"][0], jCamera["aspectRatio"][1]);
+    Camera::scale = jCamera["scale"].get<float>();
 
     CreateEntityTree(jEntities, jRootIds);
 }
@@ -181,15 +182,28 @@ SaltyType Stage::CreateArg(json jType, json jVal){
 void Stage::Menu() {
     if (ImGui::BeginMenuBar()) {
         if (ImGui::BeginMenu("Camera")) {
-            ImGui::PushItemWidth(100.0f); // TODO: this should really be calculated better
+            ImGui::PushItemWidth(75.0f); // TODO: this should really be calculated better
 
             ImGui::Text("Position");
             ImGui::Text("x"); ImGui::SameLine();
-            ImGui::DragFloat("##posx", &Camera::position.x, 1.0f);
+            ImGui::DragFloat("##camposx", &Camera::position.x, 1.0f);
             ImGui::SameLine();
             ImGui::Text("y"); ImGui::SameLine();
-            ImGui::DragFloat("##posy", &Camera::position.y, 1.0f);
+            ImGui::DragFloat("##camposy", &Camera::position.y, 1.0f);
             
+            ImGui::Text("Aspect Ratio");
+            ImGui::Text("x"); ImGui::SameLine();
+            ImGui::InputInt("##camARx", &Camera::aspectRatio.x);
+            ImGui::SameLine();
+            ImGui::Text("y"); ImGui::SameLine();
+            ImGui::InputInt("##camARy", &Camera::aspectRatio.y);
+
+            ImGui::PopItemWidth();
+            ImGui::PushItemWidth(187.5f); // TODO: this should really be calculated better   
+
+            ImGui::Text("Scale");
+            ImGui::DragFloat("##camscale", &Camera::scale, 1.0f);
+
             ImGui::PopItemWidth();
             ImGui::EndMenu();
         }
@@ -250,8 +264,8 @@ void Stage::Update()
     SDL_Rect cameraRect = {
                 static_cast<int>((Camera::position.x  - stageCenter.x) * stageZoom), 
                 static_cast<int>(-(Camera::position.y - stageCenter.y) * stageZoom), // Negative so position y-axis points "up"
-                static_cast<int>(Camera::aspectRatio.x * stageZoom), // TODO: def need to adjust this when scale is added OR ZOOM, CALL IT ZOOM OR MAG MAYBE?
-                static_cast<int>(Camera::aspectRatio.y * stageZoom)
+                static_cast<int>(Camera::aspectRatio.x * Camera::scale * stageZoom), // TODO: def need to adjust this when scale is added OR ZOOM, CALL IT ZOOM OR MAG MAYBE?
+                static_cast<int>(Camera::aspectRatio.y * Camera::scale * stageZoom)
     };
     SDL_SetRenderDrawColor(renderer, 255, 215, 0, 230);
     SDL_RenderDrawRect(renderer, &cameraRect);

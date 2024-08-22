@@ -1,7 +1,8 @@
 {
   "camera": {
     "position": [0.0, 0.0],
-    "aspectRatio": [1, 1]
+    "aspectRatio": [1, 1],
+    "scale": 100
   },  
   "entities": [
       {

@@ -1,13 +1,14 @@
 {
   "camera": {
     "aspectRatio": [
-      100,
-      50
+      10,
+      5
     ],
     "position": [
       0.0,
       0.0
-    ]
+    ],
+    "scale": 10
   },
   "entities": [
     {

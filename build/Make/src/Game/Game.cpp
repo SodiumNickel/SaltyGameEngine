@@ -108,7 +108,8 @@ void Game::LoadScene(int sceneIndex)
     g.close();
 
     Camera::position = glm::vec2(jCamera["position"][0], jCamera["position"][1]);
-    Camera::aspectRatio = glm::vec2(jCamera["aspectRatio"][0], jCamera["aspectRatio"][1]);
+    Camera::aspectRatio = glm::ivec2(jCamera["aspectRatio"][0], jCamera["aspectRatio"][1]);
+    Camera::scale = jCamera["scale"].get<float>();
 
     CreateEntityTree(jEntities, jRootIds);
     for(int id = 0; id < registry->entityTree.size(); id++){
