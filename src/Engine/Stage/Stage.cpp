@@ -201,8 +201,9 @@ void Stage::Menu() {
             ImGui::PopItemWidth();
             ImGui::PushItemWidth(187.5f); // TODO: this should really be calculated better   
 
-            ImGui::Text("Scale");
-            ImGui::DragFloat("##camscale", &Camera::scale, 1.0f);
+            ImGui::Text("Scale"); // TODO: i want some indication that there is a tooltip
+            ImGui::SetItemTooltip("Minimum set to 1.0f. Can be set lower with scripting\nbut lowering the aspect ratio instead is advised.");
+            ImGui::DragFloat("##camscale", &Camera::scale, 1.0f, 1.0f, FLT_MAX);
 
             ImGui::PopItemWidth();
             ImGui::EndMenu();
