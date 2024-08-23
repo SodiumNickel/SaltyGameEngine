@@ -109,7 +109,6 @@ public:
     std::string ToString(bool undo) override;
 };
 
-// When the user adds or removes an entity NEXTTODO
 class EntityExistsEdit : public IEdit {
 private:
     std::shared_ptr<Registry> registry;
@@ -133,6 +132,31 @@ private:
 public:
     // Defined in EntityExistsEdit.cpp
     EntityExistsEdit(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, int entityId, std::string name, int parentId, int pos, bool root, bool add);
+    void Apply(bool undo) override;
+    void ApplyJson(bool undo) override;
+    bool ValidEdit() override;
+    std::string ToString(bool undo) override;
+};
+
+/* -----CAMERA MANAGEMENT-------------------------------- *
+ *   Changing position, aspect ratio, scale               *
+ * ------------------------------------------------------ */
+enum ECameraVars {
+    CAM_POSITION_X, 
+    CAM_POSITION_Y,
+    CAM_AR_X,
+    CAM_AR_Y,
+    CAM_SCALE
+};
+
+class CameraValueEdit : public IEdit {
+private:
+    ECameraVars camVar;
+    ComponentValue prev;
+    ComponentValue cur;
+public:
+    CameraValueEdit(ECameraVars camVar, ComponentValue prev, ComponentValue cur)
+    : camVar(camVar), prev(prev), cur(cur) {};
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;
