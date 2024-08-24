@@ -19,6 +19,13 @@ void Menu::ExportPopup(){
 
         ImGui::Text("Window Dimensions");
         ImGui::SetItemTooltip("\"Viewport Dimensions\" in itch.io");
+        ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.4f);
+        ImGui::Text("x"); ImGui::SameLine();
+        ImGui::InputInt("##windowdimx", &engineData->windowDimensions.x); ImGui::SameLine();
+        ImGui::Text("y"); ImGui::SameLine();
+        ImGui::InputInt("##windowdimy", &engineData->windowDimensions.y);
+        ImGui::PopItemWidth();
+
         ImGui::SeparatorText("");
 
         if (ImGui::Button("Windows Export")) ExportWindows();

@@ -16,6 +16,7 @@ struct ScriptData {
 };
 
 struct EngineData {
+    EngineData();
     EngineData(int sceneIndex, uint64_t targetFrameTime) : sceneIndex(sceneIndex), targetFrameTime(targetFrameTime) {};
     // Target time per frame in ms
     uint64_t targetFrameTime;
@@ -35,6 +36,7 @@ struct EngineData {
     // For exporting game builds
     std::string gameName = "Game name";
     std::string gameFilepath = "";
+    glm::ivec2 windowDimensions;
 
     // Only logs of at least logLevel will be considered
     int logLevel;
