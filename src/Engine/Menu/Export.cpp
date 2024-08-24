@@ -11,12 +11,20 @@ using json = nlohmann::json;
 void Menu::ExportPopup(){
     if (ImGui::BeginPopupModal("Export"))
     {
+        ImGui::Text("Name");
         ImGui::InputText("##gamename", &engineData->gameName);
+        ImGui::Text("Filepath");
         ImGui::InputText("##gamefilepath", &engineData->gameFilepath);
+        ImGui::SeparatorText("");
+
+        ImGui::Text("Window Dimensions");
+        ImGui::SetItemTooltip("\"Viewport Dimensions\" in itch.io");
+        ImGui::SeparatorText("");
 
         if (ImGui::Button("Windows Export")) ExportWindows();
+        ImGui::SameLine();
         if (ImGui::Button("Web Export")) ExportWeb();
- 
+
         if (ImGui::Button("Close")) ImGui::CloseCurrentPopup();
         ImGui::EndPopup();
     }
