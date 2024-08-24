@@ -16,7 +16,7 @@ using json = nlohmann::json;
 
 #include "Engine/History/Edit.h"
 #include "Engine/History/EditHistory.h"
-#include "Engine/Systems/StageRenderSystem.h"
+#include "Engine/Altered/StageRenderSystem.h"
 
 #include "Game/ECS/ECS.h"
 #include "Game/Components/TransformComponent.h"
@@ -24,6 +24,7 @@ using json = nlohmann::json;
 #include "Game/Components/RigidbodyComponent.h"
 // #include "../Components/BoxColliderComponent.h" might need for visual
 #include "Game/Salty/SaltyCamera.h"
+#include "Game/Salty/SaltyDebug.h"
 
 // Destructor
 Stage::~Stage()
@@ -43,12 +44,12 @@ void Stage::Initialize(SDL_Renderer* renderer, SDL_Texture* viewport)
 void Stage::LoadScene(int sceneIndex)
 {
     // Get scene name from index
-    std::ifstream f("Unique/Scenes/_index.json");
+    std::ifstream f(engineData->currentProjectFilepath + "/Unique/Scenes/_index.json");
     json jSceneList = json::parse(f).begin().value();
     f.close();
     engineData->sceneName = jSceneList[sceneIndex].value("name", "");
     
-    std::ifstream g("Unique/Scenes/" + engineData->sceneName + ".json");
+    std::ifstream g(engineData->currentProjectFilepath + "/Unique/Scenes/" + engineData->sceneName + ".json");
     json jScene = json::parse(g);
     // After deleting an entity we need to preserve the space for engine ({} in json), these need to removed in actual files
     jScene["null-count"] = 0; 
@@ -113,7 +114,7 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds){
         // Add Scripts to engineData->scriptTree
         // NOTE: this is different from adding actual IScripts to the entity, and is just for engine purposes
         // for that reason, no need to do it after all entities are added, not referencing actual entities or components
-        std::ifstream f("Unique/scripts.json");
+        std::ifstream f(engineData->currentProjectFilepath + "/Unique/scripts.json");
         json jScripts = json::parse(f);
         f.close();
         json jEntityScripts = jEntities[id]["scripts"];

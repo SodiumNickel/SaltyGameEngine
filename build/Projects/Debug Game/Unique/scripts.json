@@ -1,0 +1,17 @@
+{
+    "filepaths":[
+        "PlayerMovement"
+    ],
+    "PlayerMovement":{
+        "names":[
+            "speed",
+            "rb",
+            "jumpSound"
+        ],
+        "types":[
+            "float",
+            "Rigidbody",
+            "Sound"
+        ]
+    }
+}

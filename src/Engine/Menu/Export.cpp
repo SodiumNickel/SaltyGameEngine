@@ -38,9 +38,9 @@ void Menu::ExportPopup(){
 }
 
 // Adds user made scripts to UserScripts.cpp (includes and map)
-void HandleUserScripts(){
+void HandleUserScripts(std::string& currentProjectFilepath){
     // Parse script data
-    std::ifstream f("Unique/scripts.json");
+    std::ifstream f(currentProjectFilepath + "/Unique/scripts.json");
     json jScripts = json::parse(f);
     f.close();
     std::string inc = "";
@@ -145,7 +145,7 @@ void Menu::ExportWindows(){
     }
     
     // Paired with UnhandleUserScripts() below, links user made scripts to other source files
-    HandleUserScripts();
+    HandleUserScripts(engineData->currentProjectFilepath);
 
     // Compile game into .exe
     std::string src = "Make/src/main.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
@@ -154,7 +154,7 @@ void Menu::ExportWindows(){
     // Add user made scripts into source files
     std::string usersrc = "";
     for(int scriptIdx = 0; scriptIdx < engineData->scriptFilepaths.size(); scriptIdx++){
-        usersrc += "Unique/Assets/" + engineData->scriptFilepaths[scriptIdx] + ".cpp ";
+        usersrc += engineData->currentProjectFilepath + "/Unique/Assets/" + engineData->scriptFilepaths[scriptIdx] + ".cpp ";
     }
     // TODO: statically link soloud instead, or acatually.... might be fine
     std::string soloudcore = "Make/libsrc/soloud/core/soloud.cpp Make/libsrc/soloud/core/soloud_audiosource.cpp"
@@ -170,7 +170,7 @@ void Menu::ExportWindows(){
     std::string soloudother = "Make/libsrc/soloud/sdl2_static/soloud_sdl2_static.cpp Make/libsrc/soloud/wav/dr_impl.cpp"
                               " Make/libsrc/soloud/wav/soloud_wav.cpp Make/libsrc/soloud/wav/soloud_wavstream.cpp "
                               " Make/libsrc/soloud/wav/stb_vorbis.c ";
-    std::string flags =  "-DWITH_SDL2_STATIC ";                        
+    std::string flags =  "-DWITH_SDL2_STATIC -DGAME_BUILD ";                        
     // END TODO
     std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src -IUnique/Assets ";
     std::string lib = "-LMake/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf ";
@@ -221,7 +221,7 @@ void Menu::ExportWeb(){
     }
 
     // Paired with UnhandleUserScripts() below, links user made scripts to other source files
-    HandleUserScripts();
+    HandleUserScripts(engineData->currentProjectFilepath);
 
     // Compile game into .exe
     std::string src = "Make/src/webmain.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
@@ -230,7 +230,7 @@ void Menu::ExportWeb(){
     // Add user made scripts into source files
     std::string usersrc = "";
     for(int scriptIdx = 0; scriptIdx < engineData->scriptFilepaths.size(); scriptIdx++){
-        usersrc += "Unique/Assets/" + engineData->scriptFilepaths[scriptIdx] + ".cpp ";
+        usersrc += engineData->currentProjectFilepath + "/Unique/Assets/" + engineData->scriptFilepaths[scriptIdx] + ".cpp ";
     }
     // TODO: statically link soloud instead
     std::string soloudcore = "Make/libsrc/soloud/core/soloud.cpp Make/libsrc/soloud/core/soloud_audiosource.cpp"
@@ -246,7 +246,7 @@ void Menu::ExportWeb(){
     std::string soloudother = "Make/libsrc/soloud/sdl2_static/soloud_sdl2_static.cpp Make/libsrc/soloud/wav/dr_impl.cpp"
                               " Make/libsrc/soloud/wav/soloud_wav.cpp Make/libsrc/soloud/wav/soloud_wavstream.cpp "
                               " Make/libsrc/soloud/wav/stb_vorbis.c ";
-    std::string flags =  "-DWITH_SDL2_STATIC -DWEBBUILD ";                        
+    std::string flags =  "-DWITH_SDL2_STATIC -DGAME_BUILD -DWEB_BUILD ";                        
     // END TODO
     std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -Iinclude/emscripten -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src -IUnique/Assets ";
     std::string wflags = "-s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s ALLOW_MEMORY_GROWTH=1 ";

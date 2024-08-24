@@ -1,0 +1,116 @@
+{
+  "camera": {
+    "aspectRatio": [
+      10,
+      5
+    ],
+    "position": [
+      0.0,
+      0.0
+    ],
+    "scale": 10
+  },
+  "entities": [
+    {
+      "children-ids": [],
+      "components": {
+        "rigidbody": {
+          "initVelocity": [
+            0.0,
+            0.0
+          ]
+        },
+        "sprite": {
+          "filepath": "GamSimX/TEMPiron.png",
+          "zindex": 5
+        }
+      },
+      "name": "Iron",
+      "parent-id": -1,
+      "scripts": {},
+      "transform": {
+        "position": [
+          0.0,
+          0.0
+        ],
+        "rotation": -44.5,
+        "scale": [
+          2.75,
+          4.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "sprite": {
+          "filepath": "GamSimX/TEMPiron.png",
+          "zindex": 0
+        }
+      },
+      "name": "Empty",
+      "parent-id": -1,
+      "transform": {
+        "position": [
+          178.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "sprite": {
+          "filepath": "GamSimX/TEMPiron.png",
+          "zindex": 0
+        }
+      },
+      "name": "Empty",
+      "parent-id": -1,
+      "transform": {
+        "position": [
+          343.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "sprite": {
+          "filepath": "GamSimX/TEMPiron.png",
+          "zindex": 0
+        }
+      },
+      "name": "Empty",
+      "parent-id": -1,
+      "transform": {
+        "position": [
+          343.0,
+          250.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    }
+  ],
+  "root-ids": [
+    0,
+    1,
+    2,
+    3
+  ]
+}

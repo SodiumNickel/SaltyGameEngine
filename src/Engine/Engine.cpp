@@ -18,6 +18,7 @@ using json = nlohmann::json;
 // TODO: this isnt used rn
 #include "Game/Salty/SaltyDebug.h"
 #include "Engine/EngineData.h"
+#include "Engine/Altered/EngineAssetManager.h"
 #include "Engine/History/EditHistory.h"
 #include "Engine/Menu/Menu.h"
 #include "Engine/Tabs/Tabs.h"
@@ -44,7 +45,7 @@ int Engine::Initialize()
 {
     // Handling creation before window is opened (so we do not sit on a blank screen)
     registry = std::make_shared<Registry>();
-    assetManager = std::make_shared<AssetManager>();
+    assetManager = std::make_shared<EngineAssetManager>(engineData);
     Audio::soloud.init();
 
     // NOTE: These will be rendered in Engine::UpdateGUI() so no need to worry about ImGui not being initialized
@@ -56,7 +57,7 @@ int Engine::Initialize()
     openTabs.push_back(std::make_unique<EntityTab>(engineData, editHistory, registry));
     openTabs.push_back(std::make_unique<ComponentTab>(engineData, editHistory, registry, assetManager)); // TODO: unify order of this
     openTabs.push_back(std::make_unique<ScriptTab>(engineData, editHistory, registry));
-    openTabs.push_back(std::make_unique<AssetTab>(registry));
+    openTabs.push_back(std::make_unique<AssetTab>(registry, engineData));
     openTabs.push_back(std::make_unique<LogTab>(registry));
 
     // Init fonts/ttf
@@ -135,7 +136,7 @@ int Engine::Initialize()
     ImGui_ImplSDLRenderer2_Init(renderer);
 
     // Add all scripts to EngineData
-    std::ifstream f("Unique/scripts.json");
+    std::ifstream f(engineData->currentProjectFilepath + "/Unique/scripts.json");
     json jScripts = json::parse(f)["filepaths"];
     f.close();
     for(int scriptIdx = 0; scriptIdx < jScripts.size(); scriptIdx++){

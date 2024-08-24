@@ -8,7 +8,6 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <glm.hpp>
-#include <soloud.h>
 
 class AssetManager {
 private:
@@ -16,8 +15,6 @@ private:
     std::map<std::string, glm::vec2> textureSizes; // two
     // TODO: might have seperate font system later (with textures already made)
     std::map<std::string, TTF_Font*> fonts;
-    // SoLoud::AudioSource is superclass of Wav and WavStream
-    std::map<std::string, std::unique_ptr<SoLoud::AudioSource>> sounds;
 public:
     AssetManager();
     ~AssetManager();
@@ -30,8 +27,6 @@ public:
 
     void AddFont(const std::string& filepath, int fontSize);
     TTF_Font* GetFont(const std::string& filepath);
-
-    void AddSound(const std::string& filepath, bool streamed);
 };
 
 #endif // ASSETMANAGER_H

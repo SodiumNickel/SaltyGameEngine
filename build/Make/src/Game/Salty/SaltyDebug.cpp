@@ -10,7 +10,7 @@
 // TODO: could make this part of debug as well... 
 std::string SystemTime()
 {
-#ifndef WEBBUILD
+#ifndef WEB_BUILD // TODO: i kinda need this for game build rn, but will remove once i have proper game play in viewport
     std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     std::string output(30, '\0');
     struct tm timeinfo;
@@ -25,7 +25,7 @@ std::string SystemTime()
 std::vector<LogEntry> Debug::LogEntries;
 
 void Debug::Log(const std::string& message){
-#ifndef WEBBUILD
+#ifndef WEB_BUILD
     LogEntry entry;
     entry.level = 0;
     entry.message = "[" + SystemTime() + "] " + message; // TODO: could seperate these into diff sections for filtering
@@ -39,7 +39,7 @@ void Debug::Log(const std::string& message){
 
 // TODO: i dont do anything with the level yet, will have -1 be internal, 0 be standard, and other stuff later
 void Debug::Log(const std::string& message, int level){
-#ifndef WEBBUILD
+#ifndef WEB_BUILD
     // TODO: should compare against global limit instead, but have this for debugging purposes
     if(level >= -1){
         LogEntry entry;

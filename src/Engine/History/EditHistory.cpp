@@ -61,7 +61,7 @@ void EditHistory::Redo(){
 // Pre: unsaved = true;
 void EditHistory::Save(){
     // Get scene name from index
-    std::ifstream f("Unique/Scenes/_index.json");
+    std::ifstream f(engineData->currentProjectFilepath + "/Unique/Scenes/_index.json");
     json jSceneList = json::parse(f).begin().value();
     f.close();
     std::string sceneName = jSceneList[engineData->sceneIndex].value("name", "");
@@ -129,7 +129,7 @@ void EditHistory::Save(){
     }
     jScene.erase("null-count");
     
-    std::ofstream("Unique/Scenes/" + sceneName + ".json") << std::setw(2) << jScene;
+    std::ofstream(engineData->currentProjectFilepath + "/Unique/Scenes/" + sceneName + ".json") << std::setw(2) << jScene;
     g.close();
     
     unsaved = false;

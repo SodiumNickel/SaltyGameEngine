@@ -9,13 +9,13 @@
 #include <soloud.h>
 
 #include "Engine/EngineData.h"
+#include "Engine/Altered/EngineAssetManager.h"
 #include "Engine/History/EditHistory.h"
 #include "Engine/Menu/Menu.h"
 #include "Engine/Stage/Stage.h"
 #include "Engine/Tabs/Tabs.h"
 
 #include "Game/ECS/ECS.h"
-#include "Game/AssetManager/AssetManager.h"
 #include "Game/Salty/SaltyAudio.h" // TODO: TEMP
 
 class Engine {
@@ -33,7 +33,7 @@ class Engine {
 
         // Will be stored in Game along with other vars in Stage
         std::shared_ptr<Registry> registry; 
-        std::shared_ptr<AssetManager> assetManager;
+        std::shared_ptr<EngineAssetManager> assetManager;
 
         std::shared_ptr<EditHistory> editHistory;
         // For shortcutted input handling (i.e. Undo)

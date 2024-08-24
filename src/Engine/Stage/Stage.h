@@ -11,10 +11,10 @@
 using json = nlohmann::json;
 
 #include "Engine/EngineData.h"
+#include "Engine/Altered/EngineAssetManager.h"
 #include "Engine/History/EditHistory.h"
 
 #include "Game/ECS/ECS.h"
-#include "Game/AssetManager/AssetManager.h"
 
 
 // Stage contains variables relevant to engine, but not game
@@ -25,7 +25,7 @@ class Stage {
 
         std::shared_ptr<EngineData> engineData;
         std::shared_ptr<Registry> registry;
-        std::shared_ptr<AssetManager> assetManager;
+        std::shared_ptr<EngineAssetManager> assetManager;
         std::shared_ptr<EditHistory> editHistory;
 
         void CreateEntityTree(json jEntities, json jRootIds); 
@@ -40,7 +40,7 @@ class Stage {
         float prevf;
         int previ;
     public:
-        Stage(std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager, std::shared_ptr<EditHistory> editHistory)
+        Stage(std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<EngineAssetManager> assetManager, std::shared_ptr<EditHistory> editHistory)
         : engineData(engineData), registry(registry), assetManager(assetManager), editHistory(editHistory) {};
         ~Stage();
         void Initialize(SDL_Renderer* renderer, SDL_Texture* viewport);

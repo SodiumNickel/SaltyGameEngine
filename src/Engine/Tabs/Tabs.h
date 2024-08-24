@@ -5,10 +5,10 @@
 #include <vector>
 
 #include "Engine/EngineData.h"
+#include "Engine/Altered/EngineAssetManager.h"
 #include "Engine/History/Edit.h"
 #include "Engine/History/EditHistory.h"
 
-#include "Game/AssetManager/AssetManager.h"
 #include "Game/Salty/SaltyTypes.h"
 
 class ITab {
@@ -53,7 +53,7 @@ private:
     std::shared_ptr<EditHistory> editHistory;
     std::shared_ptr<EngineData> engineData;
     std::shared_ptr<Registry> registry;
-    std::shared_ptr<AssetManager> assetManager;
+    std::shared_ptr<EngineAssetManager> assetManager;
 
     // Lock prevents selected entity from updating (with some edge cases surrounding -1)
     bool locked = false;
@@ -69,7 +69,7 @@ private:
 
     bool addComponentOpen = false;
 public:
-    ComponentTab(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager) 
+    ComponentTab(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Registry> registry, std::shared_ptr<EngineAssetManager> assetManager) 
     : engineData(engineData), editHistory(editHistory), registry(registry), assetManager(assetManager) {};
     void Begin() override;
 };
@@ -99,10 +99,12 @@ class AssetTab : public ITab {
 private:
     int index;
     std::shared_ptr<Registry> registry;
+    std::shared_ptr<EngineData> engineData;
 
-    std::filesystem::path currentDir = std::filesystem::path("./Unique/Assets");
+    std::filesystem::path currentDir;
+    std::filesystem::path assetsRootDir;
 public:
-    AssetTab(std::shared_ptr<Registry> registry) : registry(registry) {};
+    AssetTab(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData);
     void Begin() override;
 };
 
