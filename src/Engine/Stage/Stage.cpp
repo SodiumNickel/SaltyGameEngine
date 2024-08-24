@@ -14,6 +14,8 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
+#include "Engine/History/Edit.h"
+#include "Engine/History/EditHistory.h"
 #include "Engine/Systems/StageRenderSystem.h"
 
 #include "Game/ECS/ECS.h"
@@ -22,14 +24,6 @@ using json = nlohmann::json;
 #include "Game/Components/RigidbodyComponent.h"
 // #include "../Components/BoxColliderComponent.h" might need for visual
 #include "Game/Salty/SaltyCamera.h"
-
-// Constructor
-Stage::Stage(std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager)
-{
-    this->registry = registry;
-    this->engineData = engineData;
-    this->assetManager = assetManager;
-}
 
 // Destructor
 Stage::~Stage()
@@ -186,24 +180,44 @@ void Stage::Menu() {
 
             ImGui::Text("Position");
             ImGui::Text("x"); ImGui::SameLine();
+            float prev1 = Camera::position.x;
             ImGui::DragFloat("##camposx", &Camera::position.x, 1.0f);
+            if(ImGui::IsItemActivated()) prevf = prev1;
+            if(ImGui::IsItemDeactivatedAfterEdit()) 
+            { editHistory->Do(std::move(std::make_unique<CameraValueEdit>(CAM_POSITION_X, (prevf), ComponentValue(Camera::position.x)))); }
             ImGui::SameLine();
             ImGui::Text("y"); ImGui::SameLine();
+            prev1 = Camera::position.y;
             ImGui::DragFloat("##camposy", &Camera::position.y, 1.0f);
-            
+            if(ImGui::IsItemActivated()) prevf = prev1;
+            if(ImGui::IsItemDeactivatedAfterEdit()) 
+            { editHistory->Do(std::move(std::make_unique<CameraValueEdit>(CAM_POSITION_Y, (prevf), ComponentValue(Camera::position.y)))); }
+
             ImGui::Text("Aspect Ratio");
             ImGui::Text("x"); ImGui::SameLine();
+            int prev2 = Camera::aspectRatio.x;
             ImGui::InputInt("##camARx", &Camera::aspectRatio.x);
+            if(ImGui::IsItemActivated()) previ = prev2;
+            if(ImGui::IsItemDeactivatedAfterEdit()) 
+            { editHistory->Do(std::move(std::make_unique<CameraValueEdit>(CAM_AR_X, ComponentValue(previ), ComponentValue(Camera::aspectRatio.x)))); }
             ImGui::SameLine();
             ImGui::Text("y"); ImGui::SameLine();
+            prev2 = Camera::aspectRatio.y;
             ImGui::InputInt("##camARy", &Camera::aspectRatio.y);
+            if(ImGui::IsItemActivated()) previ = prev2;
+            if(ImGui::IsItemDeactivatedAfterEdit()) 
+            { editHistory->Do(std::move(std::make_unique<CameraValueEdit>(CAM_AR_Y, ComponentValue(previ), ComponentValue(Camera::aspectRatio.y)))); }
 
             ImGui::PopItemWidth();
             ImGui::PushItemWidth(187.5f); // TODO: this should really be calculated better   
 
             ImGui::Text("Scale"); // TODO: i want some indication that there is a tooltip
             ImGui::SetItemTooltip("Minimum set to 1.0f. Can be set lower with scripting\nbut lowering the aspect ratio instead is advised.");
+            prev1 = Camera::scale;
             ImGui::DragFloat("##camscale", &Camera::scale, 1.0f, 1.0f, FLT_MAX);
+            if(ImGui::IsItemActivated()) prevf = prev1;
+            if(ImGui::IsItemDeactivatedAfterEdit()) 
+            { editHistory->Do(std::move(std::make_unique<CameraValueEdit>(CAM_SCALE, (prevf), ComponentValue(Camera::scale)))); }
 
             ImGui::PopItemWidth();
             ImGui::EndMenu();

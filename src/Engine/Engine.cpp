@@ -49,7 +49,7 @@ int Engine::Initialize()
 
     // NOTE: These will be rendered in Engine::UpdateGUI() so no need to worry about ImGui not being initialized
     // Will be initialized with renderer and viewport below, this also creates the initial scene in registry
-    stage = std::make_shared<Stage>(engineData, registry, assetManager);
+    stage = std::make_shared<Stage>(engineData, registry, assetManager, editHistory);
     // Menu bar on top of screen
     menu = std::make_unique<Menu>(registry, engineData, editHistory);
     // Open initial tabs

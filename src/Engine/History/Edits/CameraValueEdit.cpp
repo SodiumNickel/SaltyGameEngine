@@ -20,7 +20,7 @@ void CameraValueEdit::Apply(bool undo){
         case CAM_POSITION_X: Camera::position.x = std::get<float>(val); break;
         case CAM_POSITION_Y: Camera::position.y = std::get<float>(val); break;
         case CAM_AR_X: Camera::aspectRatio.x = std::get<int>(val); break;
-        case CAM_AR_Y: Camera::aspectRatio.x = std::get<int>(val); break;
+        case CAM_AR_Y: Camera::aspectRatio.y = std::get<int>(val); break;
         case CAM_SCALE: Camera::scale = std::get<float>(val); break;
         default:
             // TODO: should log a -1 level error here

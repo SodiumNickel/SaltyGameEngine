@@ -11,6 +11,7 @@
 using json = nlohmann::json;
 
 #include "Engine/EngineData.h"
+#include "Engine/History/EditHistory.h"
 
 #include "Game/ECS/ECS.h"
 #include "Game/AssetManager/AssetManager.h"
@@ -25,6 +26,7 @@ class Stage {
         std::shared_ptr<EngineData> engineData;
         std::shared_ptr<Registry> registry;
         std::shared_ptr<AssetManager> assetManager;
+        std::shared_ptr<EditHistory> editHistory;
 
         void CreateEntityTree(json jEntities, json jRootIds); 
         void CreateScriptData(int entityId, std::string& filepath, json jTypes, json jNames, json jVals);
@@ -33,8 +35,13 @@ class Stage {
         bool dragging = false;
         ImVec2 startMousePos;
         glm::vec2 startStageCenter; 
+
+        // For camera undo
+        float prevf;
+        int previ;
     public:
-        Stage(std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager);
+        Stage(std::shared_ptr<EngineData> engineData, std::shared_ptr<Registry> registry, std::shared_ptr<AssetManager> assetManager, std::shared_ptr<EditHistory> editHistory)
+        : engineData(engineData), registry(registry), assetManager(assetManager), editHistory(editHistory) {};
         ~Stage();
         void Initialize(SDL_Renderer* renderer, SDL_Texture* viewport);
         void LoadScene(int sceneIndex);
