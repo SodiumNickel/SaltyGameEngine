@@ -136,7 +136,7 @@ int Engine::Initialize()
     ImGui_ImplSDLRenderer2_Init(renderer);
 
     // Add all scripts to EngineData
-    std::ifstream f(engineData->currentProjectFilepath + "/Unique/scripts.json");
+    std::ifstream f("Projects/" + engineData->projectName + + "/Unique/scripts.json");
     json jScripts = json::parse(f)["filepaths"];
     f.close();
     for(int scriptIdx = 0; scriptIdx < jScripts.size(); scriptIdx++){

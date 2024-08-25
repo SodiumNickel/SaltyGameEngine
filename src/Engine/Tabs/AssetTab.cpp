@@ -8,8 +8,8 @@ AssetTab::AssetTab(std::shared_ptr<Registry> registry, std::shared_ptr<EngineDat
     this->registry = registry;
     this->engineData = engineData;
 
-    currentDir = std::filesystem::path("./" + engineData->currentProjectFilepath + "/Unique/Assets");
-    assetsRootDir = std::filesystem::path("./" + engineData->currentProjectFilepath + "/Unique/Assets");
+    currentDir = std::filesystem::path("./Projects/" + engineData->projectName + "/Unique/Assets");
+    assetsRootDir = std::filesystem::path("./Projects/" + engineData->projectName + "/Unique/Assets");
 }
 
 void AssetTab::Begin() {

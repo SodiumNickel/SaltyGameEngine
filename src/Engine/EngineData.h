@@ -23,7 +23,7 @@ struct EngineData {
     // Total time elapsed since engine opened in ms
     uint64_t prevFrameTime = 0;
 
-    std::string currentProjectFilepath = "Projects/Debug Game";
+    std::string projectName = "Debug Game";
 
     // TODO: comments here, also reorder initialization vars to match this
     int sceneIndex;

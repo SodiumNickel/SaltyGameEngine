@@ -8,6 +8,8 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
+#include "Game/Salty/SaltyDebug.h"
+
 void Menu::ExportPopup(){
     if (ImGui::BeginPopupModal("Export"))
     {
@@ -38,9 +40,9 @@ void Menu::ExportPopup(){
 }
 
 // Adds user made scripts to UserScripts.cpp (includes and map)
-void HandleUserScripts(std::string& currentProjectFilepath){
+void HandleUserScripts(std::string& projectName){
     // Parse script data
-    std::ifstream f(currentProjectFilepath + "/Unique/scripts.json");
+    std::ifstream f("Projects/" + projectName + "/Unique/scripts.json");
     json jScripts = json::parse(f);
     f.close();
     std::string inc = "";
@@ -145,7 +147,7 @@ void Menu::ExportWindows(){
     }
     
     // Paired with UnhandleUserScripts() below, links user made scripts to other source files
-    HandleUserScripts(engineData->currentProjectFilepath);
+    HandleUserScripts(engineData->projectName);
 
     // Compile game into .exe
     std::string src = "Make/src/main.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
@@ -154,8 +156,9 @@ void Menu::ExportWindows(){
     // Add user made scripts into source files
     std::string usersrc = "";
     for(int scriptIdx = 0; scriptIdx < engineData->scriptFilepaths.size(); scriptIdx++){
-        usersrc += engineData->currentProjectFilepath + "/Unique/Assets/" + engineData->scriptFilepaths[scriptIdx] + ".cpp ";
+        usersrc += "Projects/\"" + engineData->projectName + "\"/Unique/Assets/" + engineData->scriptFilepaths[scriptIdx] + ".cpp ";
     }
+
     // TODO: statically link soloud instead, or acatually.... might be fine
     std::string soloudcore = "Make/libsrc/soloud/core/soloud.cpp Make/libsrc/soloud/core/soloud_audiosource.cpp"
                          " Make/libsrc/soloud/core/soloud_bus.cpp Make/libsrc/soloud/core/soloud_core_3d.cpp"
@@ -173,7 +176,7 @@ void Menu::ExportWindows(){
     std::string flags =  "-DWITH_SDL2_STATIC -DGAME_BUILD ";                        
     // END TODO
     std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src ";
-    inc += "-I\"" + engineData->currentProjectFilepath + "\"/Unique/Assets ";
+    inc += "-IProjects/\"" + engineData->projectName+ "\"/Unique/Assets ";
     std::string lib = "-LMake/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf ";
     std::string out = "-o \"" + engineData->gameFilepath + "\"/\"" + engineData->gameName + "\"/\"" + engineData->gameName + ".exe\"";
 
@@ -190,7 +193,7 @@ void Menu::ExportWindows(){
 
     // Copy Unique folder
     // TODO: I would like to remove the printed console stuff
-    std::string copy = "xcopy /E /I /Y .\\Unique\\ \"" + engineData->gameFilepath + "\"\\\"" + engineData->gameName + "\"\\Unique";
+    std::string copy = "xcopy /E /I /Y .\\Projects\\\"" + engineData->projectName + "\"\\Unique\\ \"" + engineData->gameFilepath + "\"\\\"" + engineData->gameName + "\"\\Unique";
     result = system(copy.c_str());
     if (result == 0) {
         std::cout << "Copy unique successful!\n";
@@ -222,7 +225,7 @@ void Menu::ExportWeb(){
     }
 
     // Paired with UnhandleUserScripts() below, links user made scripts to other source files
-    HandleUserScripts(engineData->currentProjectFilepath);
+    HandleUserScripts(engineData->projectName);
 
     // Compile game into .exe
     std::string src = "Make/src/webmain.cpp Make/src/Game/Game.cpp Make/src/Game/ECS/ECS.cpp " 
@@ -231,7 +234,7 @@ void Menu::ExportWeb(){
     // Add user made scripts into source files
     std::string usersrc = "";
     for(int scriptIdx = 0; scriptIdx < engineData->scriptFilepaths.size(); scriptIdx++){
-        usersrc += engineData->currentProjectFilepath + "/Unique/Assets/" + engineData->scriptFilepaths[scriptIdx] + ".cpp ";
+        usersrc += "Projects/\"" + engineData->projectName + "\"/Unique/Assets/" + engineData->scriptFilepaths[scriptIdx] + ".cpp ";
     }
     // TODO: statically link soloud instead
     std::string soloudcore = "Make/libsrc/soloud/core/soloud.cpp Make/libsrc/soloud/core/soloud_audiosource.cpp"
@@ -250,7 +253,7 @@ void Menu::ExportWeb(){
     std::string flags =  "-DWITH_SDL2_STATIC -DGAME_BUILD -DWEB_BUILD ";                        
     // END TODO
     std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -Iinclude/emscripten -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src ";
-    inc += "-I\"" + engineData->currentProjectFilepath + "\"/Unique/Assets ";
+    inc += "-IProjects/\"" + engineData->projectName + "\"/Unique/Assets ";
     std::string wflags = "-s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s ALLOW_MEMORY_GROWTH=1 ";
     std::string preload = "--preload-file .\\Unique@Unique --use-preload-plugins ";
     std::string out = "-o \"" + engineData->gameFilepath + "\"/\"" + engineData->gameName + "\"/index.html";

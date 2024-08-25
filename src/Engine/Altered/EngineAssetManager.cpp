@@ -24,7 +24,7 @@ void EngineAssetManager::AddTexture(SDL_Renderer* renderer, const std::string& f
     if(!textures.count(filepath))
     {
         // TODO: need to check that filepath is valid, just log some error here, should never happen but who knows
-        SDL_Surface* surface = IMG_Load((engineData->currentProjectFilepath + "/Unique/Assets/" + filepath).c_str());
+        SDL_Surface* surface = IMG_Load(("Projects/" + engineData->projectName + + "/Unique/Assets/" + filepath).c_str());
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
         SDL_FreeSurface(surface);
 
@@ -52,7 +52,7 @@ glm::vec2 EngineAssetManager::GetTextureSize(const std::string& filepath)
 
 
 void EngineAssetManager::AddFont(const std::string& filepath, int fontSize){
-    fonts.emplace(filepath, TTF_OpenFont((engineData->currentProjectFilepath + "/Unique/Assets/" + filepath).c_str(), fontSize));
+    fonts.emplace(filepath, TTF_OpenFont(("Projects/" + engineData->projectName + + "/Unique/Assets/" + filepath).c_str(), fontSize));
 }
 
 TTF_Font* EngineAssetManager::GetFont(const std::string& filepath){
