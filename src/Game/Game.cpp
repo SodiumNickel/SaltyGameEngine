@@ -108,9 +108,16 @@ void Game::LoadScene(int sceneIndex)
     json jCamera = jScene["camera"];
     g.close();
 
+    // Initialize camera vars
     Camera::position = glm::vec2(jCamera["position"][0], jCamera["position"][1]);
     Camera::aspectRatio = glm::ivec2(jCamera["aspectRatio"][0], jCamera["aspectRatio"][1]);
     Camera::scale = jCamera["scale"].get<float>();
+
+    // TODO: for now just assuming that aspectRatio and dimensions are proportional
+    // Crop viewport based on aspectRatio
+    // glm::ivec2 viewportPos;
+    // glm::ivec2 viewportDims;
+    scale = width / Camera::aspectRatio.x;
 
     CreateEntityTree(jEntities, jRootIds);
     for(int id = 0; id < registry->entityTree.size(); id++){
@@ -383,7 +390,7 @@ void Game::Render()
     SDL_SetRenderDrawColor(renderer, 40, 40, 100, 255);
     SDL_RenderClear(renderer);
 
-    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, Camera::position);
+    registry->GetSystem<RenderSystem>().Update(renderer, assetManager, scale);
 
     SDL_RenderPresent(renderer);
 }

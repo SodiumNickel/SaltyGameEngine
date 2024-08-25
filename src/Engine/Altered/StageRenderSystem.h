@@ -39,7 +39,7 @@ public:
             TransformComponent& transform = entity.GetComponent<TransformComponent>();
             const auto sprite = entity.GetComponent<SpriteComponent>();
             glm::vec2 textureSize = assetManager->GetTextureSize(sprite.filepath);
-            textureSize = textureSize * stageZoom;
+            textureSize = textureSize;
 
             float cos = glm::cos(transform.rotation / 180 * 3.14);
             float sin = glm::sin(transform.rotation / 180 * 3.14);
@@ -47,8 +47,8 @@ public:
             SDL_Rect dstRect = {
                 static_cast<int>((transform.position.x  - stageCenter.x) * stageZoom), 
                 static_cast<int>(-(transform.position.y - stageCenter.y) * stageZoom), // Negative so position y-axis points "up"
-                static_cast<int>(textureSize.x * glm::abs(transform.scale.x)),
-                static_cast<int>(textureSize.y * glm::abs(transform.scale.y))
+                static_cast<int>(textureSize.x * glm::abs(transform.scale.x) * stageZoom),
+                static_cast<int>(textureSize.y * glm::abs(transform.scale.y) * stageZoom)
             };
 
             // Handle negative scales by flipping sprite

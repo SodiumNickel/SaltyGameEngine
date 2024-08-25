@@ -9,6 +9,7 @@ public:
     static glm::vec2 position;
     static float rotation;
 
+    // NOTE: Do not edit aspectRatio during runtime (TODO: for now...)
     static glm::ivec2 aspectRatio;
     // The amount the aspect ratio is scaled by
     static float scale; 

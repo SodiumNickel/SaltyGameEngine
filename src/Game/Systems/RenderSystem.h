@@ -10,7 +10,7 @@
 #include "Game/Components/TransformComponent.h"
 #include "Game/Components/SpriteComponent.h"
 #include "Game/AssetManager/AssetManager.h"
-
+#include "Game/Salty/SaltyCamera.h"
 
 class RenderSystem : public System {
 public:
@@ -21,7 +21,7 @@ public:
     }
 
     // TODO: dont like this as a unique_ptr reference, or rather unsure if that is optimal?
-    void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, glm::vec2 cameraCenter)
+    void Update(SDL_Renderer* renderer, std::unique_ptr<AssetManager>& assetManager, int viewportScale)
     {
         // TODO: optimize by sorting sprite objects whenever they are added
         // Can do this with a simple insertion on frames with low entity additions
@@ -33,6 +33,10 @@ public:
             { return a.GetComponent<SpriteComponent>().zIndex
             < b.GetComponent<SpriteComponent>().zIndex; });
 
+        // Camera values
+        glm::vec2 cameraCenter = Camera::position; // TODO: later position can be actual center, and can alter here
+        float scale = viewportScale / Camera::scale;  // TODO: assertion that Camera::scale is not 0??
+
         for(auto entity : entities)
         {
             TransformComponent& transform = entity.GetComponent<TransformComponent>();
@@ -43,10 +47,10 @@ public:
             float sin = glm::sin(transform.rotation / 180 * 3.14);
 
             SDL_Rect dstRect = {
-                static_cast<int>((transform.position.x  - cameraCenter.x)), 
-                static_cast<int>(-(transform.position.y - cameraCenter.y)), // Negative so position y-axis points "up"
-                static_cast<int>(textureSize.x * glm::abs(transform.scale.x)),
-                static_cast<int>(textureSize.y * glm::abs(transform.scale.y))
+                static_cast<int>((transform.position.x  - cameraCenter.x) * scale), 
+                static_cast<int>(-(transform.position.y - cameraCenter.y) * scale), // Negative so position y-axis points "up"
+                static_cast<int>(textureSize.x * glm::abs(transform.scale.x) * scale),
+                static_cast<int>(textureSize.y * glm::abs(transform.scale.y) * scale)
             };
 
             // Handle negative scales by flipping sprite

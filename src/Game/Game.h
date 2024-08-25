@@ -17,6 +17,8 @@ class Game {
     private:
         SDL_Window* window;
         int width, height;
+        // Viewport dims `div` Camera::aspectRatio
+        int scale;
         SDL_Renderer* renderer;
 
         std::unique_ptr<Registry> registry; 
