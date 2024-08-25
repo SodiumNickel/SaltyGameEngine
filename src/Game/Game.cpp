@@ -48,17 +48,18 @@ int Game::Initialize()
     // Init main SDL window
     if(SDL_Init(SDL_INIT_VIDEO) < 0) { return -1; }
 
-    //SDL_DisplayMode dm;
-    //SDL_GetDesktopDisplayMode(0, &dm);
-    //width = dm.w;
-    //height = dm.h - 50; // adjusted for border size, 75
-    // std::cout << width << ' ' << height << '\n';
+    std::ifstream f("Unique/settings.json");
+    json jSettings = json::parse(f);
+    f.close();
+
+    width = jSettings["dimensions"][0].get<int>();
+    height = jSettings["dimensions"][1].get<int>();
 
     window = SDL_CreateWindow(
         "Game build", // TODO: should allow some more control over this, definitely name
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        1000, 500,
+        width, height,
         0 // SDL_WINDOW_RESIZABLE
     );
     if (!window){
