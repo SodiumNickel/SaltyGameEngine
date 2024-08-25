@@ -172,7 +172,8 @@ void Menu::ExportWindows(){
                               " Make/libsrc/soloud/wav/stb_vorbis.c ";
     std::string flags =  "-DWITH_SDL2_STATIC -DGAME_BUILD ";                        
     // END TODO
-    std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src -IUnique/Assets ";
+    std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src ";
+    inc += "-I\"" + engineData->currentProjectFilepath + "\"/Unique/Assets ";
     std::string lib = "-LMake/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf ";
     std::string out = "-o \"" + engineData->gameFilepath + "\"/\"" + engineData->gameName + "\"/\"" + engineData->gameName + ".exe\"";
 
@@ -248,7 +249,8 @@ void Menu::ExportWeb(){
                               " Make/libsrc/soloud/wav/stb_vorbis.c ";
     std::string flags =  "-DWITH_SDL2_STATIC -DGAME_BUILD -DWEB_BUILD ";                        
     // END TODO
-    std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -Iinclude/emscripten -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src -IUnique/Assets ";
+    std::string inc = "-IMake/include/SDL2 -IMake/include/glm -IMake/include/nlohmann -Iinclude/emscripten -IMake/include/soloud -IMake/libsrc/soloud/wav -IMake/src ";
+    inc += "-I\"" + engineData->currentProjectFilepath + "\"/Unique/Assets ";
     std::string wflags = "-s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_TTF=2 -s ALLOW_MEMORY_GROWTH=1 ";
     std::string preload = "--preload-file .\\Unique@Unique --use-preload-plugins ";
     std::string out = "-o \"" + engineData->gameFilepath + "\"/\"" + engineData->gameName + "\"/index.html";

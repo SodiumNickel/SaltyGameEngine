@@ -59,7 +59,7 @@ int Game::Initialize()
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         1000, 500,
-        SDL_WINDOW_RESIZABLE
+        0 // SDL_WINDOW_RESIZABLE
     );
     if (!window){
         SDL_Quit();
