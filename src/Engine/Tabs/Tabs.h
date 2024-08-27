@@ -87,6 +87,9 @@ private:
     bool locked = false;
     int selectedEntity;
 
+    bool addScriptOpen = false;
+    std::string newScriptName;
+
     // Renders UI to edit script argument in engine
     void RenderArgument(std::string type, SaltyType& value, int argIdx);
 public:

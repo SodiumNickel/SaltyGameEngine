@@ -247,10 +247,10 @@ void ComponentTab::Begin(){
             ImGui::EndChild();
 
             
+            // TODO: not sure if this works yer
             // If user clicks anywhere outside of box, close it
             // if(!ImGui::IsItemHovered() && ImGui::IsAnyMouseDown()) addComponentOpen = false;
         }
-
     }
     ImGui::End();
 }

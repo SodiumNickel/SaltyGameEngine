@@ -59,6 +59,52 @@ void ScriptTab::Begin(){
                 ImGui::SeparatorText("");
             }
         }
+
+        // Button and Dropdown list to allow adding components
+        if (ImGui::Button("Add Script")) {
+            // Clear new script name
+            newScriptName = "";
+
+            // Only needs logic to open list, close is handled by list
+            if(!addScriptOpen) addScriptOpen = true;
+            // TEMP, TODO: get rid of this when proper detection below
+            else addScriptOpen = false;
+        }
+
+        // Show options if the flag is set
+        if (addScriptOpen) {
+            ImGui::BeginChild("Script List", ImVec2(0, 100), true); // TODO: should probably adjust this height a bit
+
+            // TODO: change this to a search function
+            // TODO: add a dropdown of all scripts
+            if (ImGui::Selectable("Sprite", false, entity.HasComponent<SpriteComponent>() ? ImGuiSelectableFlags_Disabled : 0)) {
+                entity.AddComponent<SpriteComponent>();
+                
+                // TODO: unify comments for this section
+                editHistory->Do(std::move(std::make_unique<HasComponentEdit>(SPRITE, registry, selectedEntity, true, std::vector<ComponentValue>())));
+
+                addScriptOpen = false;
+            }
+            ImGui::SeparatorText("");
+
+            // If user wants to create a new script
+            ImGui::Text("New Script");
+            ImGui::PushItemWidth(ImGui::GetWindowWidth());
+            ImGui::InputText("##newscript", &newScriptName);
+            ImGui::PopItemWidth();
+            if(ImGui::Button("Create")){
+                // TODO: detect for overlapping names
+
+                newScriptName = "";
+            }
+
+            ImGui::EndChild();
+
+            
+            // TODO: not sure if this works yer
+            // If user clicks anywhere outside of box, close it
+            // if(!ImGui::IsItemHovered() && ImGui::IsAnyMouseDown()) addScriptOpen = false;
+        }
     }
 
     ImGui::End();
