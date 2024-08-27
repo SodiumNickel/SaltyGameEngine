@@ -35,7 +35,7 @@ public:
 
         // Camera values
         glm::vec2 cameraCenter = Camera::position; // TODO: later position can be actual center, and can alter here
-        float scale = viewportScale / Camera::scale;  // TODO: assertion that Camera::scale is not 0?? probably not necessary
+        float scale = viewportScale / Camera::scale;  // TODO: assertion that Camera::scale is not 0??
 
         for(auto entity : entities)
         {

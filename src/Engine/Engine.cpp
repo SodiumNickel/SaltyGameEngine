@@ -28,7 +28,7 @@ using json = nlohmann::json;
 Engine::Engine()
 {
     // TODO: should initialize to scene that was last open, stored fps, etc.
-    engineData = std::make_shared<EngineData>(0, 8);
+    engineData = std::make_shared<EngineData>();
     editHistory = std::make_shared<EditHistory>(engineData); // TODO: could move this into initialize, especially if it needs scene
     
     // Set to true on success of Initialize()

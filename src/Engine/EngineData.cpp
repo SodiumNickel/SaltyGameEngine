@@ -1,5 +1,26 @@
 #include "EngineData.h"
 
+#include <fstream>
+#include <string>
+
+#include <json.hpp>
+using json = nlohmann::json;
+
 EngineData::EngineData(){
-    // TODO: move a lot of initialization here, and read from jsonfile
+    // Open most recently edited project
+    std::ifstream f("EngineData/engine-settings.json");
+    json jSettings = json::parse(f);
+    f.close();
+
+    projectName = jSettings["recent-project"].get<std::string>();
+    // 1000 / fps = ms per frame
+    targetFrameTime = 1000 / jSettings["target-fps"].get<int>();
+
+    // Get engine data specific to recent project
+    std::ifstream g("Projects/" + projectName + "/engine.json");
+    json jEngineData = json::parse(g);
+    g.close();
+
+    // Get most recently open scene
+    sceneIndex = jEngineData["recent-scene"].get<int>();
 }

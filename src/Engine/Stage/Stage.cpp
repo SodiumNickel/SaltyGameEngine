@@ -35,8 +35,8 @@ void Stage::Initialize(SDL_Renderer* renderer, SDL_Texture* viewport)
     this->renderer = renderer;
     this->viewport = viewport;
 
-    // TODO: check for saved scene number here, currently just loading demo
-    LoadScene(0); // engine->sceneIndex
+    // Loads most recently open scene
+    LoadScene(engineData->sceneIndex); 
 
     registry->AddSystem<StageRenderSystem>();
 }

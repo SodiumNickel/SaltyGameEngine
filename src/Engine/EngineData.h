@@ -17,15 +17,14 @@ struct ScriptData {
 
 struct EngineData {
     EngineData();
-    EngineData(int sceneIndex, uint64_t targetFrameTime) : sceneIndex(sceneIndex), targetFrameTime(targetFrameTime) {};
     // Target time per frame in ms (for engine)
     uint64_t targetFrameTime;
     // Total time elapsed since engine opened in ms
     uint64_t prevFrameTime = 0;
 
-    std::string projectName = "Debug Game";
+    std::string projectName;
 
-    // TODO: comments here, also reorder initialization vars to match this
+    // Stores currently open scene (initialized to most recently open scene)
     int sceneIndex;
     std::string sceneName = "";
 
