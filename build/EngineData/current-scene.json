@@ -1,14 +1,14 @@
 {
   "camera": {
     "aspectRatio": [
-      10,
-      5
+      1,
+      1
     ],
     "position": [
       0.0,
-      -65.0
+      0.0
     ],
-    "scale": 200.0
+    "scale": 100
   },
   "entities": [
     {
@@ -16,7 +16,7 @@
       "components": {
         "rigidbody": {
           "initVelocity": [
-            -50.0,
+            0.0,
             0.0
           ]
         },
@@ -27,11 +27,20 @@
       },
       "name": "Player",
       "parent-id": -1,
-      "scripts": {},
+      "scripts": {
+        "PlayerMovement": [
+          10.0,
+          0,
+          {
+            "filepath": "boop.wav",
+            "stream": true
+          }
+        ]
+      },
       "transform": {
         "position": [
-          890.0,
-          -512.0
+          956.0,
+          -515.0
         ],
         "rotation": 0.0,
         "scale": [
@@ -42,35 +51,9 @@
     },
     {
       "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/shop.png",
-          "zindex": 1
-        }
-      },
-      "name": "Shop",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          37.0,
-          -199.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          3.0,
-          3.5
-        ]
-      }
-    },
-    {
-      "children-ids": [
-        3
-      ],
       "components": {},
-      "name": "GroundTiles",
+      "name": "Empty",
       "parent-id": -1,
-      "scripts": {},
       "transform": {
         "position": [
           0.0,
@@ -80,143 +63,6 @@
         "scale": [
           1.0,
           1.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/ground.png",
-          "zindex": 1
-        }
-      },
-      "name": "Ground",
-      "parent-id": 2,
-      "scripts": {},
-      "transform": {
-        "position": [
-          -80.0,
-          140.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          5.0,
-          5.0
-        ]
-      }
-    },
-    {
-      "children-ids": [
-        5,
-        6,
-        7
-      ],
-      "components": {},
-      "name": "Rocks",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/Rocks/rock1.png",
-          "zindex": 2
-        }
-      },
-      "name": "Rock 1",
-      "parent-id": 4,
-      "scripts": {},
-      "transform": {
-        "position": [
-          1168.0,
-          -586.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          5.0,
-          5.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/Rocks/rock2.png",
-          "zindex": 2
-        }
-      },
-      "name": "Rock 2",
-      "parent-id": 4,
-      "scripts": {},
-      "transform": {
-        "position": [
-          298.0,
-          -581.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          5.0,
-          5.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/Rocks/rock3.png",
-          "zindex": 2
-        }
-      },
-      "name": "Rock 3",
-      "parent-id": 4,
-      "scripts": {},
-      "transform": {
-        "position": [
-          715.0,
-          -550.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          -5.0,
-          5.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/background.png",
-          "zindex": 0
-        }
-      },
-      "name": "Background",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          -15.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          4.15,
-          4.4
         ]
       }
     }
@@ -224,9 +70,6 @@
   "null-count": 0,
   "root-ids": [
     0,
-    1,
-    2,
-    4,
-    8
+    1
   ]
 }

@@ -10,6 +10,8 @@
 #include "Game/Salty/SaltyAudio.h"
 #include "Game/Salty/SaltyTypes.h"
 
+#include "Game/Salty/SaltyDebug.h"
+
 void ScriptTab::Begin(){
     // TODO: Currently just use unsaved icon as a lock icon
     ImGui::Begin("Scripts", NULL, locked ? ImGuiWindowFlags_UnsavedDocument : 0);    
@@ -136,7 +138,19 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
     }
     else if(type == "Transform" || type == "Sprite" || type == "Rigidbody"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5f);
-        ImGui::InputInt(tag.c_str(), &std::get<int>(value)); ImGui::SameLine();
+        ImGui::InputInt(tag.c_str(), &std::get<int>(value)); 
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
+            {
+                IM_ASSERT(payload->DataSize == sizeof(int));
+                int payloadId = *(const int*)payload->Data;
+                
+                Debug::Log(std::to_string(payloadId));
+            }
+        }   
+        
+        ImGui::SameLine();
         ImGui::Text("Entity: "); ImGui::SameLine();
         ImGui::Text((registry->entityTree[std::get<int>(value)]->name).c_str());
         ImGui::PopItemWidth();
