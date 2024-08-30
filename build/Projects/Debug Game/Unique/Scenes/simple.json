@@ -1,43 +1,74 @@
 {
   "camera": {
-    "position": [0.0, 0.0],
-    "aspectRatio": [1, 1],
-    "scale": 100
-  },  
-  "entities": [
-      {
-        "children-ids": [],
-        "components": {
-            "sprite":{
-                "filepath": "StageDemo/player.png",
-                "zindex": 1
-            },
-            "rigidbody":{
-                "initVelocity": [
-                  0.0,
-                  0.0
-                ]
-            }
-          },
-        "name": "Player",
-        "parent-id": -1,
-        "scripts":{
-          "PlayerMovement":[10.0, 0, 
-                    {"filepath":"boop.wav", "stream":true}
-                  ]
-        },
-        "transform": {
-          "position": [
-            956.0,
-            -515.0
-          ],
-          "rotation": 0.0,
-          "scale": [
-            -4.0,
-            4.0
-          ]
-        }
-      }
+    "aspectRatio": [
+      1,
+      1
     ],
-    "root-ids": [0]
-  }
+    "position": [
+      0.0,
+      0.0
+    ],
+    "scale": 100
+  },
+  "entities": [
+    {
+      "children-ids": [],
+      "components": {
+        "rigidbody": {
+          "initVelocity": [
+            0.0,
+            0.0
+          ]
+        },
+        "sprite": {
+          "filepath": "StageDemo/player.png",
+          "zindex": 1
+        }
+      },
+      "name": "Player",
+      "parent-id": -1,
+      "scripts": {
+        "PlayerMovement": [
+          10.0,
+          0,
+          {
+            "filepath": "boop.wav",
+            "stream": true
+          }
+        ]
+      },
+      "transform": {
+        "position": [
+          956.0,
+          -515.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          -4.0,
+          4.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {},
+      "name": "Extra",
+      "parent-id": -1,
+      "transform": {
+        "position": [
+          0.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    }
+  ],
+  "root-ids": [
+    0,
+    1
+  ]
+}

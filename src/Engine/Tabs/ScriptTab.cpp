@@ -146,7 +146,7 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
                 IM_ASSERT(payload->DataSize == sizeof(int));
                 int payloadId = *(const int*)payload->Data;
                 
-                Debug::Log(std::to_string(payloadId));
+                value = payloadId;
             }
         }   
         
