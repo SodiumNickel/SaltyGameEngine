@@ -132,6 +132,17 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
     else if(type == "Entity"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.95f);
         ImGui::InputInt(tag.c_str(), &std::get<int>(value));
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY"))
+            {
+                IM_ASSERT(payload->DataSize == sizeof(int));
+                int payloadId = *(const int*)payload->Data;
+                
+                value = payloadId;
+            }
+        }   
+
         ImGui::Text("Entity: "); ImGui::SameLine();
         ImGui::Text((registry->entityTree[std::get<int>(value)]->name).c_str());
         ImGui::PopItemWidth();
