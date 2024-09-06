@@ -102,7 +102,7 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds){
             json jValues = jComponents["sprite"];
             std::string filepath = jValues["filepath"];
             int zindex = jValues["zindex"];
-            assetManager->AddTexture(renderer, filepath); // Duplicate textures are handled in assetManager
+            assetManager->AddTexture(filepath); // Duplicate textures are handled in assetManager
             entity.AddComponent<SpriteComponent>(filepath, zindex);
         }
         if(jComponents.contains("rigidbody")){

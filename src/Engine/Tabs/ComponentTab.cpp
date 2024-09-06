@@ -7,6 +7,7 @@
 #include <imgui_stdlib.h>
 
 #include "Engine/EngineData.h"
+#include "Engine/Altered/EngineAssetManager.h"
 #include "Engine/History/Edit.h"
 
 #include "Game/ECS/ECS.h"
@@ -15,7 +16,7 @@
 #include "Game/Components/SpriteComponent.h"
 #include "Game/Components/RigidbodyComponent.h"
 #include "Game/Components/BoxColliderComponent.h"
-
+#include "Game/Salty/SaltyDebug.h"
 
 void ComponentTab::Transform(){
     // All entities have a transform component
@@ -76,22 +77,22 @@ void ComponentTab::Sprite(){
         {
             ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.75f);
 
-            // TODO: this should be a drag and drop thing, not a text input
-            ImGui::BeginGroup();
-            ImGui::Text("Filepath");
-            std::string prev1 = sprite.filepath;
-            ImGui::InputText("##filepath", &sprite.filepath);
-            if(ImGui::IsItemActivated()) prevs = prev1;
-            if(ImGui::IsItemDeactivatedAfterEdit()) 
-            { editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(SPRITE, FILEPATH, registry, selectedEntity, ComponentValue(prevs), ComponentValue(sprite.filepath)))); }
-            ImGui::EndGroup();
+            ImGui::Text("Source Image");
+            // TODO: this should change dimensions based on texture dims
+            // TODO: need a better way to determine the y-size
+            ImGui::Image(assetManager->GetTexture(sprite.filepath), ImVec2(64, 64)); 
+            if (ImGui::BeginDragDropTarget()) {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILEPATH_PNG"))
+                {
+                    auto payloadFilepath = static_cast<const char*>(payload->Data);
+                    std::string filepath(payloadFilepath);
 
-            // TODO: kind of want to make this image bigger, but this will do for now
-            ImGui::SameLine();
-            ImGui::BeginGroup();
-            ImGui::Dummy(ImVec2(0.0f, 0.25f)); // Alligns image with text on LHS
-            ImGui::Image(assetManager->GetTexture(sprite.filepath), ImVec2(32, 32)); // TODO: this might need to be resized if the images arent squares
-            ImGui::EndGroup();
+                    editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(SPRITE, FILEPATH, registry, selectedEntity, ComponentValue(sprite.filepath), ComponentValue(filepath))));
+
+                    assetManager->AddTexture(filepath);
+                    sprite.filepath = filepath;
+                }
+            }
 
             ImGui::Text("zIndex"); // TODO: this should probably be enumerated with a dropdown??? 
             int prev2 = sprite.zIndex;

@@ -44,21 +44,7 @@ Engine::~Engine()
 int Engine::Initialize()
 {
     // Handling creation before window is opened (so we do not sit on a blank screen)
-    registry = std::make_shared<Registry>();
-    assetManager = std::make_shared<EngineAssetManager>(engineData);
     Audio::soloud.init();
-
-    // NOTE: These will be rendered in Engine::UpdateGUI() so no need to worry about ImGui not being initialized
-    // Will be initialized with renderer and viewport below, this also creates the initial scene in registry
-    stage = std::make_shared<Stage>(engineData, registry, assetManager, editHistory);
-    // Menu bar on top of screen
-    menu = std::make_unique<Menu>(registry, engineData, editHistory);
-    // Open initial tabs
-    openTabs.push_back(std::make_unique<EntityTab>(engineData, editHistory, registry));
-    openTabs.push_back(std::make_unique<ComponentTab>(engineData, editHistory, registry, assetManager)); // TODO: unify order of this
-    openTabs.push_back(std::make_unique<ScriptTab>(engineData, editHistory, registry));
-    openTabs.push_back(std::make_unique<AssetTab>(registry, engineData));
-    openTabs.push_back(std::make_unique<LogTab>(registry));
 
     // Init fonts/ttf
     // if(TTF_Init() == -1) { return -1; } // TODO: do i need to init video before this?? idk if this does anything
@@ -106,6 +92,21 @@ int Engine::Initialize()
         SDL_TEXTUREACCESS_TARGET,
         800, 800
     );
+
+    // Backend
+    registry = std::make_shared<Registry>();
+    assetManager = std::make_shared<EngineAssetManager>(renderer, engineData);
+
+    // Contains the viewport
+    stage = std::make_shared<Stage>(engineData, registry, assetManager, editHistory);
+    // Menu bar on top of screen
+    menu = std::make_unique<Menu>(registry, engineData, editHistory);
+    // Open initial tabs
+    openTabs.push_back(std::make_unique<EntityTab>(engineData, editHistory, registry));
+    openTabs.push_back(std::make_unique<ComponentTab>(engineData, editHistory, registry, assetManager)); // TODO: unify order of this
+    openTabs.push_back(std::make_unique<ScriptTab>(engineData, editHistory, registry));
+    openTabs.push_back(std::make_unique<AssetTab>(registry, engineData));
+    openTabs.push_back(std::make_unique<LogTab>(registry));
 
     // Give stage with access to renderer/viewport
     // TODO: The LoadScene here can be moved earlier if we dont load the assets, can optimize asset loading in general

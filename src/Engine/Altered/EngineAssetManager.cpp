@@ -19,7 +19,7 @@ void EngineAssetManager::ClearAssets()
     fonts.clear();
 }
 
-void EngineAssetManager::AddTexture(SDL_Renderer* renderer, const std::string& filepath)
+void EngineAssetManager::AddTexture(const std::string& filepath)
 {
     if(!textures.count(filepath))
     {
