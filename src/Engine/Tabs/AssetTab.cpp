@@ -49,13 +49,19 @@ void AssetTab::Begin() {
                 {
                     ImGui::SetDragDropPayload("FILEPATH_PNG", filename.c_str(), filename.size() + 1);
                     // TODO: i want this to be the image instead of the filepath? probably both
-                    // Also for audio it should have a little music symbol on DD
                     ImGui::Text(filename.c_str());
                     ImGui::EndDragDropSource();
                 }
             } // TODO: really gotta add if else spacing to style guide
             else if(filetype == ".wav") { // No other audio formats are supported
                 ImGui::Text(filename.c_str());
+                if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) // Flag allows ImGui::Text to be a DD source
+                {
+                    ImGui::SetDragDropPayload("FILEPATH_WAV", filename.c_str(), filename.size() + 1);
+                    // TODO: also for audio it should have a little music symbol on DD
+                    ImGui::Text(filename.c_str());
+                    ImGui::EndDragDropSource();
+                }
             }
             else{
                 ImGui::Text(filename.c_str());

@@ -51,7 +51,12 @@
     },
     {
       "children-ids": [],
-      "components": {},
+      "components": {
+        "sprite": {
+          "filepath": "big.png",
+          "zindex": 0
+        }
+      },
       "name": "Extra",
       "parent-id": -1,
       "transform": {

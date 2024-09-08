@@ -168,8 +168,21 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
     }
     else if(type == "Sound"){
         Sound& sound = std::get<Sound>(value);
-        ImGui::Text("Filepath"); ImGui::SameLine();
-        ImGui::InputText((tag + "a").c_str(), &sound.filepath);
+        // TODO: i dont like the UI here but itll do
+        ImGui::Text("Filepath: "); ImGui::SameLine();
+        ImGui::Text(sound.filepath.c_str());
+        if (ImGui::BeginDragDropTarget()) {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILEPATH_WAV"))
+            {
+                auto payloadFilepath = static_cast<const char*>(payload->Data);
+                std::string filepath(payloadFilepath);
+
+                //editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(SPRITE, FILEPATH, registry, selectedEntity, ComponentValue(sprite.filepath), ComponentValue(filepath))));
+
+                // TODO: load audio to allow playing in engine
+                sound.filepath = filepath;
+            }
+        }
 
         ImGui::Text("Stream"); ImGui::SameLine();
         ImGui::Checkbox((tag + "b").c_str(), &sound.stream);
