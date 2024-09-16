@@ -1,5 +1,4 @@
-#ifndef PLAYERMOVEMENT_H
-#define PLAYERMOVEMENT_H
+#pragma once
 #include "SaltyEngine.h"
 
 // TODO: eventually might make a text editor abstraction for this
@@ -21,5 +20,3 @@ public:
     void Start() override;
     void Update(float dt) override;
 };
-
-#endif // PLAYERMOVEMENT_H

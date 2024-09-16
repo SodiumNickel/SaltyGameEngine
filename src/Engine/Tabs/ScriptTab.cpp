@@ -96,9 +96,37 @@ void ScriptTab::Begin(){
             if(ImGui::Button("Create")){
                 // Create .cpp and .h file with correct format
                 std::ofstream f(engineData->recentAssetDir + '\\' + newScriptName + ".cpp");
+                std::string cppTemplate = 
+"#include \"" + newScriptName + ".h\"\n\
+\n\
+// Called before the first frame of Update()\n\
+void " + newScriptName + "::Start(){\n\
+\n\
+}\n\
+\n\
+// Called every frame before Render()\n\
+void " + newScriptName + "::Update(float dt){\n\
+\n\
+}";
+                f << cppTemplate;
                 f.close();
 
                 std::ofstream g(engineData->recentAssetDir + '\\' + newScriptName + ".h");
+                std::string hTemplate = 
+"#pragma once\n\
+#include \"SaltyEngine.h\"\n\
+\n\
+class " + newScriptName + " : public IScript {\n\
+private:\n\
+\n\
+public:\n\
+    // Initialization will be handled by engine (including that of SF_ variables)\n\
+    "+ newScriptName + "(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars);\n\
+\n\
+    void Start() override;\n\
+    void Update(float dt) override;\n\
+};";
+                g << hTemplate;
                 g.close();
 
                 addScriptOpen = false;
