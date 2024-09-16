@@ -75,30 +75,40 @@ void ScriptTab::Begin(){
 
         // Show options if the flag is set
         if (addScriptOpen) {
-            ImGui::BeginChild("Script List", ImVec2(0, 100), true); // TODO: should probably adjust this height a bit
+            ImGui::BeginChild("Script List", ImVec2(0, 150), true); // TODO: should probably adjust this height a bit
 
-            // TODO: change this to a search function
-            // TODO: add a dropdown of all scripts
-            if (ImGui::Selectable("Sprite", false, entity.HasComponent<SpriteComponent>() ? ImGuiSelectableFlags_Disabled : 0)) {
-                entity.AddComponent<SpriteComponent>();
-                
-                // TODO: unify comments for this section
-                editHistory->Do(std::move(std::make_unique<HasComponentEdit>(SPRITE, registry, selectedEntity, true, std::vector<ComponentValue>())));
-
-                addScriptOpen = false;
-            }
-            ImGui::SeparatorText("");
+            
 
             // If user wants to create a new script
-            ImGui::Text("New Script");
+            ImGui::Text("Add New Script");
             ImGui::PushItemWidth(ImGui::GetWindowWidth());
             ImGui::InputText("##newscript", &newScriptName);
             ImGui::PopItemWidth();
             if(ImGui::Button("Create")){
                 // TODO: detect for overlapping names
 
+                addScriptOpen = false;
                 newScriptName = "";
             }
+
+            ImGui::SeparatorText("");
+            ImGui::Text("Add Existing Script");
+
+            // TODO: change this to a search function
+            // TODO: add a dropdown of all scripts
+            for(int i = 0; i < engineData->scriptFilepaths.size(); i++){
+                // TODO: this should disable if the entity already has the script, also add a hover prolly
+                if (ImGui::Selectable(engineData->scriptFilepaths[i].c_str(), false, entity.HasComponent<SpriteComponent>() ? ImGuiSelectableFlags_Disabled : 0)) {
+                    // entity.AddComponent<SpriteComponent>();
+                    
+                    // TODO: unify comments for this section
+                    // editHistory->Do(std::move(std::make_unique<HasComponentEdit>(SPRITE, registry, selectedEntity, true, std::vector<ComponentValue>())));
+
+                    addScriptOpen = false;
+                }
+            }
+            
+
 
             ImGui::EndChild();
 
