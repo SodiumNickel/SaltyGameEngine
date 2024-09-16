@@ -84,12 +84,20 @@ void ScriptTab::Begin(){
             ImGui::PushItemWidth(ImGui::GetWindowWidth());
             ImGui::InputText("##newscript", &newScriptName);
             ImGui::PopItemWidth();
+            // Detect for overlapping names (i.e. user already has a file of that name)
+            bool overlap = false;
+            for(int i = 0; i < engineData->scriptNames.size(); i++){
+                if(engineData->scriptNames[i] == newScriptName) overlap = true;
+            }
+
+            ImGui::BeginDisabled(overlap || newScriptName == "");
             if(ImGui::Button("Create")){
-                // TODO: detect for overlapping names
+                // Create .cpp and .h file with correct format
 
                 addScriptOpen = false;
                 newScriptName = "";
             }
+            ImGui::EndDisabled();
 
             ImGui::SeparatorText("");
             ImGui::Text("Add Existing Script");

@@ -33,6 +33,12 @@ struct EngineData {
     // Stores which scripts each entity in current scene has (and their serialized variable values)
     std::vector<std::vector<ScriptData>> scriptTree; // TODO: maybe we make this a ptr to ScriptData later
     std::vector<std::string> scriptFilepaths;
+    std::vector<std::string> scriptNames;
+
+    // Stores directory most recently accessed AssetTab was in 
+    // When scripts are created they will be placed there
+    // TODO: make sure we have a check for if the folder doesnt exist (will be handled by asset tab)
+    std::string recentAssetDir = "";
 
     // For exporting game builds
     std::string gameName = "Game name";

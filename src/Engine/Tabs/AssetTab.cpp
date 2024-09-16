@@ -4,6 +4,8 @@
 
 #include <imgui.h>
 
+#include "Game/Salty/SaltyDebug.h"
+
 AssetTab::AssetTab(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData) {
     this->registry = registry;
     this->engineData = engineData;
@@ -34,11 +36,14 @@ void AssetTab::Begin() {
             }
         }
     }
+
     // List other assets
     for (auto& item : std::filesystem::directory_iterator(currentDir))
     {
         const auto& path = item.path();
         std::string filename = path.filename().string();
+
+        // TODO: i want to join .cpp and .h files here, just assume that both are properly added and only display one
 
         if(!item.is_directory())
         {
@@ -67,6 +72,10 @@ void AssetTab::Begin() {
                 ImGui::Text(filename.c_str());
             }
         }
+    }
+
+    if(ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)){
+        engineData->recentAssetDir = currentDir.string();
     }
 
     ImGui::End();

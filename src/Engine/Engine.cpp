@@ -141,7 +141,14 @@ int Engine::Initialize()
     json jScripts = json::parse(f)["filepaths"];
     f.close();
     for(int scriptIdx = 0; scriptIdx < jScripts.size(); scriptIdx++){
-        engineData->scriptFilepaths.push_back(jScripts[scriptIdx].get<std::string>());
+        std::string scriptFilepath = jScripts[scriptIdx].get<std::string>();
+        engineData->scriptFilepaths.push_back(scriptFilepath);
+
+        // Name will be after last '\' or just be string if '\' does not exist
+        size_t dashPos = scriptFilepath.find_last_of('\\');
+        int namePos = dashPos + 1;
+        if(dashPos == string::npos) namePos = 0;
+        engineData->scriptNames.push_back(scriptFilepath.substr(namePos));
     }
 
     isRunning = true;
