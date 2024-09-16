@@ -13,6 +13,7 @@ EngineData::EngineData(){
     f.close();
 
     projectName = jSettings["recent-project"].get<std::string>();
+    assetsRootDir = "./Projects/" + projectName + "/Unique/Assets";
     // 1000 / fps = ms per frame
     targetFrameTime = 1000 / jSettings["target-fps"].get<int>();
 

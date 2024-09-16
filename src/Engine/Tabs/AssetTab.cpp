@@ -10,8 +10,8 @@ AssetTab::AssetTab(std::shared_ptr<Registry> registry, std::shared_ptr<EngineDat
     this->registry = registry;
     this->engineData = engineData;
 
-    currentDir = std::filesystem::path("./Projects/" + engineData->projectName + "/Unique/Assets");
-    assetsRootDir = std::filesystem::path("./Projects/" + engineData->projectName + "/Unique/Assets");
+    assetsRootDir = std::filesystem::path(engineData->assetsRootDir);
+    currentDir = std::filesystem::path(engineData->assetsRootDir);
 }
 
 void AssetTab::Begin() {
@@ -75,7 +75,8 @@ void AssetTab::Begin() {
     }
 
     if(ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)){
-        engineData->recentAssetDir = currentDir.string();
+        // substr removes the "./Projects/" + engineData->projectName + "/Unique/Assets" prefix for use in scripts.json
+        engineData->recentAssetDir = currentDir.string().substr(assetsRootDir.string().length());
     }
 
     ImGui::End();

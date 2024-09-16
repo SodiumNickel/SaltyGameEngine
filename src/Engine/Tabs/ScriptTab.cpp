@@ -4,6 +4,8 @@
 
 #include <imgui.h>
 #include <imgui_stdlib.h>
+#include <json.hpp>
+using json = nlohmann::json;
 
 #include "Engine/EngineData.h"
 #include "Engine/History/Edit.h"
@@ -95,7 +97,7 @@ void ScriptTab::Begin(){
             ImGui::BeginDisabled(overlap || newScriptName == "");
             if(ImGui::Button("Create")){
                 // Create .cpp and .h file with correct format
-                std::ofstream f(engineData->recentAssetDir + '\\' + newScriptName + ".cpp");
+                std::ofstream f(engineData->assetsRootDir + engineData->recentAssetDir + '\\' + newScriptName + ".cpp");
                 std::string cppTemplate = 
 "#include \"" + newScriptName + ".h\"\n\
 \n\
@@ -111,7 +113,7 @@ void " + newScriptName + "::Update(float dt){\n\
                 f << cppTemplate;
                 f.close();
 
-                std::ofstream g(engineData->recentAssetDir + '\\' + newScriptName + ".h");
+                std::ofstream g(engineData->assetsRootDir + engineData->recentAssetDir + '\\' + newScriptName + ".h");
                 std::string hTemplate = 
 "#pragma once\n\
 #include \"SaltyEngine.h\"\n\
@@ -128,6 +130,17 @@ public:\n\
 };";
                 g << hTemplate;
                 g.close();
+
+                // Modify script json file to add new script
+                std::ifstream h("Projects/" + engineData->projectName + "/Unique/scripts.json");
+                json jScripts = json::parse(h);
+                jScripts["filepaths"].push_back(engineData->recentAssetDir + '\\' + newScriptName);
+                jScripts[engineData->recentAssetDir + '\\' + newScriptName] = {
+                    {"names", json::array()},
+                    {"types", json::array()}
+                };
+                std::ofstream("Projects/" + engineData->projectName + "/Unique/scripts.json") << std::setw(2) << jScripts;
+                h.close();
 
                 addScriptOpen = false;
                 newScriptName = "";

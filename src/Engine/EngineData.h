@@ -38,6 +38,7 @@ struct EngineData {
     // Stores directory most recently accessed AssetTab was in 
     // When scripts are created they will be placed there
     // TODO: make sure we have a check for if the folder doesnt exist (will be handled by asset tab)
+    std::string assetsRootDir = "";
     std::string recentAssetDir = "";
 
     // For exporting game builds

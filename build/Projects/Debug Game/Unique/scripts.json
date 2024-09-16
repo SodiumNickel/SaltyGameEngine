@@ -1,17 +1,22 @@
 {
-    "filepaths":[
-        "PlayerMovement"
+  "PlayerMovement": {
+    "names": [
+      "val",
+      "player",
+      "sound"
     ],
-    "PlayerMovement":{
-        "names":[
-            "val",
-            "player",
-            "sound"
-        ],
-        "types":[
-            "int",
-            "Transform",
-            "Sound"
-        ]
-    }
+    "types": [
+      "int",
+      "Transform",
+      "Sound"
+    ]
+  },
+  "\\SubDir\\SSubDir\\TestScript": {
+    "names": [],
+    "types": []
+  },
+  "filepaths": [
+    "PlayerMovement",
+    "\\SubDir\\SSubDir\\TestScript"
+  ]
 }
