@@ -1,5 +1,7 @@
 #include "Engine/Tabs/Tabs.h"
 
+#include <fstream>
+
 #include <imgui.h>
 #include <imgui_stdlib.h>
 
@@ -93,6 +95,11 @@ void ScriptTab::Begin(){
             ImGui::BeginDisabled(overlap || newScriptName == "");
             if(ImGui::Button("Create")){
                 // Create .cpp and .h file with correct format
+                std::ofstream f(engineData->recentAssetDir + '\\' + newScriptName + ".cpp");
+                f.close();
+
+                std::ofstream g(engineData->recentAssetDir + '\\' + newScriptName + ".h");
+                g.close();
 
                 addScriptOpen = false;
                 newScriptName = "";
