@@ -134,8 +134,9 @@ public:\n\
                 // Modify script json file to add new script
                 std::ifstream h("Projects/" + engineData->projectName + "/Unique/scripts.json");
                 json jScripts = json::parse(h);
-                jScripts["filepaths"].push_back(engineData->recentAssetDir + '\\' + newScriptName);
-                jScripts[engineData->recentAssetDir + '\\' + newScriptName] = {
+                std::string recentAssetDir = engineData->recentAssetDir == "" ? "" : engineData->recentAssetDir.substr(1) + '\\';
+                jScripts["filepaths"].push_back(recentAssetDir + newScriptName);
+                jScripts[recentAssetDir + newScriptName] = {
                     {"names", json::array()},
                     {"types", json::array()}
                 };

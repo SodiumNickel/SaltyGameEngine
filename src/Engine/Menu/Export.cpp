@@ -54,8 +54,13 @@ void HandleUserScripts(std::string& projectName){
         // Assumes class name is given by name of file
         // TODO: add a check here that debug logs a proper error if not
         int lastSlashPos = filepath.find_last_of('/');
+        int lastBSlashPos = filepath.find_last_of('\\');
         std::string className = filepath;
-        if (lastSlashPos != std::string::npos) className = filepath.substr(lastSlashPos + 1);
+        if (lastSlashPos != std::string::npos || lastBSlashPos != std::string::npos) {
+            if(lastSlashPos == std::string::npos) lastSlashPos = lastBSlashPos;
+            else if(lastBSlashPos != std::string::npos && lastBSlashPos > lastSlashPos) lastSlashPos = lastBSlashPos;
+            className = filepath.substr(lastSlashPos + 1);
+        }
 
         map += "{\"" + filepath + "\", &CreateInstance<" + className + ">}";
         if(scriptIdx + 1 < jScripts["filepaths"].size()) map += ", ";
@@ -73,10 +78,6 @@ void HandleUserScripts(std::string& projectName){
         }
         con += "{};\n\n";
     }
-    // PlayerMovement::PlayerMovement(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars)
-    // : IScript(entity, transform), 
-    // val(std::get<int>(serializedVars[0])), player(std::get<Transform*>(serializedVars[1])) // THIS IS THE PART I HAVE TO ADD
-    // {};
     
     std::string userScripts1 =
 "// USER SCRIPT INCLUDES - written by engine\n";
