@@ -94,6 +94,7 @@ void ScriptTab::Begin(){
                 if(engineData->scriptNames[i] == newScriptName) overlap = true;
             }
 
+            // TODO: make sure it has no spaces
             ImGui::BeginDisabled(overlap || newScriptName == "");
             if(ImGui::Button("Create")){
                 // Create .cpp and .h file with correct format
@@ -142,6 +143,13 @@ public:\n\
                 };
                 std::ofstream("Projects/" + engineData->projectName + "/Unique/scripts.json") << std::setw(2) << jScripts;
                 h.close();
+
+                // Add to EngineData
+                engineData->scriptFilepaths.push_back(recentAssetDir + newScriptName);
+                engineData->scriptNames.push_back(newScriptName);
+
+                // Add to current entity
+                // TODO
 
                 addScriptOpen = false;
                 newScriptName = "";

@@ -11,7 +11,12 @@
       "Sound"
     ]
   },
+  "SubDir\\SSubDir\\CreatedScript": {
+    "names": [],
+    "types": []
+  },
   "filepaths": [
-    "PlayerMovement"
+    "PlayerMovement",
+    "SubDir\\SSubDir\\CreatedScript"
   ]
 }
