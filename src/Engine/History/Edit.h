@@ -186,4 +186,21 @@ public:
     std::string ToString(bool undo) override;
 };
 
+// When the user adds or removes a script from an entity
+// TODO: this requires a lot more thought, similar to has component edit
+// TODO: check out engineData->scriptTree to find the data
+class HasScriptEdit : public IEdit {
+private:    
+    int entityId;
+    std::string filepath;
+    std::vector<ScriptValueEdit> values;
+    // TODO: could just store the scriptData?? and should be fine from there, need some default on creation too
+public:
+    HasScriptEdit(std::shared_ptr<EngineData> engineData, int entityId, std::string filepath);
+    void Apply(bool undo) override;
+    void ApplyJson(bool undo) override;
+    bool ValidEdit() override;
+    std::string ToString(bool undo) override;
+};
+
 #endif // EDIT_H

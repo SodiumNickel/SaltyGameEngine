@@ -112,7 +112,7 @@ void Stage::CreateEntityTree(json jEntities, json jRootIds){
         }
 
         // Add Scripts to engineData->scriptTree
-        // NOTE: this is different from adding actual IScripts to the entity, and is just for engine purposes
+        // NOTE: this is different from adding actual IScripts to the entity (as Game does), and is just for engine purposes
         // for that reason, no need to do it after all entities are added, not referencing actual entities or components
         std::ifstream f("Projects/" + engineData->projectName + "/Unique/scripts.json");
         json jScripts = json::parse(f);
