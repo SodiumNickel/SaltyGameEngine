@@ -149,7 +149,11 @@ public:\n\
                 engineData->scriptNames.push_back(newScriptName);
 
                 // Add to current entity
-                // TODO
+                ScriptData scriptData;
+                scriptData.filepath = recentAssetDir + newScriptName;
+                // New script so no variables
+                if(engineData->scriptTree.size() <= selectedEntity) engineData->scriptTree.resize(selectedEntity + 1);
+                engineData->scriptTree[selectedEntity].push_back(scriptData);
 
                 addScriptOpen = false;
                 newScriptName = "";
@@ -163,6 +167,9 @@ public:\n\
             // TODO: add a dropdown of all scripts
             for(int i = 0; i < engineData->scriptFilepaths.size(); i++){
                 // TODO: this should disable if the entity already has the script, also add a hover prolly
+                bool hasScript = false;
+
+
                 if (ImGui::Selectable(engineData->scriptFilepaths[i].c_str(), false, entity.HasComponent<SpriteComponent>() ? ImGuiSelectableFlags_Disabled : 0)) {
                     // entity.AddComponent<SpriteComponent>();
                     
