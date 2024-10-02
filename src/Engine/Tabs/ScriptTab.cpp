@@ -167,10 +167,14 @@ public:\n\
             // TODO: add a dropdown of all scripts
             for(int i = 0; i < engineData->scriptFilepaths.size(); i++){
                 // TODO: this should disable if the entity already has the script, also add a hover prolly
+                if(engineData->scriptTree.size() <= selectedEntity) engineData->scriptTree.resize(selectedEntity + 1);
+
                 bool hasScript = false;
+                for(int j = 0; j < engineData->scriptTree[selectedEntity].size(); j++){
+                    if(engineData->scriptTree[selectedEntity][j].filepath == engineData->scriptFilepaths[i]) hasScript = true;
+                }
 
-
-                if (ImGui::Selectable(engineData->scriptFilepaths[i].c_str(), false, entity.HasComponent<SpriteComponent>() ? ImGuiSelectableFlags_Disabled : 0)) {
+                if (ImGui::Selectable(engineData->scriptFilepaths[i].c_str(), false, hasScript ? ImGuiSelectableFlags_Disabled : 0)) {
                     // entity.AddComponent<SpriteComponent>();
                     
                     // TODO: unify comments for this section
