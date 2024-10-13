@@ -175,9 +175,17 @@ public:\n\
                 }
 
                 if (ImGui::Selectable(engineData->scriptFilepaths[i].c_str(), false, hasScript ? ImGuiSelectableFlags_Disabled : 0)) {
-                    // entity.AddComponent<SpriteComponent>();
+                    // Add existing script to entity (with default SF_ values)
+                    std::ifstream f("Projects/" + engineData->projectName + "/Unique/scripts.json");
+                    json jScript = json::parse(f)[engineData->scriptFilepaths[i]];
+                    f.close();
+
+                    json jNames = jScript["names"];
+                    json jTypes = jScript["types"];
+                    assert(jTypes.size() == jNames.size());
                     
-                    // TODO: unify comments for this section
+                    CreateDefaultScript(engineData->scriptFilepaths[i], jNames, jTypes);
+
                     // editHistory->Do(std::move(std::make_unique<HasComponentEdit>(SPRITE, registry, selectedEntity, true, std::vector<ComponentValue>())));
 
                     addScriptOpen = false;
@@ -196,6 +204,48 @@ public:\n\
     }
 
     ImGui::End();
+}
+
+void ScriptTab::CreateDefaultScript(std::string filepath, json jNames, json jTypes){
+    ScriptData scriptData;
+    scriptData.filepath = filepath;
+
+    for(int argIdx = 0; argIdx < jTypes.size(); argIdx++){
+        scriptData.varTypes.push_back(jTypes[argIdx].get<std::string>());
+        scriptData.varNames.push_back(jNames[argIdx].get<std::string>());
+        scriptData.varValues.push_back(DefaultArg(jTypes[argIdx]));
+    }
+
+    if(engineData->scriptTree.size() <= selectedEntity) engineData->scriptTree.resize(selectedEntity + 1);
+    engineData->scriptTree[selectedEntity].push_back(scriptData);
+}
+
+SaltyType ScriptTab::DefaultArg(json jType){
+    std::string type = jType.get<std::string>();
+    // jType contains the type, manually decide defaults
+    if(type == "int"){ // TODO: not a big fan of this big if else stuff, find a workaround, either a switch case, or a mapping to another function on a dict
+        return SaltyType(0);
+    }
+    else if(type == "float"){
+        return SaltyType(0.0f);
+    }
+    else if(type == "string"){
+        return SaltyType("");
+    }
+    else if(type == "Entity" || type == "Transform" || type == "Sprite" || type == "Rigidbody"){
+        // -1 here signifies that no entity has been set
+        return SaltyType(-1);
+    }
+    else if(type == "Sound"){
+        Sound sound;
+        sound.filepath = "";
+        sound.stream = false;
+        return SaltyType(sound);
+    }
+
+    // type does not exist
+    // TODO: this should never happen, crash with proper message
+    assert(false);
 }
 
 void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
@@ -230,7 +280,9 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
         }   
 
         ImGui::Text("Entity: "); ImGui::SameLine();
-        ImGui::Text((registry->entityTree[std::get<int>(value)]->name).c_str());
+        int id = std::get<int>(value);
+        if(id == -1){ ImGui::Text("null"); } // TODO: color this/highlight this
+        else { ImGui::Text((registry->entityTree[id]->name).c_str()); }
         ImGui::PopItemWidth();
     }
     else if(type == "Transform" || type == "Sprite" || type == "Rigidbody"){
@@ -249,7 +301,9 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
         
         ImGui::SameLine();
         ImGui::Text("Entity: "); ImGui::SameLine();
-        ImGui::Text((registry->entityTree[std::get<int>(value)]->name).c_str());
+        int id = std::get<int>(value);
+        if(id == -1){ ImGui::Text("null"); } // TODO: color this/highlight this
+        else { ImGui::Text((registry->entityTree[id]->name).c_str()); }
         ImGui::PopItemWidth();
     }
     else if(type == "Sound"){

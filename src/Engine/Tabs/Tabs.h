@@ -4,6 +4,9 @@
 #include <filesystem>
 #include <vector>
 
+#include <json.hpp>
+using json = nlohmann::json;
+
 #include "Engine/EngineData.h"
 #include "Engine/Altered/EngineAssetManager.h"
 #include "Engine/History/Edit.h"
@@ -90,6 +93,10 @@ private:
     bool addScriptOpen = false;
     std::string newScriptName;
 
+    // When adding existing script to an entity
+    void CreateDefaultScript(std::string filepath, json jNames, json jTypes);
+    // Returns default argument of type jType
+    SaltyType DefaultArg(json jType);
     // Renders UI to edit script argument in engine
     void RenderArgument(std::string type, SaltyType& value, int argIdx);
 public:
