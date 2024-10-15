@@ -155,6 +155,9 @@ public:\n\
                 if(engineData->scriptTree.size() <= selectedEntity) engineData->scriptTree.resize(selectedEntity + 1);
                 engineData->scriptTree[selectedEntity].push_back(scriptData);
 
+                // Add to undo stack
+                editHistory->Do(std::move(std::make_unique<HasScriptEdit>(engineData, selectedEntity, scriptData, true)));
+
                 addScriptOpen = false;
                 newScriptName = "";
             }
@@ -184,9 +187,10 @@ public:\n\
                     json jTypes = jScript["types"];
                     assert(jTypes.size() == jNames.size());
                     
-                    CreateDefaultScript(engineData->scriptFilepaths[i], jNames, jTypes);
+                    ScriptData scriptData = CreateDefaultScript(engineData->scriptFilepaths[i], jNames, jTypes);
 
-                    // editHistory->Do(std::move(std::make_unique<HasComponentEdit>(SPRITE, registry, selectedEntity, true, std::vector<ComponentValue>())));
+                    // Add to undo stack
+                    editHistory->Do(std::move(std::make_unique<HasScriptEdit>(engineData, selectedEntity, scriptData, true)));
 
                     addScriptOpen = false;
                 }
@@ -206,7 +210,7 @@ public:\n\
     ImGui::End();
 }
 
-void ScriptTab::CreateDefaultScript(std::string filepath, json jNames, json jTypes){
+ScriptData ScriptTab::CreateDefaultScript(std::string filepath, json jNames, json jTypes){
     ScriptData scriptData;
     scriptData.filepath = filepath;
 
@@ -218,6 +222,9 @@ void ScriptTab::CreateDefaultScript(std::string filepath, json jNames, json jTyp
 
     if(engineData->scriptTree.size() <= selectedEntity) engineData->scriptTree.resize(selectedEntity + 1);
     engineData->scriptTree[selectedEntity].push_back(scriptData);
+
+    // It is fine for this to be a copy, it is used in undo/redo
+    return scriptData;
 }
 
 SaltyType ScriptTab::DefaultArg(json jType){

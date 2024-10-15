@@ -94,7 +94,7 @@ private:
     std::string newScriptName;
 
     // When adding existing script to an entity
-    void CreateDefaultScript(std::string filepath, json jNames, json jTypes);
+    ScriptData CreateDefaultScript(std::string filepath, json jNames, json jTypes);
     // Returns default argument of type jType
     SaltyType DefaultArg(json jType);
     // Renders UI to edit script argument in engine
