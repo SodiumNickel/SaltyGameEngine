@@ -27,7 +27,16 @@
       },
       "name": "Player",
       "parent-id": -1,
-      "scripts": {},
+      "scripts": {
+        "PlayerMovement": [
+          0,
+          -1,
+          {
+            "filepath": "",
+            "stream": false
+          }
+        ]
+      },
       "transform": {
         "position": [
           890.0,
