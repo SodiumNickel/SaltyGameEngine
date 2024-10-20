@@ -14,13 +14,12 @@ using json = nlohmann::json;
 /* -----SCRIPT VALUE EDIT----------------------------------- *
  *   When the user changes a value in a script from engine   *
  * --------------------------------------------------------- */
-// Pre: entity.HasComponent<compType>() || compType = TRANSFORM
 void ScriptValueEdit::Apply(bool undo){
-
+    // NOTE: if the script is modified, specifically removing the variable modified, need to remove certain undos from stack
 
     ApplyJson(undo);
 }
-// Pre: entity["components"].contains(compType) || compType = TRANSFORM
+
 void ScriptValueEdit::ApplyJson(bool undo){
 
 }

@@ -1,0 +1,5 @@
+#ifndef SCRIPTOBSERVER_H
+#define SCRIPTOBSERVER_H
+
+
+#endif // SCRIPTOBSERVER_H
