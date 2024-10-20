@@ -20,6 +20,19 @@ void HasScriptEdit::Apply(bool undo){
      * undo     : 0 1 0 1 
      * intended : 0 1 1 0 */
     bool addScript = undo != add;
+    if(addScript){ // Pre: engineData->scriptTree[entityId] not contains scriptData
+        engineData->scriptTree[entityId].push_back(scriptData);
+    }
+    else{ // Pre: engineData->scriptTree[entityId] contains scriptData
+        int i = 0;
+        while(i < engineData->scriptTree[entityId].size() && engineData->scriptTree[entityId][i].filepath != scriptData.filepath){
+            i++;
+        }
+        assert(i < engineData->scriptTree[entityId].size()); // By Pre: should never be the case
+
+        engineData->scriptTree[entityId].erase(engineData->scriptTree[entityId].begin() +  i);
+    }
+
 
     ApplyJson(undo);
 }
