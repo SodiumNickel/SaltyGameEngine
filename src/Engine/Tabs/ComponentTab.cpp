@@ -86,6 +86,7 @@ void ComponentTab::Sprite(){
                 {
                     auto payloadFilepath = static_cast<const char*>(payload->Data);
                     std::string filepath(payloadFilepath);
+                    Debug::Log("Added " + filepath + " as sprite to entity");
 
                     editHistory->Do(std::move(std::make_unique<ComponentValueEdit>(SPRITE, FILEPATH, registry, selectedEntity, ComponentValue(sprite.filepath), ComponentValue(filepath))));
 

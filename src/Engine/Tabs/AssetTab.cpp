@@ -52,9 +52,14 @@ void AssetTab::Begin() {
                 ImGui::Text(filename.c_str());
                 if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) // Flag allows ImGui::Text to be a DD source
                 {
-                    ImGui::SetDragDropPayload("FILEPATH_PNG", filename.c_str(), filename.size() + 1);
+                    // Get subdir path if we are in one
+                    std::string subdir = std::filesystem::relative(currentDir, assetsRootDir).string();
+                    subdir = subdir.length() == 0 ? subdir : subdir + '/';
+
+                    ImGui::SetDragDropPayload("FILEPATH_PNG", (subdir+filename).c_str(), subdir.length() + filename.length() + 1);
                     // TODO: i want this to be the image instead of the filepath? probably both
-                    ImGui::Text(filename.c_str());
+                    ImGui::Text((subdir+filename).c_str());
+                    //ImGui::Text(filename.c_str());
                     ImGui::EndDragDropSource();
                 }
             } // TODO: really gotta add if else spacing to style guide
