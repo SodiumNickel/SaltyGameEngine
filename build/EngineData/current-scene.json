@@ -21,7 +21,7 @@
           ]
         },
         "sprite": {
-          "filepath": "StageDemo/player.png",
+          "filepath": "./RedMagnet.png",
           "zindex": 1
         }
       },
@@ -62,8 +62,8 @@
       "scripts": {},
       "transform": {
         "position": [
-          18.0,
-          -204.0
+          37.0,
+          -199.0
         ],
         "rotation": 0.0,
         "scale": [
@@ -228,10 +228,9 @@
           4.4
         ]
       }
-    },
-    null
+    }
   ],
-  "null-count": 1,
+  "null-count": 0,
   "root-ids": [
     0,
     1,
