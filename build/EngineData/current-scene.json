@@ -21,7 +21,7 @@
           ]
         },
         "sprite": {
-          "filepath": "./RedMagnet.png",
+          "filepath": "StageDemo/player.png",
           "zindex": 1
         }
       },

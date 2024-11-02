@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <string>
+#include <windows.h>
 
 #include <SDL.h>
 
@@ -34,6 +35,7 @@ struct EngineData {
     std::vector<std::vector<ScriptData>> scriptTree; // TODO: maybe we make this a ptr to ScriptData later
     std::vector<std::string> scriptFilepaths;
     std::vector<std::string> scriptNames;
+    std::vector <FILETIME> scriptEditTimes;
 
     // Stores directory most recently accessed AssetTab was in 
     // When scripts are created they will be placed there

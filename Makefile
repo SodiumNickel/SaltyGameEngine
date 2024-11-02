@@ -15,7 +15,7 @@ SRC = src/enginemain.cpp \
 	  libsrc/imgui/*.cpp \
 	  libsrc/soloud/core/*.cpp libsrc/soloud/sdl2_static/*.cpp libsrc/soloud/wav/*.cpp libsrc/soloud/wav/stb_vorbis.c \
 	  src/Engine/Engine.cpp src/Engine/EngineData.cpp \
-	  src/Engine/Altered/*.cpp \
+	  src/Engine/Altered/*.cpp src/Engine/Observers/*.cpp \
 	  src/Engine/Stage/*.cpp src/Engine/Tabs/*.cpp src/Engine/Menu/*.cpp \
 	  src/Engine/History/*.cpp src/Engine/History/Edits/*.cpp \
 	  src/Game/Game.cpp \

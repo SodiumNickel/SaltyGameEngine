@@ -149,6 +149,12 @@ int Engine::Initialize()
         int namePos = dashPos + 1;
         if(dashPos == string::npos) namePos = 0;
         engineData->scriptNames.push_back(scriptFilepath.substr(namePos));
+        
+        // Initialize each script with a 0 filetime (for ScriptObserver)
+        FILETIME ft;
+        ft.dwHighDateTime = 0;
+        ft.dwLowDateTime = 0;
+        engineData->scriptEditTimes.push_back(ft);
     }
 
     isRunning = true;

@@ -147,6 +147,10 @@ public:\n\
                 // Add to EngineData
                 engineData->scriptFilepaths.push_back(recentAssetDir + newScriptName);
                 engineData->scriptNames.push_back(newScriptName);
+                FILETIME ft;
+                ft.dwHighDateTime = 0;
+                ft.dwLowDateTime = 0;
+                engineData->scriptEditTimes.push_back(ft);
 
                 // Add to current entity
                 ScriptData scriptData;
