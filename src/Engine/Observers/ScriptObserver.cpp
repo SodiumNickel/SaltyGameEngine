@@ -39,12 +39,27 @@ void ScriptObserver::Observe(){
                 // Check if first 3 chars are "SF_"
                 if (line.rfind("SF_", 0) == 0) {  // rfind with position 0 checks if 'label' is at the start
                     sfLines.push_back(line);
-                    Debug::Log(line);
                 }
             } // TODO: this filter is not the most robust, the main issue i see if with multiline comment removing vars (not an issue if ctrl k c is used)
 
             // Parse data for variables type and name
+            std::vector<std::string> varTypes;
+            std::vector<std::string> varNames;
 
+            for (std::string& sfLine : sfLines){
+                size_t semicolonPos = sfLine.find(';');
+                // TODO: should debug a proper message linking to formatting
+                // TODO: probably also dont need assertion?? should just not serialize any variables and move on
+                if(semicolonPos == std::string::npos) { Debug::Log("There is no semicolon in line ... "); assert(false); } // TODO: this should not be a -1 debug, this is important
+                std::string line = sfLine.substr(4, semicolonPos-4); // TODO: also assumes there are no extra spaces 
+                
+                // Split into type and name
+                size_t spacePos = line.find(' ');
+                if(spacePos == std::string::npos) { assert(0); } // TODO: also should not have an assert, but should not render SF vars
+                Debug::Log(line.substr(0, spacePos) + '|'); Debug::Log(line.substr(spacePos+1) + '|');
+                varTypes.push_back(line.substr(0, spacePos));
+                varNames.push_back(line.substr(spacePos+1));
+            }
 
             // Compare to existing SF_ variables
             // NOTE: there is some nuance here, e.g. if the user reorders variables they should maintain their values
