@@ -157,6 +157,9 @@ int Engine::Initialize()
         engineData->scriptEditTimes.push_back(ft);
     }
 
+    // Initialize observers
+    observers.push_back(std::make_unique<ScriptObserver>(engineData, editHistory));
+
     isRunning = true;
     return 0;
 }
@@ -208,7 +211,11 @@ void Engine::ProcessInput()
     }
 
     // Check if there were any changes to script SF_ vars (in header files)
-    
+    int i = 0;
+    while(i < observers.size()){
+        if(observers[i]->Check()) { observers[i]->Observe(); }
+        i++;
+    }
 }
 // Pre: One of the ctrl keys is held down -> potential for a shortcut
 void Engine::KeyDownInput(SDL_Scancode scancode){
@@ -297,6 +304,7 @@ void Engine::UpdateViewport()
     // TODO: should either call stage or game render system
     // create stage earlier, pass renderer, viewport, then they can do whatever
 
+    // NOTE: i think i am referring to if there was a game view...
     // if in stage
     if(true){
         stage->Run();

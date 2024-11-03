@@ -12,8 +12,10 @@
 #include "Engine/Altered/EngineAssetManager.h"
 #include "Engine/History/EditHistory.h"
 #include "Engine/Menu/Menu.h"
+#include "Engine/Observers/Observers.h"
 #include "Engine/Stage/Stage.h"
 #include "Engine/Tabs/Tabs.h"
+
 
 #include "Game/ECS/ECS.h"
 #include "Game/Salty/SaltyAudio.h" // TODO: TEMP
@@ -43,6 +45,7 @@ class Engine {
         std::shared_ptr<Stage> stage;
         std::unique_ptr<Menu> menu;
         std::vector<std::unique_ptr<ITab>> openTabs;
+        std::vector<std::unique_ptr<IObserver>> observers;
     public:
         Engine();
         ~Engine();
