@@ -12,7 +12,6 @@
 
 class IObserver {
 public:
-    virtual bool Check() = 0;
     virtual void Observe() = 0;    
 };
 
@@ -22,11 +21,10 @@ private:
     std::shared_ptr<EditHistory> editHistory;
     std::shared_ptr<EngineData> engineData;
 
-    bool check = false;
 public:
     ScriptObserver(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory) 
     : engineData(engineData), editHistory(editHistory) {};
-    bool Check() override;
+
     void Observe() override;
 };
 

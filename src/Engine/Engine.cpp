@@ -190,6 +190,19 @@ void Engine::ProcessInput()
             case SDL_QUIT:
                 isRunning = false;
                 break;
+            case SDL_WINDOWEVENT:
+                if(event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED){
+                    Debug::Log("focus gained");
+                    
+                    // TODO: if we have no more observers should change this up a bit...
+                    // NOTE: Observers only update when the window comes back into focus for efficiency
+                    // Check if there were any changes to script SF_ vars (in header files)
+                    int i = 0;
+                    while(i < observers.size()){
+                        observers[i]->Observe();
+                        i++;
+                    }
+                }
             case SDL_KEYDOWN:
                 if(event.key.repeat == 0){
                     // Detect either control key being pressed
@@ -208,13 +221,6 @@ void Engine::ProcessInput()
                 break;
         }
         ImGui_ImplSDL2_ProcessEvent(&event);
-    }
-
-    // Check if there were any changes to script SF_ vars (in header files)
-    int i = 0;
-    while(i < observers.size()){
-        if(observers[i]->Check()) { observers[i]->Observe(); }
-        i++;
     }
 }
 // Pre: One of the ctrl keys is held down -> potential for a shortcut
@@ -244,6 +250,8 @@ void Engine::UpdateGUI()
     ImGui_ImplSDL2_NewFrame(window);
     SDL_GetWindowSize(window, &width, &height);
     ImGui::NewFrame();
+    
+    
 
     // Dockspace
     // Scale dockspace to full window

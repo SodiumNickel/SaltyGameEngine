@@ -4,12 +4,6 @@
 
 #include "Game/Salty/SaltyDebug.h"
 
-// TODO: could wire this to only observe when you tab back in to engine...
-bool ScriptObserver::Check(){
-    Debug::Log(ImGui::IsWindowFocused());
-    return true;
-}
-
 void ScriptObserver::Observe(){
     for (int i = 0; i < engineData->scriptFilepaths.size(); i++){
         // Full path from projects to header file
