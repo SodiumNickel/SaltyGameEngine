@@ -192,8 +192,6 @@ void Engine::ProcessInput()
                 break;
             case SDL_WINDOWEVENT:
                 if(event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED){
-                    Debug::Log("focus gained");
-                    
                     // TODO: if we have no more observers should change this up a bit...
                     // NOTE: Observers only update when the window comes back into focus for efficiency
                     // Check if there were any changes to script SF_ vars (in header files)
