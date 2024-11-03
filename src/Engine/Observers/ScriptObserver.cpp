@@ -1,9 +1,12 @@
 #include "Engine/Observers/Observers.h"
 
+#include <imgui.h>
+
 #include "Game/Salty/SaltyDebug.h"
 
 // TODO: could wire this to only observe when you tab back in to engine...
 bool ScriptObserver::Check(){
+    Debug::Log(ImGui::IsWindowFocused());
     return true;
 }
 
