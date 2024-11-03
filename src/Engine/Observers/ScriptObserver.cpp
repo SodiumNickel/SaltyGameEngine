@@ -1,11 +1,13 @@
 #include "Engine/Observers/Observers.h"
 
+#include "Game/Salty/SaltyDebug.h"
+
+// TODO: could wire this to only observe when you tab back in to engine...
 bool ScriptObserver::Check(){
     return true;
 }
 
 void ScriptObserver::Observe(){
-    // TODO: could wire this to only observe when you tab back in to engine...
     for (int i = 0; i < engineData->scriptFilepaths.size(); i++){
         // Full path from projects to header file
         std::string filepath = engineData->assetsRootDir + '/' + engineData->scriptFilepaths[i] + ".h"; 
@@ -20,6 +22,7 @@ void ScriptObserver::Observe(){
         if(CompareFileTime(&engineData->scriptEditTimes[i], &recentEditTime) == -1) {
             engineData->scriptEditTimes[i] = recentEditTime;
             
+            Debug::Log(engineData->scriptFilepaths[i]);
             // Parse for relevant changes in the header files
             // Update ALL relevant script data structures and scripts.json
             // TODO: ...
