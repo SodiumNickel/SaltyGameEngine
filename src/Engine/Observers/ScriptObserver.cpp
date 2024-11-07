@@ -5,6 +5,8 @@
 #include <vector>
 
 #include <imgui.h>
+#include <json.hpp>
+using json = nlohmann::json;
 
 #include "Game/Salty/SaltyDebug.h"
 
@@ -61,11 +63,27 @@ void ScriptObserver::Observe(){
                 varNames.push_back(line.substr(spacePos+1));
             }
 
-            // Compare to existing SF_ variables
+            // Compare to existing SF_ variables (in script.json)
             // NOTE: there is some nuance here, e.g. if the user reorders variables they should maintain their values
+            
+            std::ifstream g("Projects/" + engineData->projectName + + "/Unique/scripts.json");
+            json jScript = json::parse(g)[engineData->scriptFilepaths[i]];
+            g.close();
 
+            // varTypes and varNames are vectors of parsed file vars
+            json jTypes = jScript["types"];
+            json jNames = jScript["names"];
 
-            // Update ALL relevant script data structures and scripts.json
+            json updatedTypes;
+            json updatedNames;
+            // Idea: iterate through var__ comparing to j__
+            // If they are the same -> add to updated__ and move on
+            // Else they are different -> scan through j__ for matching one later on (and add to updated__ and remove from j__)
+            // If scan does not find duplicate, add new pair to updated__
+            
+            
+
+            // Update ALL relevant script data structures
             // TODO: ...
         }
     }
