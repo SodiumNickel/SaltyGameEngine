@@ -74,20 +74,36 @@ void ScriptObserver::Observe(){
             json jTypes = jScript["types"];
             json jNames = jScript["names"];
 
-            json updatedTypes = json::array();
-            json updatedNames = json::array();
-            // Idea: iterate through var__ comparing to j__
-            // If they are the same -> add to updated__ and move on
-            // Else they are different -> scan through j__ for matching one later on (and add to updated__ and remove from j__)
-            // If scan does not find duplicate, add new pair to updated__
-            // Do the same to __TODO_whatever the name of all entities with script array is_ 
-            for(int j = 0; j < varTypes.size(); j++){
-                
-            }
+            // Idea: iterate through varTypes/varNames comparing to jTypes/jNames
+            // If they are the same -> just add to jUpdated__
+            // Else they are different -> scan through j__ for matching one later on (if found add to jUpdated__)
+            // If scan does not find duplicate, add new pair to jUpdated__
+            // Do the same to all entities in scriptMap[filepath] 
             
+            // To update script.json
+            json jUpdatedTypes = json::array();
+            json jUpdatedNames = json::array();
+            // To update scriptTree/scriptData
 
-            // Update ALL relevant script data structures
-            // TODO: ...
+            // To update current-scene.json
+
+            // To update all other scenes
+            // NOTE: will have to parse through all entities in each scene (to detect for scriptFilepath), cannot rely on scriptMap[] here
+
+            for(int j = 0; j < varTypes.size(); j++){
+                // If they are the same -> just add to updated__
+                if(varTypes[j] == jTypes[j] && varNames[j] == jNames[j]){
+
+                }
+                else {
+                    // Else they are different -> scan through j__ for matching one later on (if found add to updated__)
+
+                    // TODO: im worried if we add a new variable, and encounter a repeated one later on...
+                    //  might be easier to store all the data in updated, and just do a full search each time...
+
+                    // If scan does not find duplicate, add new pair to updated__
+                }
+            }
         }
     }
 }
