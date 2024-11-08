@@ -74,13 +74,16 @@ void ScriptObserver::Observe(){
             json jTypes = jScript["types"];
             json jNames = jScript["names"];
 
-            json updatedTypes;
-            json updatedNames;
+            json updatedTypes = json::array();
+            json updatedNames = json::array();
             // Idea: iterate through var__ comparing to j__
             // If they are the same -> add to updated__ and move on
             // Else they are different -> scan through j__ for matching one later on (and add to updated__ and remove from j__)
             // If scan does not find duplicate, add new pair to updated__
-            
+            // Do the same to __TODO_whatever the name of all entities with script array is_ 
+            for(int j = 0; j < varTypes.size(); j++){
+                
+            }
             
 
             // Update ALL relevant script data structures

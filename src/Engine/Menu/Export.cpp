@@ -72,7 +72,6 @@ void HandleUserScripts(std::string& projectName){
         json jTypes = jScripts[filepath]["types"];
         for(int argIdx = 0; argIdx < jNames.size(); argIdx++){
             std::string type = jTypes[argIdx];
-            if(type == "Entity" || type == "Transform" || type == "Sprite" || type == "Rigidbody") type += "*";
             con += jNames[argIdx].get<std::string>() + "(std::get<" + type + ">(serializedVars[" + std::to_string(argIdx) + "]))";
             if(argIdx + 1 < jNames.size()) con += ", ";
         }

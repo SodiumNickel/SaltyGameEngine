@@ -7,7 +7,7 @@
     ],
     "types": [
       "int",
-      "Transform",
+      "Transform*",
       "Sound"
     ]
   },

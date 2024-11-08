@@ -213,26 +213,26 @@ SaltyType Game::CreateArg(json jType, json jVal){
     else if(type == "string"){
         return SaltyType(jVal.get<std::string>());
     }
-    else if(type == "Entity"){
+    else if(type == "Entity*"){
         int id = jVal.get<int>();
         // TODO: should probably assert that it is in range too
         Entity* entity = registry->entityTree[id].get();
         return SaltyType(entity);
     }
-    else if(type == "Transform"){
+    else if(type == "Transform*"){
         int id = jVal.get<int>();
         // TODO: should probably assert that it is in range too
         assert(registry->entityTree[id]->HasComponent<TransformComponent>());
         TransformComponent* transform = &registry->entityTree[id]->GetComponent<TransformComponent>();
         return SaltyType(transform);
     }
-    else if(type == "Sprite"){
+    else if(type == "Sprite*"){
         int id = jVal.get<int>();
         assert(registry->entityTree[id]->HasComponent<SpriteComponent>());
         SpriteComponent* sprite = &registry->entityTree[id]->GetComponent<SpriteComponent>();
         return SaltyType(sprite);
     }
-    else if(type == "Rigidbody"){
+    else if(type == "Rigidbody*"){
         int id = jVal.get<int>();
         assert(registry->entityTree[id]->HasComponent<RigidbodyComponent>());
         RigidbodyComponent* rigidbody = &registry->entityTree[id]->GetComponent<RigidbodyComponent>();

@@ -243,7 +243,7 @@ SaltyType ScriptTab::DefaultArg(json jType){
     else if(type == "string"){
         return SaltyType("");
     }
-    else if(type == "Entity" || type == "Transform" || type == "Sprite" || type == "Rigidbody"){
+    else if(type == "Entity*" || type == "Transform*" || type == "Sprite*" || type == "Rigidbody*"){
         // -1 here signifies that no entity has been set
         return SaltyType(-1);
     }
@@ -276,7 +276,7 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
         ImGui::InputText(tag.c_str(), &std::get<std::string>(value));
         ImGui::PopItemWidth();
     }
-    else if(type == "Entity"){
+    else if(type == "Entity*"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.95f);
         ImGui::InputInt(tag.c_str(), &std::get<int>(value));
         if (ImGui::BeginDragDropTarget())
@@ -296,7 +296,7 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
         else { ImGui::Text((registry->entityTree[id]->name).c_str()); }
         ImGui::PopItemWidth();
     }
-    else if(type == "Transform" || type == "Sprite" || type == "Rigidbody"){
+    else if(type == "Transform*" || type == "Sprite*" || type == "Rigidbody*"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5f);
         ImGui::InputInt(tag.c_str(), &std::get<int>(value)); 
         if (ImGui::BeginDragDropTarget())
