@@ -1,5 +1,6 @@
 #include "Engine/History/Edit.h"
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <variant>
@@ -22,6 +23,7 @@ void HasScriptEdit::Apply(bool undo){
     bool addScript = undo != add;
     if(addScript){ // Pre: engineData->scriptTree[entityId] not contains scriptData
         engineData->scriptTree[entityId].push_back(scriptData);
+        engineData->scriptMap[scriptData.filepath].push_back(entityId);
     }
     else{ // Pre: engineData->scriptTree[entityId] contains scriptData
         int i = 0;
@@ -31,6 +33,8 @@ void HasScriptEdit::Apply(bool undo){
         assert(i < engineData->scriptTree[entityId].size()); // By Pre: should never be the case
 
         engineData->scriptTree[entityId].erase(engineData->scriptTree[entityId].begin() +  i);
+        std::vector<int>& scriptEntities = engineData->scriptMap[scriptData.filepath];
+        scriptEntities.erase(std::remove(scriptEntities.begin(), scriptEntities.end(), entityId), scriptEntities.end());
     }
 
 

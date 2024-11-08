@@ -158,6 +158,8 @@ public:\n\
                 // New script so no variables
                 if(engineData->scriptTree.size() <= selectedEntity) engineData->scriptTree.resize(selectedEntity + 1);
                 engineData->scriptTree[selectedEntity].push_back(scriptData);
+                // Add to scriptMap
+                engineData->scriptMap[recentAssetDir + newScriptName].push_back(selectedEntity);
 
                 // Add to undo stack
                 editHistory->Do(std::move(std::make_unique<HasScriptEdit>(engineData, selectedEntity, scriptData, true)));
@@ -226,6 +228,7 @@ ScriptData ScriptTab::CreateDefaultScript(std::string filepath, json jNames, jso
 
     if(engineData->scriptTree.size() <= selectedEntity) engineData->scriptTree.resize(selectedEntity + 1);
     engineData->scriptTree[selectedEntity].push_back(scriptData);
+    engineData->scriptMap[filepath].push_back(selectedEntity);
 
     // It is fine for this to be a copy, it is used in undo/redo
     return scriptData;

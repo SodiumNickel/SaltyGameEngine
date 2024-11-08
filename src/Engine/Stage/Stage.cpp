@@ -145,6 +145,9 @@ void Stage::CreateScriptData(int entityId, std::string& filepath, json jTypes, j
 
     if(engineData->scriptTree.size() <= entityId) engineData->scriptTree.resize(entityId + 1);
     engineData->scriptTree[entityId].push_back(scriptData);
+
+    // Also add to scriptMap
+    engineData->scriptMap[filepath].push_back(entityId);
 }
 
 SaltyType Stage::CreateArg(json jType, json jVal){

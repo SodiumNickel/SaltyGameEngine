@@ -2,6 +2,7 @@
 #define ENGINEDATA_H
 
 #include <cstdint>
+#include <map>
 #include <string>
 #include <windows.h>
 
@@ -35,6 +36,8 @@ struct EngineData {
     std::vector<std::vector<ScriptData>> scriptTree; // TODO: maybe we make this a ptr to ScriptData later
     std::vector<std::string> scriptFilepaths;
     std::vector<std::string> scriptNames;
+    // Maps scriptFilepath to entityId
+    std::map<std::string, std::vector<int>> scriptMap;
     std::vector <FILETIME> scriptEditTimes;
 
     std::string assetsRootDir = "";
