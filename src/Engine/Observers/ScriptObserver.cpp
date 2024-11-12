@@ -11,6 +11,7 @@ using json = nlohmann::json;
 #include "Game/Salty/SaltyDebug.h"
 
 void ScriptObserver::Observe(){
+    // i stores the scriptFilepath index
     for (int i = 0; i < engineData->scriptFilepaths.size(); i++){
         // Full path from projects to header file
         std::string filepath = engineData->assetsRootDir + '/' + engineData->scriptFilepaths[i] + ".h"; 
@@ -92,7 +93,11 @@ void ScriptObserver::Observe(){
             // Need to update current-scene.json
             // Need to update all other scenes
             // NOTE: will have to parse through all entities in each scene (to detect for scriptFilepath), cannot rely on scriptMap[] here
+            // We will add a new object "updated-scripts" to every entity, and then replace "scripts" with it at the end
 
+            // TODO: do the above ^^
+
+            // j stores the variables index (in order)
             for(int j = 0; j < varTypes.size(); j++){
                 // If they are the same -> just add to updated__
                 if(varTypes[j] == jTypes[j] && varNames[j] == jNames[j]){
@@ -100,7 +105,24 @@ void ScriptObserver::Observe(){
                     jUpdatedTypes.push_back(varTypes[j]);
                     jUpdatedNames.push_back(varNames[j]);
 
-                    // 
+                    // Update scriptTree
+                    // k stores the entity index in scriptMap (Pre: it has the current script)
+                    int k = 0;
+                    for (int entityWithScript : engineData->scriptMap[engineData->scriptFilepaths[i]]){
+                        updatedScriptData[k].varTypes.push_back(varTypes[j]);
+                        updatedScriptData[k].varNames.push_back(varNames[j]);
+                        for(ScriptData& entityWithScriptData : engineData->scriptTree[entityWithScript]) {
+                            if(entityWithScriptData.filepath == engineData->scriptFilepaths[i]){
+                                updatedScriptData[k].varValues.push_back(entityWithScriptData.varValues[j]);
+                                break;
+                            }
+                        }
+
+                        k++;
+                    }
+
+                    // Update all "updated-scripts" in scenes (scan for entities)
+
                 }
                 else {
                     // Else they are different -> scan through j__ for matching one later on (if found add to updated__)

@@ -32,8 +32,8 @@ struct EngineData {
 
     int selectedEntity = -1; // TODO: should start at first thing in scene (i.e. rootIds[0])
 
-    // Stores which scripts each entity in current scene has (and their serialized variable values)
-    std::vector<std::vector<ScriptData>> scriptTree; // TODO: maybe we make this a ptr to ScriptData later
+    // Stores which scripts each entity in current scene has (and their serialized variable values) // TODO: maybe we make this a ptr to ScriptData later
+    std::vector<std::vector<ScriptData>> scriptTree; // This is not a vector a maps, as I need to iterate through it in scriptTab
     std::vector<std::string> scriptFilepaths;
     std::vector<std::string> scriptNames;
     // Maps scriptFilepath to entityId
