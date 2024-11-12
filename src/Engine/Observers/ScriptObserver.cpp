@@ -84,16 +84,23 @@ void ScriptObserver::Observe(){
             json jUpdatedTypes = json::array();
             json jUpdatedNames = json::array();
             // To update scriptTree/scriptData
+            ScriptData setFilepathScriptData;
+            setFilepathScriptData.filepath = engineData->scriptFilepaths[i];
+            // Replace scriptTree at indices with this filepath at the end
+            std::vector<ScriptData> updatedScriptData(engineData->scriptMap[engineData->scriptFilepaths[i]].size(), setFilepathScriptData);
 
-            // To update current-scene.json
-
-            // To update all other scenes
+            // Need to update current-scene.json
+            // Need to update all other scenes
             // NOTE: will have to parse through all entities in each scene (to detect for scriptFilepath), cannot rely on scriptMap[] here
 
             for(int j = 0; j < varTypes.size(); j++){
                 // If they are the same -> just add to updated__
                 if(varTypes[j] == jTypes[j] && varNames[j] == jNames[j]){
+                    // Update script.json
+                    jUpdatedTypes.push_back(varTypes[j]);
+                    jUpdatedNames.push_back(varNames[j]);
 
+                    // 
                 }
                 else {
                     // Else they are different -> scan through j__ for matching one later on (if found add to updated__)
