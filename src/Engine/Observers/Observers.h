@@ -21,6 +21,8 @@ private:
     std::shared_ptr<EditHistory> editHistory;
     std::shared_ptr<EngineData> engineData;
 
+    SaltyType DefaultArg(std::string type);
+    json DefaultArgJson(std::string type);
 public:
     ScriptObserver(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory) 
     : engineData(engineData), editHistory(editHistory) {};

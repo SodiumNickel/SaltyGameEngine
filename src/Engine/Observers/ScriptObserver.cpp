@@ -210,12 +210,45 @@ void ScriptObserver::Observe(){
 
                     // If scan does not find duplicate, add new pair to updated__ 
                     if(!foundMatch){
+                        // Update script.json
+                        jUpdatedTypes.push_back(varTypes[j]);
+                        jUpdatedNames.push_back(varNames[j]);
 
-                        // Initialize as default value
+                        // Update scriptTree
+                        // k stores the entity index in scriptMap (Pre: it has the current script)
+                        int k = 0;
+                        for (int entityWithScript : engineData->scriptMap[engineData->scriptFilepaths[i]]){
+                            updatedScriptData[k].varTypes.push_back(varTypes[j]);
+                            updatedScriptData[k].varNames.push_back(varNames[j]);
+                            for(ScriptData& entityWithScriptData : engineData->scriptTree[entityWithScript]) {
+                                if(entityWithScriptData.filepath == engineData->scriptFilepaths[i]){
+                                    // Push back the default value
+                                    updatedScriptData[k].varValues.push_back(DefaultArg(varTypes[j]));
+                                    break;
+                                }
+                            }
 
+                            k++;
+                        }
+
+                        // Update all "updated-scripts" in scenes (scan for entities)
+                        for(json& jUpdatedEntities : jUpdatedEntitiesS){
+                            // jUpdatedEntities is a json array (containing entity objects)
+                            // m is the entity-id in each scene
+                            for(int m = 0; m < jUpdatedEntities.size(); m++){
+                                if(jUpdatedEntities[m]["updated-scripts"].contains(engineData->scriptFilepaths[i])){
+                                    // Need to push_back with default value
+                                    jUpdatedEntities[m]["updated-scripts"][engineData->scriptFilepaths[i]].push_back(DefaultArgJson(varTypes[j]));
+                                }
+                            }
+                        }
                     }
                 }
             }
+
+            // Push updates to script.json (with jUpdatedTypes, jUpdatedNames)
+            // Push updates to scriptTree (with updatedScriptData)
+            // TODO: DONT THINK I HAVE UPDATED CURRENT-SCENE.json ABOVE
         }
     }
 
@@ -236,4 +269,57 @@ void ScriptObserver::Observe(){
         std::ofstream("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j].get<std::string>() + ".json") << std::setw(2) << jScene;
         scenef.close();
     }
+}
+
+
+SaltyType ScriptObserver::DefaultArg(std::string type){
+    if(type == "int"){ // TODO: not a big fan of this big if else stuff, find a workaround, either a switch case, or a mapping to another function on a dict
+        return SaltyType(0);
+    }
+    else if(type == "float"){
+        return SaltyType(0.0f);
+    }
+    else if(type == "string"){
+        return SaltyType("");
+    }
+    else if(type == "Entity*" || type == "Transform*" || type == "Sprite*" || type == "Rigidbody*"){
+        // -1 here signifies that no entity has been set
+        return SaltyType(-1);
+    }
+    else if(type == "Sound"){
+        Sound sound;
+        sound.filepath = "";
+        sound.stream = false;
+        return SaltyType(sound);
+    }
+
+    // type does not exist
+    // TODO: this should never happen, crash with proper message
+    assert(false);
+}
+
+json ScriptObserver::DefaultArgJson(std::string type){
+    if(type == "int"){ // TODO: not a big fan of this big if else stuff, find a workaround, either a switch case, or a mapping to another function on a dict
+        return 0;
+    }
+    else if(type == "float"){
+        return 0.0f;
+    }
+    else if(type == "string"){
+        return "";
+    }
+    else if(type == "Entity*" || type == "Transform*" || type == "Sprite*" || type == "Rigidbody*"){
+        // -1 here signifies that no entity has been set
+        return -1;
+    }
+    else if(type == "Sound"){
+        return json{
+            {"filepath", ""},
+            {"stream", false}
+        };
+    }
+
+    // type does not exist
+    // TODO: this should never happen, crash with proper message
+    assert(false);
 }
