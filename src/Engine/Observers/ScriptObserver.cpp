@@ -16,8 +16,8 @@ void ScriptObserver::Observe(){
     json jScenes = json::parse(h)["scenes"];
     h.close();
     
-    // Ordered by jScenes
-    std::vector<json> jUpdatedEntities;
+    // Ordered by jScenes (NOTE: this is a vector of json arrays, hence the extra S)
+    std::vector<json> jUpdatedEntitiesS;
     // j stores the scene index
     for(int j = 0; j < jScenes.size(); j++){
         std::ifstream scenef("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j].get<std::string>() + ".json");
@@ -29,7 +29,7 @@ void ScriptObserver::Observe(){
             jEntities[k]["updated-scripts"] = jEntities[k]["scripts"];
         }
 
-        jUpdatedEntities.push_back(jEntities);
+        jUpdatedEntitiesS.push_back(jEntities);
     }
 
     // i stores the scriptFilepath index
@@ -115,6 +115,16 @@ void ScriptObserver::Observe(){
             // Need to update all other scenes
             // NOTE: will have to parse through all entities in each scene (to detect for scriptFilepath), cannot rely on scriptMap[] here
             // We have added "updated-scripts" to every entity in every scene for this reason
+            // Let's clear ["updated-scripts"][script-filepath] for convenience (for all entities)
+            for(json& jUpdatedEntities : jUpdatedEntitiesS){
+                // jUpdatedEntities is a json array (containing entity objects)
+                for(int l = 0; l < jUpdatedEntities.size(); l++){
+                    if(jUpdatedEntities[l]["updated-scripts"].contains(engineData->scriptFilepaths[i])){
+                        jUpdatedEntities[l]["updated-scripts"][engineData->scriptFilepaths[i]].clear();
+                    }
+                }
+            }
+
 
             // j stores the parsed variables index (in order)
             for(int j = 0; j < varTypes.size(); j++){
@@ -141,7 +151,16 @@ void ScriptObserver::Observe(){
                     }
 
                     // Update all "updated-scripts" in scenes (scan for entities)
-
+                    for(json& jUpdatedEntities : jUpdatedEntitiesS){
+                        // jUpdatedEntities is a json array (containing entity objects)
+                        for(int l = 0; l < jUpdatedEntities.size(); l++){
+                            if(jUpdatedEntities[l]["updated-scripts"].contains(engineData->scriptFilepaths[i])){
+                                jUpdatedEntities[l]["updated-scripts"][engineData->scriptFilepaths[i]].push_back(
+                                    jUpdatedEntities[l]["scripts"][engineData->scriptFilepaths[i]][j]
+                                );
+                            }
+                        }
+                    }
                 }
                 else {
                     // Else they are different -> scan through j__ for matching one later on (if found add to updated__)
@@ -160,7 +179,7 @@ void ScriptObserver::Observe(){
     for(int j = 0; j < jScenes.size(); j++){
         std::ifstream scenef("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j].get<std::string>() + ".json");
         json jScene = json::parse(scenef);
-        json jEntities = jUpdatedEntities[j];
+        json jEntities = jUpdatedEntitiesS[j];
 
         // k stores entity id in jScenes[j]
         for(int k = 0; k < jEntities.size(); k++){
