@@ -31,6 +31,17 @@ void ScriptObserver::Observe(){
 
         jUpdatedEntitiesS.push_back(jEntities);
     }
+    // Add current-scene.json
+    std::ifstream scenef("EngineData/current-scene.json");
+    json jEntities = json::parse(scenef)["entities"];
+    scenef.close();
+
+    // k stores entity id in jScenes[j]
+    for(int k = 0; k < jEntities.size(); k++){
+        jEntities[k]["updated-scripts"] = jEntities[k]["scripts"];
+    }
+
+    jUpdatedEntitiesS.push_back(jEntities);
 
     // i stores the scriptFilepath index
     for (int i = 0; i < engineData->scriptFilepaths.size(); i++){
@@ -88,7 +99,7 @@ void ScriptObserver::Observe(){
             // Compare to existing SF_ variables (in script.json)
             // NOTE: there is some nuance here, e.g. if the user reorders variables they should maintain their values
             
-            std::ifstream g("Projects/" + engineData->projectName + + "/Unique/scripts.json");
+            std::ifstream g("Projects/" + engineData->projectName + "/Unique/scripts.json");
             json jScript = json::parse(g)[engineData->scriptFilepaths[i]];
             g.close();
 
@@ -247,8 +258,29 @@ void ScriptObserver::Observe(){
             }
 
             // Push updates to script.json (with jUpdatedTypes, jUpdatedNames)
+            std::ifstream g("Projects/" + engineData->projectName + "/Unique/scripts.json");
+            json jScripts = json::parse(g);
+
+            // varTypes and varNames are vectors of parsed file vars
+            jScripts[engineData->scriptFilepaths[i]]["types"] = jUpdatedTypes;
+            jScripts[engineData->scriptFilepaths[i]]["names"] = jUpdatedNames;
+
+            std::ofstream("Projects/" + engineData->projectName + "/Unique/scripts.json") << std::setw(2) << jScripts;
+            g.close();
+
             // Push updates to scriptTree (with updatedScriptData)
-            // TODO: DONT THINK I HAVE UPDATED CURRENT-SCENE.json ABOVE
+            for(int j = 0; j < engineData->scriptMap[engineData->scriptFilepaths[i]].size(); j++){
+                int entityWithScript = engineData->scriptMap[engineData->scriptFilepaths[i]][j];
+                // k is the current ScriptData index in entityWithScript 
+                int k = 0;
+                for(ScriptData& entityWithScriptData : engineData->scriptTree[entityWithScript]) {
+                    if(entityWithScriptData.filepath == engineData->scriptFilepaths[i]){
+                        // Replace it with the new one
+                        engineData->scriptTree[entityWithScript][k] = updatedScriptData[j];
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -269,6 +301,21 @@ void ScriptObserver::Observe(){
         std::ofstream("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j].get<std::string>() + ".json") << std::setw(2) << jScene;
         scenef.close();
     }
+
+    // Push updated-scripts to current-scene.json
+    std::ifstream scenef("EngineData/current-scene.json");
+    json jScene = json::parse(scenef);
+    json jEntities = jUpdatedEntitiesS[jUpdatedEntitiesS.size()-1];
+
+    // k stores entity id in jScenes[j]
+    for(int k = 0; k < jEntities.size(); k++){
+        jEntities[k]["scripts"] = jEntities[k]["updated-scripts"];
+        jEntities[k].erase("updated-scripts");
+    }
+
+    jScene["entities"] = jEntities;
+    std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
+    scenef.close();
 }
 
 

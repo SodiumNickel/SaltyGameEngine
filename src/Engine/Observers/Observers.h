@@ -4,6 +4,9 @@
 #include <filesystem>
 #include <vector>
 
+#include <json.hpp>
+using json = nlohmann::json;
+
 #include "Engine/EngineData.h"
 #include "Engine/History/Edit.h"
 #include "Engine/History/EditHistory.h"
