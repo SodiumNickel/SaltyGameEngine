@@ -20,8 +20,8 @@ class Debug {
         // can combine into one if i default the int to what i want it as above
 
         // Other common message types
-        static void Log(bool message);
-        static void Log(bool, int level);
+        // static void Log(bool message);
+        // static void Log(bool, int level);
 };
 
 #endif // SALTYDEBUG_H

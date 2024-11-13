@@ -15,12 +15,12 @@ void ScriptObserver::Observe(){
     std::ifstream h("Projects/" + engineData->projectName + "/Unique/scenes.json");
     json jScenes = json::parse(h)["scenes"];
     h.close();
-    
+
     // Ordered by jScenes (NOTE: this is a vector of json arrays, hence the extra S)
     std::vector<json> jUpdatedEntitiesS;
     // j stores the scene index
     for(int j = 0; j < jScenes.size(); j++){
-        std::ifstream scenef("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j].get<std::string>() + ".json");
+        std::ifstream scenef("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j]["name"].get<std::string>() + ".json");
         json jEntities = json::parse(scenef)["entities"];
         scenef.close();
 
@@ -31,6 +31,7 @@ void ScriptObserver::Observe(){
 
         jUpdatedEntitiesS.push_back(jEntities);
     }
+
     // Add current-scene.json
     std::ifstream scenef("EngineData/current-scene.json");
     json jEntities = json::parse(scenef)["entities"];
@@ -40,7 +41,6 @@ void ScriptObserver::Observe(){
     for(int k = 0; k < jEntities.size(); k++){
         jEntities[k]["updated-scripts"] = jEntities[k]["scripts"];
     }
-
     jUpdatedEntitiesS.push_back(jEntities);
 
     // i stores the scriptFilepath index
@@ -258,15 +258,15 @@ void ScriptObserver::Observe(){
             }
 
             // Push updates to script.json (with jUpdatedTypes, jUpdatedNames)
-            std::ifstream g("Projects/" + engineData->projectName + "/Unique/scripts.json");
-            json jScripts = json::parse(g);
+            std::ifstream g2("Projects/" + engineData->projectName + "/Unique/scripts.json");
+            json jScripts = json::parse(g2);
 
             // varTypes and varNames are vectors of parsed file vars
             jScripts[engineData->scriptFilepaths[i]]["types"] = jUpdatedTypes;
             jScripts[engineData->scriptFilepaths[i]]["names"] = jUpdatedNames;
 
             std::ofstream("Projects/" + engineData->projectName + "/Unique/scripts.json") << std::setw(2) << jScripts;
-            g.close();
+            g2.close();
 
             // Push updates to scriptTree (with updatedScriptData)
             for(int j = 0; j < engineData->scriptMap[engineData->scriptFilepaths[i]].size(); j++){
@@ -287,7 +287,7 @@ void ScriptObserver::Observe(){
     // Now have to and then replace "scripts" with "updated-scripts" at the end (and remove "updated-scripts")
     // j stores the scene index
     for(int j = 0; j < jScenes.size(); j++){
-        std::ifstream scenef("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j].get<std::string>() + ".json");
+        std::ifstream scenef("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j]["name"].get<std::string>() + ".json");
         json jScene = json::parse(scenef);
         json jEntities = jUpdatedEntitiesS[j];
 
@@ -298,14 +298,14 @@ void ScriptObserver::Observe(){
         }
 
         jScene["entities"] = jEntities;
-        std::ofstream("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j].get<std::string>() + ".json") << std::setw(2) << jScene;
+        std::ofstream("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j]["name"].get<std::string>() + ".json") << std::setw(2) << jScene;
         scenef.close();
     }
 
     // Push updated-scripts to current-scene.json
-    std::ifstream scenef("EngineData/current-scene.json");
-    json jScene = json::parse(scenef);
-    json jEntities = jUpdatedEntitiesS[jUpdatedEntitiesS.size()-1];
+    std::ifstream scenef2("EngineData/current-scene.json");
+    json jScene = json::parse(scenef2);
+    jEntities = jUpdatedEntitiesS[jUpdatedEntitiesS.size()-1];
 
     // k stores entity id in jScenes[j]
     for(int k = 0; k < jEntities.size(); k++){
@@ -315,7 +315,7 @@ void ScriptObserver::Observe(){
 
     jScene["entities"] = jEntities;
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
-    scenef.close();
+    scenef2.close();
 }
 
 

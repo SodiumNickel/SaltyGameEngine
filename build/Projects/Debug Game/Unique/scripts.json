@@ -2,13 +2,13 @@
   "PlayerMovement": {
     "names": [
       "val",
-      "player",
-      "sound"
+      "timer",
+      "player"
     ],
     "types": [
       "int",
-      "Transform*",
-      "Sound"
+      "float",
+      "Transform*"
     ]
   },
   "SubDir\\SSubDir\\CreatedScript": {

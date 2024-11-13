@@ -30,11 +30,8 @@
       "scripts": {
         "PlayerMovement": [
           10.0,
-          0,
-          {
-            "filepath": "boop.wav",
-            "stream": true
-          }
+          0.0,
+          0
         ]
       },
       "transform": {

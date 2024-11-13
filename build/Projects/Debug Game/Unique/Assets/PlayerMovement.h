@@ -8,6 +8,10 @@ private:
     float speed = 30.0f;
     string name;
     SF_ int val; // TODO: might do opposite actually, include a def for ones that should be serialized, maybe just SF?
+    SF_ float timer;
+
+    // Non serialized var
+    string tag;
 
     // Sprite* test;
     SF_ Transform* player;
