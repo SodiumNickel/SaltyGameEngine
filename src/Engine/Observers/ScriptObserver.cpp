@@ -129,7 +129,7 @@ void ScriptObserver::Observe(){
             // j stores the parsed variables index (in order)
             for(int j = 0; j < varTypes.size(); j++){
                 // If they are the same -> just add to updated__
-                if(varTypes[j] == jTypes[j] && varNames[j] == jNames[j]){
+                if(j < jTypes.size() && varTypes[j] == jTypes[j] && varNames[j] == jNames[j]){
                     // Update script.json
                     jUpdatedTypes.push_back(varTypes[j]);
                     jUpdatedNames.push_back(varNames[j]);
@@ -163,12 +163,57 @@ void ScriptObserver::Observe(){
                     }
                 }
                 else {
-                    // Else they are different -> scan through j__ for matching one later on (if found add to updated__)
+                    // Else they are different -> scan through jTypes/jNames for matching one (if found add to updated__)
+                    bool foundMatch = false;
+                    // l is the index in the previous variables
+                    for(int l = 0; l < jTypes.size(); l++){
+                        if(varTypes[j] == jTypes[l] && varNames[j] == jNames[l]){
+                            // Update script.json
+                            jUpdatedTypes.push_back(varTypes[j]);
+                            jUpdatedNames.push_back(varNames[j]);
 
-                    // TODO: im worried if we add a new variable, and encounter a repeated one later on...
-                    //  might be easier to store all the data in updated, and just do a full search each time...
+                            // Update scriptTree
+                            // k stores the entity index in scriptMap (Pre: it has the current script)
+                            int k = 0;
+                            for (int entityWithScript : engineData->scriptMap[engineData->scriptFilepaths[i]]){
+                                updatedScriptData[k].varTypes.push_back(varTypes[j]);
+                                updatedScriptData[k].varNames.push_back(varNames[j]);
+                                for(ScriptData& entityWithScriptData : engineData->scriptTree[entityWithScript]) {
+                                    if(entityWithScriptData.filepath == engineData->scriptFilepaths[i]){
+                                        // Push back the actual value found at different point in entityWithScript (thats l here)
+                                        updatedScriptData[k].varValues.push_back(entityWithScriptData.varValues[l]);
+                                        break;
+                                    }
+                                }
 
-                    // If scan does not find duplicate, add new pair to updated__
+                                k++;
+                            }
+
+                            // Update all "updated-scripts" in scenes (scan for entities)
+                            for(json& jUpdatedEntities : jUpdatedEntitiesS){
+                                // jUpdatedEntities is a json array (containing entity objects)
+                                // m is the entity-id in each scene
+                                for(int m = 0; m < jUpdatedEntities.size(); m++){
+                                    if(jUpdatedEntities[m]["updated-scripts"].contains(engineData->scriptFilepaths[i])){
+                                        // Need to push_back with value found at [l] of same entities ["scripts"]
+                                        jUpdatedEntities[m]["updated-scripts"][engineData->scriptFilepaths[i]].push_back(
+                                            jUpdatedEntities[m]["scripts"][engineData->scriptFilepaths[i]][l]
+                                        );
+                                    }
+                                }
+                            }
+
+                            foundMatch = true;
+                            break;
+                        }
+                    }
+
+                    // If scan does not find duplicate, add new pair to updated__ 
+                    if(!foundMatch){
+
+                        // Initialize as default value
+
+                    }
                 }
             }
         }
