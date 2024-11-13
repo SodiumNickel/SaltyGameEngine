@@ -50,6 +50,7 @@
       },
       "name": "Empty",
       "parent-id": -1,
+      "scripts": {},
       "transform": {
         "position": [
           178.0,
@@ -72,6 +73,7 @@
       },
       "name": "Empty",
       "parent-id": -1,
+      "scripts": {},
       "transform": {
         "position": [
           343.0,
@@ -94,6 +96,7 @@
       },
       "name": "Empty",
       "parent-id": -1,
+      "scripts": {},
       "transform": {
         "position": [
           343.0,

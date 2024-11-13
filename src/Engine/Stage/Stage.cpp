@@ -44,7 +44,7 @@ void Stage::Initialize(SDL_Renderer* renderer, SDL_Texture* viewport)
 void Stage::LoadScene(int sceneIndex)
 {
     // Get scene name from index
-    std::ifstream f("Projects/" + engineData->projectName + "/Unique/Scenes/_index.json");
+    std::ifstream f("Projects/" + engineData->projectName + "/Unique/scenes.json");
     json jSceneList = json::parse(f).begin().value();
     f.close();
     engineData->sceneName = jSceneList[sceneIndex].value("name", "");

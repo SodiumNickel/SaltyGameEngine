@@ -59,6 +59,7 @@
       },
       "name": "Extra",
       "parent-id": -1,
+      "scripts": {},
       "transform": {
         "position": [
           0.0,

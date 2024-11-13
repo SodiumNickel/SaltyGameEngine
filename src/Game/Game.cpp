@@ -95,7 +95,7 @@ int Game::Initialize()
 void Game::LoadScene(int sceneIndex)
 {
     // Get scene name from index
-    std::ifstream f("Unique/Scenes/_index.json");
+    std::ifstream f("Unique/scenes.json");
     json jSceneList = json::parse(f).begin().value();
     f.close();
     std::string sceneName = jSceneList[sceneIndex].value("name", "");

@@ -11,6 +11,27 @@ using json = nlohmann::json;
 #include "Game/Salty/SaltyDebug.h"
 
 void ScriptObserver::Observe(){
+    // We will add a new object "updated-scripts" to every entity (in every scene), and then replace "scripts" with it at the end
+    std::ifstream h("Projects/" + engineData->projectName + "/Unique/scenes.json");
+    json jScenes = json::parse(h)["scenes"];
+    h.close();
+    
+    // Ordered by jScenes
+    std::vector<json> jUpdatedEntities;
+    // j stores the scene index
+    for(int j = 0; j < jScenes.size(); j++){
+        std::ifstream scenef("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j].get<std::string>() + ".json");
+        json jEntities = json::parse(scenef)["entities"];
+        scenef.close();
+
+        // k stores entity id in jScenes[j]
+        for(int k = 0; k < jEntities.size(); k++){
+            jEntities[k]["updated-scripts"] = jEntities[k]["scripts"];
+        }
+
+        jUpdatedEntities.push_back(jEntities);
+    }
+
     // i stores the scriptFilepath index
     for (int i = 0; i < engineData->scriptFilepaths.size(); i++){
         // Full path from projects to header file
@@ -93,11 +114,9 @@ void ScriptObserver::Observe(){
             // Need to update current-scene.json
             // Need to update all other scenes
             // NOTE: will have to parse through all entities in each scene (to detect for scriptFilepath), cannot rely on scriptMap[] here
-            // We will add a new object "updated-scripts" to every entity, and then replace "scripts" with it at the end
+            // We have added "updated-scripts" to every entity in every scene for this reason
 
-            // TODO: do the above ^^
-
-            // j stores the variables index (in order)
+            // j stores the parsed variables index (in order)
             for(int j = 0; j < varTypes.size(); j++){
                 // If they are the same -> just add to updated__
                 if(varTypes[j] == jTypes[j] && varNames[j] == jNames[j]){
@@ -134,5 +153,23 @@ void ScriptObserver::Observe(){
                 }
             }
         }
+    }
+
+    // Now have to and then replace "scripts" with "updated-scripts" at the end (and remove "updated-scripts")
+    // j stores the scene index
+    for(int j = 0; j < jScenes.size(); j++){
+        std::ifstream scenef("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j].get<std::string>() + ".json");
+        json jScene = json::parse(scenef);
+        json jEntities = jUpdatedEntities[j];
+
+        // k stores entity id in jScenes[j]
+        for(int k = 0; k < jEntities.size(); k++){
+            jEntities[k]["scripts"] = jEntities[k]["updated-scripts"];
+            jEntities[k].erase("updated-scripts");
+        }
+
+        jScene["entities"] = jEntities;
+        std::ofstream("Projects/" + engineData->projectName + "/Unique/Scenes/" + jScenes[j].get<std::string>() + ".json") << std::setw(2) << jScene;
+        scenef.close();
     }
 }
