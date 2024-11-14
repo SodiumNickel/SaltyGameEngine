@@ -59,7 +59,7 @@ void ScriptTab::Begin(){
             {
                 for(int argIdx = 0; argIdx < curScript.varNames.size(); argIdx++){
                     ImGui::Text(curScript.varNames[argIdx].c_str());
-                    RenderArgument(curScript.varTypes[argIdx], curScript.varValues[argIdx], argIdx);
+                    RenderArgument(curScript.varTypes[argIdx], curScript.varValues[argIdx], argIdx, curScript.filepath);
                 }
                 
                 ImGui::SeparatorText("");
@@ -264,7 +264,7 @@ SaltyType ScriptTab::DefaultArg(json jType){
 
 // This also updates current-script.json (and marks game as unsaved)
 // TODO: I want this to push an undo-edit eventually...
-void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
+void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx, std::string scriptFilepath){
     std::string tag = "##scriptarg" + std::to_string(argIdx);
     if(type == "int"){
         int prev = std::get<int>(value);
@@ -273,21 +273,52 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
         ImGui::InputInt(tag.c_str(), &std::get<int>(value));
         ImGui::PopItemWidth();
 
-        if(std::get<int>(value) == prev) {
-            
+        if(std::get<int>(value) != prev) {
+            // Update current-scene.json accordingly
+            std::ifstream f("EngineData/current-scene.json");
+            json jScene = json::parse(f);
+            jScene["entities"][selectedEntity]["scripts"][scriptFilepath][argIdx] = std::get<int>(value);
+
+            std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
+            f.close();
         }
     }
     else if(type == "float"){
+        float prev = std::get<float>(value);
+
         ImGui::PushItemWidth(ImGui::GetWindowWidth());
         ImGui::DragFloat(tag.c_str(), &std::get<float>(value), 0.1f);
         ImGui::PopItemWidth();
+
+        if(std::get<float>(value) != prev) {
+            // Update current-scene.json accordingly
+            std::ifstream f("EngineData/current-scene.json");
+            json jScene = json::parse(f);
+            jScene["entities"][selectedEntity]["scripts"][scriptFilepath][argIdx] = std::get<float>(value);
+
+            std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
+            f.close();
+        }
     }
     else if(type == "string"){
+        std::string prev = std::get<std::string>(value);
+
         ImGui::PushItemWidth(ImGui::GetWindowWidth());
         ImGui::InputText(tag.c_str(), &std::get<std::string>(value));
         ImGui::PopItemWidth();
+
+        if(std::get<std::string>(value) != prev) {
+            // Update current-scene.json accordingly
+            std::ifstream f("EngineData/current-scene.json");
+            json jScene = json::parse(f);
+            jScene["entities"][selectedEntity]["scripts"][scriptFilepath][argIdx] = std::get<std::string>(value);
+
+            std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
+            f.close();
+        }
     }
     else if(type == "Entity*"){
+        // TODO: i have made this only update json for drag and drop right now, should disable manual input
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.95f);
         ImGui::InputInt(tag.c_str(), &std::get<int>(value));
         if (ImGui::BeginDragDropTarget())
@@ -298,6 +329,14 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
                 int payloadId = *(const int*)payload->Data;
                 
                 value = payloadId;
+
+                // Update current-scene.json accordingly
+                std::ifstream f("EngineData/current-scene.json");
+                json jScene = json::parse(f);
+                jScene["entities"][selectedEntity]["scripts"][scriptFilepath][argIdx] = payloadId;
+
+                std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
+                f.close();
             }
         }   
 
@@ -308,6 +347,7 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
         ImGui::PopItemWidth();
     }
     else if(type == "Transform*" || type == "Sprite*" || type == "Rigidbody*"){
+        // TODO: i have made this only update json for drag and drop right now, should disable manual input
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5f);
         ImGui::InputInt(tag.c_str(), &std::get<int>(value)); 
         if (ImGui::BeginDragDropTarget())
@@ -318,6 +358,14 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
                 int payloadId = *(const int*)payload->Data;
                 
                 value = payloadId;
+
+                // Update current-scene.json accordingly
+                std::ifstream f("EngineData/current-scene.json");
+                json jScene = json::parse(f);
+                jScene["entities"][selectedEntity]["scripts"][scriptFilepath][argIdx] = payloadId;
+
+                std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
+                f.close();
             }
         }   
         
@@ -343,10 +391,30 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
 
                 // TODO: load audio to allow playing in engine
                 sound.filepath = filepath;
+
+                // Update current-scene.json accordingly
+                std::ifstream f("EngineData/current-scene.json");
+                json jScene = json::parse(f);
+                jScene["entities"][selectedEntity]["scripts"][scriptFilepath][argIdx]["filepath"] = filepath;
+
+                std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
+                f.close();
             }
         }
 
+        bool prev = sound.stream;
+
         ImGui::Text("Stream"); ImGui::SameLine();
         ImGui::Checkbox((tag + "b").c_str(), &sound.stream);
+
+        if(sound.stream != prev){
+            // Update current-scene.json accordingly
+            std::ifstream f("EngineData/current-scene.json");
+            json jScene = json::parse(f);
+            jScene["entities"][selectedEntity]["scripts"][scriptFilepath][argIdx]["stream"] = sound.stream;
+
+            std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
+            f.close();
+        }
     }
 }

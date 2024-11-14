@@ -98,7 +98,7 @@ private:
     // Returns default argument of type jType
     SaltyType DefaultArg(json jType);
     // Renders UI to edit script argument in engine
-    void RenderArgument(std::string type, SaltyType& value, int argIdx);
+    void RenderArgument(std::string type, SaltyType& value, int argIdx, std::string scriptFilepath);
 public:
     ScriptTab(std::shared_ptr<EngineData> engineData, std::shared_ptr<EditHistory> editHistory, std::shared_ptr<Registry> registry) 
     : editHistory(editHistory), engineData(engineData), registry(registry) {}; // TODO: really need to unify order here
