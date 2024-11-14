@@ -10,6 +10,7 @@ using json = nlohmann::json;
 
 #include "Game/ECS/ECS.h"
 
+// TODO: this is unused right now, it is for (undoing the) editing SF_ vars in engine
 
 /* -----SCRIPT VALUE EDIT----------------------------------- *
  *   When the user changes a value in a script from engine   *

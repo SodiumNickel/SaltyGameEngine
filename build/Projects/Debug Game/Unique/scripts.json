@@ -3,11 +3,13 @@
     "names": [
       "val",
       "timer",
+      "tag",
       "player"
     ],
     "types": [
       "int",
       "float",
+      "string",
       "Transform*"
     ]
   },

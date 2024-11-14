@@ -11,7 +11,7 @@ private:
     SF_ float timer;
 
     // Non serialized var
-    string tag;
+    SF_ string tag;
 
     // Sprite* test;
     SF_ Transform* player;

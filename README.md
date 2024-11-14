@@ -16,8 +16,7 @@ Scene Demo above uses assets from:
 ## Scripting Example
 Salty Engine has native C++ scripting, allowing for serialized (SF_) variables for convenient in-engine editing. An example script is shown below.
 ```cpp
-#ifndef PLAYERMOVEMENT_H
-#define PLAYERMOVEMENT_H
+#pragma once
 #include "SaltyEngine.h"
 
 class PlayerMovement : public IScript {
@@ -34,8 +33,6 @@ public:
     void Start() override;
     void Update(float dt) override;
 };
-
-#endif // PLAYERMOVEMENT_H
 ```
 ```cpp
 #include "PlayerMovement.h"

@@ -262,12 +262,20 @@ SaltyType ScriptTab::DefaultArg(json jType){
     assert(false);
 }
 
+// This also updates current-script.json (and marks game as unsaved)
+// TODO: I want this to push an undo-edit eventually...
 void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
     std::string tag = "##scriptarg" + std::to_string(argIdx);
     if(type == "int"){
+        int prev = std::get<int>(value);
+
         ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.95f);
         ImGui::InputInt(tag.c_str(), &std::get<int>(value));
         ImGui::PopItemWidth();
+
+        if(std::get<int>(value) == prev) {
+            
+        }
     }
     else if(type == "float"){
         ImGui::PushItemWidth(ImGui::GetWindowWidth());
@@ -342,16 +350,3 @@ void ScriptTab::RenderArgument(std::string type, SaltyType& value, int argIdx){
         ImGui::Checkbox((tag + "b").c_str(), &sound.stream);
     }
 }
-
-// TODO: NOTE THAT you cannot nest comments in c++ (thank you) 
-// COMMENT RULES:
-// Start from beginning of file (or from "private:" in this case)
-//      First detect: // -> get rid of rest of line and contine
-//      First detect: /* -> parse until first */ deleting on the way
-
-// ACTUAL PARSING:
-// Seperate by semicolons, looking for TOKENS (i.e. SF, HEADER())
-// Note that there may be multiple TOKENS (if we want to serialize as like a slider or something)
-
-// TODO: note - only need to look at script(s) added to current entity, and then on save have to process all of those
-
