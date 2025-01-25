@@ -69,7 +69,7 @@ void Debug::Log(const std::string& message, int level){
 // #endif
 // }
 
-// // TODO: i dont do anything with the level yet, will have -1 be internal, 0 be standard, and other stuff later
+// // // TODO: i dont do anything with the level yet, will have -1 be internal, 0 be standard, and other stuff later
 // void Debug::Log(bool message, int level){
 // #ifndef WEB_BUILD
 //     // TODO: should compare against global limit instead, but have this for debugging purposes

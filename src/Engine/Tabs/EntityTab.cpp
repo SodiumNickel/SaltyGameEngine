@@ -286,6 +286,8 @@ void EntityTab::RClickMenu(int id){
                     }  
                 }
 
+                // TODO: remove entity from scriptTree, also remove its id from any scriptMap things with it
+
                 // Get values for undo
                 std::string name = registry->entityTree[id]->name;
                 int parentId = registry->entityTree[id]->parentId;
