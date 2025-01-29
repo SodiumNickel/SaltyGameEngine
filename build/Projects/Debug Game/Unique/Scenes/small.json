@@ -14,35 +14,6 @@
     {
       "children-ids": [],
       "components": {
-        "rigidbody": {
-          "initVelocity": [
-            0.0,
-            0.0
-          ]
-        },
-        "sprite": {
-          "filepath": "GamSimX/TEMPiron.png",
-          "zindex": 5
-        }
-      },
-      "name": "Iron",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": -44.5,
-        "scale": [
-          2.75,
-          4.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
         "sprite": {
           "filepath": "GamSimX/TEMPiron.png",
           "zindex": 0
@@ -111,7 +82,6 @@
     }
   ],
   "root-ids": [
-    0,
     1,
     2,
     3

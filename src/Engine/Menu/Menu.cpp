@@ -38,7 +38,7 @@ void Menu::Begin(){
             if(ImGui::BeginMenu("Scenes")) {
                 int i = 0;
                 for(std::string& scene : engineData->scenes){
-                    if(ImGui::MenuItem(scene.c_str(), "", false, engineData->sceneIndex != i)) { /* stage->LoadScene(i); */ };
+                    if(ImGui::MenuItem(scene.c_str(), "", false, engineData->sceneIndex != i)) { stage->LoadScene(i); };
                     i++;
                 }
                 ImGui::EndMenu();

@@ -69,7 +69,7 @@ void Stage::LoadScene(int sceneIndex)
 }
 
 void Stage::CreateEntityTree(json jEntities, json jRootIds){
-    registry->entityTree.clear(); // calls destructors of unique_ptr to deallocate
+    registry->DestroyAllEntities(); 
     auto& rootIds = registry->rootIds;
     rootIds.clear();
     // We store rootIds in json file now (also represented by parent: -1 in entities)

@@ -172,6 +172,21 @@ Entity& Registry::EngineCreateEntity(int entityId) // default = -1 // TODO: coul
 
     return entity;
 }
+void Registry::DestroyAllEntities() 
+{
+    for(std::unique_ptr<Entity>& entity : entityTree){
+        RemoveEntityFromSystems(*entity.get());
+    }
+
+    // Calls destructors of unique_ptr to deallocate
+    entityTree.clear(); // TODO: it does not change the capacity, not a big deal but worth considering
+    rootIds.clear();
+
+    entityComponentSignatures.clear();
+
+    numEntities = 0;
+    freeIds.clear();
+}
 
 void Registry::DestroyEntity(Entity entity)
 {
