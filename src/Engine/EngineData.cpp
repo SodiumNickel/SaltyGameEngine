@@ -22,6 +22,16 @@ EngineData::EngineData(){
     json jEngineData = json::parse(g);
     g.close();
 
+
+    // Get all scenes
+    std::ifstream h("Projects/" + projectName + "/Unique/scenes.json");
+    json jScenes = json::parse(h).begin().value();
+    h.close();
+    for(int i = 0; i < jScenes.size(); i++){
+        scenes.push_back(jScenes[i].value("name", ""));
+    }
+    
     // Get most recently open scene
     sceneIndex = jEngineData["recent-scene"].get<int>();
+    sceneName = scenes[sceneIndex];
 }

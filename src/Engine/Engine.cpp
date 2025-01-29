@@ -100,7 +100,7 @@ int Engine::Initialize()
     // Contains the viewport
     stage = std::make_shared<Stage>(engineData, registry, assetManager, editHistory);
     // Menu bar on top of screen
-    menu = std::make_unique<Menu>(registry, engineData, editHistory);
+    menu = std::make_unique<Menu>(registry, stage, engineData, editHistory);
     // Open initial tabs
     openTabs.push_back(std::make_unique<EntityTab>(engineData, editHistory, registry));
     openTabs.push_back(std::make_unique<ComponentTab>(engineData, editHistory, registry, assetManager)); // TODO: unify order of this

@@ -47,6 +47,7 @@ void Stage::LoadScene(int sceneIndex)
     std::ifstream f("Projects/" + engineData->projectName + "/Unique/scenes.json");
     json jSceneList = json::parse(f).begin().value();
     f.close();
+    engineData->sceneIndex = sceneIndex; // Not relevant on initialization (only on further calls)
     engineData->sceneName = jSceneList[sceneIndex].value("name", "");
     
     std::ifstream g("Projects/" + engineData->projectName + "/Unique/Scenes/" + engineData->sceneName + ".json");

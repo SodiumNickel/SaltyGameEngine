@@ -35,6 +35,14 @@ void Menu::Begin(){
             ImGui::EndMenu();
         }
         if(ImGui::BeginMenu("Engine")){
+            if(ImGui::BeginMenu("Scenes")) {
+                int i = 0;
+                for(std::string& scene : engineData->scenes){
+                    if(ImGui::MenuItem(scene.c_str(), "", false, engineData->sceneIndex != i)) { /* stage->LoadScene(i); */ };
+                    i++;
+                }
+                ImGui::EndMenu();
+            }
             if (ImGui::BeginMenu("Add Tab")) {
                 // TODO: didn't actually implement either of these, i actually cannot think of a case where it would be useful?
                 // with locks and scripts and comps being seperate

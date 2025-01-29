@@ -26,6 +26,8 @@ struct EngineData {
 
     std::string projectName;
 
+    // Stores all scenes by index
+    std::vector<std::string> scenes;
     // Stores currently open scene (initialized to most recently open scene)
     int sceneIndex;
     std::string sceneName = "";

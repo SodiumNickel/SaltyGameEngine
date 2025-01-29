@@ -153,6 +153,7 @@ void EntityExistsEdit::ApplyJson(bool undo){
                 {"components", json::object()},
                 {"name", name},
                 {"parent-id", parentId},
+                {"scripts", json::array()}, // TODO: should definitely add back scripts, but requires more thought
                 {"transform", {
                     {"position", {transformValues[0], transformValues[1]}},
                     {"scale", {transformValues[2], transformValues[3]}},
@@ -174,7 +175,7 @@ void EntityExistsEdit::ApplyJson(bool undo){
                 {"components", json::object()},
                 {"name", "Empty"},
                 {"parent-id", parentId},
-                {"scripts", json::array()}, // TODO: should definitely add back scripts, but requires more thought
+                {"scripts", json::array()},
                 {"transform", {
                     {"position", {0.0, 0.0}},
                     {"scale", {1.0, 1.0}},
