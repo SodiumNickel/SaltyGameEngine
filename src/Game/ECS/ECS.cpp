@@ -156,6 +156,7 @@ Entity& Registry::EngineCreateEntity(int entityId) // default = -1 // TODO: coul
         // We will keep freeIds as a deque despite having to iterate through it here 
         // Choosing to prioritize game efficiency over engine efficiency
         auto it = std::find(freeIds.begin(), freeIds.end(), entityId);
+        
         // Should only be called by EntityExists edit currently, only occuring if we are re-adding a deleted entity
         assert(it != freeIds.end()); 
         
@@ -171,21 +172,6 @@ Entity& Registry::EngineCreateEntity(int entityId) // default = -1 // TODO: coul
     entitiesToBeAdded.insert(entity); // TODO: i am not a fan of this still
 
     return entity;
-}
-void Registry::DestroyAllEntities() 
-{
-    for(std::unique_ptr<Entity>& entity : entityTree){
-        RemoveEntityFromSystems(*entity.get());
-    }
-
-    // Calls destructors of unique_ptr to deallocate
-    entityTree.clear(); // TODO: it does not change the capacity, not a big deal but worth considering
-    rootIds.clear();
-
-    entityComponentSignatures.clear();
-
-    numEntities = 0;
-    freeIds.clear();
 }
 
 void Registry::DestroyEntity(Entity entity)
@@ -285,4 +271,18 @@ void Registry::Update()
         entityTree[entityId] = nullptr; 
     }
     entitiesToBeRemoved.clear();
+}
+
+// Should only be called internally, resets all registry variables
+void Registry::Reset() {
+    entityTree.clear();
+    rootIds.clear();
+
+    numEntities = 0;
+    componentPools.clear();
+    entityComponentSignatures.clear();
+    systems.clear();
+    entitiesToBeAdded.clear();
+    entitiesToBeRemoved.clear();
+    freeIds.clear();
 }

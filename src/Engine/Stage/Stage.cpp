@@ -37,8 +37,6 @@ void Stage::Initialize(SDL_Renderer* renderer, SDL_Texture* viewport)
 
     // Loads most recently open scene
     LoadScene(engineData->sceneIndex); 
-
-    registry->AddSystem<StageRenderSystem>();
 }
 
 void Stage::LoadScene(int sceneIndex)
@@ -50,8 +48,15 @@ void Stage::LoadScene(int sceneIndex)
     engineData->sceneIndex = sceneIndex; // Not relevant on initialization (only on further calls)
     engineData->sceneName = jSceneList[sceneIndex].value("name", "");
     
-    std::ifstream g("Projects/" + engineData->projectName + "/Unique/Scenes/" + engineData->sceneName + ".json");
-    json jScene = json::parse(g);
+    // Update most recent scene viewed
+    std::ifstream g("Projects/" + engineData->projectName + "/engine.json");
+    json jEngineData = json::parse(g);
+    jEngineData["recent-scene"] = sceneIndex;
+    std::ofstream("Projects/" + engineData->projectName + "/engine.json") << std::setw(2) << jEngineData;
+    g.close();
+
+    std::ifstream h("Projects/" + engineData->projectName + "/Unique/Scenes/" + engineData->sceneName + ".json");
+    json jScene = json::parse(h);
     // After deleting an entity we need to preserve the space for engine ({} in json), these need to removed in actual files
     jScene["null-count"] = 0; 
     std::ofstream("EngineData/current-scene.json") << std::setw(2) << jScene;
@@ -59,17 +64,24 @@ void Stage::LoadScene(int sceneIndex)
     json jEntities = jScene["entities"];
     json jRootIds = jScene["root-ids"];
     json jCamera = jScene["camera"];
-    g.close();
+    h.close();
 
     Camera::position = glm::vec2(jCamera["position"][0], jCamera["position"][1]);
     Camera::aspectRatio = glm::ivec2(jCamera["aspectRatio"][0], jCamera["aspectRatio"][1]);
     Camera::scale = jCamera["scale"].get<float>();
 
     CreateEntityTree(jEntities, jRootIds);
+    // Will be a reset registry each time
+    registry->AddSystem<StageRenderSystem>();
 }
 
 void Stage::CreateEntityTree(json jEntities, json jRootIds){
-    registry->DestroyAllEntities(); 
+    // This is called on loading a new scene, will reset the registry
+    registry->Reset();
+    // Clear engine data scripts
+    engineData->scriptTree.clear();
+    engineData->scriptMap.clear();
+    
     auto& rootIds = registry->rootIds;
     rootIds.clear();
     // We store rootIds in json file now (also represented by parent: -1 in entities)

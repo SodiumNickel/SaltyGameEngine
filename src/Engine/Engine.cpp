@@ -99,20 +99,21 @@ int Engine::Initialize()
 
     // Contains the viewport
     stage = std::make_shared<Stage>(engineData, registry, assetManager, editHistory);
+    // Give stage with access to renderer/viewport
+    // TODO: The LoadScene here can be moved earlier if we dont load the assets, can optimize asset loading in general
+    stage->Initialize(renderer, viewport);
+    max = glm::max(width, height);
+    stage->stageSize = max;
+
     // Menu bar on top of screen
     menu = std::make_unique<Menu>(registry, stage, engineData, editHistory);
+    
     // Open initial tabs
     openTabs.push_back(std::make_unique<EntityTab>(engineData, editHistory, registry));
     openTabs.push_back(std::make_unique<ComponentTab>(engineData, editHistory, registry, assetManager)); // TODO: unify order of this
     openTabs.push_back(std::make_unique<ScriptTab>(engineData, editHistory, registry));
     openTabs.push_back(std::make_unique<AssetTab>(registry, engineData));
     openTabs.push_back(std::make_unique<LogTab>(registry));
-
-    // Give stage with access to renderer/viewport
-    // TODO: The LoadScene here can be moved earlier if we dont load the assets, can optimize asset loading in general
-    stage->Initialize(renderer, viewport);
-    max = glm::max(width, height);
-    stage->stageSize = max;
 
     // Init imgui
     IMGUI_CHECKVERSION();
@@ -248,8 +249,6 @@ void Engine::UpdateGUI()
     ImGui_ImplSDL2_NewFrame(window);
     SDL_GetWindowSize(window, &width, &height);
     ImGui::NewFrame();
-    
-    
 
     // Dockspace
     // Scale dockspace to full window

@@ -11,7 +11,7 @@
 #include "Engine/History/Edit.h"
 
 #include "Game/ECS/ECS.h"
-
+#include "Game/Salty/SaltyDebug.h"
 
 // TODO
 /* NOTES */
@@ -35,7 +35,7 @@ void EntityTab::Begin(){
         if(entityTree[rc] != nullptr){
             ImGuiTreeNodeFlags node_flags = base_flags;
             if (rc == engineData->selectedEntity)
-            node_flags |= ImGuiTreeNodeFlags_Selected;
+            {node_flags |= ImGuiTreeNodeFlags_Selected;}
 
             if(entityTree[rc]->childrenIds.size() > 0){ // Has children
                 // Occurs when we DD child into rc

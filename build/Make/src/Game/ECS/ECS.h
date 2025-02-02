@@ -247,6 +247,8 @@ public:
     ~Registry() { /*Logger::Log("Registry destructor called");*/ }
 
     void Update();
+    // Should only be called internally
+    void Reset();
 
     // Entity management
     Entity& CreateEntity(int parentId = -1); // defaults to root child, always arbitrary id
@@ -254,9 +256,8 @@ public:
     Entity& EngineCreateEntity(int entityId = -1); // defaults to arbitrary id
     void DestroyEntity(Entity entity);
     void DestroyEntity(int entityId);
-
-    void DestroyAllEntities();
     
+
     std::vector<std::unique_ptr<Entity>> entityTree;
     std::vector<int> rootIds; // All entities without parents (at the root of their respective tree)
 

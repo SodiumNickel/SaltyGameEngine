@@ -46,33 +46,9 @@
           4.0
         ]
       }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "big.png",
-          "zindex": 0
-        }
-      },
-      "name": "Extra",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
     }
   ],
   "root-ids": [
-    0,
-    1
+    0
   ]
 }

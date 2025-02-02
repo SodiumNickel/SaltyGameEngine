@@ -15,7 +15,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "GamSimX/TEMPiron.png",
+          "filepath": "Temp/TEMPiron.png",
           "zindex": 0
         }
       },
@@ -38,7 +38,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "GamSimX/TEMPiron.png",
+          "filepath": "Temp/TEMPiron.png",
           "zindex": 0
         }
       },
@@ -61,7 +61,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "GamSimX/TEMPiron.png",
+          "filepath": "Temp/TEMPiron.png",
           "zindex": 0
         }
       },
