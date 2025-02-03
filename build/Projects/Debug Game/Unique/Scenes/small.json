@@ -19,7 +19,7 @@
           "zindex": 0
         }
       },
-      "name": "Empty",
+      "name": "Test",
       "parent-id": -1,
       "scripts": [],
       "transform": {
@@ -33,9 +33,86 @@
           1.0
         ]
       }
+    },
+    {
+      "children-ids": [],
+      "components": {},
+      "name": "Empty",
+      "parent-id": -1,
+      "scripts": [],
+      "transform": {
+        "position": [
+          0.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [
+        3
+      ],
+      "components": {},
+      "name": "Empty",
+      "parent-id": -1,
+      "scripts": [],
+      "transform": {
+        "position": [
+          0.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {},
+      "name": "Empty",
+      "parent-id": 2,
+      "scripts": [],
+      "transform": {
+        "position": [
+          0.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {},
+      "name": "Empty",
+      "parent-id": -1,
+      "scripts": [],
+      "transform": {
+        "position": [
+          0.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
     }
   ],
   "root-ids": [
-    0
+    0,
+    1,
+    2,
+    4
   ]
 }

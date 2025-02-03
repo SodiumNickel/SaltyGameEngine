@@ -139,3 +139,18 @@ void EditHistory::Save(){
     
     unsaved = false;
 }
+
+// Clears undoStack, redoStack, and save state
+void EditHistory::Clear(){
+    while(!undoStack.empty()) {
+        undoStack.pop();
+    }
+    canUndo = false;
+    
+    while(!redoStack.empty()) {
+        redoStack.pop();
+    }
+    canRedo = false;
+
+    unsaved = false;
+}

@@ -34,11 +34,20 @@ void Menu::Begin(){
             if (ImGui::MenuItem("Paste", "CTRL+V")) {}
             ImGui::EndMenu();
         }
+
+        bool shouldSave = false;
         if(ImGui::BeginMenu("Engine")){
             if(ImGui::BeginMenu("Scenes")) {
                 int i = 0;
                 for(std::string& scene : engineData->scenes){
-                    if(ImGui::MenuItem(scene.c_str(), "", false, engineData->sceneIndex != i)) { stage->LoadScene(i); };
+                    if(ImGui::MenuItem(scene.c_str(), "", false, engineData->sceneIndex != i)) 
+                    {
+                        if(!editHistory->unsaved) { stage->LoadScene(i); }
+                        else { // Prompt the would you like to save pop-up
+                            nextScene = i;
+                            shouldSave = true;
+                        }
+                    }
                     i++;
                 }
                 ImGui::EndMenu();
@@ -54,6 +63,13 @@ void Menu::Begin(){
             }
             ImGui::EndMenu();
         }
+        // Will open when trying to move to new scene when unsaved
+        if(shouldSave){
+            ImGui::OpenPopup("ShouldSave");
+            shouldSave = false;
+        }
+        Menu::ShouldSavePopup();
+
         if(ImGui::BeginMenu("Metrics")){
             std::string sh = showFps ? "Hide FPS" : "Show FPS"; // TODO: this is inefficient to do every loop, place it inside menu instead
             if (ImGui::MenuItem(sh.c_str(), "CTRL+F")) { showFps = !showFps; }
@@ -103,6 +119,28 @@ void Menu::Begin(){
         FPSMetric();
 
         ImGui::EndMainMenuBar();
+    }
+}
+
+void Menu::ShouldSavePopup(){
+    if (ImGui::BeginPopupModal("ShouldSave"))
+    {
+        ImGui::Text("Would you like to save your current scene before opening the next one?");
+        if (ImGui::Button("Yes")) {
+            editHistory->Save();
+            editHistory->Clear();
+            stage->LoadScene(nextScene);
+            ImGui::CloseCurrentPopup();
+        }
+        if (ImGui::Button("No")) { 
+            editHistory->Clear();
+            stage->LoadScene(nextScene);
+            ImGui::CloseCurrentPopup();
+        }
+        if (ImGui::Button("Cancel")) { 
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
     }
 }
 

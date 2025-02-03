@@ -23,6 +23,10 @@ private:
     void ExportWindows();
     void ExportWeb();
 
+    /* Should save pop-up */
+    void ShouldSavePopup();
+    int nextScene = -1;
+
     /* FPS Display */
     bool showFps = false;
     void FPSMetric();

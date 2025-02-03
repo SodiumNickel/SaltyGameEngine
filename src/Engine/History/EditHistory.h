@@ -26,6 +26,8 @@ class EditHistory {
         void Undo();
         void Redo();
         void Save();
+        // Clears undoStack, redoStack, and save state (currently used when switching scenes)
+        void Clear();
 };
 
 #endif // EDITHISTORY_H
