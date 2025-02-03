@@ -74,7 +74,7 @@ void EditHistory::Save(){
     if(jScene["null-count"].get<int>() > 0){
         // A decent bit of work must be done here
         // Specifically, when removing a null entity in the middle of entities 
-        // we have to update to account for shifting down of later entityIds
+        // we have to update children-ids to account for shifting down of later entityIds
 
         // Array will store new entityId at each position (and -1 if null)
         int newEntityIds[jScene["entities"].size()];
@@ -97,6 +97,7 @@ void EditHistory::Save(){
         // Second pass to update parentIds and childrenIds for each entity, AND remove null entities
         i = 0;
         nullsPassed = 0;
+        std::vector<int> rootIds;
         // I: i := location in json file (once passed nulls deleted), i + nullsPassed = location in array
         while(i < jScene["entities"].size()){
             // If looking at a null entity
@@ -112,7 +113,10 @@ void EditHistory::Save(){
                 json JEntity = jScene["entities"][i]; // TODO: remember to unify the json capitilization
                 int prevId = JEntity["parent-id"].get<int>();
                 // Do not update if parent is root
-                if(prevId != -1) JEntity["parent-id"] = newEntityIds[prevId];
+                if(prevId != -1) {JEntity["parent-id"] = newEntityIds[prevId];}
+                else { // Instead update root-ids with current id
+                    rootIds.push_back(i);
+                }
                 int j = 0;
                 while(j < JEntity["children-ids"].size()){
                     prevId = JEntity["children-ids"][j].get<int>();
@@ -126,6 +130,7 @@ void EditHistory::Save(){
             }
         }
         // !G ^ I -> (as we have passed all nulls by def), we have traversed both array and json entirely
+        jScene["root-ids"] = rootIds;
     }
     jScene.erase("null-count");
     

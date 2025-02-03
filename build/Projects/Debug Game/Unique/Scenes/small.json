@@ -21,57 +21,11 @@
       },
       "name": "Empty",
       "parent-id": -1,
-      "scripts": {},
+      "scripts": [],
       "transform": {
         "position": [
-          178.0,
+          34.0,
           0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "Temp/TEMPiron.png",
-          "zindex": 0
-        }
-      },
-      "name": "Empty",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          343.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "Temp/TEMPiron.png",
-          "zindex": 0
-        }
-      },
-      "name": "Empty",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          343.0,
-          250.0
         ],
         "rotation": 0.0,
         "scale": [
@@ -82,8 +36,6 @@
     }
   ],
   "root-ids": [
-    1,
-    2,
-    3
+    0
   ]
 }
