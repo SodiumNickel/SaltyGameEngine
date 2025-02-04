@@ -6,67 +6,49 @@
     ],
     "position": [
       0.0,
-      -65.0
+      0.0
     ],
-    "scale": 132.0
+    "scale": 10
   },
   "entities": [
     {
       "children-ids": [],
       "components": {
-        "rigidbody": {
-          "initVelocity": [
-            -50.0,
-            0.0
-          ]
-        },
         "sprite": {
-          "filepath": "StageDemo/player.png",
-          "zindex": 1
+          "filepath": "Temp/TEMPiron.png",
+          "zindex": 0
         }
       },
-      "name": "Player",
+      "name": "Test",
       "parent-id": -1,
-      "scripts": {
-        "PlayerMovement": [
-          0,
-          0.0,
-          "",
-          -1
-        ]
-      },
+      "scripts": {},
       "transform": {
         "position": [
-          890.0,
-          -512.0
+          34.0,
+          0.0
         ],
         "rotation": 0.0,
         "scale": [
-          -4.0,
-          4.0
+          1.0,
+          1.0
         ]
       }
     },
     {
       "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/shop.png",
-          "zindex": 1
-        }
-      },
-      "name": "Shop",
+      "components": {},
+      "name": "Empty",
       "parent-id": -1,
       "scripts": {},
       "transform": {
         "position": [
-          37.0,
-          -199.0
+          0.0,
+          0.0
         ],
         "rotation": 0.0,
         "scale": [
-          3.0,
-          3.5
+          1.0,
+          1.0
         ]
       }
     },
@@ -75,7 +57,7 @@
         3
       ],
       "components": {},
-      "name": "GroundTiles",
+      "name": "Empty",
       "parent-id": -1,
       "scripts": {},
       "transform": {
@@ -92,37 +74,30 @@
     },
     {
       "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/ground.png",
-          "zindex": 1
-        }
-      },
-      "name": "Ground",
+      "components": {},
+      "name": "Empty",
       "parent-id": 2,
       "scripts": {},
       "transform": {
         "position": [
-          -80.0,
-          140.0
+          0.0,
+          0.0
         ],
         "rotation": 0.0,
         "scale": [
-          5.0,
-          5.0
+          1.0,
+          1.0
         ]
       }
     },
     {
-      "children-ids": [
-        5,
-        6,
-        7
-      ],
+      "children-ids": [],
       "components": {},
-      "name": "Rocks",
+      "name": "Empty",
       "parent-id": -1,
-      "scripts": {},
+      "scripts": {
+        "SubDir\\SSubDir\\CreatedScript": []
+      },
       "transform": {
         "position": [
           0.0,
@@ -137,93 +112,26 @@
     },
     {
       "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/Rocks/rock1.png",
-          "zindex": 2
-        }
-      },
-      "name": "Rock 1",
-      "parent-id": 4,
-      "scripts": {},
-      "transform": {
-        "position": [
-          1168.0,
-          -586.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          5.0,
-          5.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/Rocks/rock2.png",
-          "zindex": 2
-        }
-      },
-      "name": "Rock 2",
-      "parent-id": 4,
-      "scripts": {},
-      "transform": {
-        "position": [
-          298.0,
-          -581.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          5.0,
-          5.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/Rocks/rock3.png",
-          "zindex": 2
-        }
-      },
-      "name": "Rock 3",
-      "parent-id": 4,
-      "scripts": {},
-      "transform": {
-        "position": [
-          715.0,
-          -550.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          -5.0,
-          5.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "StageDemo/background.png",
-          "zindex": 0
-        }
-      },
-      "name": "Background",
+      "components": {},
+      "name": "Empty",
       "parent-id": -1,
-      "scripts": {},
+      "scripts": {
+        "PlayerMovement": [
+          0,
+          0.0,
+          0,
+          ""
+        ]
+      },
       "transform": {
         "position": [
-          -15.0,
+          0.0,
           0.0
         ],
         "rotation": 0.0,
         "scale": [
-          4.15,
-          4.4
+          1.0,
+          1.0
         ]
       }
     }
@@ -234,6 +142,6 @@
     1,
     2,
     4,
-    8
+    5
   ]
 }

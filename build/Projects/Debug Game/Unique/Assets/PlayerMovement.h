@@ -9,6 +9,7 @@ private:
     string name;
     SF_ int val; // TODO: might do opposite actually, include a def for ones that should be serialized, maybe just SF?
     SF_ float timer;
+    SF_ int tempInt;
 
     // Non serialized var
     SF_ string tag;

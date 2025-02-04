@@ -21,7 +21,7 @@
       },
       "name": "Test",
       "parent-id": -1,
-      "scripts": [],
+      "scripts": {},
       "transform": {
         "position": [
           34.0,
@@ -39,7 +39,7 @@
       "components": {},
       "name": "Empty",
       "parent-id": -1,
-      "scripts": [],
+      "scripts": {},
       "transform": {
         "position": [
           0.0,
@@ -59,7 +59,7 @@
       "components": {},
       "name": "Empty",
       "parent-id": -1,
-      "scripts": [],
+      "scripts": {},
       "transform": {
         "position": [
           0.0,
@@ -77,7 +77,7 @@
       "components": {},
       "name": "Empty",
       "parent-id": 2,
-      "scripts": [],
+      "scripts": {},
       "transform": {
         "position": [
           0.0,
@@ -95,7 +95,7 @@
       "components": {},
       "name": "Empty",
       "parent-id": -1,
-      "scripts": [],
+      "scripts": {},
       "transform": {
         "position": [
           0.0,
