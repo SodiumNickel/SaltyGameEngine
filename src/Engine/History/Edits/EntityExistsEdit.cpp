@@ -63,6 +63,17 @@ EntityExistsEdit::EntityExistsEdit(std::shared_ptr<Registry> registry, std::shar
         } 
         if(entity.HasComponent<BoxColliderComponent>()){}
 
+        // Check for any scripts
+        for(ScriptData scriptData : engineData->scriptTree[entityId]){
+            scripts.push_back(std::make_unique<HasScriptEdit>(engineData, entityId, scriptData, true));
+        }
+        // Manually clear scriptTree and scriptMap
+        for(ScriptData scriptData : engineData->scriptTree[entityId]){
+            std::vector<int>& scriptEntities = engineData->scriptMap[scriptData.filepath];
+            scriptEntities.erase(std::remove(scriptEntities.begin(), scriptEntities.end(), entityId), scriptEntities.end());
+        }
+        engineData->scriptTree[entityId].clear();
+
         // Create edits for all children
         childrenIds = entity.childrenIds;
         int i = 0; // For position
@@ -127,6 +138,14 @@ void EntityExistsEdit::Apply(bool undo){
             childrenEdits[i]->Apply(undo);
             i++;
         }
+
+        // Manually clear scriptTree and scriptMap (HasScriptEdit's will not be called on deletion)
+        for(ScriptData scriptData : engineData->scriptTree[entityId]){
+            std::vector<int>& scriptEntities = engineData->scriptMap[scriptData.filepath];
+            scriptEntities.erase(std::remove(scriptEntities.begin(), scriptEntities.end(), entityId), scriptEntities.end());
+        }
+        engineData->scriptTree[entityId].clear();
+
         if(engineData->selectedEntity == entityId) engineData->selectedEntity = -1;
 
         // Will destroy tree rooted at entityId, no need for multiple calls
@@ -235,6 +254,15 @@ void EntityExistsEdit::ApplyJson(bool undo){
             // When we pushed to components we set 'add' = true
             // undo = false, add = true -> undo != add -> add component as desired
             components[i]->Apply(false); 
+            i++;
+        }
+
+        // Adding scriptData back to scriptTree (same precond as above)
+        i = 0;
+        while(i < scripts.size()){
+            // When we pushed to scripts we set 'add' = true
+            // undo = false, add = true -> undo != add -> add script as desired
+            scripts[i]->Apply(false); 
             i++;
         }
     }

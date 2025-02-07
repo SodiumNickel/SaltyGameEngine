@@ -13,113 +13,13 @@
   "entities": [
     {
       "children-ids": [],
-      "components": {
-        "sprite": {
-          "filepath": "Temp/TEMPiron.png",
-          "zindex": 0
-        }
-      },
-      "name": "Test",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          34.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {},
-      "name": "Empty",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "children-ids": [
-        3
-      ],
-      "components": {},
-      "name": "Empty",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {},
-      "name": "Empty",
-      "parent-id": 2,
-      "scripts": {},
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {},
-      "name": "Empty",
-      "parent-id": -1,
-      "scripts": {
-        "SubDir\\SSubDir\\CreatedScript": []
-      },
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
       "components": {},
       "name": "Empty",
       "parent-id": -1,
       "scripts": {
         "PlayerMovement": [
           0,
-          0.0,
-          0,
+          9.300000190734863,
           ""
         ]
       },
@@ -134,14 +34,12 @@
           1.0
         ]
       }
-    }
+    },
+    null,
+    null
   ],
-  "null-count": 0,
+  "null-count": 2,
   "root-ids": [
-    0,
-    1,
-    2,
-    4,
-    5
+    0
   ]
 }

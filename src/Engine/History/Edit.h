@@ -84,60 +84,6 @@ public:
     std::string ToString(bool undo) override;
 };
 
-// NOTE: DELETING AN ENTITY HAS TO PUT IT IN SAME PLACE AFTER UNDO, OTHERWISE THIS WHOLE SYSTEM BREAKS
-
-/* -----ENTITY MANAGEMENT-------------------------------- *
- *   Reparenting/moving, adding/removing                  *
- * ------------------------------------------------------ */
-
-// When the user reparents or moves an entity
-class ReparentEdit : public IEdit {
-private:
-    std::shared_ptr<Registry> registry;
-
-    int entityId;
-    int prevParentId;
-    int prevPos;
-    int curParentId;
-    int curPos;
-public:
-    ReparentEdit(std::shared_ptr<Registry> registry, int entityId, int prevParentId, int prevPos, int curParentId, int curPos)
-    : registry(registry), entityId(entityId), prevParentId(prevParentId), prevPos(prevPos), curParentId(curParentId), curPos(curPos) {};
-    void Apply(bool undo) override;
-    void ApplyJson(bool undo) override;
-    bool ValidEdit() override;
-    std::string ToString(bool undo) override;
-};
-
-class EntityExistsEdit : public IEdit {
-private:
-    std::shared_ptr<Registry> registry;
-    std::shared_ptr<EngineData> engineData;
-
-    int entityId;
-    std::string name;
-    int parentId;
-    int pos;
-    bool root; // If the entity was at the root of the tree deleted
-
-    bool add;
-    // Needs to store vector of components, to potentially restore them after
-    std::vector<float> transformValues;
-    std::vector<std::unique_ptr<HasComponentEdit>> components;
-    // Storing children-ids for json edits
-    std::vector<int> childrenIds;
-
-    // Needs to store edits to re-add children
-    std::vector<std::unique_ptr<EntityExistsEdit>> childrenEdits;
-public:
-    // Defined in EntityExistsEdit.cpp
-    EntityExistsEdit(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, int entityId, std::string name, int parentId, int pos, bool root, bool add);
-    void Apply(bool undo) override;
-    void ApplyJson(bool undo) override;
-    bool ValidEdit() override;
-    std::string ToString(bool undo) override;
-};
-
 /* -----CAMERA MANAGEMENT-------------------------------- *
  *   Changing position, aspect ratio, scale               *
  * ------------------------------------------------------ */
@@ -196,6 +142,63 @@ private:
 public:
     HasScriptEdit(std::shared_ptr<EngineData> engineData, int entityId, ScriptData scriptData, bool add):
         engineData(engineData), entityId(entityId), scriptData(scriptData), add(add) {};
+    void Apply(bool undo) override;
+    void ApplyJson(bool undo) override;
+    bool ValidEdit() override;
+    std::string ToString(bool undo) override;
+};
+
+// NOTE: DELETING AN ENTITY HAS TO PUT IT IN SAME PLACE AFTER UNDO, OTHERWISE THIS WHOLE SYSTEM BREAKS
+
+/* -----ENTITY MANAGEMENT-------------------------------- *
+ *   Reparenting/moving, adding/removing                  *
+ * ------------------------------------------------------ */
+
+// When the user reparents or moves an entity
+class ReparentEdit : public IEdit {
+private:
+    std::shared_ptr<Registry> registry;
+
+    int entityId;
+    int prevParentId;
+    int prevPos;
+    int curParentId;
+    int curPos;
+public:
+    ReparentEdit(std::shared_ptr<Registry> registry, int entityId, int prevParentId, int prevPos, int curParentId, int curPos)
+    : registry(registry), entityId(entityId), prevParentId(prevParentId), prevPos(prevPos), curParentId(curParentId), curPos(curPos) {};
+    void Apply(bool undo) override;
+    void ApplyJson(bool undo) override;
+    bool ValidEdit() override;
+    std::string ToString(bool undo) override;
+};
+
+class EntityExistsEdit : public IEdit {
+private:
+    std::shared_ptr<Registry> registry;
+    std::shared_ptr<EngineData> engineData;
+
+    int entityId;
+    std::string name;
+    int parentId;
+    int pos;
+    bool root; // If the entity was at the root of the tree deleted
+
+    bool add;
+    // Needs to store vector of components, to restore them after
+    std::vector<float> transformValues;
+    std::vector<std::unique_ptr<HasComponentEdit>> components;
+    // Needs to store vector of scripts to restore them after
+    std::vector<std::unique_ptr<HasScriptEdit>> scripts;
+
+    // Storing children-ids for json edits
+    std::vector<int> childrenIds;
+
+    // Needs to store edits to re-add children
+    std::vector<std::unique_ptr<EntityExistsEdit>> childrenEdits;
+public:
+    // Defined in EntityExistsEdit.cpp
+    EntityExistsEdit(std::shared_ptr<Registry> registry, std::shared_ptr<EngineData> engineData, int entityId, std::string name, int parentId, int pos, bool root, bool add);
     void Apply(bool undo) override;
     void ApplyJson(bool undo) override;
     bool ValidEdit() override;
