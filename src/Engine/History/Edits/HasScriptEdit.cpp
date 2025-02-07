@@ -51,6 +51,7 @@ void HasScriptEdit::ApplyJson(bool undo){
         jScripts[scriptData.filepath] = json::array();
         for(int varIdx = 0; varIdx < scriptData.varValues.size(); varIdx++){
             std::string type = scriptData.varTypes[varIdx];
+            Debug::Log(type);
             if(type == "int"){ // TODO: not a big fan of this big if else stuff, find a workaround, either a switch case, or a mapping to another function on a dict
                 jScripts[scriptData.filepath].push_back(std::get<int>(scriptData.varValues[varIdx]));
             }
@@ -60,7 +61,8 @@ void HasScriptEdit::ApplyJson(bool undo){
             else if(type == "string"){
                 jScripts[scriptData.filepath].push_back(std::get<std::string>(scriptData.varValues[varIdx]));
             }
-            else if(type == "Entity" || type == "Transform" || type == "Sprite" || type == "Rigidbody"){
+            else if(type == "Entity*" || type == "Transform*" || type == "Sprite*" || type == "Rigidbody*"){
+                std::cout << std::get<int>(scriptData.varValues[varIdx]) << '\n';
                 jScripts[scriptData.filepath].push_back(std::get<int>(scriptData.varValues[varIdx]));
             }
             else if(type == "Sound"){
@@ -69,6 +71,10 @@ void HasScriptEdit::ApplyJson(bool undo){
                 jSound["filepath"] = sound.filepath;
                 jSound["stream"] = sound.stream;
                 jScripts[scriptData.filepath].push_back(jSound);
+            }
+            else {
+                // TODO: should be an error instead and have better messaging
+                Debug::Log("Unrecognized type");
             }
         }
     }

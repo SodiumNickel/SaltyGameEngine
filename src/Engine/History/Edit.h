@@ -8,6 +8,7 @@
 
 #include "Game/ECS/ECS.h"
 #include "Game/Salty/SaltyTypes.h"
+#include "Game/Salty/SaltyDebug.h"
 
 class IEdit {
 public:
