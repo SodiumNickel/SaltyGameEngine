@@ -62,22 +62,25 @@ void HandleUserScripts(std::string& projectName){
             className = filepath.substr(lastSlashPos + 1);
         }
 
-        map += "{\"" + filepath + "\", &CreateInstance<" + className + ">}";
+        // Raw string literal here to avoid having to insert '\'
+        map += "{R\"(" + filepath + ")\", &CreateInstance<" + className + ">}";
         if(scriptIdx + 1 < jScripts["filepaths"].size()) map += ", ";
 
         con += className + "::" + className + "(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars)\n";
-        con += ": IScript(entity, transform), \n";
-        // varName(std::get<varType>(serializedVars[i])), 
+        con += ": IScript(entity, transform)";
         json jNames = jScripts[filepath]["names"];
         json jTypes = jScripts[filepath]["types"];
+        if(jNames.size() != 0) { con += ", "; }
+        con += '\n';
+        
         for(int argIdx = 0; argIdx < jNames.size(); argIdx++){
             std::string type = jTypes[argIdx];
             con += jNames[argIdx].get<std::string>() + "(std::get<" + type + ">(serializedVars[" + std::to_string(argIdx) + "]))";
             if(argIdx + 1 < jNames.size()) con += ", ";
         }
         con += "{};\n\n";
-    }
-    
+    } 
+
     std::string userScripts1 =
 "// USER SCRIPT INCLUDES - written by engine\n";
     // Will place include here

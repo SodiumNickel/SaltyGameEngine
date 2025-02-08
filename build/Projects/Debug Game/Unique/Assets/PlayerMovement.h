@@ -5,7 +5,7 @@
 class PlayerMovement : public IScript {
 // TODO: remove comments from section, also find a better way of finding the location of rivate and ublic.
 private: 
-    float speed = 30.0f;
+    float speed = 80.0f;
     string name;
     SF_ int val; // TODO: might do opposite actually, include a def for ones that should be serialized, maybe just SF?
     SF_ float timer;
@@ -15,7 +15,7 @@ private:
 
     // Sprite* test;
     SF_ Transform* player;
-
+    
     Sound sound;
 public:
     // Initialization will be handled by engine (including that of SF_ variables)

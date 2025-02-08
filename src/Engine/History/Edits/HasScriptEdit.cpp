@@ -51,7 +51,6 @@ void HasScriptEdit::ApplyJson(bool undo){
         jScripts[scriptData.filepath] = json::array();
         for(int varIdx = 0; varIdx < scriptData.varValues.size(); varIdx++){
             std::string type = scriptData.varTypes[varIdx];
-            Debug::Log(type);
             if(type == "int"){ // TODO: not a big fan of this big if else stuff, find a workaround, either a switch case, or a mapping to another function on a dict
                 jScripts[scriptData.filepath].push_back(std::get<int>(scriptData.varValues[varIdx]));
             }
@@ -62,7 +61,6 @@ void HasScriptEdit::ApplyJson(bool undo){
                 jScripts[scriptData.filepath].push_back(std::get<std::string>(scriptData.varValues[varIdx]));
             }
             else if(type == "Entity*" || type == "Transform*" || type == "Sprite*" || type == "Rigidbody*"){
-                std::cout << std::get<int>(scriptData.varValues[varIdx]) << '\n';
                 jScripts[scriptData.filepath].push_back(std::get<int>(scriptData.varValues[varIdx]));
             }
             else if(type == "Sound"){

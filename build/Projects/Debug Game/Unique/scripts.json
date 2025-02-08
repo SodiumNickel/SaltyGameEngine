@@ -17,8 +17,23 @@
     "names": [],
     "types": []
   },
+  "Temp\\ExportTests": {
+    "names": [
+      "val",
+      "timer",
+      "tag",
+      "player"
+    ],
+    "types": [
+      "int",
+      "float",
+      "string",
+      "Transform*"
+    ]
+  },
   "filepaths": [
     "PlayerMovement",
-    "SubDir\\SSubDir\\CreatedScript"
+    "SubDir\\SSubDir\\CreatedScript",
+    "Temp\\ExportTests"
   ]
 }
