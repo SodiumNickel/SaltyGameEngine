@@ -26,6 +26,11 @@ private:
     /* Should save pop-up */
     void ShouldSavePopup();
     int nextScene = -1;
+    /* Choose name for new scene pop-up */
+    bool newSceneName = false;
+    void NewSceneNamePopup();
+    void CreateNewScene();
+    std::string sceneNameStr;
 
     /* FPS Display */
     bool showFps = false;

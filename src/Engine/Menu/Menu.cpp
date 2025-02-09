@@ -5,6 +5,7 @@
 #include <string>
 
 #include <imgui.h>
+#include <imgui_stdlib.h>
 
 #include "Game/Salty/SaltyDebug.h"
 #include "Engine/History/EditHistory.h"
@@ -38,6 +39,15 @@ void Menu::Begin(){
         bool shouldSave = false;
         if(ImGui::BeginMenu("Engine")){
             if(ImGui::BeginMenu("Scenes")) {
+                if(ImGui::MenuItem("Create new scene")){
+                    if(!editHistory->unsaved) { newSceneName = true; }
+                    else { // Prompt the would you like to save pop-up
+                        nextScene = -1; // Indicates that we will be creating a new scene
+                        shouldSave = true;
+                    }
+                }
+                ImGui::Separator();
+
                 int i = 0;
                 for(std::string& scene : engineData->scenes){
                     if(ImGui::MenuItem(scene.c_str(), "", false, engineData->sceneIndex != i)) 
@@ -69,6 +79,11 @@ void Menu::Begin(){
             shouldSave = false;
         }
         Menu::ShouldSavePopup();
+        if(newSceneName){
+            ImGui::OpenPopup("NewSceneName");
+            newSceneName = false;
+        }
+        Menu::NewSceneNamePopup();
 
         if(ImGui::BeginMenu("Metrics")){
             std::string sh = showFps ? "Hide FPS" : "Show FPS"; // TODO: this is inefficient to do every loop, place it inside menu instead
@@ -129,12 +144,15 @@ void Menu::ShouldSavePopup(){
         if (ImGui::Button("Yes")) {
             editHistory->Save();
             editHistory->Clear();
-            stage->LoadScene(nextScene);
+            if(nextScene != -1) { stage->LoadScene(nextScene); }
+            else { newSceneName = true; }
+            
             ImGui::CloseCurrentPopup();
         }
         if (ImGui::Button("No")) { 
             editHistory->Clear();
-            stage->LoadScene(nextScene);
+            if(nextScene != -1) { stage->LoadScene(nextScene); }
+            else { newSceneName = true; }
             ImGui::CloseCurrentPopup();
         }
         if (ImGui::Button("Cancel")) { 
@@ -142,6 +160,27 @@ void Menu::ShouldSavePopup(){
         }
         ImGui::EndPopup();
     }
+}
+
+void Menu::NewSceneNamePopup(){
+    if (ImGui::BeginPopupModal("NewSceneName"))
+    {
+        ImGui::Text("Name your new scene");
+        ImGui::InputText("##new-scene-name", &sceneNameStr, ImGuiInputTextFlags_CharsNoBlank);
+
+        if (ImGui::Button("Create")) { 
+            CreateNewScene();
+            ImGui::CloseCurrentPopup();
+        }
+        if (ImGui::Button("Cancel")) { 
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+}
+void Menu::CreateNewScene(){
+    Debug::Log(sceneNameStr);
+    sceneNameStr = "";
 }
 
 // TODO: if i add more metrics seperate into another file

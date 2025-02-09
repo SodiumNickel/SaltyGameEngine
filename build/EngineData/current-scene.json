@@ -23,7 +23,7 @@
       "parent-id": -1,
       "scripts": {
         "PlayerMovement": [
-          0,
+          2,
           0.0,
           "",
           0
@@ -220,6 +220,24 @@
           4.4
         ]
       }
+    },
+    {
+      "children-ids": [],
+      "components": {},
+      "name": "Empty",
+      "parent-id": -1,
+      "scripts": {},
+      "transform": {
+        "position": [
+          0.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
     }
   ],
   "null-count": 0,
@@ -228,6 +246,7 @@
     1,
     2,
     4,
-    8
+    8,
+    9
   ]
 }

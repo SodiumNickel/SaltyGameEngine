@@ -161,8 +161,6 @@ int Engine::Initialize()
     // Initialize observers
     observers.push_back(std::make_unique<ScriptObserver>(engineData, editHistory));
 
-    Debug::Log(R"(test\ing)");
-
     isRunning = true;
     return 0;
 }

@@ -58,7 +58,7 @@ void ScriptObserver::Observe(){
         if(CompareFileTime(&engineData->scriptEditTimes[i], &recentEditTime) == -1) {
             engineData->scriptEditTimes[i] = recentEditTime;
             
-            Debug::Log(engineData->scriptFilepaths[i]);
+            // Debug::Log(engineData->scriptFilepaths[i]);
 
             // Read .h file for relevant changes/additions (to SF_ variables)
             std::vector<std::string> sfLines;
@@ -91,7 +91,7 @@ void ScriptObserver::Observe(){
                 // Split into type and name
                 size_t spacePos = line.find(' ');
                 if(spacePos == std::string::npos) { assert(0); } // TODO: also should not have an assert, but should not render SF vars
-                Debug::Log(line.substr(0, spacePos) + '|'); Debug::Log(line.substr(spacePos+1) + '|');
+                // Debug::Log(line.substr(0, spacePos) + '|'); Debug::Log(line.substr(spacePos+1) + '|');
                 varTypes.push_back(line.substr(0, spacePos));
                 varNames.push_back(line.substr(spacePos+1));
             }

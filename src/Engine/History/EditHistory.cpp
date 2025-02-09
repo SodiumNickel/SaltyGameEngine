@@ -61,7 +61,7 @@ void EditHistory::Redo(){
 // Pre: unsaved = true;
 void EditHistory::Save(){
     // Get scene name from index
-    std::ifstream f("Projects/" + engineData->projectName + + "/Unique/scenes.json");
+    std::ifstream f("Projects/" + engineData->projectName + "/Unique/scenes.json");
     json jSceneList = json::parse(f).begin().value();
     f.close();
     std::string sceneName = jSceneList[engineData->sceneIndex].value("name", "");
