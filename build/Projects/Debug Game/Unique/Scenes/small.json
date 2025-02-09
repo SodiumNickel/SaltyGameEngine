@@ -10,53 +10,6 @@
     ],
     "scale": 10
   },
-  "entities": [
-    {
-      "children-ids": [],
-      "components": {},
-      "name": "Empty",
-      "parent-id": -1,
-      "scripts": {
-        "Temp\\ExportTests": [
-          0,
-          0.0,
-          "",
-          1
-        ]
-      },
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "children-ids": [],
-      "components": {},
-      "name": "Other",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    }
-  ],
-  "root-ids": [
-    0,
-    1
-  ]
+  "entities": [],
+  "root-ids": []
 }

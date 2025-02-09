@@ -1,7 +1,13 @@
 {
-    "scenes":[
-        { "name":"demo" },
-        { "name":"small" },
-        { "name":"simple" }
-    ]
+  "scenes": [
+    {
+      "name": "demo"
+    },
+    {
+      "name": "small"
+    },
+    {
+      "name": "simple"
+    }
+  ]
 }

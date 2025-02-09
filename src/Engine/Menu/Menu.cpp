@@ -1,11 +1,14 @@
 #include "Engine/Menu/Menu.h"
 
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <string>
 
 #include <imgui.h>
 #include <imgui_stdlib.h>
+#include <json.hpp>
+using json = nlohmann::json;
 
 #include "Game/Salty/SaltyDebug.h"
 #include "Engine/History/EditHistory.h"
@@ -179,8 +182,31 @@ void Menu::NewSceneNamePopup(){
     }
 }
 void Menu::CreateNewScene(){
-    Debug::Log(sceneNameStr);
+    std::ifstream f("Projects/" + engineData->projectName + "/Unique/scenes.json");
+    json jScenes = json::parse(f);
+    // Add new scene to json list
+    json newScene = {{"name", sceneNameStr}};
+    jScenes["scenes"].push_back(newScene);
+    std::ofstream("Projects/" + engineData->projectName + "/Unique/scenes.json") << std::setw(2) << jScenes;
+    f.close();
+
+    // Create json file for the new scene
+    json defaultScene = {
+        {"camera", {
+            {"aspectRatio", {16, 9}},
+            {"position", {0, 0}},
+            {"scale", 10}
+        }},
+        {"entities", json::array()},
+        {"root-ids", json::array()}
+    };
+    std::ofstream("Projects/" + engineData->projectName + "/Unique/Scenes/" + sceneNameStr + ".json") << std::setw(2) << defaultScene;
+
+    // Have to add into engine data (to display in engine dropdown)
+    engineData->scenes.push_back(sceneNameStr);
+
     sceneNameStr = "";
+    stage->LoadScene(jScenes["scenes"].size() - 1);
 }
 
 // TODO: if i add more metrics seperate into another file
