@@ -6,7 +6,7 @@
     ],
     "position": [
       0.0,
-      0.0
+      -50.0
     ],
     "scale": 30.0
   },
@@ -30,7 +30,11 @@
           "DinoGame\\Player/DinoRun4.png",
           "DinoGame\\Player/DinoRun5.png",
           "DinoGame\\Player/DinoRun6.png",
-          0.20000000298023224
+          0.20000000298023224,
+          0.8999999761581421,
+          300.0,
+          100.0,
+          -185.0
         ]
       },
       "transform": {

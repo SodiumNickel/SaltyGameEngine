@@ -38,5 +38,37 @@ void DinoMovement::Update(float dt){
         }
     }
 
-    // transform->position.x += 50 * dt;
+    prejumpTimer -= dt;
+    if(Input::KeyDown[SDL_SCANCODE_SPACE]){
+        prejumpTimer = 0.2;
+    }
+
+    if(transform->position.y <= minY + 0.1 && prejumpTimer > 0){
+        jumpTimer = jumpTime;
+        jumping = true;
+    }
+    if(jumping){
+        if(!Input::KeyHeld[SDL_SCANCODE_SPACE]){
+            jumping = false;
+        }
+        else {
+            jumpTimer -= dt;
+            transform->position.y += jumpSpeed * dt;
+            if(jumpTimer <= 0){
+                jumping = false;
+            }
+        }
+    }
+    
+    // Gravity
+    if(transform->position.y > minY){
+        fallTimer += dt;
+        // Calculate velocity based on gravity acceleration formula
+        float velocity = 9.81 * fallTimer * fallTimer;
+        transform->position.y -= fallSpeed * velocity * dt;
+    }
+    else{
+        fallTimer = 0;
+        transform->position.y = minY;
+    }
 }

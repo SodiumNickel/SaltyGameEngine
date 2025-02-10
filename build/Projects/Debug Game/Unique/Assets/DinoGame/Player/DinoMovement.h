@@ -16,6 +16,18 @@ private:
     int runState = 1;
     SF_ float runFrameTime;
     float runTimer;
+
+    // Jump vars
+    bool canJump = true;
+    bool jumping = false;
+    float fallTimer = 0;
+    SF_ float jumpTime;
+    SF_ float jumpSpeed;
+    SF_ float fallSpeed;
+    float jumpTimer;
+    SF_ float minY;
+    // Allows player to press jump before they hit the ground
+    float prejumpTimer;
 public:
     // Initialization will be handled by engine (including that of SF_ variables)
     DinoMovement(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars);

@@ -8,7 +8,11 @@
       "dr4",
       "dr5",
       "dr6",
-      "runFrameTime"
+      "runFrameTime",
+      "jumpTime",
+      "jumpSpeed",
+      "fallSpeed",
+      "minY"
     ],
     "types": [
       "Sprite*",
@@ -18,6 +22,10 @@
       "string",
       "string",
       "string",
+      "float",
+      "float",
+      "float",
+      "float",
       "float"
     ]
   },
