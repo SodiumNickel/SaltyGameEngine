@@ -214,7 +214,12 @@
     },
     {
       "children-ids": [
-        9
+        9,
+        10,
+        13,
+        11,
+        12,
+        14
       ],
       "components": {},
       "name": "BGs",
@@ -244,12 +249,147 @@
       "parent-id": 8,
       "scripts": {
         "DinoGame\\Background\\BGScroll": [
-          0.0
+          50.0
         ]
       },
       "transform": {
         "position": [
           -25.0,
+          -25.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "sprite": {
+          "filepath": "DinoGame\\Background/Background_1.png",
+          "zindex": 1
+        }
+      },
+      "name": "BG2",
+      "parent-id": 8,
+      "scripts": {
+        "DinoGame\\Background\\BGScroll": [
+          50.0
+        ]
+      },
+      "transform": {
+        "position": [
+          471.0,
+          -25.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "sprite": {
+          "filepath": "DinoGame\\Background/Background_2.png",
+          "zindex": 0
+        }
+      },
+      "name": "BG3",
+      "parent-id": 8,
+      "scripts": {
+        "DinoGame\\Background\\BGScroll": [
+          30.0
+        ]
+      },
+      "transform": {
+        "position": [
+          -25.0,
+          -25.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "sprite": {
+          "filepath": "DinoGame\\Background/Background_2.png",
+          "zindex": 0
+        }
+      },
+      "name": "BG4",
+      "parent-id": 8,
+      "scripts": {
+        "DinoGame\\Background\\BGScroll": [
+          30.0
+        ]
+      },
+      "transform": {
+        "position": [
+          471.0,
+          -25.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "sprite": {
+          "filepath": "DinoGame\\Background/Background_1.png",
+          "zindex": 1
+        }
+      },
+      "name": "BG5",
+      "parent-id": 8,
+      "scripts": {
+        "DinoGame\\Background\\BGScroll": [
+          50.0
+        ]
+      },
+      "transform": {
+        "position": [
+          967.0,
+          -25.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "sprite": {
+          "filepath": "DinoGame\\Background/Background_2.png",
+          "zindex": 0
+        }
+      },
+      "name": "BG6",
+      "parent-id": 8,
+      "scripts": {
+        "DinoGame\\Background\\BGScroll": [
+          30.0
+        ]
+      },
+      "transform": {
+        "position": [
+          967.0,
           -25.0
         ],
         "rotation": 0.0,

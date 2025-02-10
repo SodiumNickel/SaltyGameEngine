@@ -123,6 +123,10 @@ void Game::LoadScene(int sceneIndex)
     for(int id = 0; id < registry->entityTree.size(); id++){
         if(registry->entityTree[id] != nullptr) registry->entityTree[id]->StartScripts();
     }
+
+    // TODO not sure this should stay here:
+    // Reasoning is we set the starting frame right after start is called, so dt is not super high on init
+    prevFrameTime = SDL_GetTicks64();
 }
 
 void Game::CreateEntityTree(json jEntities, json jRootIds){
