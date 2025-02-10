@@ -16,7 +16,7 @@
       "components": {
         "sprite": {
           "filepath": "DinoGame\\Player/DinoRun1.png",
-          "zindex": 0
+          "zindex": 5
         }
       },
       "name": "Player",
@@ -50,31 +50,13 @@
       }
     },
     {
-      "children-ids": [],
-      "components": {},
-      "name": "Background",
-      "parent-id": -1,
-      "scripts": {},
-      "transform": {
-        "position": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
       "children-ids": [
+        2,
         3,
         4,
         5,
         6,
-        7,
-        8
+        7
       ],
       "components": {},
       "name": "PlayerSpriteLoad",
@@ -101,7 +83,7 @@
         }
       },
       "name": "1",
-      "parent-id": 2,
+      "parent-id": 1,
       "scripts": {},
       "transform": {
         "position": [
@@ -124,7 +106,7 @@
         }
       },
       "name": "2",
-      "parent-id": 2,
+      "parent-id": 1,
       "scripts": {},
       "transform": {
         "position": [
@@ -147,7 +129,7 @@
         }
       },
       "name": "3",
-      "parent-id": 2,
+      "parent-id": 1,
       "scripts": {},
       "transform": {
         "position": [
@@ -170,7 +152,7 @@
         }
       },
       "name": "4",
-      "parent-id": 2,
+      "parent-id": 1,
       "scripts": {},
       "transform": {
         "position": [
@@ -193,7 +175,7 @@
         }
       },
       "name": "5",
-      "parent-id": 2,
+      "parent-id": 1,
       "scripts": {},
       "transform": {
         "position": [
@@ -216,7 +198,7 @@
         }
       },
       "name": "6",
-      "parent-id": 2,
+      "parent-id": 1,
       "scripts": {},
       "transform": {
         "position": [
@@ -229,11 +211,58 @@
           1.0
         ]
       }
+    },
+    {
+      "children-ids": [
+        9
+      ],
+      "components": {},
+      "name": "BGs",
+      "parent-id": -1,
+      "scripts": {},
+      "transform": {
+        "position": [
+          0.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "sprite": {
+          "filepath": "DinoGame\\Background/Background_1.png",
+          "zindex": 1
+        }
+      },
+      "name": "BG1",
+      "parent-id": 8,
+      "scripts": {
+        "DinoGame\\Background\\BGScroll": [
+          0.0
+        ]
+      },
+      "transform": {
+        "position": [
+          -25.0,
+          -25.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ]
+      }
     }
   ],
   "root-ids": [
     0,
     1,
-    2
+    8
   ]
 }

@@ -3,7 +3,6 @@
 // Called before the first frame of Update()
 void DinoMovement::Start(){
     runTimer = runFrameTime;
-    Debug::Log(sprite->filepath);
 }
 
 // Called every frame before Render()

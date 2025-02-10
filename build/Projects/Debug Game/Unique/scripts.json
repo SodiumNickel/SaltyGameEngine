@@ -1,4 +1,12 @@
 {
+  "DinoGame\\Background\\BGScroll": {
+    "names": [
+      "scrollSpeed"
+    ],
+    "types": [
+      "float"
+    ]
+  },
   "DinoGame\\Player\\DinoMovement": {
     "names": [
       "sprite",
@@ -65,6 +73,7 @@
     "PlayerMovement",
     "SubDir\\SSubDir\\CreatedScript",
     "Temp\\ExportTests",
-    "DinoGame\\Player\\DinoMovement"
+    "DinoGame\\Player\\DinoMovement",
+    "DinoGame\\Background\\BGScroll"
   ]
 }
