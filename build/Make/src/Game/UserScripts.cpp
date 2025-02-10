@@ -15,3 +15,5 @@ IScript* CreateInstance(Entity* entity, Transform* transform, std::vector<SaltyT
 std::map<std::string, IScript*(*)(Entity*, Transform*, std::vector<SaltyType>&)> scriptMap = {
     // USER SCRIPT MAPPING - written by engine
 };
+
+// USER SCRIPT CONSTRUCTORS - written by engine

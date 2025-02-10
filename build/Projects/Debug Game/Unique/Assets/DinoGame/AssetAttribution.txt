@@ -1,0 +1,4 @@
+All assets used in this demo can be found below:
+
+Sprites:
+Dino Characters (https://arks.itch.io/dino-characters)
