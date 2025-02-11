@@ -7,6 +7,9 @@ Scene Demo above uses assets from:
 - [Oak Woods Environment — brullov](https://brullov.itch.io/oak-woods)
 - [Generic Character Asset — brullov](https://brullov.itch.io/generic-char-asset)
 
+## Sample Game
+- [Dino Run](https://sodiumnickel.itch.io/dino-run) - a simple 2D sidescroller where you collect coins
+
 ## Features
 - **Browser Support:** Compile and run your games on Windows and the Web.
 - **Modular Architecture:** Easily extend or replace components (and renderer/asset manager) without modifying the core engine. 
