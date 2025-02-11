@@ -7,6 +7,30 @@
       "float"
     ]
   },
+  "DinoGame\\Coin\\CoinCollect": {
+    "names": [
+      "coin1",
+      "coin2",
+      "coin3",
+      "coin4",
+      "coin5",
+      "coin6",
+      "sprite"
+    ],
+    "types": [
+      "string",
+      "string",
+      "string",
+      "string",
+      "string",
+      "string",
+      "Sprite*"
+    ]
+  },
+  "DinoGame\\Ground\\GroundScroll": {
+    "names": [],
+    "types": []
+  },
   "DinoGame\\Player\\DinoMovement": {
     "names": [
       "sprite",
@@ -84,6 +108,8 @@
     "SubDir\\SSubDir\\CreatedScript",
     "Temp\\ExportTests",
     "DinoGame\\Player\\DinoMovement",
-    "DinoGame\\Background\\BGScroll"
+    "DinoGame\\Background\\BGScroll",
+    "DinoGame\\Ground\\GroundScroll",
+    "DinoGame\\Coin\\CoinCollect"
   ]
 }
