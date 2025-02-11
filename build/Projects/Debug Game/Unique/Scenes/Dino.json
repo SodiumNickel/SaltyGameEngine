@@ -30,7 +30,7 @@
           "DinoGame/Player/DinoRun4.png",
           "DinoGame/Player/DinoRun5.png",
           "DinoGame/Player/DinoRun6.png",
-          0.20000000298023224,
+          0.10000000149011612,
           0.8999999761581421,
           300.0,
           100.0,
@@ -518,12 +518,57 @@
     },
     {
       "children-ids": [
-        20
+        20,
+        28,
+        29,
+        30,
+        31,
+        32
       ],
       "components": {},
-      "name": "Coins",
+      "name": "CoinManager",
       "parent-id": -1,
-      "scripts": {},
+      "scripts": {
+        "DinoGame\\Coin\\CoinManager": [
+          20,
+          28,
+          29,
+          30,
+          31,
+          32,
+          20,
+          28,
+          29,
+          30,
+          31,
+          32,
+          0,
+          {
+            "filepath": "DinoGame/Audio/coinsound1.wav",
+            "stream": false
+          },
+          {
+            "filepath": "DinoGame/Audio/coinsound2.wav",
+            "stream": false
+          },
+          {
+            "filepath": "DinoGame/Audio/coinsound3.wav",
+            "stream": false
+          },
+          {
+            "filepath": "DinoGame/Audio/coinsound4.wav",
+            "stream": false
+          },
+          {
+            "filepath": "DinoGame/Audio/coinsound5.wav",
+            "stream": false
+          },
+          {
+            "filepath": "DinoGame/Audio/music.wav",
+            "stream": true
+          }
+        ]
+      },
       "transform": {
         "position": [
           0.0,
@@ -539,6 +584,12 @@
     {
       "children-ids": [],
       "components": {
+        "rigidbody": {
+          "initVelocity": [
+            -50.0,
+            0.0
+          ]
+        },
         "sprite": {
           "filepath": "DinoGame/Coin/coin1.png",
           "zindex": 4
@@ -559,8 +610,8 @@
       },
       "transform": {
         "position": [
-          240.0,
-          -190.0
+          -96.0,
+          -246.0
         ],
         "rotation": 0.0,
         "scale": [
@@ -729,6 +780,201 @@
         "scale": [
           1.0,
           1.0
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "rigidbody": {
+          "initVelocity": [
+            -50.0,
+            0.0
+          ]
+        },
+        "sprite": {
+          "filepath": "DinoGame/Coin/coin1.png",
+          "zindex": 4
+        }
+      },
+      "name": "Coin2",
+      "parent-id": 19,
+      "scripts": {
+        "DinoGame\\Coin\\CoinCollect": [
+          "DinoGame/Coin/coin1.png",
+          "DinoGame/Coin/coin2.png",
+          "DinoGame/Coin/coin3.png",
+          "DinoGame/Coin/coin4.png",
+          "DinoGame/Coin/coin5.png",
+          "DinoGame/Coin/coin6.png",
+          28
+        ]
+      },
+      "transform": {
+        "position": [
+          -96.0,
+          -190.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.2000000476837158,
+          1.2000000476837158
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "rigidbody": {
+          "initVelocity": [
+            -50.0,
+            0.0
+          ]
+        },
+        "sprite": {
+          "filepath": "DinoGame/Coin/coin1.png",
+          "zindex": 4
+        }
+      },
+      "name": "Coin3",
+      "parent-id": 19,
+      "scripts": {
+        "DinoGame\\Coin\\CoinCollect": [
+          "DinoGame/Coin/coin1.png",
+          "DinoGame/Coin/coin2.png",
+          "DinoGame/Coin/coin3.png",
+          "DinoGame/Coin/coin4.png",
+          "DinoGame/Coin/coin5.png",
+          "DinoGame/Coin/coin6.png",
+          29
+        ]
+      },
+      "transform": {
+        "position": [
+          -96.0,
+          -190.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.2000000476837158,
+          1.2000000476837158
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "rigidbody": {
+          "initVelocity": [
+            -50.0,
+            0.0
+          ]
+        },
+        "sprite": {
+          "filepath": "DinoGame/Coin/coin1.png",
+          "zindex": 4
+        }
+      },
+      "name": "Coin4",
+      "parent-id": 19,
+      "scripts": {
+        "DinoGame\\Coin\\CoinCollect": [
+          "DinoGame/Coin/coin1.png",
+          "DinoGame/Coin/coin2.png",
+          "DinoGame/Coin/coin3.png",
+          "DinoGame/Coin/coin4.png",
+          "DinoGame/Coin/coin5.png",
+          "DinoGame/Coin/coin6.png",
+          30
+        ]
+      },
+      "transform": {
+        "position": [
+          -96.0,
+          -190.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.2000000476837158,
+          1.2000000476837158
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "rigidbody": {
+          "initVelocity": [
+            -50.0,
+            0.0
+          ]
+        },
+        "sprite": {
+          "filepath": "DinoGame/Coin/coin1.png",
+          "zindex": 4
+        }
+      },
+      "name": "Coin5",
+      "parent-id": 19,
+      "scripts": {
+        "DinoGame\\Coin\\CoinCollect": [
+          "DinoGame/Coin/coin1.png",
+          "DinoGame/Coin/coin2.png",
+          "DinoGame/Coin/coin3.png",
+          "DinoGame/Coin/coin4.png",
+          "DinoGame/Coin/coin5.png",
+          "DinoGame/Coin/coin6.png",
+          31
+        ]
+      },
+      "transform": {
+        "position": [
+          -96.0,
+          -190.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.2000000476837158,
+          1.2000000476837158
+        ]
+      }
+    },
+    {
+      "children-ids": [],
+      "components": {
+        "rigidbody": {
+          "initVelocity": [
+            -50.0,
+            0.0
+          ]
+        },
+        "sprite": {
+          "filepath": "DinoGame/Coin/coin1.png",
+          "zindex": 4
+        }
+      },
+      "name": "Coin6",
+      "parent-id": 19,
+      "scripts": {
+        "DinoGame\\Coin\\CoinCollect": [
+          "DinoGame/Coin/coin1.png",
+          "DinoGame/Coin/coin2.png",
+          "DinoGame/Coin/coin3.png",
+          "DinoGame/Coin/coin4.png",
+          "DinoGame/Coin/coin5.png",
+          "DinoGame/Coin/coin6.png",
+          32
+        ]
+      },
+      "transform": {
+        "position": [
+          -96.0,
+          -190.0
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.2000000476837158,
+          1.2000000476837158
         ]
       }
     }

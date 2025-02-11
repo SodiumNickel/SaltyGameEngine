@@ -27,6 +27,50 @@
       "Sprite*"
     ]
   },
+  "DinoGame\\Coin\\CoinManager": {
+    "names": [
+      "coin1",
+      "coin2",
+      "coin3",
+      "coin4",
+      "coin5",
+      "coin6",
+      "rb1",
+      "rb2",
+      "rb3",
+      "rb4",
+      "rb5",
+      "rb6",
+      "playerTransform",
+      "collect1",
+      "collect2",
+      "collect3",
+      "collect4",
+      "collect5",
+      "music"
+    ],
+    "types": [
+      "Transform*",
+      "Transform*",
+      "Transform*",
+      "Transform*",
+      "Transform*",
+      "Transform*",
+      "Rigidbody*",
+      "Rigidbody*",
+      "Rigidbody*",
+      "Rigidbody*",
+      "Rigidbody*",
+      "Rigidbody*",
+      "Transform*",
+      "Sound",
+      "Sound",
+      "Sound",
+      "Sound",
+      "Sound",
+      "Sound"
+    ]
+  },
   "DinoGame\\Ground\\GroundScroll": {
     "names": [],
     "types": []
@@ -110,6 +154,7 @@
     "DinoGame\\Player\\DinoMovement",
     "DinoGame\\Background\\BGScroll",
     "DinoGame\\Ground\\GroundScroll",
-    "DinoGame\\Coin\\CoinCollect"
+    "DinoGame\\Coin\\CoinCollect",
+    "DinoGame\\Coin\\CoinManager"
   ]
 }

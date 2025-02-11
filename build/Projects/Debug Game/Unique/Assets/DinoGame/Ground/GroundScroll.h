@@ -3,7 +3,7 @@
 
 class GroundScroll : public IScript {
 private:
-    float scrollSpeed = 15;
+    float scrollSpeed = 65;
 public:
     // Initialization will be handled by engine (including that of SF_ variables)
     GroundScroll(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars);
