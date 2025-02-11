@@ -28,6 +28,16 @@ private:
     SF_ float minY;
     // Allows player to press jump before they hit the ground
     float prejumpTimer;
+    // Sets minimum jump height
+    float justJumpedTimer;
+
+    // Jump vars
+    SF_ Sound jump1;
+    SF_ Sound jump2;
+    SF_ Sound jump3;
+    SF_ Sound jump4;
+    SF_ Sound jump5;
+    int soundIdx = 0;
 public:
     // Initialization will be handled by engine (including that of SF_ variables)
     DinoMovement(Entity* entity, Transform* transform, std::vector<SaltyType>& serializedVars);

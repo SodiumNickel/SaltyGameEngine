@@ -15,7 +15,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Player/DinoRun1.png",
+          "filepath": "DinoGame/Player/DinoRun1.png",
           "zindex": 5
         }
       },
@@ -24,17 +24,37 @@
       "scripts": {
         "DinoGame\\Player\\DinoMovement": [
           0,
-          "DinoGame\\Player/DinoRun1.png",
-          "DinoGame\\Player/DinoRun2.png",
-          "DinoGame\\Player/DinoRun3.png",
-          "DinoGame\\Player/DinoRun4.png",
-          "DinoGame\\Player/DinoRun5.png",
-          "DinoGame\\Player/DinoRun6.png",
+          "DinoGame/Player/DinoRun1.png",
+          "DinoGame/Player/DinoRun2.png",
+          "DinoGame/Player/DinoRun3.png",
+          "DinoGame/Player/DinoRun4.png",
+          "DinoGame/Player/DinoRun5.png",
+          "DinoGame/Player/DinoRun6.png",
           0.20000000298023224,
           0.8999999761581421,
           300.0,
           100.0,
-          -185.0
+          -185.0,
+          {
+            "filepath": "DinoGame/Audio/jump1.wav",
+            "stream": false
+          },
+          {
+            "filepath": "DinoGame/Audio/jump2.wav",
+            "stream": false
+          },
+          {
+            "filepath": "DinoGame/Audio/jump3.wav",
+            "stream": false
+          },
+          {
+            "filepath": "DinoGame/Audio/jump4.wav",
+            "stream": false
+          },
+          {
+            "filepath": "DinoGame/Audio/jump5.wav",
+            "stream": false
+          }
         ]
       },
       "transform": {
@@ -78,7 +98,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Player/DinoRun1.png",
+          "filepath": "DinoGame/Player/DinoRun1.png",
           "zindex": 0
         }
       },
@@ -101,7 +121,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Player/DinoRun2.png",
+          "filepath": "DinoGame/Player/DinoRun2.png",
           "zindex": 0
         }
       },
@@ -124,7 +144,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Player/DinoRun3.png",
+          "filepath": "DinoGame/Player/DinoRun3.png",
           "zindex": 0
         }
       },
@@ -147,7 +167,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Player/DinoRun4.png",
+          "filepath": "DinoGame/Player/DinoRun4.png",
           "zindex": 0
         }
       },
@@ -170,7 +190,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Player/DinoRun5.png",
+          "filepath": "DinoGame/Player/DinoRun5.png",
           "zindex": 0
         }
       },
@@ -193,7 +213,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Player/DinoRun6.png",
+          "filepath": "DinoGame/Player/DinoRun6.png",
           "zindex": 0
         }
       },
@@ -241,7 +261,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Background/Background_1.png",
+          "filepath": "DinoGame/Background/Background_1.png",
           "zindex": 1
         }
       },
@@ -268,7 +288,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Background/Background_1.png",
+          "filepath": "DinoGame/Background/Background_1.png",
           "zindex": 1
         }
       },
@@ -295,7 +315,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Background/Background_2.png",
+          "filepath": "DinoGame/Background/Background_2.png",
           "zindex": 0
         }
       },
@@ -322,7 +342,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Background/Background_2.png",
+          "filepath": "DinoGame/Background/Background_2.png",
           "zindex": 0
         }
       },
@@ -349,7 +369,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Background/Background_1.png",
+          "filepath": "DinoGame/Background/Background_1.png",
           "zindex": 1
         }
       },
@@ -376,7 +396,7 @@
       "children-ids": [],
       "components": {
         "sprite": {
-          "filepath": "DinoGame\\Background/Background_2.png",
+          "filepath": "DinoGame/Background/Background_2.png",
           "zindex": 0
         }
       },

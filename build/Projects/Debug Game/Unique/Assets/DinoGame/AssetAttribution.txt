@@ -3,3 +3,6 @@ All assets used in this demo can be found below:
 Sprites:
 Dino Characters (https://arks.itch.io/dino-characters)
 Basic 140 Tiles Grassland and Mines (https://anokolisa.itch.io/basic-140-tiles-grassland-and-mines)
+
+Sounds:
+Jump (https://freesound.org/people/jalastram/sounds/386631/)

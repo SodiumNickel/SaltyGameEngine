@@ -20,7 +20,12 @@
       "jumpTime",
       "jumpSpeed",
       "fallSpeed",
-      "minY"
+      "minY",
+      "jump1",
+      "jump2",
+      "jump3",
+      "jump4",
+      "jump5"
     ],
     "types": [
       "Sprite*",
@@ -34,7 +39,12 @@
       "float",
       "float",
       "float",
-      "float"
+      "float",
+      "Sound",
+      "Sound",
+      "Sound",
+      "Sound",
+      "Sound"
     ]
   },
   "PlayerMovement": {
