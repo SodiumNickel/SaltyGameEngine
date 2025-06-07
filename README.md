@@ -68,6 +68,46 @@ In-engine editing for example script above.
 
 ![script](https://github.com/user-attachments/assets/18ab0ec8-afa2-4ec6-b83a-809ec215beb1)
 
+## Installation Guide
+Follow these steps to get a local copy of the engine up and running on Windows.
+
+### Prerequisites
+- **MinGW** 
+    - I use the [MSYS2](https://www.msys2.org/) distribution
+        - Make sure you run this command in the MSYS2 terminal to install gcc
+        ```
+        pacman -S mingw-w64-ucrt-x86_64-gcc
+        ```
+        - And add `C:\msys64\ucrt64\bin` to  PATH
+        - The following should now work in a new cmd
+        ```
+        g++ --version
+        ```
+        
+- **Emscripten**
+    - Run the following commands (taken from [emscripten.org](https://emscripten.org/docs/getting_started/downloads.html))
+    ```
+    # Get the emsdk repo
+    git clone https://github.com/emscripten-core/emsdk.git
+
+    # Enter that directory
+    cd emsdk
+
+    # Download and install the latest SDK tools.
+    emsdk.bat install latest
+
+    # Make the "latest" SDK "active" for the current user. (writes .emscripten file)
+    emsdk.bat activate latest
+    ```
+    - Add `C:\emsdk` and `C:\emsdk\upstream\emscripten` to PATH
+    - The following should now work in a new cmd
+    ```
+    em++ --version
+    ```
+
+### Installation
+TODO: create a releases page, the build folder contains everything needed to run the engine.
+
 ## Style Guide
 The style of Salty Game Engine mostly follows the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) with a few small additions (e.g. enums being prefixed by E). \
 You may find the (partially) full Salty Style Guide [here](STYLE.md).
