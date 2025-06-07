@@ -83,7 +83,6 @@ Follow these steps to get a local copy of the engine up and running on Windows.
         ```
         g++ --version
         ```
-        
 - **Emscripten**
     - Run the following commands (taken from [emscripten.org](https://emscripten.org/docs/getting_started/downloads.html))
     ```
