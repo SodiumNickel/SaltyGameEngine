@@ -32,14 +32,14 @@ FLAGS = -DWITH_SDL2_STATIC
 # -fsanitize=address 
 default: # Compiles engine
 	g++ -g $(SRC) -std=c++17 $(INCLUDE_DIRS) $(LIB_DIRS) $(LIBS) $(FLAGS) -o $(BUILD_DIR)/$(ENGINE_NAME)
-	xcopy /E /I /Y .\src\Game .\$(BUILD_DIR)\Make\src\Game > nul
-	xcopy /E /I /Y .\src\main.cpp .\$(BUILD_DIR)\Make\src > nul
-	xcopy /E /I /Y .\src\webmain.cpp .\$(BUILD_DIR)\Make\src > nul
-	xcopy /E /I /Y .\src\SaltyEngine.h .\$(BUILD_DIR)\Make\src > nul
+	cp -r ./src/Game/* ./$(BUILD_DIR)/Make/src/Game 
+	cp ./src/main.cpp ./$(BUILD_DIR)/Make/src
+	cp ./src/webmain.cpp ./$(BUILD_DIR)/Make/src
+	cp ./src/SaltyEngine.h ./$(BUILD_DIR)/Make/src
 # TODO: this needs to clear it too, in case of moving stuff around
 
 run:
-	cd $(BUILD_DIR) && $(ENGINE_NAME)
+	cd $(BUILD_DIR) && ./$(ENGINE_NAME)
 
 debug:
 	cd $(BUILD_DIR) && gdb ./$(ENGINE_NAME)
@@ -47,8 +47,11 @@ debug:
 clean:
 	cd $(BUILD_DIR) && del $(ENGINE_NAME).exe && del imgui.ini;
 
-copygame:
-	xcopy /E /I /Y .\src\Game .\$(BUILD_DIR)\Make\src\Game > nul
+# ################## #
+# FOR TESTING BEFORE #
+# ################## #
+copygame: 
+	cp -r .\src\main.cpp .\mythanks
 
 # To compile SoLoud
 SOL_SRC = libsrc/soloud/core/*.cpp libsrc/soloud/sdl2_static/*.cpp libsrc/soloud/wav/*.cpp libsrc/soloud/wav/stb_vorbis.c 
